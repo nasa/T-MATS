@@ -11,7 +11,7 @@ systems and their controls. T-MATS contains generic thermodynamic and controls
 components that may be combined with a variable input iterative solver and optimization 
 algorithm to create complex systems to meet the needs of a developer. Developement of this tool
 was completed on behalf of the NASA Aviation Safety Program's Vehicle Systems Safety Technologies
-(VSST) located at the Glenn Research Center in Cleveland, OH.
+(VSST) project located at the Glenn Research Center in Cleveland, OH.
 
 The goal of the T MATS software is to provide a toolbox for the development of thermodynamic 
 system models, which contains a simulation framework, multi-loop solver techniques, and modular 
