@@ -1,0 +1,61 @@
+
+//#ifndef _WATELEGACYDUCTBLOCK_INT
+//#define _WATELEGACYDUCTBLOCK_INT
+
+class WATEductBlock_SMJ extends UserTextBlock {
+   SimpleBlock bodyBlock {
+body = "
+maximum     design      duct                  flow                              hub      tip
+  temp.     press.   thickness   Mach #       area     material    density    radius   radius       L/D    length
+ ????.?    ????.??     ?.???     ??.???    ?????.? ????????????     ??.???    ???.??   ???.??  ????.???   ????.??
+
+allowable  duct hoop        outer case  inner case       frame          total
+   stress     stress            weight      weight      weight         weight
+ ??????.?  ???????.?          ?????.??    ?????.??    ?????.??       ?????.?? lbs.";
+
+vars = { "max_TtIn.val", "max_PtIn.val*safetyFactor", "tmin", "MNin_in", "ductArea", "material.type", 
+        "material.rho(max_TtIn.val)", "hubRadius", "tipRadius", "lengthHeightRatio", "length",
+        "max_TtIn.val>1160.0 ? 70000.0 : 50000.0", 
+        "max_PtIn.val*safetyFactor*tipRadius/tmin",
+        "caseWt", "innerCaseWt", "S_Frame.isEmpty() ? 0.0 : S_Frame.weight", "weight" }
+   } // end bodyBlock  
+
+   WATEframeCustomBlock_SMJ frameBlock;
+   scopingObj.trigger = 1;
+
+
+  /**
+   *
+   ****************************************************************/
+   void variableChanged(string nm, any val) {
+      if(nm=="scopingObj") {
+         bodyBlock.scopingObj = scopingObj;
+         frameBlock.scopingObj = scopingObj+".S_Frame";
+      }      
+   }
+             
+  /**
+   *
+   ****************************************************************/
+   void update() {
+
+      filledBlock = { };
+      filledBlock.append("====================================================");
+      filledBlock.append(scopingObj->isA()+"     "+scopingObj->getPathName());
+      filledBlock.append("====================================================");
+      
+      bodyBlock.update();
+      filledBlock += bodyBlock.filledBlock;
+                             
+      if (!(scopingObj->S_Frame.isEmpty())) {
+         frameBlock.update();
+         filledBlock += frameBlock.filledBlock;
+      }
+      filledBlock.append("");
+      filledBlock.append("");
+      filledBlock.append("");
+   }
+}
+
+//#endif
+

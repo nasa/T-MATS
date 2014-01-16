@@ -1,0 +1,87 @@
+
+//#ifndef _WATELEGACYINLETBASEBLOCK_INT
+//#define _WATELEGACYINLETBASEBLOCK_INT
+
+class WATEinletBaseBlock_SMJ extends SimpleBlock {
+body = "====================================================
+????????????????????     ????????????????????
+====================================================
+
+INLET GEOMETRY AND MATERIALS
+__________________________________________________________________________________________________________________
+   fan      inlet   inlet tip    fan   fan exhaust core cowl  cowl avg           nacelle     firewall     acoustic
+diameter   length  to fan face length     length    length    diameter          material     material     material
+  ???.??   ???.??    ???.??    ???.??     ???.??    ???.??      ???.??      ???????????? ???????????? ????????????
+                                                                      densities:  ??.???       ??.???       ??.???
+
+INLET AND NACELLE WEIGHT BREAKDOWN
+__________________________________________________________________________________________________________________
+              bypass                              throat                    duct  split duct           inlet
+   inlet        door                    duct        door    firewall      length      length           total
+?????.??    ?????.??                ?????.??    ?????.??    ?????.??    ?????.??    ?????.??        ?????.??
+
+   inlet        fan    fan exhaust      core       anti-    acoustic                                 nacelle
+    cowl        cowl        cowl        cowl       icing       liner    bulkhead                       total
+?????.??    ?????.??    ?????.??    ?????.??    ?????.??    ?????.??    ?????.??                    ?????.?? 
+
+    total weight =?????.?? lbs.
+
+
+";
+
+
+vars = { "isA()", "getPathName()", 
+   "diameter", "length", "mostFwdToEngFFLength*12", "fanLength", "fanExhaustLength", "coreCowlLength", "avgCowlDiam",
+   "nacelleMaterial.type", "firewallMaterial.type", "acousticMaterial.type",
+   "nacelleMaterial.rho(500.)", "firewallMaterial.rho(500.)", "acousticMaterial.rho(500.)",
+   "wtinlt", "bypassDoorWt", "ductWt", "throatDoorWt", "firewallWt", "lduct", "lengthSplitDuct", 
+   "wtinlt + bypassDoorWt + ductWt + throatDoorWt + firewallWt",
+   "inletCowlWt", "fanCowlWt", "fanExhaustCowlWt", "coreCowlWt", "antiIceWt", "acousticWt", "bulkheadWt", "nacelleWt",
+   "weight" }
+
+/*
+   void update() {
+      filledBlock = { };
+      filledBlock.append("====================================================");
+      filledBlock.append(scopingObj->isA()+"     "+scopingObj->getPathName());
+      filledBlock.append("====================================================");
+      filledBlock.append("");
+
+      filledBlock.append("INLET CRAP WEIGHT");
+      filledBlock.append("WTINLT = \t" + toStr(scopingObj->wtinlt) + "\tDUCTWT = \t" + 
+                         toStr(scopingObj->ductWt));
+      filledBlock.append("BDRWT = \t" + toStr(scopingObj->bypassDoorWt) + "\tTDRWT = \t" + 
+                         toStr(scopingObj->throatDoorWt));
+      filledBlock.append("ENG MT = \tn/a" + "\tFIRE WL = \t" + toStr(scopingObj->firewallWt));
+      filledBlock.append("FAN DIA = \t" + toStr(scopingObj->diameter) + "\tLDUCT\t=\t" + 
+                         toStr(scopingObj->lduct) + "\tLDUCTS =\t" + 
+                         toStr(scopingObj->lengthSplitDuct));
+      filledBlock.append("");
+      filledBlock.append("INLET LENGTH =\t" + toStr(scopingObj->length));
+      filledBlock.append("");
+      filledBlock.append("");
+      filledBlock.append("NACELLE WEIGHT");
+      filledBlock.append("NAC WT\t\t= " + toStr(scopingObj->nacelleWt));
+      filledBlock.append("INL CWL WT\t= " + toStr(scopingObj->inletCowlWt) + "\tINLET LEN\t= " + 
+                         toStr(scopingObj->mostFwdToEngFFLength*12));
+      filledBlock.append("FAN CWL WT\t= " + toStr(scopingObj->fanCowlWt) + "\tFAN BLD LEN\t= " + 
+                         toStr(scopingObj->fanLength));
+      filledBlock.append("FAN EXH CWL WT\t= " + toStr(scopingObj->fanExhaustCowlWt) + 
+                         "\tFAN EXH LEN\t= " + toStr(scopingObj->fanExhaustLength));
+      filledBlock.append("CORE CWL WT\t= " + toStr(scopingObj->coreCowlWt) + "\tCORE CWL LEN\t= " +
+                         toStr(scopingObj->coreCowlLength) + "\tCWL AVG DIAM = " + 
+                         toStr(scopingObj->avgCowlDiam));
+      filledBlock.append("ANTI-ICE WT\t= " + toStr(scopingObj->antiIceWt));
+      filledBlock.append("ACOUSTIC WT\t= " + toStr(scopingObj->acousticWt));
+      filledBlock.append("BULKHEAD WT\t= " + toStr(scopingObj->bulkheadWt));
+      filledBlock.append("");
+      filledBlock.append("");
+      filledBlock.append("");
+
+      filledBlock.append("TOTAL INLET/NACELLE WEIGHT =\t" + toStr(scopingObj->weight));  
+   }
+*/
+} 
+
+//#endif
+

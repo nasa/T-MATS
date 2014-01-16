@@ -1,0 +1,77 @@
+
+//#ifndef _WATELEGACYNOZZLEBASEBLOCK_INT
+//#define _WATELEGACYNOZZLEBASEBLOCK_INT
+
+/**
+ *
+ ****************************************************************/
+//class WATEnozzleBaseBlock_SMJ extends UserTextBlock { 
+class WATEnozzleBaseBlock_SMJ extends SimpleBlock { 
+
+    body = "====================================================
+????????????????????     ????????????????????
+====================================================
+
+NOZZLE GEOMETRY AND MATERIALS
+__________________________________________________________________________________________________________________
+  throat     exit   trans. duct  mix-ej     nozzle    total    nozzle     plug      case     mix-ej     acoustic  
+   area      area     length     length       L/D    length   density   density   density   density    liner dens.
+?????.?   ?????.?     ???.??     ???.??    ??.???    ???.??    ??.???    ??.???    ??.???    ??.???         ??.???
+
+      nozzle           plug           case        mixer-ej       acoustic
+     material       material       material       material       material
+ ????????????   ????????????   ????????????   ????????????   ????????????
+
+
+NOZZLE WEIGHT BREAKDOWN
+__________________________________________________________________________________________________________________
+  outer      inner    2-D cnvrgt    2-D dvrgnt       2-D          2-D         variable      variable        nozzle
+   wall       wall    inner wall    inner wall     sidewall   trans. duct     area C&A     area misc.       weight
+????.??   ?????.??      ?????.??      ?????.??     ?????.??      ?????.??     ?????.??      ?????.??      ?????.??
+
+nozzle                  ?????.??
+nozzle acoustic liner   ?????.??
+plug                    ?????.??
+plug acoustic liner             
+thrust reverser         ?????.??
+mixer-ejector           ?????.??
+acoustic splitter plate ?????.??
+                        --------
+                total = ?????.?? lbs.
+
+
+";
+
+     vars = { "isA()", "getPathName()",
+        "throatArea", "exitArea", "transDuctLength", 
+        "(S_MixerEjector.isEmpty()) ? 0.0 : S_MixerEjector.length",
+        "LDratio", "length",
+        "material.rho(max_TtIn.val)", 
+        "(S_Plug.isEmpty()) ? 0.0 : S_Plug.material.rho(max_TtIn.val)",
+        "caseMaterial.rho(max_TtIn.val)", 
+        "(S_MixerEjector.isEmpty()) ? 0.0 : S_MixerEjector.material.rho(max_TtIn.val)",
+        "(S_AcousticLiner.isEmpty()) ? 0.0 : S_AcousticLiner.material.rho(max_TtIn.val)",
+        "material.type",
+        "(S_Plug.isEmpty()) ? \"            \" : S_Plug.material.type",
+        "caseMaterial.type",
+        "(S_MixerEjector.isEmpty()) ? \"            \" : S_MixerEjector.material.type",
+        "(S_AcousticLiner.isEmpty()) ? \"            \" : S_AcousticLiner.material.type", 
+        "caseWt", "innerCaseWt",
+        "(hasInterface(\"WATE2DcdNozzle\")) ? wtconv : 0.0",
+        "(hasInterface(\"WATE2DcdNozzle\")) ? wtdiv : 0.0",
+        "(hasInterface(\"WATE2DcdNozzle\")) ? sidewallWt : 0.0",
+        "transDuctWt",
+        "(S_VariableGeometry.isEmpty()) ? 0.0 : S_VariableGeometry.caWt",
+        "(S_VariableGeometry.isEmpty()) ? 0.0 : S_VariableGeometry.miscWt",
+        "nozzleWt", "nozzleWt",
+        "(S_AcousticLiner.isEmpty()) ? 0.0 : S_AcousticLiner.weight", 
+        "(S_Plug.isEmpty()) ? 0.0 : S_Plug.weight",
+      //"(S_Plug.S_AcousticLiner.isEmpty()) ? 0.0 : S_Plug.S_AcousticLiner.weight",
+        "(S_ThrustReverser.isEmpty()) ? 0.0 : S_ThrustReverser.weight",
+        "(S_MixerEjector.isEmpty()) ? 0.0 : S_MixerEjector.weight",
+        "(hasInterface(\"WATE2DcdNozzle\") && !S_SplitterAcousticLiner.isEmpty()) ? S_SplitterAcousticLiner.weight : 0.0",
+        "weight" }
+} 
+
+//#endif
+

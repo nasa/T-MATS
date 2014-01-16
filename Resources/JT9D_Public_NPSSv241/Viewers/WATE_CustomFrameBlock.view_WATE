@@ -1,0 +1,34 @@
+
+//#ifndef _WATELEGACYFRAMECUSTOMBLOCK_INT
+//#define _WATELEGACYFRAMECUSTOMBLOCK_INT
+
+/**
+ *
+ ****************************************************************/
+class WATEframeCustomBlock_SMJ extends SimpleBlock {
+   body = "
+FRAME INFORMATION FOR THIS COMPONENT
+__________________________________________________________________________________________________________________
+  # of frame    aspect                          airfoil   airfoil       support   support     support  tower shaft
+strut/airfoil    ratio    length      gap      material   density      material   density   thickness  outer diam.
+    ???          ?.???    ???.??    ??.??  ????????????     ?.???  ????????????     ?.???     ???.???      ???.???
+
+           strut/                        upper     lower      tower             frame
+          airfoil      case       hub   support   support     shaft             total
+weights:  ????.??   ????.??   ????.??   ????.??   ????.??   ????.??           ????.?? lbs.";
+
+
+   vars = { "numBlades", "aspectRatio", "length", "gap", "material.type", "rhof", 
+      "supportMaterial.type", "supportMaterial.rho(500.)", "supportThickness",
+      "S_TowerShaft.isEmpty() ? 1.00 : S_TowerShaft.outerDiameter", 
+      "frameWt", "caseWt", "hubWt", "upperSupportWt", "lowerSupportWt", 
+      "S_TowerShaft.isEmpty() ? 0.00 : S_TowerShaft.weight", "weight" }
+
+    //"supportMaterial.type==\"\" ? rhof : supportMaterial.rho(500)",
+
+}
+
+//#endif
+
+
+

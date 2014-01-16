@@ -1,0 +1,27 @@
+<font size="6" color="Magenta">T-MATS: Independent Intial Condition Block</font>
+<br>
+This block translates a fracional input to the final 
+value based on an initial guess. This is typically 
+used to scale or translate outputs from the Iterative 
+solver from a simple fraction to the final value used. 
+The purpose of performing this action is to enhance 
+plant readability by placing the initial guesses for 
+the independents into the plant. In addition performing 
+these transformations allow the user to force all the iterative 
+solver values to a similar format.
+<br>
+<br>
+<font size="5" color="Blue">Indepencdent IC Inputs:</font>
+<table border="1"> <tr><td>Indepencdent IC Input</td><td>Description</td></tr>
+    <tr><td>Indfrac</td><td>Independent fractional value based on mask input initial guess or condition</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Indepencdent IC Outputs:</font>
+<table border="1"> <tr><td>Indepencdent IC Output</td><td>Description</td></tr>
+    <tr><td>IndVal</td><td>Value of Independent</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Indepencdent IC Mask Variables: </font>
+<table border="1"> <tr><td>Indepencdent IC Mask Variable</td><td>Description</td></tr>
+    <tr><td>Iguess_M</td><td>Initial value of Independent</td></tr>
+</table>

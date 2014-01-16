@@ -1,0 +1,30 @@
+<font size="6" color="Magenta">T-MATS: Newton Raphson Solver Library Block</font>
+<br>
+Newton Raphson Solver: 
+<br>
+<br>
+x(n+1) = x(n) - inverse(f'(x(n)))*f(x(n))
+<br>
+<br>
+Note: 
+inverse(f'(x(n))) is an m x m matrix and f(x(n)) is an m x 1 matrix 
+where m is the length of the initial conditions matrix and number of system independents.
+<br>
+<br>
+<font size="5" color="Blue">Newton Raphson Solver Inputs:</font>
+<table border="1"> <tr><td>NRS Input</td><td>Description</td></tr>
+    <tr><td>Enable</td><td>Enables the Newton Raphson Solver</td></tr>
+    <tr><td>inv(f'(x(n)))</td><td>receprical of the derivative of the system</td></tr>
+    <tr><td>f(x(n))</td><td>output of the system</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Newton Raphson Solver Outputs:</font>
+<table border="1"> <tr><td>NRS Output</td><td>Description</td></tr>
+    <tr><td>x(n+1)</td><td>Next system input to use (mx1)</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Newton Raphson Solver  Mask Variables: </font>
+<table border="1"> <tr><td>NRS Mask Variable</td><td>Description</td></tr>
+    <tr><td>NR_IC_M</td><td>Initial Conditions of Newton Raphson (mx1)</td></tr>
+    <tr><td>NR_dx_Lim_M</td><td>Newton Raphson dx limit[%](1x1), used for stability purposes</td></tr>
+</table>

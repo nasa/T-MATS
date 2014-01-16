@@ -1,0 +1,101 @@
+//
+//------------------------------------------------------------------------
+//                                                                       |
+//   File Name:     JT9D.case_FltEnv                                     |
+//   Date(s):       March 31, 2011                                       |
+//   Author:        Scott M. Jones                                       |
+//                                                                       |
+//   Description:   This file runs the engine over a set of flight       |
+//                  conditions representing the entire engine            |
+//                  operational envelope                                 |
+//                                                                       |
+//------------------------------------------------------------------------
+
+
+//------------------------------------------------------------------------
+//                    Run Entire Flight Envelope        
+//------------------------------------------------------------------------
+cout << "------------------------------------\n"; 
+cout << "    RUNNING FULL FLIGHT ENVELOPE    \n"; 
+cout << "------------------------------------\n"; 
+
+CASE = 1; 
+
+Ambient.dTs_in = 27.0; 
+RunThrottleHook( 0.00,     0. );
+RunThrottleHook( 0.10,     0. );
+RunThrottleHook( 0.20,     0. );
+RunThrottleHook( 0.25,     0. );
+RunThrottleHook( 0.30,     0. );
+RunThrottleHook( 0.40,     0. );
+RunThrottleHook( 0.50,     0. );
+
+RunThrottleHook( 0.00,  2000. );
+RunThrottleHook( 0.10,  2000. );
+RunThrottleHook( 0.20,  2000. );
+RunThrottleHook( 0.25,  2000. );
+RunThrottleHook( 0.30,  2000. );
+RunThrottleHook( 0.40,  2000. );
+RunThrottleHook( 0.50,  2000. );
+
+RunThrottleHook( 0.00,  5000. );
+RunThrottleHook( 0.10,  5000. );
+RunThrottleHook( 0.20,  5000. );
+RunThrottleHook( 0.25,  5000. );
+RunThrottleHook( 0.30,  5000. );
+RunThrottleHook( 0.40,  5000. );
+RunThrottleHook( 0.50,  5000. );
+
+RunThrottleHook( 0.00, 10000. );
+RunThrottleHook( 0.10, 10000. );
+RunThrottleHook( 0.20, 10000. );
+RunThrottleHook( 0.25, 10000. );
+RunThrottleHook( 0.30, 10000. );
+RunThrottleHook( 0.40, 10000. );
+RunThrottleHook( 0.50, 10000. );
+
+Ambient.dTs_in =  0.0; 
+RunThrottleHook( 0.30, 15000. );
+RunThrottleHook( 0.40, 15000. );
+RunThrottleHook( 0.50, 15000. );
+RunThrottleHook( 0.60, 15000. );
+RunThrottleHook( 0.70, 15000. );
+
+RunThrottleHook( 0.40, 20000. );
+RunThrottleHook( 0.50, 20000. );
+RunThrottleHook( 0.60, 20000. );
+RunThrottleHook( 0.70, 20000. );
+
+RunThrottleHook( 0.50, 25000. );
+RunThrottleHook( 0.60, 25000. );
+RunThrottleHook( 0.70, 25000. );
+RunThrottleHook( 0.75, 25000. );
+RunThrottleHook( 0.80, 25000. );
+
+RunThrottleHook( 0.50, 30000. );
+RunThrottleHook( 0.60, 30000. );
+RunThrottleHook( 0.70, 30000. );
+RunThrottleHook( 0.75, 30000. );
+RunThrottleHook( 0.80, 30000. );
+RunThrottleHook( 0.85, 30000. );
+
+RunThrottleHook( 0.60, 35000. );
+RunThrottleHook( 0.70, 35000. );
+RunThrottleHook( 0.75, 35000. );
+RunThrottleHook( 0.80, 35000. );
+RunThrottleHook( 0.85, 35000. );
+RunThrottleHook( 0.90, 35000. );
+
+RunThrottleHook( 0.60, 39000. );
+RunThrottleHook( 0.70, 39000. );
+RunThrottleHook( 0.75, 39000. );
+RunThrottleHook( 0.80, 39000. );
+RunThrottleHook( 0.85, 39000. );
+RunThrottleHook( 0.90, 39000. );
+
+RunThrottleHook( 0.70, 43000. );
+RunThrottleHook( 0.75, 43000. );
+RunThrottleHook( 0.80, 43000. );
+RunThrottleHook( 0.85, 43000. );
+RunThrottleHook( 0.90, 43000. );
+

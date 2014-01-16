@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<style type="text/css">
+<!--
+h1
+{
+  font-family: sans-serif;
+  font-size: 18pt;
+}
+.wateTab
+{
+  font-family: Verdana;
+  font-size: 10pt;
+  margin-left: auto;
+  margin-right: auto;
+}
+.floatCell
+{
+  font-family: Verdana;
+  font-size: 10pt;
+  text-align: right;
+}
+.stageCell
+{
+  font-family: Verdana;
+  font-size: 10pt;
+  text-align: center;
+}
+-->
+</style>
+</head>
+<body>
+<div style="text-align: center;"><h1>Rough JT9D Turbofan Performance Model</h1></div>
+<table align="center" border="1">
+<tbody>
+<tr><th colspan="2">Weights</th><th colspan="2">Dimensions</th></tr>
+<tr><td>Bare Engine Weight</td><td class="floatCell">9576.0</td><td>Engine Length</td><td class="floatCell">170.5</td></tr>
+<tr><td>Accessories Weight</td><td class="floatCell">957.6</td><td>Engine Pod C.G.</td><td class="floatCell">59.5</td></tr>
+<tr><td>Engine Weight</td><td class="floatCell">10533.6</td><td>Engine Max Diameter</td><td class="floatCell">96.0</td></tr>
+<tr><td>Inlet/Nacelle Weight</td><td class="floatCell">1148.9</td><td>Nacelle Max Diameter</td><td class="floatCell">112.0</td></tr>
+<tr><td>Total Engine Pod Weight</td><td class="floatCell">11682.5</td><td>Total Engine Pod Length</td><td class="floatCell">227.8</td></tr>
+</tbody>
+</table>
+<h2>&nbsp;</h2>
+<table align="center" border="1">
+<tbody>
+<tr><th colspan="7">Component Summary</th></tr>
+<tr><th>Name</th><th>Type</th><th>Weight</th><th>&nbsp;</th><th>Name</th><th>Type</th><th>Weight</th></tr>
+<tr><td>WATE_Fan</td><td>WATEhiBypassFan  (1 stg)</td><td class="floatCell">1550.4</td><td>&nbsp;</td><td>WATE_Splitter</td><td>WATEsplitter</td><td class="floatCell">0.0</td></tr>
+<tr><td>WATE_Duct1</td><td>WATEductBase</td><td class="floatCell">10.9</td><td>&nbsp;</td><td>WATE_LPC</td><td>WATEaxialLPC  (3 stg)</td><td class="floatCell">473.8</td></tr>
+<tr><td>WATE_Duct2</td><td>WATEductBase</td><td class="floatCell">111.1</td><td>&nbsp;</td><td>WATE_HPC</td><td>WATEaxialHPC  (11 stg)</td><td class="floatCell">1334.1</td></tr>
+<tr><td>WATE_Bld3</td><td>WATEductBase</td><td class="floatCell">16.0</td><td>&nbsp;</td><td>WATE_Burner</td><td>WATEprimaryBurner</td><td class="floatCell">423.8</td></tr>
+<tr><td>WATE_HPT</td><td>WATEaxialHPT  (2 stg)</td><td class="floatCell">1802.8</td><td>&nbsp;</td><td>WATE_Duct3</td><td>WATEductBase</td><td class="floatCell">6.8</td></tr>
+<tr><td>WATE_LPT</td><td>WATEaxialLPT  (4 stg)</td><td class="floatCell">1553.9</td><td>&nbsp;</td><td>WATE_Duct4</td><td>WATEductBase</td><td class="floatCell">11.0</td></tr>
+<tr><td>WATE_Core_Nozz</td><td>WATEaxisymConvNozzle</td><td class="floatCell">189.8</td><td>&nbsp;</td><td>WATE_Duct5</td><td>WATEductBase</td><td class="floatCell">92.5</td></tr>
+<tr><td>WATE_Byp_Nozz</td><td>WATEfanAxiConvNozzle</td><td class="floatCell">1522.3</td><td>&nbsp;</td><td>WATE_LP_Shaft</td><td>WATElpShaft</td><td class="floatCell">412.2</td></tr>
+<tr><td>WATE_HP_Shaft</td><td>WATEhpShaft</td><td class="floatCell">64.5</td><td>&nbsp;</td><td>WATE_Inlet</td><td>WATEinletMDAlowDrag</td><td class="floatCell">957.8</td></tr>
+</tbody>
+</table>
+<div style="text-align: center;">
+<object data="JT9Dengine.svg" width="900" height="500" type="image/svg+xml">
+<p>
+You need the Adobe SVG plugin to view this SVG diagram
+</p>
+</object>
+</div>
+</body>
+</html>

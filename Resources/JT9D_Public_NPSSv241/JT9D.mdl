@@ -1,0 +1,373 @@
+//
+//------------------------------------------------------------------------
+//                                                                       |
+//   File Name:     JT9D.mdl                                             |
+//   Date(s):       March 31, 2011                                       |
+//   Author:        Scott M. Jones                                       |
+//                                                                       |
+//   Description:   Separate flow, JT9D turbofan                         |
+//                                                                       |
+//------------------------------------------------------------------------
+
+
+//------------------------------------------------------------------------
+//                            Model Definition 
+//------------------------------------------------------------------------
+MODELNAME = "JT9D Turbofan Approximation"; 
+AUTHOR = "NASA Glenn Research Center"; 
+
+
+Element Ambient Ambient { 
+   alt_in = 0.;
+   MN_in = 0.00;
+   dTs_in = 27.;
+} 
+
+
+Element InletStart Start {
+   AmbientName = "Ambient";
+   W_in = 1200.0;
+}
+
+
+Element Inlet Inlet { 
+   Afs = 2000.0;
+   Fl_O.MN = 0.525;
+   
+   Table TB_rec( real Mach ) { 
+         Mach = {  0.00,  0.10,  0.20,  0.30,  0.40,  0.60,  0.80,  0.90 }
+         etar = { 0.995, 0.996, 0.997, 0.997, 0.998, 0.998, 0.998, 0.998 }
+   }
+
+   void preexecute() { 
+      eRamBase = (0.992/0.995)*TB_rec( Fl_I.MN );
+   } 
+} 
+
+
+Element Compressor Fan { 
+   #include <Maps_and_Elements/FAN.map>
+   Fl_O.MN = 0.45; 
+   
+   PRdes = 1.6;
+   effDes = 0.93;
+
+   /*
+   S_map.alpha = 0.00;
+   S_map.RlineMap = 2.0000;
+   S_map.NcDes = 1.000; 
+   S_map.PRdes = 1.600;
+   S_map.effDes = 0.9300;
+   */
+} 
+
+
+Element Splitter Splitter { 
+   BPRdes = 10.00;
+   Fl_O1.MN = 0.45; 
+   Fl_O2.MN = 0.45; 
+} 
+
+
+Element Duct Duct1 { 
+   dPqP_dmd = 0.0025; 
+   Fl_O.MN = 0.45; 
+} 
+
+
+Element Compressor LPC { 
+   #include <Maps_and_Elements/LPC.map> 
+   Fl_O.MN = 0.45; 
+   
+   PRdes = 2.25;
+   effDes = 0.88;
+
+   /*
+   S_map.RlineMap = 2.0000;
+   S_map.NcDes = 1.000;
+   S_map.PRdes = 2.250;
+   S_map.effDes = 0.8800;
+*/   
+} 
+
+
+Element Duct Duct2 { 
+   dPqP_dmd = 0.0025; 
+   Fl_O.MN = 0.45; 
+} 
+
+
+Element Compressor HPC { 
+   #include <Maps_and_Elements/HPC.map> 
+   Fl_O.MN = 0.30; 
+
+   real BleedFlow = 0.000;            // Customer Bleed fixed mass flow
+  
+   PRdes = 10.0;
+   effDes = 0.86;
+  
+/*
+  S_map.RlineMap = 2.0000;
+   S_map.NcDes = 1.000;
+   S_map.PRdes = 10.00;
+   S_map.effDes = 0.8600;
+*/
+   InterStageBleedOutPort  Cool1 {    // LPT inlet cooling flow
+      fracBldWork = 0.3500;
+      fracBldP = 0.1465;
+      fracBldW = 0.05000;
+   } 
+   InterStageBleedOutPort  Cool2 {    // LPT exit cooling flow
+      fracBldWork = 0.3500;
+      fracBldP = 0.1465;
+      fracBldW = 0.02400;
+   } 
+   InterStageBleedOutPort  CustBld { 
+      fracBldWork = 0.3500;
+      fracBldP = 0.1465;
+      fracBldW = 0.0000;
+   }
+
+   void preexecute() { 
+      CustBld.fracBldW = BleedFlow / Fl_I.W ;  // calc fracW to give fixed flow
+   } 
+} 
+
+
+Element Bleed Bld3 { 
+   Fl_O.MN = 0.30; 
+
+   BleedOutPort Cool1 {	              // HPT stator cooling flow
+     fracW = 0.10000;
+   } 
+   BleedOutPort Cool2 {	              // HPT rotor cooling flow
+     fracW = 0.09000;
+   } 
+   WrefName = "FS_25.W";
+} 
+
+
+Element FuelStart FUEL36 { 
+   LHV = 18400.; 
+   Carbon = 12.;
+   Hydrogen = 1.940;
+}  
+
+
+Element Burner Burner { 
+   effBase = 0.9940;
+   switchHotLoss = "input";
+   dPqP_dmd = 0.055;
+   Fl_O.MN = 0.10;
+
+   switchBurn = "FAR";
+   FAR = 0.0335;
+} 
+
+
+Element Turbine HPT { 
+   #include <Maps_and_Elements/HPT.map>
+
+   FlowStation FS_41;
+   Fl_O.MN = 0.30;
+  
+   effDes = 0.88;
+   PRbase  = 3.7;
+   
+ /*
+   S_map.effDes = 0.8800;
+   S_map.parmMap = 3.700;
+   S_map.parmGeomDes  = 1.0;
+   S_map.parmMapDes = 5.000;
+   S_map.parmNcDes = 100.0;
+  */ 
+   InterStageBleedInPort Non_ChargeableBld { 
+      Pfract  = 1.0;
+      diaPump = 0.0;
+   } 
+   InterStageBleedInPort ChargeableBld { 
+      Pfract  = 0.0;
+      diaPump = 0.0;
+   } 
+
+   void postexecute() { 
+      FS_41.copyFlow("Fl_I");
+      FS_41.add("Non_ChargeableBld");
+   } 
+} 
+
+
+Element Duct Duct3 { 
+   dPqP_dmd = 0.005;
+   Fl_O.MN = 0.30;
+} 
+
+
+Element Turbine LPT {  
+   #include <Maps_and_Elements/LPT.map>
+
+   FlowStation FS_49;
+   Fl_O.MN = 0.35;
+   
+   effDes = 0.90;
+   PRbase  = 5.7;
+   
+ /*
+   S_map.effDes = 0.9000;
+   S_map.parmMap = 5.700;
+   S_map.parmGeomDes = 1.0;
+   S_map.parmMapDes = 6.000;
+   S_map.parmNcDes = 100.0;
+*/
+   InterStageBleedInPort Non_ChargeableBld {
+      Pfract  = 1.0;
+      diaPump = 0.0;
+   } 
+   InterStageBleedInPort ChargeableBld {
+      Pfract  = 0.0;
+      diaPump = 0.0;
+   } 
+
+   void postexecute() { 
+      FS_49.copyFlow("Fl_I");
+      FS_49.add("Non_ChargeableBld");
+   } 
+} 
+
+
+Element Duct Duct4 { 
+   dPqP_dmd = 0.010;
+   Fl_O.MN = 0.25;
+} 
+
+
+Element Nozzle Core_Nozz { 
+   switchType = "CONIC";
+   switchCoef = "CV";
+   Cv_in = 0.9999;
+   PsExhName = "Ambient.Ps"; 
+} 
+
+
+Element FlowEnd Core_NozzEnd {  } 
+
+
+Element Bleed BypBld { 
+   BleedOutPort Lkg; 
+   Lkg.fracW = 0.0000;
+   Fl_O.MN = 0.45;
+} 
+
+
+Element Duct Duct5 { 
+   dPqP_dmd = 0.0075;
+   Fl_O.MN = 0.45;
+} 
+
+
+Element Nozzle Byp_Nozz { 
+   switchType = "CONIC";
+   switchCoef = "CV";
+   Cv_in = 0.9975;
+   PsExhName = "Ambient.Ps"; 
+} 
+
+
+Element FlowEnd Byp_NozzEnd {  } 
+
+
+Element Shaft HP_Shaft { 
+   ShaftInputPort HPC, HPT;
+   Nmech = 8000.; 
+   HPX = 0.0;
+} 
+
+
+Element Shaft LP_Shaft { 
+   ShaftInputPort FAN, LPC, LPT;
+   Nmech = 3750.;
+   fracLoss = 0.00;
+} 
+
+
+Element FlowEnd OverBrd1 {  } 
+
+Element FlowEnd OverBrd2 {  } 
+
+
+Element EngPerf PERF { 
+   real hub_tip, FanDiameter;
+   real PowerCode, coreSize, Q, VTAS;
+   real TSFC, OPR, WfuelHour;
+
+   hub_tip = 0.4000;
+
+   void postexecute() { 
+      FanDiameter = 2.*sqrt( Fan.Fl_I.Aphy/(PI*(1.-hub_tip**2.)) );
+
+      VTAS = Start.Fl_O.Vflow;
+      Q = (C_FT2toIN2)*(0.5)*(Start.Fl_O.gams)*(Start.Fl_O.Ps)*Ambient.MN**2;
+      coreSize = HPC.Fl_O.Wc * HPC.Fl_I.W / HPC.Fl_O.W;
+      
+      WfuelHour = Burner.Wfuel * 3600.;
+      TSFC = WfuelHour / Fn;
+      OPR = HPC.Fl_O.Pt / Start.Fl_O.Pt;
+   } 
+
+} 
+
+
+
+//------------------------------------------------------------------------
+//                           Component Linkages
+//------------------------------------------------------------------------
+linkPorts( "Start.Fl_O"      , "Inlet.Fl_I"       , "FS_1"  ) ;
+linkPorts( "Inlet.Fl_O"      , "Fan.Fl_I"         , "FS_2"  ) ;
+linkPorts( "Fan.Fl_O"        , "Splitter.Fl_I"    , "FS_21" ) ;
+linkPorts( "Splitter.Fl_O1"  , "Duct1.Fl_I"       , "FS_22" ) ;
+linkPorts( "Duct1.Fl_O"      , "LPC.Fl_I"         , "FS_23" ) ;
+linkPorts( "LPC.Fl_O"        , "Duct2.Fl_I"       , "FS_24" ) ;
+linkPorts( "Duct2.Fl_O"      , "HPC.Fl_I"         , "FS_25" ) ;
+linkPorts( "HPC.Fl_O"        , "Bld3.Fl_I"        , "FS_3"  ) ;
+linkPorts( "Bld3.Fl_O"       , "Burner.Fl_I"      , "FS_36" ) ;  
+linkPorts( "FUEL36.Fu_O"     , "Burner.Fu_I"      , "FuelIn") ;
+linkPorts( "Burner.Fl_O"     , "HPT.Fl_I"         , "FS_4"  ) ;
+linkPorts( "HPT.Fl_O"        , "Duct3.Fl_I"       , "FS_45" ) ;
+linkPorts( "Duct3.Fl_O"      , "LPT.Fl_I"         , "FS_48" ) ;
+linkPorts( "LPT.Fl_O"        , "Duct4.Fl_I"       , "FS_5"  ) ;
+linkPorts( "Duct4.Fl_O"      , "Core_Nozz.Fl_I"   , "FS_7"  ) ;
+linkPorts( "Core_Nozz.Fl_O"  , "Core_NozzEnd.Fl_I", "FS_9"  ) ;
+
+linkPorts( "Splitter.Fl_O2"  , "BypBld.Fl_I"      , "FS_13" ) ;
+linkPorts( "BypBld.Fl_O"     , "Duct5.Fl_I"       , "FS_15" ) ;
+linkPorts( "Duct5.Fl_O"      , "Byp_Nozz.Fl_I"    , "FS_17" ) ;
+linkPorts( "Byp_Nozz.Fl_O"   , "Byp_NozzEnd.Fl_I" , "FS_19" ) ;
+
+//------------------------------------------------------------------------
+//                           Bleed Connections
+//------------------------------------------------------------------------
+linkPorts( "Bld3.Cool1"      , "HPT.Non_ChargeableBld",  "C_HPTinlt" );
+linkPorts( "Bld3.Cool2"      , "HPT.ChargeableBld"    ,  "C_HPTexit" );
+linkPorts( "HPC.Cool1"       , "LPT.Non_ChargeableBld",  "C_LPTinlt" );
+linkPorts( "HPC.Cool2"       , "LPT.ChargeableBld"    ,  "C_LPTexit" );
+
+linkPorts( "HPC.CustBld"     , "OverBrd2.Fl_I"        ,  "CstmrBld"  ) ;
+linkPorts( "BypBld.Lkg"      , "OverBrd1.Fl_I"        ,  "Duct5Lk"   ) ;
+
+//------------------------------------------------------------------------
+//                           Shaft Connections
+//------------------------------------------------------------------------
+linkPorts( "HPC.Sh_O"  , "HP_Shaft.HPC" ,  "HPCworkin"   ) ;
+linkPorts( "HPT.Sh_O"  , "HP_Shaft.HPT" ,  "HPTworkout"  ) ;
+linkPorts( "Fan.Sh_O"  , "LP_Shaft.FAN" ,  "FANworkin"   ) ;
+linkPorts( "LPC.Sh_O"  , "LP_Shaft.LPC" ,  "LPCworkin"   ) ;
+linkPorts( "LPT.Sh_O"  , "LP_Shaft.LPT" ,  "LPTworkout"  ) ;
+
+//------------------------------------------------------------------------
+//                           Sequence Execution
+//------------------------------------------------------------------------
+//solverSequence = { "Ambient", "Start" "Inlet", "Fan", "Splitter", "Duct1",
+//   "LPC", "Duct2", "HPC", "Bld3", "FUEL36", "Burner", "HPT", "Duct3",
+//   "LPT", "Duct4", "Core_Nozz", "Core_NozzEnd", "HP_Shaft", "BypBld", 
+//   "Duct5", "Byp_Nozz", "Byp_NozzEnd", "LP_Shaft", "PERF" } ;
+

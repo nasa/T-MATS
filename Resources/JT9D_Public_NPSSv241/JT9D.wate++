@@ -1,0 +1,559 @@
+//
+//------------------------------------------------------------------------
+//                                                                       |
+//   File Name:     JT9D.wate++                                          |
+//   Date(s):       March 31, 2011                                       |
+//   Author:        Scott M. Jones                                       |
+//                                                                       |
+//   Description:   This file consists of the inputs for the engine      |
+//                  aeromechanical design and flowpath code, WATE++      |
+//                                                                       |
+//------------------------------------------------------------------------
+
+
+//------------------------------------------------------------------------
+//              these files modify how the output is presented
+//------------------------------------------------------------------------
+#include <Viewers/WATE_CustomFrameBlock.view_WATE>
+#include <Viewers/WATE_CompressorBlock.view_WATE>
+#include <Viewers/WATE_TurbineBlock.view_WATE>
+#include <Viewers/WATE_DuctBlock.view_WATE>
+#include <Viewers/WATE_BurnerBlock.view_WATE>
+#include <Viewers/WATE_NozzleBlock.view_WATE>
+#include <Viewers/WATE_ShaftBlock.view_WATE>
+#include <Viewers/WATE_InletBlock.view_WATE>
+
+
+WATEassembly WATEa {
+
+//------------------------------------------------------------------------
+//                  WATE controls and solver terms 
+//------------------------------------------------------------------------
+
+
+
+//------------------------------------------------------------------------
+//                     WATE++ engine components
+//------------------------------------------------------------------------
+
+//=================================================
+//                       FAN
+//=================================================
+WATEhiBypassFan WATE_Fan {
+   componentRef = "Fan";
+   MNin = 0.515;
+   MNout = 0.45;
+   hubTipRatioIn = 0.40;
+   geometryType = "ConstMeanRadius";
+   radiusChangeStg = 1;
+
+   stg1MaxPR = 1.7;
+   maxSpdRatio_in = 1.000;
+   s_Nmech = 1.0945;   // match 3750 RPM
+
+   numBlades_in = 46;
+   bladeMaterial.type = "Ti_17";
+   bladeTaperRatio = 0.60;
+// bladeVolumeFactor = 0.024;
+   stg1BladeAR = 4.6;
+   lastStgBladeAR = 4.6;
+
+   numStatorBlades_in = 108;
+   statorMaterial.type = "aluminum";
+   statorVolumeFactor = 0.10;
+   stg1StatorAR = 4.00;
+   lastStgStatorAR = 4.00;
+
+   caseMaterial.type = "_4340_Steel";
+
+   numContainedStages = 1;
+// real containmentMaterial.rho(real) { return 0.050; }
+
+
+   RSlenRatioPreSplit = 0.25;
+   RSlenRatioPostSplit = 1.80;
+   RSlenRatioBypass = 1.25;
+
+   Table TB_PRvsTipSpd(real pratio) {
+      pratio = {   1., 1.18, 1.36, 1.43, 1.503, 1.581, 1.667, 1.775, 1.9 }
+      utip   = { 600., 885.,1100.,1200., 1300., 1400., 1500., 1600.,1700. }
+   }
+   WATEdiskMTC S_Disk {
+      shape1 = "RING";
+      shape2 = "RING";
+      material.type = "Ti_17";
+      shaftRef = "WATE_LP_Shaft";
+   }
+   WATEframeCustom S_RearFrame {
+      isFrontFrame = FALSE;
+      material.type = "Ti_6Al_4v";
+      supportMaterial.type = "Ti_6Al_4v";
+    //real material.rho(real) { return 0.1; }
+    //real supportMaterial.rho(real) { return 0.1; }
+      volumeFactor = 0.05;
+      aspectRatio_in = 2.50;
+      supportThickness = 0.1;
+      gapFrameLengthRatio = 1;
+      numBlades_in = 9;
+      passThruComp = "WATE_Duct2";
+      connectPoint = "REAR";
+      rearBearingRef = "WATE_LP_Shaft.bearing1";
+
+      WATEtowerShaft S_TowerShaft {
+         HPX = 200;
+      }
+   }
+}
+
+
+//=================================================
+//                     SPLITTER
+//=================================================
+WATEsplitter WATE_Splitter {
+   componentRef = "Splitter";
+}
+
+
+//=================================================
+//                      DUCT1
+//=================================================
+WATEductBase WATE_Duct1 {
+   componentRef = "Duct1";
+   MNin_in = 0.45;
+   lengthHeightRatio = 0.5;
+   material.type = "_4340_Steel";
+}
+
+
+//=================================================
+//                       LPC
+//=================================================
+WATEaxialLPC WATE_LPC {
+   componentRef = "LPC";
+   rpmCompRef = "WATE_Fan";
+
+   numStages_in = 3;
+   MNin = 0.45;
+   MNout = 0.4;
+   hubTipRatioIn = 0.850;
+   geometryType = "ConstTipRadius";
+   radiusChangeStg = 1;
+   outletInletRR = 0.75;
+
+   stg1MaxPR = 1.4;
+   maxSpdRatio_in = 1;
+
+   igvType = "FIXED";
+   igvMaterial.type = "Ti_17";
+   igvSolidity = 1.50;
+   igvAR_in = 1.5;
+
+// numBlades_in = 120;
+   bladeMaterial.type = "Ti_17";
+   bladeSolidity = 1.350;
+   stg1BladeAR = 2.25;
+   lastStgBladeAR = 1.75;
+
+   statorMaterial.type = "Ti_17";
+   statorSolidity = 1.350;
+   stg1StatorRotorLR = 1.0;
+   lastStgStatorRotorLR = 1.0;
+
+   caseMaterial.type = "Ti_17";
+
+
+   WATEdiskMTC S_Disk {
+      shape1 = "RING";
+      material.type = "Ti_17";
+      shaftRef = "WATE_LP_Shaft";
+   }
+}
+
+
+//=================================================
+//                     DUCT2
+//=================================================
+WATEductBase WATE_Duct2 {
+   componentRef = "Duct2";
+   MNin_in = 0.3;
+   lengthHeightRatio = 2.0;
+   radiusSettingPort = "WATE_LPC.outPort";
+   material.type = "Ti_17";
+
+   WATEframeCustom S_Frame {
+      aspectRatio_in = 0.80;
+      material.type ="Ti_6Al_4v";
+      supportMaterial.type ="Ti_6Al_4v";
+      volumeFactor = 0.05;
+      supportThickness = 0.1;
+      gapFrameLengthRatio = 0.35;
+      numBlades_in = 20;
+      passThruComp = "WATE_Fan";
+      connectPoint = "REAR";
+      frontBearingRef = "WATE_LP_Shaft.bearing2";
+      rearBearingRef = "WATE_HP_Shaft.bearing3";
+   }
+}
+
+
+//=================================================
+//                       HPC
+//=================================================
+WATEaxialHPC WATE_HPC {
+   componentRef = "HPC";
+
+   numStages_in = 11;
+   MNin = 0.4;
+   MNout = 0.2;
+   hubTipRatioIn = 0.735;
+   geometryType = "ConstHubRadius";
+   radiusChangeStg = 1;
+   outletInletRR = 0.9;
+
+   stg1MaxPR = 1.6;
+   maxSpdRatio_in = 1;
+   s_Nmech = 0.9919;
+
+   igvType = "VARIABLE";
+   igvMaterial.type = "Ti_17";
+   numVariableStages = 3;
+
+   bladeMaterial.type = "Ti_17";
+   bladeMaterial2.type = "Inconel_718";
+   bladeMaterial2StartStg = 10;
+   bladeSolidity = 1.60;
+// bladeVolumeFactor = 0.143;
+   stg1BladeAR = 2.0;
+   lastStgBladeAR = 1.75;
+
+   statorMaterial.type = "_4340_Steel";
+   statorMaterial2.type = "Inconel_718";
+   statorMaterial2StartStg = 7;
+   statorSolidity = 1.60;
+// statorVolumeFactor = 0.44;
+   stg1StatorRotorLR = 0.500;
+   lastStgStatorRotorLR = 1.00;
+
+   caseMaterial.type ="Udimet_500";
+   outerCaseMaterial.type = "Ti_17";
+
+   Table TB_PRvsTipSpd(real pratio) {
+      pratio = {   1., 1.18, 1.36, 1.43, 1.503, 1.581, 1.667, 1.775, 1.9 }
+      utip   = { 600., 885.,1100.,1200., 1300., 1400., 1500., 1600.,1700. }
+   }
+   WATEdiskMTC S_Disk {
+      shape1 = "RING";
+      material.type = "Ti_17";
+      material2.type = "Inconel_718";
+      material2StartStg = 10;
+      shaftRef = "WATE_HP_Shaft";
+   }
+}
+
+
+//=================================================
+//                      BLD3
+//=================================================
+WATEductBase WATE_Bld3 {
+   componentRef = "Bld3";
+   MNin_in = 0.27;
+   lengthHeightRatio = 2.5;
+   material.type = "Udimet_700";
+}
+
+
+//=================================================
+//                     BURNER
+//=================================================
+WATEprimaryBurner WATE_Burner {
+   componentRef = "Burner";
+   domeType = "SINGLE";
+   Vflow = 80;
+   residenceTime = 0.020;
+   diamSettingComp = "WATE_HPC";
+   linerMaterial.type ="TD_Nickel_bar";
+   caseMaterial.type ="TD_Nickel_bar";
+
+   WATEframeIntermediate S_Frame {
+      isFrontFrame = TRUE;
+   }
+}
+
+
+//=================================================
+//                       HPT
+//=================================================
+WATEaxialHPT WATE_HPT {
+   componentRef = "HPT";
+   NmechSettingComp = "WATE_HPC";
+   radiusSettingLoc = "Inlet";
+   hasActiveCaseCooling = 1;
+   hasInterStgSealDisk = 1;
+   isFrameInFlow = 0;
+
+   numStages_in = 2;
+   MNin = 0.10;
+   MNout = 0.27;
+   GEloadingParam_in = 0.70;
+   geometryType = "ConstMeanRadius";
+
+   statorMaterial.type = "Rene_108";
+   statorSolidity = 1.50;
+   statorVolumeFactor = 0.40;
+   stg1StatorRotorLR = 1.00;
+   lastStgStatorRotorLR = 1.00;
+
+   bladeMaterial.type = "Rene_108";
+   bladeSolidity = 1.50;
+   bladeVolumeFactor = 0.40;
+   stg1BladeAR = 2.5;
+   lastStgBladeAR = 2.5;
+
+   caseMaterial.type ="V_57";
+
+   WATEdiskMTC S_Disk {
+      shape1 = "HYPERBOLIC";
+      material.type = "Supersolvus";
+      shaftRef = "WATE_HP_Shaft";
+   }
+   WATEframeTurbineExit S_RearFrame {
+   }
+}
+
+
+//=================================================
+//                     DUCT3
+//=================================================
+WATEductBase WATE_Duct3 {
+   componentRef = "Duct3";
+   MNin_in = 0.27;
+   lengthHeightRatio = 0.5;
+   material.type = "Udimet_700";
+}
+
+
+//=================================================
+//                       LPT
+//=================================================
+WATEaxialLPT WATE_LPT {
+   componentRef = "LPT";
+   NmechSettingComp = "WATE_LPC";
+   radiusSettingLoc = "Inlet";
+   hasRotorShroud = 1;
+   hasSpacerBar = 1;
+
+   numStages_in = 4;
+   MNin = 0.27;
+   MNout = 0.33;
+   GEloadingParam_in = 1.50;
+   geometryType = "ConstHubRadius";
+
+   statorMaterial.type = "Rene_95";
+   statorSolidity = 1.50;
+// statorVolumeFactor = 0.15;
+   stg1StatorRotorLR = 1.50;
+   lastStgStatorRotorLR = 1.000;
+
+   bladeMaterial.type = "Rene_95";
+   bladeSolidity = 1.00;
+// bladeVolumeFactor = 0.19;
+   stg1BladeAR = 4.00;
+   lastStgBladeAR = 5.00;
+
+   caseMaterial.type ="V_57";
+
+   WATEdiskMTC S_Disk {
+      shape1 = "WEB";
+      material.type = "Supersolvus";
+      shaftRef = "WATE_LP_Shaft";
+   }
+   WATEframeCustom S_RearFrame{
+      material.type ="Inconel_718";
+      supportMaterial.type ="Inconel_718";
+      volumeFactor = 0.05;
+      aspectRatio_in = 1.45;
+      supportThickness = 0.1;
+      gapFrameLengthRatio = 0.2;
+      numBlades_in = 20;
+      connectPoint = "FRONT";
+      frontBearingRef = "WATE_LP_Shaft.bearing5";
+      rearBearingRef = "WATE_LP_Shaft.bearing5";
+   }
+}
+
+
+//=================================================
+//                     DUCT4
+//=================================================
+WATEductBase WATE_Duct4 {
+   componentRef = "Duct4";
+   MNin_in = 0.25;
+   lengthHeightRatio = 0.25;
+   radiusSettingPort = "WATE_LPT.outPort";
+   material.type = "Udimet_700";
+}
+
+
+//=================================================
+//                   CORE NOZZLE
+//=================================================
+WATEaxisymConvNozzle WATE_Core_Nozz {
+   componentRef = "Core_Nozz";
+   diamSettingComp = "WATE_Duct4";
+   diamSettingLoc = "Outlet";
+   material.type = "_4340_Steel";
+   caseMaterial.type = "_4340_Steel";
+// outPort.outerRadius = 14;
+   LDratio = 0.75;
+// exitArea_in = 1038;
+
+   WATEnozzlePlug S_Plug {
+      material.type ="_4340_Steel";
+      lengthRatio = 0.6;
+      thickness = 0.06;
+   }
+}
+
+
+//=================================================
+//                     DUCT5
+//=================================================
+WATEductBase WATE_Duct5 {
+   componentRef = "Duct5";
+   MNin_in = 0.48;
+   lengthHeightRatio = 2.500;
+   radiusSettingPort = "WATE_Splitter.outPortSecondary";
+   material.type = "aluminum";
+   //real material.rho(real) { return 0.1; }
+}
+
+
+//=================================================
+//                  BYPASS NOZZLE
+//=================================================
+WATEfanAxiConvNozzle WATE_Byp_Nozz {
+   componentRef = "Byp_Nozz";
+   bypassNozzleType = "ConstHub";
+   diamSettingLoc = "Outlet";
+   outPort.outerRadius = 47.5;
+   LDratio = 0.50;
+   throatLocationFrac = 1;
+   material.type = "aluminum";
+   real material.sy(real) { return 32000.; }
+   caseMaterial.type = "aluminum";
+
+   WATEprimaryThrustReverser S_ThrustReverser { 
+   } 
+   WATEvarNozzleGeometry S_VariableGeometry { 
+   }
+}
+
+
+//=================================================
+//                    LP SHAFT
+//=================================================
+WATElpShaft WATE_LP_Shaft {
+   componentRef = "LP_Shaft";
+   inertiaComps = { "WATE_Fan", "WATE_LPC", "WATE_LPT" };
+   limitStress = 50000;
+   diamRatio = 0.833;
+   material.type = "_4340_Steel";
+
+   WATErollerBearingSimple bearing1 { }
+   WATEballBearingSimple bearing2 { }
+   WATErollerBearingSimple bearing5 { }
+}
+
+
+//=================================================
+//                    HP SHAFT
+//=================================================
+WATEhpShaft WATE_HP_Shaft {
+   componentRef = "HP_Shaft";
+   isOuterShaft = 1;
+   innerShaftRef = "WATE_LP_Shaft";
+   inertiaComps = { "WATE_HPC", "WATE_HPT" };
+   limitStress = 50000;
+   diamRatio = 0.833;
+   material.type ="V_57";
+
+   WATEballBearingSimple bearing3 { }
+   WATErollerBearingSimple bearing4 { }
+}
+
+
+//=================================================
+//                     INLET
+//=================================================
+WATEinletMDAlowDrag WATE_Inlet {
+   componentRef = "Inlet";
+   aftEngMntPortRef = "WATE_LPT.outPort";
+   calcStructWt = 1;
+   bypassDoorType = "NONE";
+   calcFirewallWt = 1;
+   MNin = 0.85;
+   LDratio = 0.5;
+   real nacelleMaterial.rho(real) { return 0.06; }
+   acousticMaterial.type ="acousticComposite";
+   firewallMaterial.type ="fireWallDefault";
+   fanFaceToMaxNacelleArea = 20;
+   nacelleDeltaRadius =  8.0;
+   acousticLinerThickness = 0.10;
+}
+
+
+//=================================================
+//                  ENGINE MOUNT
+//=================================================
+WATEengineMount S_EngineMount {
+   mountFactor = 1;
+   ultLoadFactor = 2;
+}
+
+
+//=================================================
+//                   ACCESSORIES
+//=================================================
+WATEaccessories S_Accessories {
+   s_Wt = 0.100;
+}
+
+
+//=================================================
+//             COMPONENT PORT LINKAGES
+//=================================================
+linkPorts( "WATE_Inlet.outPort",     "WATE_Fan.inPort",        "W_FS_2"  );
+linkPorts( "WATE_Fan.outPort",       "WATE_Splitter.inPort",   "W_FS_21" );
+linkPorts( "WATE_Splitter.outPortPrimary","WATE_Duct1.inPort", "W_FS_22" );
+linkPorts( "WATE_Splitter.outPortSecondary","WATE_Duct5.inPort","W_FS_13");
+linkPorts( "WATE_Duct1.outPort",     "WATE_LPC.inPort",        "W_FS_23" );
+linkPorts( "WATE_LPC.outPort",       "WATE_Duct2.inPort",      "W_FS_24" );
+linkPorts( "WATE_Duct2.outPort",     "WATE_HPC.inPort",        "W_FS_25" );
+linkPorts( "WATE_HPC.outPort",       "WATE_Bld3.inPort",       "W_FS_3"  );
+linkPorts( "WATE_Bld3.outPort",      "WATE_Burner.inPort",     "W_FS_36" );
+linkPorts( "WATE_Burner.outPort",    "WATE_HPT.inPort",        "W_FS_4"  );
+linkPorts( "WATE_HPT.outPort",       "WATE_Duct3.inPort",      "W_FS_45" );
+linkPorts( "WATE_Duct3.outPort",     "WATE_LPT.inPort",        "W_FS_48" );
+linkPorts( "WATE_LPT.outPort",       "WATE_Duct4.inPort",      "W_FS_5"  );
+linkPorts( "WATE_Duct4.outPort",     "WATE_Core_Nozz.inPort",  "W_FS_7"  );
+linkPorts( "WATE_Duct5.outPort",     "WATE_Byp_Nozz.inPort",   "W_FS_17" );
+
+
+//=================================================
+//            GRAPHICAL AND TEXT OUTPUT
+//=================================================
+WATEsvgViewer svg {
+   filename = "JT9Dengine.html";
+   imageHeight = 500;
+   imageWidth = 900;
+}
+
+}  // end of WATEa
+
+solverSequence.remove("WATEa");
+
+WATEa { 
+   #include <Viewers/npss.view_wate>
+} 
+
+

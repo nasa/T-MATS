@@ -1,0 +1,77 @@
+
+OutFileStream wateppStream {
+  filename = "Output/JT9D_WATE.output"; 
+}
+
+PageViewer wateppPV {
+
+  UserTextBlock Header {
+    void update() {
+      filledBlock = { };
+
+      filledBlock.append("******************************************************************************************************************");
+      filledBlock.append("                    "+MODELNAME+" AEROMECHANICAL DESIGN DATA");
+      filledBlock.append("                                run by: "+USER);
+      filledBlock.append("******************************************************************************************************************");
+     }
+  }
+ 
+  DObjGroupBlock wateBlock { 
+     useSolvSeqOrder = 1;
+     
+     mappings = { 
+        "WATEductBase",        "WATEductBlock_SMJ", 
+        "WATEburnerBase",      "WATEburnerBlock_SMJ", 
+        "WATEaxialCompressor", "WATEaxialCompressorBlock_SMJ",
+        "WATEaxialTurbine",    "WATEaxialTurbineBlock_SMJ",
+        "WATEinletBase",       "WATEinletBaseBlock_SMJ",  
+        "WATEnozzleBase",      "WATEnozzleBaseBlock_SMJ",  
+        "WATEshaftBase",       "WATEshaftBlock_SMJ",  
+        "WATEmixerBase",       "WATElegacyMixerBaseBlock"  
+     };                
+  }
+  
+  DColTBlock colSummaryBlock {
+       titleBody = "ENGINE COMPONENT WEIGHT LISTING
+___________________________________________";
+       compType = "WATEelement";
+       excludeCompTypes = { "WATEaccessories", "WATEengineMount", "drawtest" }
+       compTypeFormat = "???????????????????????";
+       compAttr = { "weight:?????.?=weight", "length:?????.??=length" }
+       showColHeader = TRUE;
+  }
+  
+  SimpleBlock engSummaryBlock { 
+     body = "===================================================================
+                 PROPULSION SYSTEM WEIGHT SUMMARY
+===================================================================
+bare engine weight   ?????.? lbs      engine length      ????.? in.
+accessories weight   ?????.? lbs      inlet length       ????.? in.
+engine mount weight  ?????.? lbs      engine pod length  ????.? in.
+total engine weight  ?????.? lbs      engine pod C.G.    ????.? in.
+
+inlet & nacelle weight ?????.? lbs   engine max diameter  ???.? in.
+engine pod weight      ?????.? lbs   nacelle max diameter ???.? in.
+
+";
+
+     vars = { 
+       "weight - WATE_Inlet.weight - S_EngineMount.weight",          "length",
+       "(S_Accessories.isEmpty()) ? 0.0 : S_Accessories.weight",     "WATE_Inlet.length",
+       "(S_EngineMount.isEmpty()) ? 0.0 : S_EngineMount.weight",     "length + WATE_Inlet.length",
+       "weight + S_Accessories.weight - WATE_Inlet.weight",          "cg",
+       "WATE_Inlet.weight",                                          "WATE_Fan.stg1TipRadius*24.0",
+       "weight + S_Accessories.weight",                              "WATE_Inlet.maxrad*2.0" }
+  }
+  
+  
+  anchor = "Header";
+  Header.bottom = "wateBlock";
+  wateBlock.bottom = "colSummaryBlock";
+  colSummaryBlock.bottom = "engSummaryBlock";
+  
+  outStreamHandle = "wateppStream";
+  
+  pageWidth = 0;
+  pageHeight = 0;
+}

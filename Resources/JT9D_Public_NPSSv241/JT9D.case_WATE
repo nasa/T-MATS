@@ -1,0 +1,87 @@
+//
+//------------------------------------------------------------------------
+//                                                                       |
+//   File Name:     JT9D.case_WATE                                       |
+//   Date(s):       March 31, 2011                                       |
+//   Author:        Scott M. Jones                                       |
+//                                                                       |
+//   Description:   This file runs the engine at several flight          |
+//                  conditions, saving the maximum conditions, and       |
+//                  then executes the weight and flowpath analysis       |
+//                                                                       |
+//------------------------------------------------------------------------
+
+
+//------------------------------------------------------------------------
+//                    Run Climb Envelope for WATE      
+//------------------------------------------------------------------------
+cout << "------------------------------------\n"; 
+cout << "  RUNNING CASES FOR WATE ANALYSIS   \n"; 
+cout << "------------------------------------\n"; 
+
+WATEa.setOption( "executionState", "COLLECT" ); 
+CASE = 800; 
+
+Ambient.dTs_in = 27.0;
+
+cout << "MN = 0.00 \n"; 
+Ambient.MN_in = 0.00; Ambient.alt_in =     0.; RunMaxPower(); page.display(); ++CASE; 
+WATEa.saveMechDesignData();
+
+cout << "MN = 0.20 \n"; 
+Ambient.MN_in = 0.20; Ambient.alt_in =   689.; RunMaxPower(); page.display(); ++CASE; 
+WATEa.updateMaxValues();
+
+cout << "MN = 0.25 \n"; 
+Ambient.MN_in = 0.25; Ambient.alt_in =     0.; RunMaxPower(); page.display(); ++CASE; 
+WATEa.updateMaxValues();
+
+cout << "MN = 0.40 \n"; 
+Ambient.MN_in = 0.40; Ambient.alt_in =  5000.; RunMaxPower(); page.display(); ++CASE; 
+WATEa.updateMaxValues();
+
+Ambient.dTs_in = 0; 
+
+cout << "MN = 0.60 \n"; 
+Ambient.MN_in = 0.60; Ambient.alt_in = 20000.; RunMaxPower(); page.display(); ++CASE; 
+WATEa.updateMaxValues();
+
+Ambient.dTs_in = 18; 
+
+cout << "MN = 0.78 \n"; 
+Ambient.MN_in = 0.78; Ambient.alt_in = 35000.; RunMaxPower(); page.display(); ++CASE; 
+WATEa.updateMaxValues();
+
+Ambient.dTs_in = 0; 
+
+cout << "MN = 0.80 \n"; 
+Ambient.MN_in = 0.80; Ambient.alt_in = 34000.; RunMaxPower(); page.display(); ++CASE; 
+WATEa.updateMaxValues();
+
+cout << "MN = 0.85 \n"; 
+Ambient.MN_in = 0.85; Ambient.alt_in = 35000.; RunMaxPower(); page.display(); ++CASE; 
+WATEa.updateMaxValues();
+
+
+// run the WATE++ calculations
+WATEa.setOption( "executionState", "CALCULATE" );
+WATEa.autoSolverSetup();
+WATEa.run();
+WATEa.wateppPV.display();
+WATEa.svg.display();
+
+
+
+cout << "------------------------------------\n"; 
+cout << "   WATE IS DONE, RUN MODEL TO SLS   \n"; 
+cout << "------------------------------------\n"; 
+
+Ambient.MN_in = 0.80; Ambient.alt_in = 30000.; RunMaxPower(); 
+Ambient.MN_in = 0.60; Ambient.alt_in = 20000.; RunMaxPower(); 
+Ambient.MN_in = 0.40; Ambient.alt_in = 10000.; RunMaxPower(); 
+Ambient.dTs_in = 27.0; 
+Ambient.MN_in = 0.40; Ambient.alt_in = 10000.; RunMaxPower(); 
+Ambient.MN_in = 0.20; Ambient.alt_in =  5000.; RunMaxPower(); 
+Ambient.MN_in = 0.00; Ambient.alt_in =     0.; RunMaxPower(); page.display(); 
+
+

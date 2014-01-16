@@ -1,0 +1,49 @@
+<font size="6" color="Magenta">T-MATS: Mixer Library Block</font>
+<br>
+This block simulates the performance of a flow mixer using basic 
+thermodynamic equations, properties, and table lookups.
+<br>
+<br>
+<font size="5" color="Blue">Mixer Inputs:</font>
+<table border="1"> <tr><td>Mixer Input</td><td>Description</td></tr>
+    <tr><td>GasPthChar1</td><td>Gas Path Characteristics Input 1, 5x1 vector consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FARc - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>GasPthChar2</td><td>Gas Path Characteristics Input 2, 5x1 vector consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FARc - Combusted Fuel to Air Ratio [frac]</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Mixer Outputs:</font>
+<table border="1"><tr><td>Mixer Output</td><td>Description</td></tr>
+    <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 vector consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FARc - Combusted Fuel to Air Ratio [frac]</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Mixer Mask Variables: </font>
+<table border="1"> <tr><td>Mixer Mask Variablet</td><td>Description</td></tr>
+    <tr><td>Aphy1_M</td><td>Area of input 1 (in^2)</td></tr>
+    <tr><td>Aphy2_M</td><td>Area of input 2 (in^2)</td></tr>
+    <tr><td>s_M_Imp1_M</td><td>Impulse 1 scalar</td></tr>
+    <tr><td>s_M_Imp2_M</td><td>Impulse 2 scalar</td></tr>
+    <tr><td>s_M_V1_M</td><td>Velocity 1 scalar</td></tr>
+    <tr><td>s_M_V2_M</td><td>Velocity 2 scalar</td></tr>
+    <tr><td>Y_M_FARVec_M</td><td>Fuel to Air Ratio Vector (Y-axis)(nx1)</td></tr>
+    <tr><td>T_M_RtArray_M</td><td>Rt Array (Rt = f(FAR))(nx1)</td></tr>
+</table>
+<br>
+Notes: Vectors are the x and/or y axis to a table made of an array.
+Scalars are used to "scale" the mixer equations.<br> 
+
+
+

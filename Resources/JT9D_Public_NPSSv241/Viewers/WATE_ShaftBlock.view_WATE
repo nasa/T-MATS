@@ -1,0 +1,55 @@
+
+//#ifndef _WATELEGACYSHAFTBLOCK_INT
+//#define _WATELEGACYSHAFTBLOCK_INT
+
+class WATEshaftBlock_SMJ extends UserTextBlock { 
+
+  /**
+   *
+   ****************************************************************/
+   void update() {
+      filledBlock = { };
+      filledBlock.append("====================================================");
+      filledBlock.append(scopingObj->isA()+"     "+scopingObj->getPathName());
+      filledBlock.append("====================================================");
+      filledBlock.append("");
+      filledBlock.append("SHAFT INFORMATION");
+      filledBlock.append("_____________________________________________________________________________________________________________");
+      filledBlock.append("    material   max torque   outer diam.   inner diam.    length        DN      bearing weight   spool inertia");
+
+      filledBlock.append( toStr(scopingObj->material.type,"s12") + "     "
+         + toStr( scopingObj->maxTorque,"f8.2") + "      "
+         + toStr( scopingObj->outerDiameter,"f8.2") + "      "
+         + toStr( scopingObj->innerDiameter,"f8.2") + "   "
+         + toStr( scopingObj->length,"f7.2") + "  "
+         + toStr( scopingObj->outerDiameter*scopingObj->speed*25.4/1000000.,"f8.2") + "             "
+         + toStr( scopingObj->weight-scopingObj->bearWt,"f7.2") + "      "
+         + toStr( scopingObj->inertia,"f10.0"));
+      filledBlock.append("");
+
+      filledBlock.append("BEARING INFORMATION");
+      filledBlock.append("    name       type       material   location   diameter    weight");
+      int i;
+      string tmpStr;
+      for (i=0; i<scopingObj->bearings.entries(); ++i) {
+         tmpStr = "custom";
+         if ( scopingObj->bearings[i]->isA() == "WATEballBearingSimple") { tmpStr = "  ball"; }
+         if ( scopingObj->bearings[i]->isA() == "WATErollerBearingSimple") { tmpStr = "roller"; }
+         filledBlock.append(toStr(scopingObj->bearings[i]->getName(),"s10") + "   "
+            + tmpStr + "   "
+            + toStr(scopingObj->bearings[i]->material.type,"s12") + "    "
+            + toStr(scopingObj->bearings[i]->axialPosition,"f7.2") + "    "
+            + toStr(scopingObj->bearings[i]->diameter,"f7.2") + "   "
+            + toStr(scopingObj->bearings[i]->weight,"f7.2"));
+      }
+      filledBlock.append("");
+      filledBlock.append("    total weight = " + toStr( scopingObj->weight,"f7.2") + " lbs.");
+
+      filledBlock.append("");
+      filledBlock.append("");
+      filledBlock.append("");
+   }
+}
+
+//#endif
+

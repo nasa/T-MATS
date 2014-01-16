@@ -1,0 +1,224 @@
+
+// #ifndef _WATEAXIALCOMPRESSORBLOCK_INT
+// #define _WATEAXIALCOMPRESSORBLOCK_INT
+
+/**
+ *
+ ****************************************************************/
+class WATEaxialCompressorBlock_SMJ extends UserTextBlock {
+
+   int setupComplete = 0;
+   scopingObj.trigger = 1;
+
+   WATEframeCustomBlock_SMJ frameBlock;
+
+   /**
+   *
+   ****************************************************************/
+   void variableChanged(string nm, any val) {
+      if (nm=="scopingObj") {
+         //frameBlock.scopingObj = scopingObj+".S_Frame";
+         if ( !scopingObj->S_FrontFrame.isEmpty() ) { frameBlock.scopingObj = scopingObj+".S_FrontFrame"; }
+         if ( !scopingObj->S_RearFrame.isEmpty() ) { frameBlock.scopingObj = scopingObj+".S_RearFrame"; }
+      } 
+   }
+
+  /**
+   *
+   ****************************************************************/
+   void updateStageInfo() {
+      int ns = scopingObj->numStages;
+      int stage;
+
+      filledBlock.append("");
+      filledBlock.append("COMPRESSOR PERFORMANCE PARAMETERS");
+      filledBlock.append("__________________________________________________________________________________________________________________");
+      filledBlock.append(" # of   pressure    adiab           maximum  corrected  corrected   PR/Utip           hub/tip   maximum     total ");
+      filledBlock.append("stages    ratio      eff      RPM      RPM      RPM     tip speed    scalar  loading   ratio   diameter    inertia");
+      filledBlock.append(" "+toStr( scopingObj->numStages,"i2")+"     "
+         + toStr( scopingObj->des_PR,"f7.3")+"  "
+         + toStr( scopingObj->ef,"f7.3")+"  "
+         + toStr( scopingObj->spoolRPM,"f8.0")+" "
+         + toStr( (scopingObj->spoolRPM)*(scopingObj->maxSpdRatio),"f8.0")+" "
+         + toStr( scopingObj->Nc,"f8.0")+"      "
+         + toStr( (scopingObj->Nc)*(scopingObj->tipRadius_stg[0])*(2*PI/60./12.),"f7.1")+"   "
+         + toStr( scopingObj->s_Nmech,"f7.3")+"  "
+         + toStr( scopingObj->loadingParam,"f7.3")+" "
+         + toStr( (scopingObj->hubRadius_stg[0])/(scopingObj->tipRadius_stg[0]),"f7.3")+"    "
+         + toStr( (scopingObj->stg1TipRadius)*24.,"f7.1")+"   "
+         + toStr( scopingObj->totInertia,"f8.0"));
+
+      filledBlock.append("");
+      filledBlock.append("        pressure    delta                              blade    blade tip    stage    stg work");
+      filledBlock.append("stage     ratio       ht    Mach    Tt in   Tt max    stress      speed     inertia     factor");
+      for (stage=0; stage<ns; ++stage) {
+         filledBlock.append(" "+toStr(stage+1,"i2")+"     "
+            + toStr( scopingObj->PR_stg[stage],"f7.3")+"  "
+            + toStr( scopingObj->deltaStgEnthalpy_stg[stage],"f7.2")+"  "
+            + toStr( scopingObj->MNin_stg[stage],"f6.3")+"  "
+            + toStr( scopingObj->Tin_stg[stage],"f7.1")+ "  "
+            + toStr( scopingObj->Tstress_stg[stage],"f7.1") + "   "
+            + toStr( scopingObj->bladeStress_stg[stage],"f7.0") + "    "
+            + toStr( scopingObj->bladeTipSpd_stg[stage],"f7.1") + "   "
+            + toStr( scopingObj->inertia_stg[stage],"f9.0") + "    "
+            + toStr( scopingObj->workFactor_stg[stage],"f7.3"));
+      }
+
+
+      string tmpStr;
+      filledBlock.append("");
+      filledBlock.append("");
+      filledBlock.append("COMPRESSOR MATERIALS");
+      filledBlock.append("__________________________________________________________________________________________________________________");
+      filledBlock.append("          blade        blade      stator       stator        disk         disk       disk        case         case");
+      filledBlock.append("stage   density     material     density     material     density     material      shape     density     material");
+
+      if (scopingObj->igvType != "NONE") {
+         filledBlock.append(" IGV - "+ toStr( scopingObj->igvType,"s-12")+ "         "
+            + toStr( scopingObj->igvDensity,"f11.3")
+            + toStr( scopingObj->igvMaterial.type,"s14"));
+      }
+
+      for (stage=0; stage<ns; ++stage) {
+         tmpStr = toStr( scopingObj->S_Disk.shape_stg[stage]);
+         if ( tmpStr == "OPTIMIZED RING" || tmpStr == "RING" ) { tmpStr = "       RING"; }
+         if ( tmpStr == "OPTIMIZED WEB" || tmpStr == "WEB" )  { tmpStr = "        WEB"; }
+         if ( tmpStr == "OPTIMIZED HYPERBOLIC" || tmpStr == "HYPERBOLIC" ) { tmpStr = " HYPERBOLIC"; }
+         filledBlock.append(" "+toStr(stage+1,"i2")
+            + toStr( scopingObj->bladeDensity_stg[stage],"f11.3")
+            + toStr( scopingObj->bladeMaterial_stg[stage],"s14")
+            + toStr( scopingObj->statorDensity_stg[stage],"f11.3")
+            + toStr( scopingObj->statorMaterial_stg[stage],"s14")
+            + toStr( scopingObj->S_Disk.density_stg[stage],"f11.3")
+            + toStr( scopingObj->S_Disk.material_stg[stage],"s14") 
+            + tmpStr 
+            + toStr( scopingObj->caseDensity_stg[stage],"f11.3")
+            + toStr( scopingObj->caseMaterial.type,"s14"));
+         }
+
+
+      filledBlock.append("");
+      filledBlock.append("");
+      filledBlock.append("COMPRESSOR GEOMETRY AND AIRFOIL COUNTS");
+      filledBlock.append("_____________________________________________________________________________________________");
+      filledBlock.append("          # of      AR      # of      AR     bypass    stage  blade hub   blade tip      flow");
+      filledBlock.append("stage    blades   blade   stators   stator   length   length     radius      radius      area");
+
+      if (scopingObj->igvType != "NONE") {
+         filledBlock.append(" IGV                       " + toStr( scopingObj->numIGVblades,"i6")+"  "
+            + toStr( scopingObj->igvAR,"f7.2"));
+      } 
+
+      for (stage=0; stage<ns; ++stage) {
+         filledBlock.append(" "+toStr(stage+1,"i2") + "      " 
+            + toStr( scopingObj->numBlades_stg[stage],"i6") + " "
+            + toStr( scopingObj->AR_stg[stage],"f7.2")+ "    "
+            + toStr( scopingObj->numStatorBlades_stg[stage],"i6") + "  "
+            + toStr( scopingObj->statorAR_stg[stage],"f7.2") + "  "
+            + toStr( scopingObj->bypassLen_stg[stage],"f7.1") + "  "
+            + toStr( scopingObj->length_stg[stage],"f7.1") + "    "
+            + toStr( scopingObj->hubRadius_stg[stage],"f7.2") + "     "
+            + toStr( scopingObj->tipRadius_stg[stage],"f7.2") + "   "
+            + toStr( (scopingObj->area_stg[stage])*144.,"f7.2"));
+      }
+
+
+      filledBlock.append("");
+      filledBlock.append("");
+      filledBlock.append("COMPRESSOR WEIGHT BREAKDOWN");
+      filledBlock.append("_____________________________________________________________________________________________");
+      filledBlock.append("                                             rotor  stator supp.  nuts&   containment   stage");
+      filledBlock.append("stage    blade   stator     disk     case     drum    flange      bolts      ring       total");
+
+      if (scopingObj->igvType != "NONE") {
+         filledBlock.append(" IGV            "+toStr( scopingObj->igvWt,"f7.2") 
+            + "                                                               " 
+            +toStr( scopingObj->igvWt,"f7.2"));
+      } 
+
+      for (stage=0; stage<ns; ++stage) {
+         filledBlock.append(" "+toStr(stage+1,"i2") + "    " 
+            + toStr( scopingObj->bladeWt_stg[stage],"f7.2") + "  "
+            + toStr( scopingObj->statorWt_stg[stage],"f7.2") + "  "
+            + toStr( scopingObj->S_Disk.weight_stg[stage],"f7.2") + "  "
+            + toStr( scopingObj->caseWt_stg[stage],"f7.2") + "  "
+            + toStr( scopingObj->rotorDrumWt_stg[stage],"f7.2") + "   "
+            + toStr( scopingObj->statorSupportFlangeWt_stg[stage],"f7.2") + "    "
+            + toStr( scopingObj->nutsBoltsWt_stg[stage],"f7.2") + "     "
+            + "       " + "   "
+            + toStr( scopingObj->bladeWt_stg[stage] + scopingObj->statorWt_stg[stage] + 
+                scopingObj->S_Disk.weight_stg[stage] + scopingObj->caseWt_stg[stage] + 
+                scopingObj->rotorDrumWt_stg[stage] + scopingObj->statorSupportFlangeWt_stg[stage] +
+                scopingObj->nutsBoltsWt_stg[stage], "f7.2"));
+      }
+      filledBlock.append("        ------   ------   ------   ------   ------    ------     ------    ------            ");        
+      filledBlock.append("       "
+         + toStr( scopingObj->totBladeWt,"f7.2") + "  "
+         + toStr( scopingObj->totStatorWt,"f7.2") + "  "
+         + toStr( scopingObj->totDiskWt,"f7.2") + "  "
+         + toStr( scopingObj->totCaseWt,"f7.2") + "  "
+         + toStr( scopingObj->totRotorDrumWt,"f7.2") + "   "
+         + toStr( scopingObj->totStatorSupportFlangeWt,"f7.2") + "    "
+         + toStr( scopingObj->totNutsBoltsWt,"f7.2") + "   "
+         + toStr( scopingObj->totFanContRingWt,"f7.2"));
+
+      if ( !scopingObj->S_FrontFrame.isEmpty() ) { 
+         filledBlock.append("");
+         frameBlock.update();
+         filledBlock += frameBlock.filledBlock;
+         filledBlock.append("");
+      }
+      if ( !scopingObj->S_RearFrame.isEmpty() ) { 
+         filledBlock.append("");
+         frameBlock.update();
+         filledBlock += frameBlock.filledBlock;
+         filledBlock.append("");
+      } 
+
+      filledBlock.append("");
+      filledBlock.append("compressor   " + toStr( (scopingObj->totBladeWt) + (scopingObj->totStatorWt) + 
+         (scopingObj->totDiskWt) + (scopingObj->totCaseWt) + (scopingObj->totRotorDrumWt) + 
+         (scopingObj->totStatorSupportFlangeWt) + (scopingObj->totNutsBoltsWt),"f7.2"));
+
+      if ( scopingObj->S_FrontFrame.isEmpty() ) { 
+         filledBlock.append("front frame     0.00"); } 
+      else { 
+         filledBlock.append("front frame  " + toStr( scopingObj->S_FrontFrame.weight,"f7.2")); }
+
+      if ( scopingObj->S_RearFrame.isEmpty() ) { 
+         filledBlock.append("rear  frame     0.00"); } 
+      else { 
+         filledBlock.append("rear  frame  " + toStr( scopingObj->S_RearFrame.weight,"f7.2")); }
+
+      filledBlock.append("containment  " + toStr( scopingObj->totFanContRingWt,"f7.2"));
+
+      if ( scopingObj->S_Gearbox.isEmpty() ) { 
+         filledBlock.append("gearbox         0.00"); } 
+      else { 
+         filledBlock.append("gearbox      " + toStr( scopingObj->S_Gearbox.weight,"f7.2")); }
+
+      filledBlock.append("            --------");
+      filledBlock.append("     total = " + toStr( scopingObj->weight,"f7.2") + " lbs.");
+      filledBlock.append("");
+      filledBlock.append("");
+      filledBlock.append("");
+   }
+
+
+  /**
+   *
+   ****************************************************************/
+   void update() {
+
+      filledBlock = { };
+      filledBlock.append("====================================================");
+      filledBlock.append(scopingObj->isA()+"     "+scopingObj->getPathName());
+      filledBlock.append("====================================================");
+
+      updateStageInfo();
+
+   }
+}
+
+// #endif
+

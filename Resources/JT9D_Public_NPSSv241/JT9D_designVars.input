@@ -1,0 +1,72 @@
+// 
+// INPUTS FROM THE ENGINE DESIGN ITERATION
+// 
+MODELNAME = "Rough JT9D Turbofan Performance Model";
+Ambient.MN_in = 0;
+Ambient.alt_in = 0;
+Ambient.dTs_in = 27;
+Start.W_in = 1539.2;
+Inlet.Fl_O.MN = 0.532905;
+Fan.PRdes = 1.60306;
+Fan.effDes = 0.90380;
+Fan.S_map.NcMapDes = 0.927; // change raw map scale point
+Fan.S_map.RlineMapDes = 2; // change raw map scale point
+/*
+Fan.S_map.RlineMap = 2;
+Fan.S_map.NcDes = 0.927;
+Fan.S_map.PRdes = 1.60306;
+Fan.S_map.effDes = 0.90380;
+*/
+Splitter.BPRdes = 5.27511;
+LPC.PRdes = 2.25;
+LPC.effDes = 0.86575;
+LPC.S_map.NcMapDes = 0.927; // change raw map scale point
+LPC.S_map.RlineMapDes = 1.76882; // change raw map scale point
+/*
+LPC.S_map.RlineMap = 1.76882;
+LPC.S_map.NcDes = 0.927;
+LPC.S_map.PRdes = 2.25;
+LPC.S_map.effDes = 0.86575;
+*/
+HPC.PRdes = 5.67905;
+HPC.effDes = 0.862469;
+HPC.S_map.NcMapDes = 1.0; // change raw map scale point
+HPC.S_map.RlineMapDes = 2.08047; // change raw map scale point
+/*
+HPC.S_map.RlineMap = 2.08047;
+HPC.S_map.NcDes = 1;
+HPC.S_map.PRdes = 5.67905;
+HPC.S_map.effDes = 0.862469;
+*/
+Burner.FAR = 0.0222309;
+HPT.PRbase = 2.69566;
+HPT.effDes = 0.91445;
+HPT.S_map.PRmapDes = 5.0; // change raw map scale point
+HPT.S_map.NpMapDes = 100; // change raw map scale point
+/*
+HPT.S_map.parmMapDes = 5;
+HPT.S_map.parmNcDes = 100;
+HPT.S_map.parmMap = 2.69566;
+HPT.S_map.effDes = 0.91445;
+*/
+LPT.PRbase = 4.58613;
+LPT.effDes = 0.92880;
+LPT.S_map.PRmapDes = 6.0; // change raw map scale point
+LPT.S_map.NpMapDes = 100; // change raw map scale point
+/*
+LPT.S_map.parmMapDes = 6;
+LPT.S_map.parmNcDes = 100;
+LPT.S_map.parmMap = 4.58613;
+LPT.S_map.effDes = 0.92880;
+*/
+HP_Shaft.Nmech = 8000;
+LP_Shaft.Nmech = 3750;
+LP_Shaft.fracLoss = 0;
+HPC.Cool1.fracBldW = 0;
+HPC.Cool2.fracBldW = 0;
+Bld3.Cool1.fracW = 0.055;
+Bld3.Cool2.fracW = 0.035;
+Target_T4.eq_rhs = "2730";
+Max_T4.eq_rhs = "2730";
+Max_NcFan.eq_rhs = "1.00007";
+Velocity_Ratio.eq_rhs = "1.5";

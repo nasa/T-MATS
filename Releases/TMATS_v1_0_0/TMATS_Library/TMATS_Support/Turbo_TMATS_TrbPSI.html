@@ -1,0 +1,76 @@
+<font size="6" color="Magenta">T-MATS: Turbine_PSI Library Block</font>
+<br>
+This block simulates the performance of a turbine using basic 
+thermodynamic equations, properties, and table lookups. Turbine_PSI look up tables for this block
+are based on PSI instead Pressure Ratio as in the Turbine block.
+<br>
+<br>
+<font size="5" color="Blue">Turbine Inputs:</font>
+<table border="1"> <tr><td>Turbine Input</td><td>Description</td></tr>
+    <tr><td>CoolingFlwCharIn</td><td>Cooling flow Gas Characteristics Input, 
+            <br> 5x1 vector (for each cooling flow) consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+            <br>- FARc - Combusted Fuel to Air Ratio [frac]
+    <br> This feature must be enabled, see Cooling Flow tab variable (CFlwEn_M) definition</td></tr>
+    <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 vector consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FARc - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>PSImapIn</td><td>Map turbine PSI, position on turbine map
+            <br> Determines Pressure ratio, efficiency, and gas path flow.
+            <br> The value for this variable will need to be solved for by driving
+    <br> the flow error accross the engine to zero.</td></tr>
+    <tr><td>Nmech</td><td>shaft speed [rpm]</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Turbine Outputs:</font>
+<table border="1"> <tr><td>Turbine Output</td><td>Description</td></tr>
+    <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 vector consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FARc - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>NErr</td><td>Normalized Error [frac], in a typical system this will 
+    <br>be driven to zero by an iterative solver</td></tr>
+    <tr><td>TrqOut</td><td>turbine Torque Output (lbf*ft), positive value for a turbine.</td></tr>
+    <tr><td>T_Data</td><td>Turbine internal calculation Data</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Turbine Mask Variables: </font>
+<table border="1"> <tr><td>Turbine Mask Variable</td><td>Description</td></tr>
+    <tr><td>X_T_PRpVec_M</td><td>Turbine Map Pressure Ratio Vector for PSI array (X-axis)(nx1)</td></tr>    
+    <tr><td>Y_T_NcpVec_M</td><td>Turbine Map Corrected Speed Vector for PSI array (Y-axis)(mx1)</td></tr>
+    <tr><td>T_T_Map_PSIArray_M</td><td>Turbine Map PSI Array (PSIMAPI = f(Nc,PR))(mxn)</td></tr>
+    <tr><td>X_T_PRwVec_M</td><td>Turbine Map Pressure Ratio Vector for WoW array (X-axis)(rx1)</td></tr>
+    <tr><td>Y_T_NcwVec_M</td><td>Turbine Map Corrected Speed Vector for WoW array (Y-axis)(qx1)</td></tr>
+    <tr><td>T_T_Map_WoWArray_M</td><td>Turbine Map Flow calculation Array (WoW=f(Nc,PR))(qxr)</td></tr>
+    <tr><td>s_T_hi_M</td><td>Corrected Entalpy Constant (T_hi), note, this variable is not calculated with iDesign</td></tr>
+    <tr><td>s_T_Nc_M</td><td>Corrected Speed Scalar Constant (T_Nc)</td></tr>
+    <tr><td>s_T_PR_M</td><td>Pressure Ratio Scalar Constant (T_PR)</td></tr>
+    <tr><td>s_T_Wc_M</td><td>Flow Scalar Constant (T_Wc)</td></tr>
+    <tr><td>s_T_Eff_M</td><td>Efficiency Scalar Constant (T_Eff)</td></tr>
+    <tr><td>CFlwEn_M</td><td>Cooling Flow Enable [check - enabled]</td></tr>
+    <tr><td>T_CoolFlwPos_M</td><td>Cooling Flow position [0 at inlet,  1 at exit](cx1)
+            <br> With Cooling Flow Enabled, the turbine will expect cooling flow input 
+    <br> vector lenght of c *5. See CoolingFlwCharIn definition </td></tr>
+    <tr><td>gamma_M</td><td>Turbine Design Gamma</td></tr>
+    <tr><td>Rt_M</td><td>Turbine Design Rt</td></tr>
+    <tr><td>iDesign_M</td><td>Calculate turbine map scalars based on design variables [check - enabled]
+            <br>When iDesign is enabled scalar constants from the Map tab will not be used.
+    <br>When iDesign is disabled design constants from the compressor iDesign tab will be ignored.</td></tr>
+    <tr><td>NcDes_M</td><td>Design Corrected Shaft Speed [rpm]</td></tr>
+    <tr><td>EffDes_M</td><td>Design Efficiency [frac]</td></tr>
+    <tr><td>PRDes_M</td><td>Design Pressure Ratio [frac]</td></tr>
+    <tr><td>NDes_M</td><td>Design Shaft Speed [rpm]</td></tr>
+</table>
+<br>
+Note: Vectors are the x and/or y axis to a table made of an array.<br>
+&nbsp; &nbsp; Scalars are used to "scale" the turbine map for off design turbines. 
+
+

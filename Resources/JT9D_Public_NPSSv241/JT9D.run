@@ -1,0 +1,117 @@
+//
+//------------------------------------------------------------------------
+//                                                                       |
+//   File Name:     JT9D.run                                             |
+//   Date(s):       March 31, 2011                                       |
+//   Author:        Scott M. Jones                                       |
+//                                                                       |
+//   Description:   File to run the JT9D Turbofan Engine Model           |
+//                                                                       |
+//------------------------------------------------------------------------
+
+
+setThermoPackage("Janaf");
+
+
+//------------------------------------------------------------------------
+//                          User-Defined Elements
+//------------------------------------------------------------------------
+
+
+
+//------------------------------------------------------------------------
+//                           Output Data Viewers 
+//------------------------------------------------------------------------
+#include <Viewers/npss.view_page>  
+
+
+
+//------------------------------------------------------------------------
+//                              Model Files 
+//------------------------------------------------------------------------
+loadResource("WATElib"); 
+#include <JT9D.mdl>
+#include <JT9D.fnc>
+#include <JT9D.wate++>
+
+
+
+//------------------------------------------------------------------------
+//                      Changes to Baseline Engine
+//------------------------------------------------------------------------
+#include <JT9D_designVars.input>
+// FPR 1.6                  ( 7R4-G: 1.67 )
+// OPR 22.2, 8000 RPM       ( 7R4-G: 26.3 )
+// BPR 5.15                 ( 7R4-G: 4.8 )
+// T4 2730 R                ( 7R4-G: 2650-2830 R )
+// EGT 1360 R               ( 7R4-G: 1500 R )
+// Wa 1540 lb/s @ 3750 RPM  ( 7R4-G: 1695 lb/s @ 3530 RPM )
+// fan diameter 95 in
+// weight 8860 lb           ( 7R4-G: 9140 lb )
+// TO  FN 50000 lb          ( 7R4-G: 54750 lb )
+// MCL FN 11050 lb          ( 7R4-G: 12250 lb )        0.85, 35k ft
+// MCL SFC 0.624 lb/hr/lb   ( 7R4-G: 0.639 lb/hr/lb )  0.85, 35k ft, ISA+18R
+
+
+
+//------------------------------------------------------------------------
+//                           Run the Design Case
+//------------------------------------------------------------------------
+cout << "\n\nSTART RUN:  \n\n";
+
+setOption( "switchDes", "DESIGN" );
+//solver.debugLevel = "ITERATION_DETAILS";
+solver.maxJacobians = 25;
+solver.maxIterations = 50;
+autoSolverSetup(); 
+
+solver.addIndependent ( "Burner_FAR" );
+solver.addDependent ( "Target_T4" );
+//solver.addIndependent ( "Bypass_Ratio" );
+//solver.addDependent ( "Velocity_Ratio" );
+
+run(); 
+page.display(); 
+
+cout << "Non-Chrgbl Bleed = " << Bld3.Cool1.fracW << "\n";
+cout << "Chargeable Bleed = " << Bld3.Cool2.fracW << "\n";
+cout << "Total HPT  Bleed = " << Bld3.Cool1.fracW + Bld3.Cool2.fracW << "\n";
+cout << "LPT.Non-Chrgbl Bleed = " << HPC.Cool1.fracBldW << "\n";
+cout << "LPT.Chargeable Bleed = " << HPC.Cool2.fracBldW << "\n";
+
+
+
+//------------------------------------------------------------------------
+//                        Run an Off-Design Case
+//------------------------------------------------------------------------
+setOption( "switchDes", "OFFDESIGN" );
+solver.maxJacobians = 50;
+solver.maxIterations = 100;
+autoSolverSetup(); 
+
+run();
+page.display();
+
+
+
+
+//------------------------------------------------------------------------
+//                  Run the Engine Off-Design Analyses
+//------------------------------------------------------------------------
+
+
+// ===================================================
+//              W A T E   C A S E   S E T 
+// ===================================================
+#include <JT9D.case_WATE>
+
+
+// ===================================================
+//   F L I G H T   E N V E L O P E   C A S E   S E T
+// ===================================================
+#include <JT9D.case_FltEnv>
+
+
+cout << "COMPLETED RUN:  TIME = " << endl;
+
+
