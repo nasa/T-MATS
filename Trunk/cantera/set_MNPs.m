@@ -66,6 +66,13 @@ outFlow(20) = flow1(gamt);
    
    set( fs, 'Y',tempcomp);
 
+   sign = 1
+   
+   if ( PsExh >  flow1(Pt) )  
+       PsExh = flow1(Pt) * flow1(Pt)/ PsExh;
+       sign = -1.0;
+   end	
+	
 % set the conditions based on entropy and input pressure   
 set( fs, 'S',outFlow(entropy)/0.000238845896627, 'P', PsExh*6894.75729);
 equilibrate( fs, 'SP' );
@@ -78,7 +85,7 @@ outFlow(rhos) = density( fs )*.0624;
 outFlow(Ps) = PsExh;
 MMW = meanMolecularWeight(fs );
 Vson = sqrt( outFlow(gams)*outFlow(Ts)*5./9.*8314.4621/ MMW )*3.28084;
-outFlow(Vflow) =   sqrt(  778.169 * 32.1740 * 2. * ( outFlow(ht) - outFlow(hs) ));
+outFlow(Vflow) =   sign*sqrt(  778.169 * 32.1740 * 2. * ( outFlow(ht) - outFlow(hs) ));
 outFlow(MNin) = outFlow( Vflow )/ Vson;
 
 
