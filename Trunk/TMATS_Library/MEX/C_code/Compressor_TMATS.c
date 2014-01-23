@@ -242,12 +242,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /*------ Calculate corrected speed ---------*/
     Nc = Nmech/sqrt(theta);
     if (IDes > 0.5)
-        C_Nc = NcDes / Nc;
+        C_Nc = Nc / NcDes ;
     else
         C_Nc = s_C_Nc;
     
-    NcMap = Nc * s_C_Nc;
-    
+    NcMap = Nc / s_C_Nc;
+
     /*-- Compute Total Flow input (from Compressor map)  --------*/
     
     WcMap = interp2Ac(X_C_RlineVec,Y_C_NcVec,T_C_Map_WcArray,Rline,NcMap,B,A,&interpErr);

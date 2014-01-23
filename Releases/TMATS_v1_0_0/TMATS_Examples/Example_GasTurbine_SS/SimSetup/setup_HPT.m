@@ -65,10 +65,10 @@ MWS.HPT.PRVec = [ 2.000 3.000 3.250 3.500 3.750 4.000 4.250 4.500...
 
 %--------- scaler for pressure ratio ----------
 
-MWS.HPT.s_PR = 0.9736;
+MWS.HPT.s_PR = 1 / 0.9736;
 %--------- scaler for efficiency ----------
    
 MWS.HPT.s_eff = 0.9984;
 %--------- scaler for corrected HPT speed ----------
 
-MWS.HPT.s_Nc = 0.0243;
+MWS.HPT.s_Nc = 1/ 0.0243;

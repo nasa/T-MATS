@@ -117,4 +117,4 @@ MWS.HPC.s_PR = 0.8636;
 MWS.HPC.s_eff = 0.9977;
 
 %--------- scaler for corrected HPC speed ----------
- MWS.HPC.s_Nc = 0.0001;
+ MWS.HPC.s_Nc = 1/ 0.0001;
