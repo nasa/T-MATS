@@ -276,7 +276,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /*------ Calculate corrected speed ---------*/
     Nc = Nmech/sqrt(theta);
 
-    if(IDes > 0.5)
+    if(IDes < 0.5)
         C_Nc = Nc / NcDes;
     else
         C_Nc = s_T_Nc;
@@ -284,7 +284,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     NcMap = Nc / C_Nc;
 
     /*------ Compute pressure output --------*/
-    if(IDes > 0.5)
+    if(IDes < 0.5)
         C_PR = (PRIn - 1)/(PRmapDes -1);
     else
         C_PR = s_T_PR;
@@ -300,7 +300,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         printf("Warning in %s, Error calculating WcMap. Vector definitions may need to be expanded.\n", BlkNm);
         ssSetIWorkValue(S,3,1);
     }
-    if(IDes > 0.5)
+    if(IDes < 0.5)
         C_Wc = Ws1in*sqrt(theta)/delta / WcMap;
     else
         C_Wc = s_T_Wc;
@@ -314,7 +314,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         printf("Warning in %s, Error calculating EffMap. Vector definitions may need to be expanded.\n", BlkNm);
         ssSetIWorkValue(S,4,1);
     }
-    if(IDes > 0.5)
+    if(IDes < 0.5)
         C_Eff = EffDes / EffMap;
     else
         C_Eff = s_T_Eff;
@@ -344,9 +344,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     TorqueOut = C_HP_PER_RPMtoFT_LBF * Pwrout/Nmech;
 
     /* ----- Compute Normalized Flow Error ----- */
-    if (IDes > 0.5 && NDes == 0)
+    if (IDes < 0.5 && NDes == 0)
         NErrorOut = 100;
-    else if (IDes > 0.5)
+    else if (IDes < 0.5)
         NErrorOut = (Nmech - NDes)/NDes;
     else if (Ws1in == 0) {
         NErrorOut = 100;

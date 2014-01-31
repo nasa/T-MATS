@@ -55,13 +55,27 @@ thermodynamic equations, properties, and table lookups.
     <tr><td>T_CoolFlwPos_M</td><td>Cooling Flow position [0 at inlet,  1 at exit](cx1)
             <br> With Cooling Flow Enabled, the turbine will expect cooling flow input 
     <br> vector lenght of c *5. See CoolingFlwCharIn definition </td></tr>
-    <tr><td>iDesign_M</td><td>Calculate turbine map scalars based on design variables [check - enabled]
-            <br>When iDesign is enabled scalar constants from the Map tab will not be used.
-    <br>When iDesign is disabled design constants from the compressor iDesign tab will be ignored.</td></tr>
+    <tr><td>iDesign_M</td><td> Design fork (0, 1, 2)
+            <br>0 - iDes Enabled, Calculate turbine map scalars based on design variables
+            <br>    When iDesign is set to 0, scalar constants from the Map tab will not be used.
+            <br>    Scalars calculated will be saved in the specified file (FVar_M).
+            <br>1 - Scalar variables will be overwritten (mask Initialization) with 
+            <br>    values from a specified file (FVar_M).
+            <br>    When iDesign is set to 1, scalar constants from the Map tab and the Design values 
+            <br>    from the iDesign tab will not be used. 
+            <br>2 - Scalar variables from the map tab will be used as the map scalars.
+            <br>    When iDesign is set to 2, scalar constants from the Map tab will be used; Design values 
+    <br>    and file definitions from the iDesign tab will not be used. </td></tr>
     <tr><td>NcDes_M</td><td>map Design Corrected Shaft Speed [rpm], design point corrected speed used in map</td></tr>
     <tr><td>EffDes_M</td><td>Design Efficiency [frac], actual design point tubine efficiency </td></tr>
     <tr><td>PRDes_M</td><td>map Design Pressure Ratio [frac], design point PR used in map</td></tr>
     <tr><td>NDes_M</td><td>Design Shaft Speed [rpm], actual design point speed</td></tr>
+    <tr><td>FVar_M</td><td>File name for iDes Variables</td></tr>
+    <tr><td>SVar_M</td><td>iDes Variable Surname</td></tr>
+    <tr><td>NcNm_M</td><td>iDes Nc scalar variable name</td></tr>
+    <tr><td>WcNm_M</td><td>iDes Wc scalar variable name</td></tr>
+    <tr><td>PRNm_M</td><td>iDes PR scalar variable name</td></tr>
+    <tr><td>EffNm_M</td><td>iDes Eff scalar variable name</td></tr>
 </table>
 <br>
 Note: Vectors are the x and/or y axis to a table made of an array.<br>

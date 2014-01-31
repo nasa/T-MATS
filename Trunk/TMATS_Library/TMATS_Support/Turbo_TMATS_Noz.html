@@ -38,9 +38,21 @@ thermodynamic equations, properties, and table lookups.
     <tr><td>Y_N_TtVec_M</td><td>Nozzle Total Temperature Vector (Y-axis for Gamma calc)(dx1)</td></tr>
     <tr><td>T_N_MAP_gammaArray_M</td><td>Nozzle Map Gamma Array (Gamma = f(Tt,FAR))(dxc)</td></tr>
     <tr><td>T_N_CvArray_M</td><td>Nozzle Cv Array (Cv = f(PEQPa))(bx1)</td></tr>
-    <tr><td>iDesign_M</td><td>Drives nozzle flow to the design flow [check - enabled]
-    <br>Nozzle iDesign is used when iDesign for other blocks is enabled.</td></tr>
+    <tr><td>iDesign_M</td><td> Design fork (0, 1, 2)
+            <br>0 - iDes Enabled, Calculate nozzle throat area based on design variables
+            <br>    When iDesign is set to 0, N_TArea_M from the General tab will not be used.
+            <br>    Throat area calculated will be saved in the specified file (FVar_M).
+            <br>1 - nozzle throat area variables will be overwritten (mask Initialization) with 
+            <br>    values from a specified file (FVar_M).
+            <br>    When iDesign is set to 1, N-TArea_M from the General tab and the Design values 
+            <br>    from the iDesign tab will not be used. 
+            <br>2 - Nozzle throat area from the General tab will be used in the nozzle module.
+            <br>    When iDesign is set to 2, N_TArea_M from the General tab will be used; Design values 
+    <br>    and file definitions from the iDesign tab will not be used. </td></tr>
     <tr><td>WDes_M</td><td>Design flow[pps]</td></tr>
+    <tr><td>FVar_M</td><td>File name for iDes Variables</td></tr>
+    <tr><td>SVar_M</td><td>iDes Variable Surname</td></tr>
+    <tr><td>AthNm_M</td><td>iDes nozzle throat area variable name</td></tr>
 </table>
 <br>
 Note: Vectors are the x and/or y axis to a table made of an array.

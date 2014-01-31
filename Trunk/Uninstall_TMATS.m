@@ -15,6 +15,7 @@ switch questdlg(TMATSRemovemsg, 'T-MATS Library', 'Yes', 'No', 'No');
         Pth{2} = strcat(pwd,POp,'TMATS_Library',POp,'MEX');    % define new path
         Pth{3} = strcat(pwd,POp,'TMATS_Library',POp,'TMATS_Support');    % define new path
         Pth{4} = strcat(pwd,POp,'TMATS_Tools');    % define new path
+        Pth{5} = strcat(pwd,POp,'TMATS_Library',POp,'MATLAB_Scripts');    % define new path
         
         perm = zeros( 1 , length(Pth));  % allocate memory for perm
         

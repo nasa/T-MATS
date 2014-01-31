@@ -27,8 +27,8 @@ thermodynamic equations, properties, and table lookups.
             <br>- ht - enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FARc - Combusted Fuel to Air Ratio [frac]
-<br> This feature must be enabled, see Bleed tab variable (CBLDEN_M) definition</td></tr>
+            <br>- FARc - Combusted Fuel to Air Ratio [frac]
+    <br> This feature must be enabled, see Bleed tab variable (CBLDEN_M) definition</td></tr>
     <tr><td>FBldsCharOut</td><td>Fractional Bleeds Characteristics Output,
             <br>[5 x 1] vector for each customer bleed (total #fbleeds *5 x 1)
             <br> consisting of the following repeating format:
@@ -36,7 +36,7 @@ thermodynamic equations, properties, and table lookups.
             <br>- ht - enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FARc - Combusted Fuel to Air Ratio [frac]
+            <br>- FARc - Combusted Fuel to Air Ratio [frac]
     <br> This feature must be enabled, see Bleed tab variable (FBLDEN_M) definition<br></td></tr>
     <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 vector consisting of:
             <br>- W - gas path flow [pps]
@@ -73,13 +73,27 @@ thermodynamic equations, properties, and table lookups.
     <tr><td>C_BFPt_M</td><td>engine Bleed Fractional Total Pressure (bx1)[frac](bx1)</td></tr>
     <tr><td>X_C_WcSurgeVec_M</td><td>Compensated flow Surge Vector [pps](sx1)</td></tr>
     <tr><td>T_C_PRSurgeVec_M</td><td>Surge line Pressure Ratio Vector [frac](sx1)</td></tr>
-    <tr><td>iDesign_M</td><td>Calculate compressor map scalars based on design variables [check - enabled]
-            <br>When iDesign is enabled scalar constants from the Map tab will not be used.
-    <br>When iDesign is disabled design constants from the compressor iDesign tab will be ignored.</td></tr>
+    <tr><td>iDesign_M</td><td> Design fork (0, 1, 2)
+            <br>0 - iDes Enabled, Calculate compressor map scalars based on design variables
+            <br>    When iDesign is set to 0, scalar constants from the Map tab will not be used.
+            <br>    Scalars calculated will be saved in the specified file (FVar_M).
+            <br>1 - Scalar variables will be overwritten (mask Initialization) with 
+            <br>    values from a specified file (FVar_M).
+            <br>    When iDesign is set to 1, scalar constants from the Map tab and the Design values 
+            <br>    from the iDesign tab will not be used. 
+            <br>2 - Scalar variables from the map tab will be used as the map scalars.
+            <br>    When iDesign is set to 2, scalar constants from the Map tab will be used; Design values 
+    <br>    and file definitions from the iDesign tab will not be used. </td></tr>
     <tr><td>NcDes_M</td><td>map Design Corrected Shaft Speed [rpm], design point speed used in map</td></tr>
     <tr><td>EffDes_M</td><td>Design Efficiency [frac], actual design point compressor efficiency</td></tr>
     <tr><td>PRDes_M</td><td>Design Pressure Ratio [frac], actual design point compressor PR</td></tr>
     <tr><td>RlineDes_M</td><td>map Design Rline, design point Rline used in map</td></tr>
+    <tr><td>FVar_M</td><td>File name for iDes Variables</td></tr>
+    <tr><td>SVar_M</td><td>iDes Variable Surname</td></tr>
+    <tr><td>NcNm_M</td><td>iDes Nc scalar variable name</td></tr>
+    <tr><td>WcNm_M</td><td>iDes Wc scalar variable name</td></tr>
+    <tr><td>PRNm_M</td><td>iDes PR scalar variable name</td></tr>
+    <tr><td>EffNm_M</td><td>iDes Eff scalar variable name</td></tr>
 </table>
 <br>
 Notes: Vectors are the x and/or y axis to a table made of an array.

@@ -241,7 +241,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     /*------ Calculate corrected speed ---------*/
     Nc = Nmech/sqrt(theta);
-    if (IDes > 0.5)
+    if (IDes < 0.5)
         C_Nc = Nc / NcDes ;
     else
         C_Nc = s_C_Nc;
@@ -256,7 +256,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         ssSetIWorkValue(S,0,1);
     }
     
-    if (IDes > 0.5)
+    if (IDes < 0.5)
         C_Wc = Wcin / WcMap;
     else
         C_Wc = s_C_Wc;
@@ -271,7 +271,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         ssSetIWorkValue(S,1,1);
     }
     
-    if (IDes > 0.5)
+    if (IDes < 0.5)
         C_PR = (PRDes -1) / (PRMap-1);
     else
         C_PR = s_C_PR;
@@ -286,7 +286,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         ssSetIWorkValue(S,2,1);
     }
     
-    if (IDes > 0.5)
+    if (IDes < 0.5)
         C_Eff = EffDes / EffMap;
     else
         C_Eff = s_C_Eff;
@@ -387,9 +387,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     TorqueOut = C_HP_PER_RPMtoFT_LBF * Pwrout/Nmech;
     
     /* ----- Compute Normalized Flow Error ----- */
-    if (IDes > 0.5 && Rline == 0)
+    if (IDes < 0.5 && Rline == 0)
         NErrorOut = 100;
-    else if (IDes > 0.5)
+    else if (IDes < 0.5)
         NErrorOut = (Rline - RlineDes)/Rline;
     else if (WIn == 0)
         NErrorOut = 100;

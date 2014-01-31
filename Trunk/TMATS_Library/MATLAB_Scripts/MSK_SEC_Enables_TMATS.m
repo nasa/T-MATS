@@ -9,12 +9,16 @@ for n = 1:length(i)
                     A(i(n)) = {'on'};
                 case 'off'
                     A(i(n)) = {'off'};
+                otherwise
+                    A(i(n)) = {'on'};
             end
         case 'dis' % turn output off when checked
             switch get_param(gcb,var)
                 case 'on'
                     A(i(n)) = {'off'};
                 case 'off'
+                    A(i(n)) = {'on'};
+                otherwise
                     A(i(n)) = {'on'};
             end
     end

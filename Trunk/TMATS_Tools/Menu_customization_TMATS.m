@@ -30,7 +30,7 @@ function schema = getItem1(callbackInfo)
   % the other menu items.      
   schema = sl_container_schema;
   schema.label = 'T-MATS Tools';     
-  schema.childrenFcns = {@getItem2, @getItem3, @getItem4, @getItem5};
+  schema.childrenFcns = {@getItem2, @getItem3};
 end 
 
 function schema = getItem2(callbackInfo)
@@ -43,22 +43,6 @@ function schema = getItem2(callbackInfo)
 end
 
 function schema = getItem3(callbackInfo)
-  % Create a menu item to call iDesign_En_TMATS
-  schema = sl_action_schema;
-  schema.label = 'iDesign_ON';
-  schema.userdata = 'iDesign_ON';	
-  schema.callback = @iDesign_En_TMATS; 
-end
-
-function schema = getItem4(callbackInfo)
-  % Create a menu item to call iDesign_Off_TMATS
-  schema = sl_action_schema;
-  schema.label = 'iDesign_Off';
-  schema.userdata = 'iDesign_Off';	
-  schema.callback = @iDesign_Off_TMATS; 
-end
-
-function schema = getItem5(callbackInfo)
   % Create a menu item to call iDesign_Off_TMATS
   schema = sl_action_schema;
   schema.label = 'Block Link Setup';

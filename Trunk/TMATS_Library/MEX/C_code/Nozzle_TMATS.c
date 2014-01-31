@@ -13,7 +13,7 @@
 #include <math.h>
 #include "funcs_TMATS.h"
 
-#define Athroat_p(S)                ssGetSFcnParam(S,0)
+#define AthroatIn_p(S)              ssGetSFcnParam(S,0)
 #define flowLoss_p(S)               ssGetSFcnParam(S,1)
 #define Y_N_FARVec_p(S)             ssGetSFcnParam(S,2)
 #define T_N_RtArray_p(S)            ssGetSFcnParam(S,3)
@@ -58,7 +58,7 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetInputPortDirectFeedThrough(S, 0, 1);
     
     if (!ssSetNumOutputPorts(S, 1)) return;
-    ssSetOutputPortWidth(S, 0, 4);
+    ssSetOutputPortWidth(S, 0, 5);
     
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
@@ -103,7 +103,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 {
     
     /*--------parameters defined in S-function block--------*/
-    const real_T Athroat                = *mxGetPr(Athroat_p(S)); /* hot throat area computed in design phase (sq-in) */
+    const real_T AthroatIn              = *mxGetPr(AthroatIn_p(S)); /* input throat area (sq-in) */
     const real_T flowLoss               = *mxGetPr(flowLoss_p(S));
     const real_T IDes                   = *mxGetPr(iDesign_p(S));
     const real_T WDes                   = *mxGetPr(WDes_p(S));
@@ -142,7 +142,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double choked, Ps, Ts, rhos, V, Test, MN1;
     double CdTh, Cv, Therm_growth, PQPa, PQPaMap, AthroatHot;
     double Rt, gammat, rhot, MN, TsMN1, PsMN1, Woutcalc;
-    double WOut, FgOut, NErrorOut;
+    double WOut, FgOut, NErrorOut, Ath;
     double gammatg, gammas, gammasg, MNg, TsMNg, PsMNg, PsMNg_old, erMN_old, erMN;
     double Sin, hsg, hs, htin, rhosg, Rs, Vg;
     double maxIters,tolerance, ncount, PsMNg_new, erthr;
@@ -244,7 +244,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             printf("Warning in %s, Error calculating gammas. Vector definitions may need to be expanded.\n", BlkNm);
             ssSetIWorkValue(S,5,1);
         }
-        MN = V/sqrt(gammas*Rs*Ts*C_GRAVITY*JOULES_CONST);    
+        MN = V/sqrt(gammas*Rs*Ts*C_GRAVITY*JOULES_CONST);
     }
     
     else{  /* Assuming choked, determine static pressure and tempurature */
@@ -283,20 +283,26 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     }
     
     
+    /* Determine throat area in^2 */
+    if (IDes < 0.5)
+        Ath = WIn * C_PSItoPSF / (Therm_growth *(1-flowLoss/100)*CdTh*rhos*V);
+    else
+        Ath = AthroatIn;
+    
     /* Calculate Flow out of nozzle */
-    AthroatHot = Athroat * Therm_growth;
+    AthroatHot = Ath * Therm_growth;
     Woutcalc = (1-flowLoss/100)*AthroatHot*CdTh*rhos*V/C_PSItoPSF;
     WOut = WIn;
     
     Test = rhos;
     
     /*----- calc gross thrust -----------*/
-    FgOut = ((WOut/C_GRAVITY) * V * Cv) + ((Ps-PambIn) * Athroat);
+    FgOut = ((WOut/C_GRAVITY) * V * Cv) + ((Ps-PambIn) * Ath);
     
     /* ----- Compute Normalized Flow Error ----- */
-    if (IDes > 0.5 && WDes == 0)
+    if (IDes < 0.5 && WDes == 0)
         NErrorOut = 100;
-    else if (IDes > 0.5)
+    else if (IDes < 0.5)
         NErrorOut = (WIn - WDes)/WDes;
     else if (WIn == 0) {
         NErrorOut = 100;}
@@ -305,9 +311,10 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     }
     /*------Assign output values------------*/
     y[0] = WOut;          /* Outlet Total Flow [pps]	*/
-    y[1] = FgOut;          /* Gross Thrust [lbf] */
-    y[2] = NErrorOut; /* Normalized Flow Error [frac] */
-    y[3] = Test;
+    y[1] = FgOut;         /* Gross Thrust [lbf] */
+    y[2] = NErrorOut;     /* Normalized Flow Error [frac] */
+    y[3] = Ath;           /* Throat Area [in^2] */
+    y[4] = Test;
     
 }
 

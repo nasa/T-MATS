@@ -292,12 +292,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /*------ Calculate corrected speed ---------*/
     Nc = Nmech/sqrt(theta);
     
-    if(IDes > 0.5)
-        C_Nc = NcDes / Nc;
+    if(IDes < 0.5)
+        C_Nc = Nc / NcDes;
     else
         C_Nc = s_T_Nc;
     
-    NcMap = Nc * C_Nc;
+    NcMap = Nc / C_Nc;
     
     /* ---- Calculate output entropy ----*/
     Sout = Ss1in;
@@ -310,7 +310,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         ssSetIWorkValue(S,3,1);
     }
     EffMap = psiMapIn/psiMapI;
-    if(IDes > 0.5)
+    if(IDes < 0.5)
         C_Eff = EffDes / EffMap;
     else
         C_Eff = s_T_Eff;
@@ -358,12 +358,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     
     /*------ Compute pressure output --------*/
-    if(IDes > 0.5)
-        C_PR = (PRmapDes -1)/(PRin - 1);
+    if(IDes < 0.5)
+        C_PR = (PRin - 1)/(PRmapDes -1);
     else
         C_PR = s_T_PR;
     
-    PRmapRead = C_PR*(PRin -1)+1;
+    PRmapRead = (PRin -1)/C_PR + 1;
     
     PtOut = PtIn/PRin;
     
@@ -377,7 +377,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     WpqAcrit = sqrt((gamma_T*C_GRAVITY)/(Rt_T*JOULES_CONST))/pow((1+(gamma_T-1)/2),((gamma_T+1)/(2*(gamma_T-1))));
     WMap = WoWMap * WpqAcrit * (PtIn/sqrt(Tts1in));
     WcMap = WMap * sqrt(theta)/delta;
-    if(IDes > 0.5)
+    if(IDes < 0.5)
         C_Wc = Ws1in*sqrt(theta)/delta / WcMap;
     else
         C_Wc = s_T_Wc;
@@ -400,9 +400,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     TorqueOut = C_HP_PER_RPMtoFT_LBF * Pwrout/Nmech;
     
     /* ----- Compute Normalized Flow Error ----- */
-    if (IDes > 0.5 && NDes == 0)
+    if (IDes < 0.5 && NDes == 0)
         NErrorOut = 100;
-    else if (IDes > 0.5)
+    else if (IDes < 0.5)
         NErrorOut = (Nmech - NDes)/NDes;
     else if (Ws1in == 0) {
         NErrorOut = 100;
