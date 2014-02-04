@@ -101,12 +101,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     char * BlkNm;
     int_T buflen;
     int_T status;
-    
+
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
     BlkNm = mxMalloc(buflen);
     status = mxGetString(BN_p(S), BlkNm, buflen);
-    
+
     /*  Static Temperature */
     TsStDayOut = interp1Ac(X_A_AltVec,T_A_TsVec,AltIn,A,&interpErr);
         if (interpErr == 1 && ssGetIWork(S)[0]==0){
@@ -136,7 +136,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     y[0] = TtOut;      /* Total Temperature [degR] */
     y[1] = PtOut;      /* Total Pressure [psia] */
     y[2] = PsOut;      /* Static Pressure [psia] */
-    y[3] = TsOut;      /* Static Pressure [degR] */
+    y[3] = TsOut;      /* Static Temperature [degR] */
     y[4] = VengOut;    /* Engine Velocity [ft/sec] */
 
 }

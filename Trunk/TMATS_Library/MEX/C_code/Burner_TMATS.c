@@ -127,7 +127,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 	y[2] = TtOut;     /* Output Temperature  [degR]*/
 	y[3] = PtOut;     /* Output Pressure [psia]	*/
 	y[4] = FARcOut;   /* Output Combusted Fuel to Air Ratio [frac] */
-    y[5] = Test;      /* Output Test Piont */
+    y[5] = Test;      /* Output Test Point */
 
 }
 
