@@ -1,0 +1,290 @@
+/*		T-MATS -- StaticCalc_TMATS.c
+ * % *************************************************************************
+ * % written by Jeffryes Chapman
+ * % NASA Glenn Research Center, Cleveland, OH
+ * % Feb 24, 2014
+ * %
+ * %  This file caclulates static Pressure and Temperature based on current
+ * %  conditions and assumptions in throat area or MN.
+ * % *************************************************************************/
+#define S_FUNCTION_NAME  StaticCalc_TMATS
+#define S_FUNCTION_LEVEL 2
+#include "simstruc.h"
+#include "constants_TMATS.h"
+#include <math.h>
+#include "funcs_TMATS.h"
+
+#define AthroatIn_p(S)              ssGetSFcnParam(S,0)
+#define MNIn_p(S)                   ssGetSFcnParam(S,1)
+#define SolveType_p(S)              ssGetSFcnParam(S,2)
+#define X_FARVec_p(S)               ssGetSFcnParam(S,3)
+#define T_RtArray_p(S)              ssGetSFcnParam(S,4)
+#define Y_TtVec_p(S)                ssGetSFcnParam(S,5)
+#define T_gammaArray_p(S)           ssGetSFcnParam(S,6)
+#define BN_p(S)                     ssGetSFcnParam(S,7)
+#define NPARAMS 8
+
+extern double t2hc(double a, double b);
+extern double pt2sc(double c, double d, double e);
+extern double interp1Ac(double f[], double g[], double h, int l,int *error);
+extern double interp2Ac(double aa[], double bb[], double cc[], double aaa, double bbb,int ccc, int ddd, int *error);
+extern void PcalcStat(double dd,double ee,double ff,double gg,double hh,double mm,double *nn,double *oo,double *pp,double *qq,double *rr);
+
+
+static void mdlInitializeSizes(SimStruct *S)
+{
+    int i;
+    ssSetNumSFcnParams(S, NPARAMS);  /* Number of expected parameters */
+    if (ssGetNumSFcnParams(S) != ssGetSFcnParamsCount(S)) {
+        /* Return if number of expected != number of actual parameters */
+        return;
+    }
+
+    for (i = 0; i < NPARAMS; i++)
+        ssSetSFcnParamTunable(S, i, 0);
+
+    ssSetNumContStates(S, 0);
+    ssSetNumDiscStates(S, 0);
+
+    if (!ssSetNumInputPorts(S, 1)) return;
+    ssSetInputPortWidth(S, 0, 5);
+    ssSetInputPortRequiredContiguous(S, 0, true);
+    ssSetInputPortDirectFeedThrough(S, 0, 1);
+
+    if (!ssSetNumOutputPorts(S, 1)) return;
+    ssSetOutputPortWidth(S, 0, 2);
+
+    ssSetNumSampleTimes(S, 1);
+    ssSetNumRWork(S, 0);
+    ssSetNumIWork(S, 6);
+    ssSetNumPWork(S, 0);
+    ssSetNumModes(S, 0);
+    ssSetNumNonsampledZCs(S, 0);
+
+    ssSetOptions(S,
+            SS_OPTION_WORKS_WITH_CODE_REUSE |
+            SS_OPTION_EXCEPTION_FREE_CODE |
+            SS_OPTION_USE_TLC_WITH_ACCELERATOR);
+}
+
+static void mdlInitializeSampleTimes(SimStruct *S)
+{
+    ssSetSampleTime(S, 0, INHERITED_SAMPLE_TIME);
+    ssSetOffsetTime(S, 0, 0.0);
+    ssSetModelReferenceSampleTimeDefaultInheritance(S);
+}
+
+#define MDL_START
+#if defined(MDL_START)
+static void mdlStart(SimStruct *S)
+{
+    /* initialize print error variables */
+    ssSetIWorkValue(S,0,0);
+    ssSetIWorkValue(S,1,0);
+    ssSetIWorkValue(S,2,0);
+    ssSetIWorkValue(S,3,0);
+    ssSetIWorkValue(S,4,0);
+    ssSetIWorkValue(S,5,0);
+}
+#endif
+
+static void mdlOutputs(SimStruct *S, int_T tid)
+{
+
+    /*--------parameters defined in S-function block--------*/
+    const real_T AthroatIn              = *mxGetPr(AthroatIn_p(S)); /* input throat area (sq-in) */
+    const real_T MNIn                   = *mxGetPr(MNIn_p(S));      /* input throat area (sq-in) */
+    const int_T SolveType               = *mxGetPr(SolveType_p(S));  /* 0-solve based on Ath, 1-solve based on MNIn*/
+
+    /*-------- vector & array data -------*/
+    const real_T *X_FARVec            = mxGetPr(X_FARVec_p(S));
+    const real_T *T_RtArray           = mxGetPr(T_RtArray_p(S));
+    const real_T *Y_TtVec             = mxGetPr(Y_TtVec_p(S));
+    const real_T *T_gammaArray    = mxGetPr(T_gammaArray_p(S));
+
+
+    /*------get dimensions of parameter arrays-------*/
+    const int_T A   = mxGetNumberOfElements(X_FARVec_p(S));
+    const int_T B   = mxGetNumberOfElements(Y_TtVec_p(S));
+
+    /*---------Define Inputs--------*/
+    const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
+
+    double WIn      = u[0];     /* Input Flow [pps] 	*/
+    double htIn     = u[1];     /* enthaply [BTU/lbm] 	*/
+    double TtIn     = u[2];     /* Temperature Input [degR] 	*/
+    double PtIn     = u[3];     /* Pressure Input [psia] 	*/
+    double FARcIn   = u[4];     /* Combusted Fuel to Air Ratio [frac] 	*/
+
+    real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);  /* Output Array */
+
+    /*--------Define Constants-------*/
+    double PsOut, TsOut;
+    double Sin, htin;
+    double Rt, Rs;
+    double TsMNg, PsMNg, MNg;
+    double Tsg, Psg, Psg_new, Psg_old, Acalc, erA, erA_old;
+    double  gammatg, gammasg, hsg, rhosg, Vg;
+    double erMN_old, erMN, PsMNg_old, PsMNg_new;
+    double erthr;
+    int maxiter, iter;
+    int interpErr = 0;
+
+    /* ------- get strings -------------- */
+    char * BlkNm;
+    int_T buflen;
+    int_T status;
+
+    /* Get name of block from dialog parameter (string) */
+    buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
+    BlkNm = mxMalloc(buflen);
+    status = mxGetString(BN_p(S), BlkNm, buflen);
+
+    /* Calc entropy */
+    Sin = pt2sc(PtIn, TtIn, FARcIn);
+
+    /*-- Compute Input enthalpy --------*/
+
+    htin = t2hc(TtIn,FARcIn);
+
+    /*  Where gas constant is R = f(FAR), but NOT P & T */
+    Rt = interp1Ac(X_FARVec,T_RtArray,FARcIn,A,&interpErr);
+    if (interpErr == 1 && ssGetIWork(S)[0]==0){
+        printf("Warning in %s, Error calculating Rt. Vector definitions may need to be expanded.\n", BlkNm);
+        ssSetIWorkValue(S,0,1);
+    }
+    Rs = Rt;
+
+    /* Solve for Ts and Ps when MN is known*/
+    if (SolveType == 1) {
+        /*---- set MN = MNIn and calc SS Ps for iteration IC --------*/
+        MNg = MNIn;
+        gammatg = interp2Ac(X_FARVec,Y_TtVec,T_gammaArray,FARcIn,TtIn,A,B,&interpErr);
+        if (interpErr == 1 && ssGetIWork(S)[1]==0){
+            printf("Warning in %s, Error calculating gammatg. Vector definitions may need to be expanded.\n", BlkNm);
+            ssSetIWorkValue(S,1,1);
+        }
+        TsMNg = TtIn /(1+MNg*MNg*(gammatg-1)/2);
+        PsMNg = PtIn*pow((TsMNg/TtIn),(gammatg/(gammatg-1)));
+
+        PcalcStat(PtIn, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
+        gammasg = interp2Ac(X_FARVec,Y_TtVec,T_gammaArray,FARcIn,TsMNg,A,B,&interpErr);
+        if (interpErr == 1 && ssGetIWork(S)[2]==0){
+            printf("Warning in %s, Error calculating gammasg. Vector definitions may need to be expanded.\n", BlkNm);
+            ssSetIWorkValue(S,2,1);
+        }
+        MNg = Vg/sqrt(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST);
+        erMN = MNIn - MNg;
+        PsMNg_new = PsMNg + 0.05;
+        maxiter = 15;
+        iter = 0;
+        erthr = 0.001;
+
+        /* if Ps is not close enough to Ps at MN = MNIn, iterate to find Ps at MN = MNIn */
+        while (abs_D(erMN) > erthr && iter < maxiter) {
+            erMN_old = erMN;
+            PsMNg_old = PsMNg;
+            if(abs_D(PsMNg - PsMNg_new) < 0.03)
+                PsMNg = PsMNg + 0.05;
+            else
+                PsMNg = PsMNg_new;
+            PcalcStat(PtIn, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
+            gammasg = interp2Ac(X_FARVec,Y_TtVec,T_gammaArray,FARcIn,TsMNg,A,B,&interpErr);
+            if (interpErr == 1 && ssGetIWork(S)[3]==0){
+                printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
+                ssSetIWorkValue(S,3,1);
+            }
+            MNg = Vg/sqrt(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST);
+            erMN = MNIn - MNg;
+            if (abs_D(erMN) > erthr) {
+                /* determine next guess pressure by secant algorithm */
+                PsMNg_new = PsMNg - erMN *(PsMNg - PsMNg_old)/(erMN - erMN_old);
+            }
+            iter = iter + 1;
+        }
+        if (iter == maxiter && ssGetIWork(S)[4]==0 ){
+            printf("Warning in %s, Error calculating Ps at MN = MNIn. There may be error in block outputs\n", BlkNm);
+            ssSetIWorkValue(S,4,1);
+        }
+        TsOut = TsMNg;
+        PsOut = PsMNg;
+    }
+    /* Solve for Ts and Ps when Ath is known*/
+    else if (SolveType == 0) {
+
+        /* guess Psout and calculate an initial Area error */
+        MNg = 0.4;
+        gammatg = 1.4;
+        Tsg = TtIn /(1+MNg*MNg*(gammatg-1)/2);
+        Psg = PtIn*pow((Tsg/TtIn),(gammatg/(gammatg-1)));
+        PcalcStat(PtIn, Psg, TtIn, htin, FARcIn, Rt, &Sin, &Tsg, &hsg, &rhosg, &Vg);
+        Acalc = WIn/(Vg * rhosg/C_SINtoSFT);
+
+        /* determine guess error for static pressure iteration */
+        erA = (AthroatIn - Acalc)/AthroatIn;
+
+        /* determine iteration constants */
+        iter = 0;
+        maxiter = 15;
+        Psg_new = Psg + 0.05;
+        erthr = 0.001;
+
+        while ( abs_D(erA) > erthr && iter < maxiter){
+            erA_old = erA;
+            Psg_old = Psg;
+            if(abs_D(Psg - Psg_new) < 0.03) {
+                Psg = Psg + 0.05;
+            }
+            else {
+                Psg = Psg_new;
+            }
+            /* calculate flow velocity and rhos */
+            PcalcStat(PtIn, Psg, TtIn, htin, FARcIn, Rt, &Sin, &Tsg, &hsg, &rhosg, &Vg);
+            /* calculated Area */
+            Acalc = WIn/(Vg * rhosg/C_SINtoSFT);
+            /*determine error */
+            erA = (AthroatIn - Acalc)/AthroatIn;
+
+            if (abs_D(erA) > erthr) {
+                /* determine next guess pressure by secant algorithm */
+                Psg_new = Psg - erA *(Psg - Psg_old)/(erA - erA_old);
+                /* limit algorthim change */
+                if (Psg_new > 1.1*Psg) {
+                    Psg_new = 1.1 * Psg;
+                }
+                else if (Psg_new < 0.9 * Psg) {
+                    Psg_new = 0.9 * Psg;
+                }
+            }
+            iter = iter + 1;
+        }
+        TsOut = Tsg;
+        PsOut = Psg;
+
+    }
+    else {
+        if (ssGetIWork(S)[5]==0 ){
+            printf("Warning in %s, SolveType_M is not valid. There may be error in block outputs\n", BlkNm);
+            ssSetIWorkValue(S,5,1);
+        }
+        TsOut = TtIn;
+        PsOut = PtIn;
+    }
+
+
+    /*------Assign output values------------*/
+    y[0] = TsOut;      /* Static Temperature [degR] */
+    y[1] = PsOut;      /* Static Pressure [psia] */
+
+}
+
+static void mdlTerminate(SimStruct *S)
+{
+}
+
+#ifdef  MATLAB_MEX_FILE    /* Is this file being compiled as a MEX-file? */
+#include "simulink.c"      /* MEX-file interface mechanism */
+#else
+#include "cg_sfun.h"       /* Code generation registration function */
+#endif
+/*==================*/
