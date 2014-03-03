@@ -16,7 +16,8 @@ InpMsg{1} = 'Select the enumeration of the T-MATS Example to be setup:';
 InpMsg{2} = '1) NewtonRaphson_Equation_Solver';
 InpMsg{3} = '2) Steady State GasTurbine';
 InpMsg{4} = '3) Dynamic GasTurbine';
-InpMsg{5} = '4) Cancel Setup';
+InpMsg{5} = '5) Steady State JT9D, Cantera';
+InpMsg{6} = '6) Cancel Setup';
 InpMsgFinal = '';
 
 for i = 1: length(InpMsg)
@@ -44,7 +45,14 @@ switch TMATS.S
         cd Example_GasTurbine_Dyn
         %------ Performs example setup ---------
         GasTurbine_Dyn_setup_everything;
+        
     case '4'
+        disp(strcat('Loading Simulation from: ', TMATS.P ,TMATS.POp,'Example_JT9D_SS_Cantera'))
+        cd Example_JT9D_SS_Cantera
+        %------ Performs example setup ---------
+        JT9D_SS_Cantera_setup_everything;
+        
+    case '5'
         disp('Example Setup Canceled');
     otherwise,
         disp('Selection Invalid')

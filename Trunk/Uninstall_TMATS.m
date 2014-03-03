@@ -11,11 +11,13 @@ switch questdlg(TMATSRemovemsg, 'T-MATS Library', 'Yes', 'No', 'No');
     case 'Yes',
         p = path;                               % current path
         CurrDir = pwd;                          % current directory
-        Pth{1} = strcat(pwd,POp,'TMATS_Library ');    % define new path
-        Pth{2} = strcat(pwd,POp,'TMATS_Library',POp,'MEX');    % define new path
-        Pth{3} = strcat(pwd,POp,'TMATS_Library',POp,'TMATS_Support');    % define new path
-        Pth{4} = strcat(pwd,POp,'TMATS_Tools');    % define new path
-        Pth{5} = strcat(pwd,POp,'TMATS_Library',POp,'MATLAB_Scripts');    % define new path
+        % define new paths
+        Pth{1} = strcat(pwd,POp,'TMATS_Library ');  
+        Pth{2} = strcat(pwd,POp,'TMATS_Library',POp,'MEX'); 
+        Pth{3} = strcat(pwd,POp,'TMATS_Library',POp,'TMATS_Support'); 
+        Pth{4} = strcat(pwd,POp,'TMATS_Tools'); 
+        Pth{5} = strcat(pwd,POp,'TMATS_Library',POp,'MATLAB_Scripts');    
+        Pth{6} = strcat(pwd,POp,'TMATS_Library',POp,'MATLAB_Scripts',POp,'Cantera_Enabled');
         
         perm = zeros( 1 , length(Pth));  % allocate memory for perm
         
