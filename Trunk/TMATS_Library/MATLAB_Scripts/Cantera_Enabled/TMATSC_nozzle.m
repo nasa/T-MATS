@@ -88,7 +88,7 @@ IDes = block.DialogPrm(4).Data;
 FI = block.InputPort(1).Data;
 
 % grab the name of the element for use in storing values
-path = stripchar_TMATS( gcb() );
+path = TMATSC_stripchar( gcb() );
 
 % set the throat conditions based on MN
 FTh = TMATSC_set_MNPs( FI, PsExh );

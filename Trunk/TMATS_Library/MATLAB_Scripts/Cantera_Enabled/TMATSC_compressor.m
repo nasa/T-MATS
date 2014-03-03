@@ -130,13 +130,13 @@ NcIn = Nmech/ sqrt( FI(Tt)/ C_TSTD );
 WcIn = FI(W)*sqrt(FI(Tt)/C_TSTD)/(FI(Pt)/C_PSTD);
 
 % determine the name of this element
-path = stripchar_TMATS( gcb() );
+path = TMATSC_stripchar( gcb() );
 
 % if we are at design point calculated the design speed scalar
 % and store the value in the workspace
 if IDes < 0.5
     s_C_Nc = NcDes / NcIn;
-    path = stripchar_TMATS( gcb() );
+    path = TMATSC_stripchar( gcb() );
     TMATSC_setV( 's_C_Nc', path, s_C_Nc );
 elseif IDes < 1.5
     % get the speed scalar from the workspace

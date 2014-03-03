@@ -147,7 +147,7 @@ NcIn = Nmech/ sqrt( F41(Tt) );
 WcIn = F41(W)*sqrt( F41(Tt) )/( F41( Pt) );
 
 % create workspace values for design value
-path = stripchar_TMATS( gcb() );
+path = TMATSC_stripchar( gcb() );
 tempNc = sprintf( '%s_sNc', path);  
 tempeff = sprintf( '%s_seff', path);  
 tempPR = sprintf( '%s_sPR', path);  
@@ -155,7 +155,7 @@ tempWc = sprintf( '%s_sWc', path);
 
 % if design point then calculate and store the values
 if IDes < 0.5
-    path = stripchar_TMATS( gcb() );
+    path = TMATSC_stripchar( gcb() );
     s_C_Nc = NcDes / NcIn;
     TMATSC_setV( 's_C_Nc', path, s_C_Nc );
     s_PR = ( PRmapDes - 1 )/( PR - 1 );
