@@ -54,38 +54,38 @@ static void mdlInitializeSizes(SimStruct *S)
         /* Return if number of expected != number of actual parameters */
         return;
     }
-    
+
     for (i = 0; i < NPARAMS; i++)
         ssSetSFcnParamTunable(S, i, 0);
-    
+
     ssSetNumContStates(S, 0);
     ssSetNumDiscStates(S, 0);
-    
+
     if (!ssSetNumInputPorts(S, 3)) return;
     ssSetInputPortWidth(S, 0, 7);
     ssSetInputPortRequiredContiguous(S, 0, true);
     ssSetInputPortDirectFeedThrough(S, 0, 1);
-    
+
     ssSetInputPortWidth(S, 1, DYNAMICALLY_SIZED);
     ssSetInputPortRequiredContiguous(S, 1, true);
     ssSetInputPortDirectFeedThrough(S, 1, 1);
-    
+
     ssSetInputPortWidth(S, 2, DYNAMICALLY_SIZED);
     ssSetInputPortRequiredContiguous(S, 2, true);
     ssSetInputPortDirectFeedThrough(S, 2, 1);
-    
+
     if (!ssSetNumOutputPorts(S, 3)) return;
     ssSetOutputPortWidth(S, 0, 13);
     ssSetOutputPortWidth(S, 1, DYNAMICALLY_SIZED);
     ssSetOutputPortWidth(S, 2, DYNAMICALLY_SIZED);
-    
+
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
     ssSetNumIWork(S, 6);
     ssSetNumPWork(S, 0);
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
-    
+
     ssSetOptions(S,
             SS_OPTION_WORKS_WITH_CODE_REUSE |
             SS_OPTION_EXCEPTION_FREE_CODE |
@@ -145,30 +145,30 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     const real_T IDes               = *mxGetPr(IDesign_p(S));
     const real_T CustBldEn          = *mxGetPr(CustBldEn_p(S));
     const real_T FBldEn             = *mxGetPr(FBldEn_p(S));
-    
+
     /* vector & array data */
     const real_T *Y_C_NcVec            = mxGetPr(Y_C_NcVec_p(S));
     const real_T *X_C_RlineVec         = mxGetPr(X_C_RlineVec_p(S));
     const real_T *T_C_Map_WcArray      = mxGetPr(T_C_Map_WcArray_p(S));
     const real_T *T_C_Map_PRArray      = mxGetPr(T_C_Map_PRArray_p(S));
     const real_T *T_C_Map_EffArray     = mxGetPr(T_C_Map_EffArray_p(S));
-    
+
     const real_T *FracCusBldht         = mxGetPr(FracCusBldht_p(S));
     const real_T *FracCusBldPt         = mxGetPr(FracCusBldPt_p(S));
     const real_T *FracBldht            = mxGetPr(FracBldht_p(S));
     const real_T *FracBldPt            = mxGetPr(FracBldPt_p(S));
-    
+
     const real_T *X_C_WcSurgeVec       = mxGetPr(X_C_WcSurgeVec_p(S));
     const real_T *T_C_PRSurgeVec       = mxGetPr(T_C_PRSurgeVec_p(S));
-    
+
     /*------get dimensions of parameter arrays-------*/
     const int_T A   = mxGetNumberOfElements(Y_C_NcVec_p(S));
     const int_T B   = mxGetNumberOfElements(X_C_RlineVec_p(S));
     const int_T C   = mxGetNumberOfElements(X_C_WcSurgeVec_p(S));
-    
+
     /*---------Define Inputs for input port 1--------*/
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
-    
+
     double WIn      = u[0];     /* Input Flow [pps] 	*/
     double htIn     = u[1];     /* Input Enthalpy [BTU/lbm] */
     double TtIn     = u[2];     /* Temperature Input [degR] 	*/
@@ -176,19 +176,19 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double FARcIn   = u[4];     /* Combusted Fuel to Air Ratio [frac] 	*/
     double Nmech    = u[5];     /* Mechancial Shaft Speed [rpm] 	*/
     double Rline    = u[6];     /* Rline [NA]  */
-    
+
     /*---------Define Inputs for input port 2--------*/
     const real_T *Wcust = ssGetInputPortRealSignal(S, 1);
     int uWidth1 = ssGetCurrentInputPortDimensions(S, 1, 0);
-    
+
     /*---------Define Inputs for input port 3--------*/
     const real_T *FracWbld  = ssGetInputPortSignal(S,2);
     int uWidth2 = ssGetCurrentInputPortDimensions(S, 2, 0);
-    
+
     real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);   /* Output Array port 1 */
     real_T *y1  = (real_T *)ssGetOutputPortRealSignal(S,1);   /* Output Array port 2 */
     real_T *y2  = (real_T *)ssGetOutputPortRealSignal(S,2);   /* Output Array port 3 */
-    
+
     /*--------Define Constants-------*/
     double WOut, htOut, TtOut, PtOut, FARcOut, TorqueOut, NErrorOut;
     double C_Nc, C_Wc, C_PR, C_Eff;
@@ -196,7 +196,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double TtIdealout, htIdealout, Test, Sout, NcMap, Nc, PRMap, PR, EffMap, Eff;
     double Wb4bleed, Pwrb4bleed, PwrBld;
     double SPR, SMavail;
-    
+
     /* Define Arrays for bleed calcs */
     int MaxNumberBleeds = 100;
     double WcustOut[500];
@@ -209,116 +209,116 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double TtbldOut[500];
     double htbldOut[500];
     double htcustOut[500];
-    
+
     int interpErr = 0;
     int i;
-    
+
     /* ------- get strings -------------- */
     char * BlkNm;
     int_T buflen;
     int_T status;
-    
+
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
     BlkNm = mxMalloc(buflen);
     status = mxGetString(BN_p(S), BlkNm, buflen);
-    
+
     /*-- Compute output Fuel to Air Ratio ---*/
     FARcOut = FARcIn;
-    
+
     /*-- Compute Input enthalpy --------*/
-    
+
     htin = t2hc(TtIn,FARcIn);
-    
+
     /*-- Compute Input entropy  --------*/
-    
+
     Sin = pt2sc(PtIn,TtIn,FARcIn);
-    
+
     /*---- calculate misc. fluid condition related variables and corrected Flow --*/
     delta = PtIn / C_PSTD;
     theta = TtIn / C_TSTD;
     Wcin = WIn*sqrt(theta)/delta;
-    
+
     /*------ Calculate corrected speed ---------*/
     Nc = Nmech/sqrt(theta);
     if (IDes > 0.5)
         C_Nc = Nc / NcDes ;
     else
         C_Nc = s_C_Nc;
-    
-    NcMap = Nc / s_C_Nc;
+
+    NcMap = Nc / C_Nc;
 
     /*-- Compute Total Flow input (from Compressor map)  --------*/
-    
+
     WcMap = interp2Ac(X_C_RlineVec,Y_C_NcVec,T_C_Map_WcArray,Rline,NcMap,B,A,&interpErr);
     if (interpErr == 1 && ssGetIWork(S)[0]==0){
         printf("Warning in %s, Error calculating WcMap. Vector definitions may need to be expanded.\n", BlkNm);
         ssSetIWorkValue(S,0,1);
     }
-    
+
     if (IDes > 0.5)
         C_Wc = Wcin / WcMap;
     else
         C_Wc = s_C_Wc;
-    
+
     WcCalcin = WcMap * C_Wc;
-    
+
     /*-- Compute Pressure Ratio (from Compressor map)  --------*/
-    
+
     PRMap = interp2Ac(X_C_RlineVec,Y_C_NcVec,T_C_Map_PRArray,Rline,NcMap,B,A,&interpErr);
     if (interpErr == 1 && ssGetIWork(S)[1]==0){
         printf("Warning in %s, Error calculating PRMap. Vector definitions may need to be expanded.\n", BlkNm);
         ssSetIWorkValue(S,1,1);
     }
-    
+
     if (IDes > 0.5)
         C_PR = (PRDes -1) / (PRMap-1);
     else
         C_PR = s_C_PR;
-    
+
     PR = C_PR*(PRMap - 1) + 1 ;
-    
+
     /*-- Compute Efficiency (from Compressor map) ---*/
-    
+
     EffMap = interp2Ac(X_C_RlineVec,Y_C_NcVec,T_C_Map_EffArray,Rline,NcMap,B,A,&interpErr);
     if (interpErr == 1 && ssGetIWork(S)[2]==0){
         printf("Warning in %s, Error calculating EffMap. Vector definitions may need to be expanded.\n", BlkNm);
         ssSetIWorkValue(S,2,1);
     }
-    
+
     if (IDes > 0.5)
         C_Eff = EffDes / EffMap;
     else
         C_Eff = s_C_Eff;
-    
+
     Eff = EffMap * C_Eff;
-    
+
     /*------ Compute pressure output --------*/
-    
+
     PtOut = PtIn*PR;
-    
-    
+
+
     /*------ enthalpy calculations ---------*/
-    
+
     /* ---- Ideal enthalpy ----*/
     Sout = Sin;
     TtIdealout = sp2tc(Sout,PtOut,FARcIn);
     htIdealout = t2hc(TtIdealout,FARcIn);
-    
-    
+
+
     /* ---- Final enthalpy output ----*/
-    
+
     htOut = ((htIdealout - htin)/Eff) + htin;
-    
+
     /*------ Compute Temperature output ---------*/
-    
+
     TtOut = h2tc(htOut,FARcIn);
-    
-    
+
+
     /* initalize Bleed sums components */
     Wbleeds = 0;
     PwrBld = 0;
-    
+
     /* compute customer Bleed components */
     for (i = 0; i < uWidth1; i++)
     {
@@ -345,9 +345,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             ssSetIWorkValue(S,3,1);
         }
     }
-    
+
     /*----Disable Fractional bleed when requested----*/
-    
+
     for (i = 0; i < uWidth2; i++)
     {
         if (FracWbld[i] <= 0 || FBldEn < 0.5 ){
@@ -357,7 +357,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             TtbldOut[i] = 0;
             PtbldOut[i] = 0;
         }
-        
+
         else {
             /*-- Compute sum of Fractional Bleed Flow output  --------*/
             Wbleeds = Wbleeds + FracWbld[i]*WIn; /* add to total bleed value */
@@ -373,19 +373,19 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             ssSetIWorkValue(S,4,1);
         }
     }
-    
+
     /*-- Compute Flows  --------*/
     Wb4bleed = WIn;
     WOut = WIn - Wbleeds;
-    
+
     /*------ Compute Powers ---------*/
-    
+
     Pwrb4bleed = Wb4bleed * (htin - htOut) * C_BTU_PER_SECtoHP;
     Pwrout = Pwrb4bleed - PwrBld;
-    
+
     /*----- Compute output Torque to shaft ----*/
     TorqueOut = C_HP_PER_RPMtoFT_LBF * Pwrout/Nmech;
-    
+
     /* ----- Compute Normalized Flow Error ----- */
     if (IDes > 0.5 && Rline == 0)
         NErrorOut = 100;
@@ -395,7 +395,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         NErrorOut = 100;
     else
         NErrorOut = (Wcin - WcCalcin)/Wcin ;
-    
+
     /* Compute Stall Margin */
     SPR = interp1Ac(X_C_WcSurgeVec,T_C_PRSurgeVec,Wcin,C,&interpErr);
     if (interpErr == 1 && ssGetIWork(S)[5]==0){
@@ -403,10 +403,10 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         ssSetIWorkValue(S,5,1);
     }
     SMavail = (SPR - PR)/PR * 100;
-    
+
     /* Test variable */
     Test = PRMap;
-    
+
     /*------Assign output values port1------------*/
     y[0] = WOut;            /* Outlet Total Flow [pps]	*/
     y[1] = htOut;           /* Output Enthalpy [BTU/lbm]	*/
@@ -421,7 +421,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     y[10] = C_PR;           /* Pressure Ratio scalar */
     y[11] = C_Eff;          /* Efficiency scalar */
     y[12] = Test;
-    
+
     /*------Assign output values port2------------*/
     /* Customer or flow based bleed*/
     for (i = 0; i < uWidth1; i++)
@@ -432,7 +432,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         *y1++ = PtcustOut[i];
         *y1++ = FARcustOut[i];
     }
-    
+
     /*------Assign output values port3------------*/
     /* fractional bleed, typically used for turbine cooling flow */
     for (i = 0; i < uWidth2; i++)
@@ -443,7 +443,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         *y2++ = PtbldOut[i];
         *y2++ = FARbldOut[i];
     }
-    
+
 }
 
 static void mdlTerminate(SimStruct *S)
