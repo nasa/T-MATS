@@ -1,19 +1,19 @@
-/*		T-MATS -- Temp2Enth_TMATS.c
+/*		T-MATS -- PT2S_TMATS.c
  * % *************************************************************************
  * % written by Jeffryes Chapman
  * % NASA Glenn Research Center, Cleveland, OH
  * % March 18, 2013
  * %
- * %  This file calculates enthalpy based on temperature and combused fuel to air ratio.
+ * %  This file calculates entropy (S) based on temperature, pressure, and combused fuel to air ratio.
  * % *************************************************************************/
-#define S_FUNCTION_NAME  Temp2Enth_TMATS
+#define S_FUNCTION_NAME  PT2S_TMATS
 #define S_FUNCTION_LEVEL 2
 #include "simstruc.h"
 #include <math.h>
 
 #define NPARAMS 0
 
-extern double t2hc(double i, double j);
+extern double pt2sc(double c, double d, double e);
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -31,7 +31,7 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetNumDiscStates(S, 0);
 
     if (!ssSetNumInputPorts(S, 1)) return;
-    ssSetInputPortWidth(S, 0, 2);
+    ssSetInputPortWidth(S, 0, 3);
     ssSetInputPortRequiredContiguous(S, 0, true);
     ssSetInputPortDirectFeedThrough(S, 0, 1);
 
@@ -64,23 +64,24 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /*---------Define Inputs--------*/
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
 
-    double TIn      = u[0];     /* Temperature [degR] 	*/
-    double FARcIn   = u[1];     /* combusted Fuel to Air Ratio [frac] 	*/
+    double TIn     = u[0];     /* Temperature [degR] */
+    double PIn     = u[1];     /* Pressure [psia] */
+    double FARcIn  = u[2];     /*combusted Fuel to Air Ratio [frac]*/
 
 
 
     real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);  /* Output Array */
 
     /*--------Define Constants-------*/
-    double hOut;
+    double SOut;
 
 
-    /* Calculate Enthalpy */
-    /* Enthalpy will be total or static based on input temperature (total "Tt" or static "Ts") */
-    hOut = t2hc(TIn,FARcIn);
+    /* Calculate Entropy */
+    /*temperature and pressure must be either both total or both static */
+    SOut = pt2sc(PIn,TIn,FARcIn);
 
     /*------Assign output values------------*/
-    y[0] = hOut;      /* enthalpy (BTU/lbm) */
+    y[0] = SOut;      /* entropy [BTU/(lbm*degR)] */
 
 }
 

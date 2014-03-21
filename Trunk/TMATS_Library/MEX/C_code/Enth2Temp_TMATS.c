@@ -1,19 +1,19 @@
-/*		T-MATS -- Temp2Enth_TMATS.c
+/*		T-MATS -- Enth2Temp_TMATS.c
  * % *************************************************************************
  * % written by Jeffryes Chapman
  * % NASA Glenn Research Center, Cleveland, OH
  * % March 18, 2013
  * %
- * %  This file calculates enthalpy based on temperature and combused fuel to air ratio.
+ * %  This file calculates temperature based on enthalpy and combused fuel to air ratio.
  * % *************************************************************************/
-#define S_FUNCTION_NAME  Temp2Enth_TMATS
+#define S_FUNCTION_NAME  Enth2Temp_TMATS
 #define S_FUNCTION_LEVEL 2
 #include "simstruc.h"
 #include <math.h>
 
 #define NPARAMS 0
 
-extern double t2hc(double i, double j);
+extern double h2tc(double i, double j);
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -64,7 +64,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /*---------Define Inputs--------*/
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
 
-    double TIn      = u[0];     /* Temperature [degR] 	*/
+    double hIn      = u[0];      /* enthalpy [BTU/lbm] 	*/
     double FARcIn   = u[1];     /* combusted Fuel to Air Ratio [frac] 	*/
 
 
@@ -72,15 +72,15 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);  /* Output Array */
 
     /*--------Define Constants-------*/
-    double hOut;
+    double TOut;
 
 
-    /* Calculate Enthalpy */
-    /* Enthalpy will be total or static based on input temperature (total "Tt" or static "Ts") */
-    hOut = t2hc(TIn,FARcIn);
+    /* Temperature look up */
+    /* TOut will be total or static based on input enthalpy (total "ht" or static "hs") */
+    TOut = h2tc(hIn,FARcIn);
 
     /*------Assign output values------------*/
-    y[0] = hOut;      /* enthalpy (BTU/lbm) */
+    y[0] = TOut;      /* Temperature [degR] */
 
 }
 
