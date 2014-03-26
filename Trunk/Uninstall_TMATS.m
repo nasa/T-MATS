@@ -1,5 +1,5 @@
 function Uninstall_TMATS()
-
+% This subroutine uninstalls T-MATS
 error = 0;
 TMATSRemovemsg = 'Remove T-MATS matlab toolbox? Note: Un-Installation will remove MATLAB paths.';
 POp = filesep;
@@ -53,6 +53,13 @@ switch questdlg(TMATSRemovemsg, 'T-MATS Library', 'Yes', 'No', 'No');
         end
         
         if error ==0;
+            disp('Removing Contents.m');
+            cd( 'TMATS_Library')
+            fid = fopen('Contents.m');
+            fclose(fid);
+            delete('Contents.m');
+            eval(['cd ' CurrDir]);
+            
             disp('T-MATS path removal complete.');
             disp('Note: changes made to the startup.m file will need to be removed manually.. see User Manual for details');
         end

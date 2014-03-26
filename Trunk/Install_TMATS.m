@@ -1,4 +1,10 @@
 function Install_TMATS()
+% This subroutine installs T-MATS
+
+% TMATSver and date must remain in the listed form for the ver command to work
+% properly.
+TMATSver = '1.0.1';
+TMATSdate = '26-March-2014';
 
 error = 0;
 TMATSInstallmsg = 'Install T-MATS matlab toolbox? Note: Installation will add MATLAB paths and generate MEX files.';
@@ -65,6 +71,16 @@ switch questdlg(TMATSInstallmsg, 'T-MATS Library', 'Yes', 'No', 'No');
             throw(ME);
         end
         if error ==0;
+            cd( 'TMATS_Library')
+            disp('Building Contents.m file');
+            fid = fopen('Contents.m','w');
+            fprintf(fid,'%% T-MATS.\n');
+            fprintf(fid,['%% Version',' ',TMATSver,' ',TMATSdate,'\n%%\n%% Files\n']);
+            fprintf(fid,'%%   Install_TMATS   - This subroutine installs T-MATS\n');
+            fprintf(fid,'%%   Uninstall_TMATS - This subroutine uninstalls T-MATS\n');
+            fclose(fid);
+            eval(['cd ' CurrDir]);
+            
             disp('T-MATS installation complete.');
         end
     case 'No',
