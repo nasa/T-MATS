@@ -24,8 +24,14 @@ void PcalcStat(double Pt, double Ps, double Tt, double ht, double FAR, double Rt
             *S = pt2sc(Pt, Tt, FAR);
             /* Compute Static Temperature */
             *Ts = sp2tc(*S,Ps,FAR);
+            if (*Ts > Tt) {
+                    *Ts = Tt;
+            }
             /* Compute static enthalpy */
             *hs = t2hc(*Ts,FAR);
+            if (*hs > ht) {
+                    *hs = ht;
+            }
             /* Assume Rt = Rs */
             Rs = Rt;
             /* Compute static rho */

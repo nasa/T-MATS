@@ -52,7 +52,7 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetInputPortDirectFeedThrough(S, 0, 1);
 
     if (!ssSetNumOutputPorts(S, 1)) return;
-    ssSetOutputPortWidth(S, 0, 2);
+    ssSetOutputPortWidth(S, 0, 5);
 
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
@@ -119,7 +119,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);  /* Output Array */
 
     /*--------Define Constants-------*/
-    double PsOut, TsOut;
+    double PsOut, TsOut, rhosOut, MNOut, AthOut;
     double Sin, htin;
     double Rt, Rs;
     double TsMNg, PsMNg, MNg;
@@ -174,18 +174,24 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             ssSetIWorkValue(S,2,1);
         }
         MNg = Vg/sqrt(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST);
+
+        if (Vg > 0.0001){
+            Acalc = WIn/(Vg * rhosg/C_SINtoSFT);}
+        else {
+            Acalc = 999; /* if velocity is close to zero assume a very large Ath */}
+
         erMN = MNIn - MNg;
         PsMNg_new = PsMNg + 0.05;
         maxiter = 15;
         iter = 0;
-        erthr = 0.001;
+        erthr = 0.0001;
 
         /* if Ps is not close enough to Ps at MN = MNIn, iterate to find Ps at MN = MNIn */
         while (abs_D(erMN) > erthr && iter < maxiter) {
             erMN_old = erMN;
             PsMNg_old = PsMNg;
-            if(abs_D(PsMNg - PsMNg_new) < 0.03)
-                PsMNg = PsMNg + 0.05;
+            if(abs_D(PsMNg - PsMNg_new) < 0.003)
+                PsMNg = PsMNg + 0.005;
             else
                 PsMNg = PsMNg_new;
             PcalcStat(PtIn, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
@@ -195,6 +201,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
                 ssSetIWorkValue(S,3,1);
             }
             MNg = Vg/sqrt(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST);
+            /* calculated Area */
+            if (Vg > 0.0001){
+                Acalc = WIn/(Vg * rhosg/C_SINtoSFT);}
+            else {
+                Acalc = 999; /* if velocity is close to zero assume a very large Ath */}
+
             erMN = MNIn - MNg;
             if (abs_D(erMN) > erthr) {
                 /* determine next guess pressure by secant algorithm */
@@ -208,6 +220,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         }
         TsOut = TsMNg;
         PsOut = PsMNg;
+        rhosOut = rhosg;
+        MNOut = MNIn;
+        AthOut = Acalc;
     }
     /* Solve for Ts and Ps when Ath is known*/
     else if (SolveType == 0) {
@@ -219,48 +234,67 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         Psg = PtIn*pow((Tsg/TtIn),(gammatg/(gammatg-1)));
         PcalcStat(PtIn, Psg, TtIn, htin, FARcIn, Rt, &Sin, &Tsg, &hsg, &rhosg, &Vg);
         Acalc = WIn/(Vg * rhosg/C_SINtoSFT);
+        MNg = Vg/sqrt(gammasg*Rs*Tsg*C_GRAVITY*JOULES_CONST);
 
         /* determine guess error for static pressure iteration */
         erA = (AthroatIn - Acalc)/AthroatIn;
 
         /* determine iteration constants */
         iter = 0;
-        maxiter = 15;
+        maxiter = 1000;
         Psg_new = Psg + 0.05;
-        erthr = 0.001;
+        erthr = 0.0001;
 
         while ( abs_D(erA) > erthr && iter < maxiter){
             erA_old = erA;
             Psg_old = Psg;
-            if(abs_D(Psg - Psg_new) < 0.03) {
-                Psg = Psg + 0.05;
+            if(abs_D(Psg - Psg_new) < 0.0003) {
+                Psg = Psg + 0.0005;
             }
             else {
                 Psg = Psg_new;
             }
             /* calculate flow velocity and rhos */
             PcalcStat(PtIn, Psg, TtIn, htin, FARcIn, Rt, &Sin, &Tsg, &hsg, &rhosg, &Vg);
-            /* calculated Area */
-            Acalc = WIn/(Vg * rhosg/C_SINtoSFT);
-            /*determine error */
-            erA = (AthroatIn - Acalc)/AthroatIn;
 
+            gammasg = interp2Ac(X_FARVec,Y_TtVec,T_gammaArray,FARcIn,Tsg,A,B,&interpErr);
+            if (interpErr == 1 && ssGetIWork(S)[3]==0){
+                printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
+                ssSetIWorkValue(S,3,1);
+            }
+
+            MNg = Vg/sqrt(gammasg*Rs*Tsg*C_GRAVITY*JOULES_CONST);
+
+            if (Vg > 0.0001) {
+                /* calculated Area */
+                Acalc = WIn/(Vg * rhosg/C_SINtoSFT);
+                /*determine error */
+                erA = (AthroatIn - Acalc)/AthroatIn;
+            }
+            else {
+                erA = 0;
+                Psg = PtIn;
+                Tsg = TtIn;
+                Acalc = 999;
+            }
             if (abs_D(erA) > erthr) {
                 /* determine next guess pressure by secant algorithm */
                 Psg_new = Psg - erA *(Psg - Psg_old)/(erA - erA_old);
                 /* limit algorthim change */
-                if (Psg_new > 1.1*Psg) {
-                    Psg_new = 1.1 * Psg;
+                if (Psg_new > 1.001*Psg) {
+                    Psg_new = 1.002 * Psg;
                 }
-                else if (Psg_new < 0.9 * Psg) {
-                    Psg_new = 0.9 * Psg;
+                else if (Psg_new < 0.999 * Psg) {
+                    Psg_new = 0.998 * Psg;
                 }
             }
             iter = iter + 1;
         }
         TsOut = Tsg;
         PsOut = Psg;
-
+        rhosOut = rhosg;
+        MNOut = MNg;
+        AthOut = Acalc;
     }
     else {
         if (ssGetIWork(S)[5]==0 ){
@@ -269,12 +303,18 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         }
         TsOut = TtIn;
         PsOut = PtIn;
+        rhosOut = 1;
+        MNOut = 0;
+        AthOut = 100;
     }
 
 
     /*------Assign output values------------*/
-    y[0] = TsOut;      /* Static Temperature [degR] */
-    y[1] = PsOut;      /* Static Pressure [psia] */
+    y[0] = TsOut;      /* static Temperature [degR] */
+    y[1] = PsOut;      /* static Pressure [psia] */
+    y[2] = rhosOut;    /* static rho [lbm/ft3]*/
+    y[3] = MNOut;      /* mach number [frac]*/
+    y[4] = AthOut;     /* throat area [in^2] */
 
 }
 
