@@ -15,14 +15,17 @@ This Block calculates static pressure and temperature from an input flow stream 
 <br>
 <font size="5" color="Blue">StaticCalc Outputs:</font>
 <table border="1"> <tr><td>StaticCalc Output</td><td>Description</td></tr>
-    <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 vector consisting of:
-            <br>- Ts - Static Temperature [R]
-    <br>- Ps - Static Pressure [psia]</td></tr>
+    <tr><td>SOutBus</td><td>Static Output Bus, 5x1 vector consisting of:
+            <br>- Ts - Static Temperature [degR]
+    <br>- Ps - Static Pressure [psia]
+    <br>- rhos - Static rho [lbm/ft3]
+    <br>- MN - Mach Number [frac]
+    <br>- Ath - Throat Area [in2]</td></tr>
 </table>
 <br>
 <font size="5" color="Blue">StaticCalc Mask Variables: </font>
 <table border="1"> <tr><td>StaticCalc Mask Variable</td><td>Description</td></tr>
-    <tr><td>ST_M</td><td>Solve Type: 
+    <tr><td>ST_M</td><td>Solve Type:
     <br>unchecked - Assumed Ath
     <br>checked - Assumed MN </td></tr>
     <tr><td>Ath_M</td><td>Assumed Ath [in^2]</td></tr>
