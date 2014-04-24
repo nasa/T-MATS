@@ -45,31 +45,30 @@ static void mdlInitializeSizes(SimStruct *S)
         /* Return if number of expected != number of actual parameters */
         return;
     }
-    
+
     for (i = 0; i < NPARAMS; i++)
         ssSetSFcnParamTunable(S, i, 0);
-    
+
     ssSetNumContStates(S, 0);
     ssSetNumDiscStates(S, 0);
-    
+
     if (!ssSetNumInputPorts(S, 1)) return;
     ssSetInputPortWidth(S, 0, 6);
     ssSetInputPortRequiredContiguous(S, 0, true);
     ssSetInputPortDirectFeedThrough(S, 0, 1);
-    
+
     if (!ssSetNumOutputPorts(S, 1)) return;
     ssSetOutputPortWidth(S, 0, 5);
-    
+
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
     ssSetNumIWork(S, 10);
     ssSetNumPWork(S, 0);
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
-    
+
     ssSetOptions(S,
             SS_OPTION_WORKS_WITH_CODE_REUSE |
-            SS_OPTION_EXCEPTION_FREE_CODE |
             SS_OPTION_USE_TLC_WITH_ACCELERATOR);
 }
 
@@ -95,19 +94,19 @@ static void mdlStart(SimStruct *S)
     ssSetIWorkValue(S,7,0);
     ssSetIWorkValue(S,8,0);
     ssSetIWorkValue(S,9,0);
-    
+
 }
 #endif
 
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
-    
+
     /*--------parameters defined in S-function block--------*/
     const real_T AthroatIn              = *mxGetPr(AthroatIn_p(S)); /* input throat area (sq-in) */
     const real_T flowLoss               = *mxGetPr(flowLoss_p(S));
     const real_T IDes                   = *mxGetPr(iDesign_p(S));
     const real_T WDes                   = *mxGetPr(WDes_p(S));
-    
+
     /* vector & array data */
     const real_T *Y_N_FARVec            = mxGetPr(Y_N_FARVec_p(S));
     const real_T *T_N_RtArray           = mxGetPr(T_N_RtArray_p(S));
@@ -118,26 +117,26 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     const real_T *T_N_CvArray           = mxGetPr(T_N_CvArray_p(S));
     const real_T *T_N_TGArray           = mxGetPr(T_N_TGArray_p(S));
     const real_T *X_N_TtVecTG           = mxGetPr(X_N_TtVecTG_p(S));
-    
+
     /*------get dimensions of parameter arrays-------*/
     const int_T A   = mxGetNumberOfElements(Y_N_FARVec_p(S));
     const int_T B   = mxGetNumberOfElements(X_N_TtVec_p(S));
     const int_T B1  = mxGetNumberOfElements(X_N_PEQPaVec_p(S));
     const int_T C   = mxGetNumberOfElements(X_N_TtVecTG_p(S));
-    
-    
+
+
     /*---------Define Inputs--------*/
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
-    
+
     double WIn      = u[0];     /* Input Flow [pps] 	*/
     double htIn     = u[1];     /* enthaply [BTU/lbm] 	*/
     double TtIn     = u[2];     /* Temperature Input [degR] 	*/
     double PtIn     = u[3];     /* Pressure Input [psia] 	*/
     double FARcIn   = u[4];     /* Combusted Fuel to Air Ratio [frac] 	*/
     double PambIn   = u[5];     /* Ambient Pressure [psia] 	*/
-    
+
     real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);   /* Output Array */
-    
+
     /*--------Define Constants-------*/
     double choked, Ps, Ts, rhos, V, Test, MN1;
     double CdTh, Cv, Therm_growth, PQPa, PQPaMap, AthroatHot;
@@ -148,24 +147,24 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double maxIters,tolerance, ncount, PsMNg_new, erthr;
     int maxiter, iter;
     int interpErr = 0;
-    
+
     /* ------- get strings -------------- */
     char * BlkNm;
     int_T buflen;
     int_T status;
-    
+
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
     BlkNm = mxMalloc(buflen);
     status = mxGetString(BN_p(S), BlkNm, buflen);
-    
+
     /* Calc entropy */
     Sin = pt2sc(PtIn, TtIn, FARcIn);
-    
+
     /*-- Compute Input enthalpy --------*/
-    
+
     htin = t2hc(TtIn,FARcIn);
-    
+
     /*  Where gas constant is R = f(FAR), but NOT P & T */
     Rt = interp1Ac(Y_N_FARVec,T_N_RtArray,FARcIn,A,&interpErr);
     if (interpErr == 1 && ssGetIWork(S)[0]==0){
@@ -173,7 +172,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         ssSetIWorkValue(S,0,1);
     }
     Rs = Rt;
-    
+
     /*---- set MN = 1 and calc SS Ps for iteration IC --------*/
     MNg = 1;
     gammatg = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,TtIn,A,B,&interpErr);
@@ -183,7 +182,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     }
     TsMNg = TtIn /(1+MNg*MNg*(gammatg-1)/2);
     PsMNg = PtIn*pow((TsMNg/TtIn),(gammatg/(gammatg-1)));
-    
+
     PcalcStat(PtIn, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
     gammasg = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,TsMNg,A,B,&interpErr);
     if (interpErr == 1 && ssGetIWork(S)[2]==0){
@@ -227,13 +226,13 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     rhos = rhosg;
     hs = hsg;
     gammas = gammasg;
-    
+
     /* Determine if Nozzle is choked  */
     if (PsMN1<PambIn)
         choked = 0;
     else {
         choked = 1;
-        
+
     }
     /* Assumed not choked,  set Ps to ambient pressure and calculate parameters */
     if (choked ==0){
@@ -246,7 +245,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         }
         MN = V/sqrt(gammas*Rs*Ts*C_GRAVITY*JOULES_CONST);
     }
-    
+
     else{  /* Assuming choked, determine static pressure and tempurature */
         Ps = PsMN1;
         Ts = TsMN1;
@@ -254,18 +253,18 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         /*----- calc other values for this Mach number ----*/
         V = MN*sqrt(gammas*Rs*Ts*C_GRAVITY*JOULES_CONST);
     }
-    
+
     /* error('Nozzle Error: Negative Mach number!!') */
     if (MN<0 && ssGetIWork(S)[6]==0){
         printf("Error in %s: negative mach number,  MN = %f. Vector definitions may need to be expanded.\n", BlkNm, MN);
     }
-    
+
     /* Pressure before nozzle/P ambient */
     PQPa = PtIn / PambIn;
-    
+
     /* cacluate Thermal Constants */
     PQPaMap = PQPa;
-    
+
     CdTh = interp1Ac(X_N_PEQPaVec,T_N_CdThArray,PQPaMap,B1,&interpErr);
     if (interpErr == 1 && ssGetIWork(S)[7]==0){
         printf("Warning in %s, Error calculating CdTh. Vector definitions may need to be expanded.\n", BlkNm);
@@ -281,24 +280,24 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         printf("Warning in %s, Error calculating Therm_growth. Vector definitions may need to be expanded.\n", BlkNm);
         ssSetIWorkValue(S,9,1);
     }
-    
-    
+
+
     /* Determine throat area in^2 */
     if (IDes < 0.5)
         Ath = WIn * C_PSItoPSF / (Therm_growth *(1-flowLoss/100)*CdTh*rhos*V);
     else
         Ath = AthroatIn;
-    
+
     /* Calculate Flow out of nozzle */
     AthroatHot = Ath * Therm_growth;
     Woutcalc = (1-flowLoss/100)*AthroatHot*CdTh*rhos*V/C_PSItoPSF;
     WOut = WIn;
-    
+
     Test = rhos;
-    
+
     /*----- calc gross thrust -----------*/
     FgOut = ((WOut/C_GRAVITY) * V * Cv) + ((Ps-PambIn) * Ath);
-    
+
     /* ----- Compute Normalized Flow Error ----- */
     if (IDes < 0.5 && WDes == 0)
         NErrorOut = 100;
@@ -315,7 +314,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     y[2] = NErrorOut;     /* Normalized Flow Error [frac] */
     y[3] = Ath;           /* Throat Area [in^2] */
     y[4] = Test;
-    
+
 }
 
 static void mdlTerminate(SimStruct *S)

@@ -40,31 +40,30 @@ static void mdlInitializeSizes(SimStruct *S)
         /* Return if number of expected != number of actual parameters */
         return;
     }
-    
+
     for (i = 0; i < NPARAMS; i++)
         ssSetSFcnParamTunable(S, i, 0);
-    
+
     ssSetNumContStates(S, 0);
     ssSetNumDiscStates(S, 0);
-    
+
     if (!ssSetNumInputPorts(S, 1)) return;
     ssSetInputPortWidth(S, 0, 10);
     ssSetInputPortRequiredContiguous(S, 0, true);
     ssSetInputPortDirectFeedThrough(S, 0, 1);
-    
+
     if (!ssSetNumOutputPorts(S, 1)) return;
     ssSetOutputPortWidth(S, 0, 5);
-    
+
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
     ssSetNumIWork(S, 8);
     ssSetNumPWork(S, 0);
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
-    
+
     ssSetOptions(S,
             SS_OPTION_WORKS_WITH_CODE_REUSE |
-            SS_OPTION_EXCEPTION_FREE_CODE |
             SS_OPTION_USE_TLC_WITH_ACCELERATOR);
 }
 
@@ -100,19 +99,19 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     const real_T s_M_Imp2                  = *mxGetPr(s_M_Imp2_p(S));
     const real_T s_M_V1                    = *mxGetPr(s_M_V1_p(S));
     const real_T s_M_V2                    = *mxGetPr(s_M_V2_p(S));
-    
+
     /*-------- vector & array data -------*/
     const real_T *Y_M_FARVec		= mxGetPr(Y_M_FARVec_p(S));
     const real_T *T_M_RtArray       = mxGetPr(T_M_RtArray_p(S));
-    
-    
-    
+
+
+
     /*------get dimensions of parameter arrays-------*/
     const int_T A   = mxGetNumberOfElements(T_M_RtArray_p(S));
-    
+
     /*---------Define Inputs--------*/
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
-    
+
     double W1In     = u[0];     /* Input 1 Flow [pps]                     */
     double ht1In    = u[1];     /* Input 1 enthalpy [BTU/lbm]             */
     double Tt1In	= u[2];     /* Temperature Input 1 [degR]             */
@@ -123,10 +122,10 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double Tt2In	= u[7];     /* Temperature Input 1 [degR]             */
     double Pt2In	= u[8];     /* Pressure Input 1 [psia]                */
     double FARc2In  = u[9];     /* Combusted Fuel to Air Ratio 1 [frac]   */
-    
-    
+
+
     real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);  /* Output Array */
-    
+
     /*--------Define Constants-------*/
     double WOut, FARcOut, TtOut, Aphyout, PtOut;
     double Test;
@@ -137,27 +136,27 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double E1thr, E2thr, Eout1thr, Eout2thr, Ptoutg, Ptoutg_old, Ptoutg_new, Impulseoutputg, ImpulseMixed;
     int iter1, iter2, iter3a, iter3b, maxiter;
     int interpErr = 0;
-    
-    
-    
+
+
+
     /* ------- get strings -------------- */
     char * BlkNm;
     int_T buflen;
     int_T status;
-    
+
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
     BlkNm = mxMalloc(buflen);
     status = mxGetString(BN_p(S), BlkNm, buflen);
-    
+
     /* determine area */
     Aphyout = Aphy1 + Aphy2;
-    
+
     /* calculate output flow */
     WOut = W1In + W2In;
     /* calculate output fuel to air ratio */
     FARcOut = (FARc1In * W1In + FARc2In *W2In)/WOut;
-    
+
     /* determine gas characteristics */
     /*  Where gas constant is R = f(FAR), but NOT P & T */
     Rt1 = interp1Ac(Y_M_FARVec,T_M_RtArray,FARc1In,A,&interpErr);
@@ -175,16 +174,16 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         printf("Warning in %s, Error calculating Rtout. Vector definitions may need to be expanded.\n", BlkNm);
         ssSetIWorkValue(S,2,1);
     }
-    
+
     /* determine calculated enthalpy for input flows */
     ht1in = t2hc(Tt1In,FARc1In);
     ht2in = t2hc(Tt2In,FARc2In);
     /* calculate total enthalpy */
     htOut = (W1In*ht1in + W2In*ht2in)/WOut;
-    
+
     /* calculate total output temperature */
     TtOut = h2tc(htOut, FARcOut);
-    
+
     /* start iteration to find Ps1in */
     /* guess Ps1 and calculate an initial Area error */
     MN1g = 0.3;
@@ -194,7 +193,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     PcalcStat(Pt1In, Ps1g, Tt1In, ht1in, FARc1In, Rt1, &S1in, &Ts1, &hs1, &rhos1, &V1);
     A1calc = W1In/(V1 * rhos1/C_SINtoSFT);
     E1 = abs_D((Aphy1 - A1calc)/Aphy1);
-    
+
     /* iterate to find static pressure, calculated area should be close to actual area */
     maxiter = 15;
     iter1 = 0;
@@ -215,7 +214,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         A1calc = W1In/(V1 * rhos1/C_SINtoSFT);
         /*determine error */
         E1 = (Aphy1 - A1calc)/Aphy1;
-        
+
         if (abs_D(E1) > E1thr) {
             /* determine next guess pressure by secant algorithm */
             Ps1g_new = Ps1g - E1 *(Ps1g - Ps1g_old)/(E1 - E1_old);
@@ -235,7 +234,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         ssSetIWorkValue(S,3,1);
     }
     /* end Ps1in iteration */
-    
+
     /* start iteration to find Ps2in */
     /* guess Ps2 and calculate an initial Area error */
     MN2g = 0.3;
@@ -245,7 +244,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     PcalcStat(Pt2In, Ps2g, Tt2In, ht2in, FARc2In, Rt2, &S2in, &Ts2, &hs2, &rhos2, &V2);
     A2calc = W2In/(V2 * rhos2/C_SINtoSFT);
     E2 = abs_D((Aphy2 - A2calc)/Aphy2);
-    
+
     /* iterate to find static pressure, calculated area should be close to actual area */
     iter2 = 0;
     Ps2g_new = Ps2g + 0.05;
@@ -265,7 +264,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         A2calc = W2In/(V2 * rhos2/C_SINtoSFT);
         /*determine error */
         E2 = (Aphy2 - A2calc)/Aphy2;
-        
+
         if (abs_D(E2) > E2thr) {
             /* determine next guess pressure by secant algorithm */
             Ps2g_new = Ps2g - E2 *(Ps2g - Ps2g_old)/(E2 - E2_old);
@@ -280,14 +279,14 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         iter2 = iter2 + 1;
     }
     Ps2 = Ps2g;
-    
+
     if (iter1 == maxiter && ssGetIWork(S)[4]==0){
         printf("Warning in %s, unable to caluclate Ps2, PtOut may contain high error\n", BlkNm);
         ssSetIWorkValue(S,4,1);
     }
     /* end Ps2 iteration */
-    
-    
+
+
     /* start iteration to find Psout */
     /* guess a Ptout */
     Ptoutg = (W1In* Pt1In + W2In * Pt2In) / WOut;
@@ -300,13 +299,13 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     Aoutcalc = WOut/(Vout * rhosout/C_SINtoSFT);
     /* determine guess error for static pressure iteration */
     Eout2 = abs_D((Aphyout - Aoutcalc)/Aphyout);
-    
+
     /* determine guess error for total pressure iteration */
-    
+
     ImpulseMixed = s_M_Imp1*(Ps1*Aphy1 + W1In * V1 * s_M_V1/C_GRAVITY) + s_M_Imp2*(Ps2 * Aphy2 + W2In * V2 * s_M_V2/ C_GRAVITY);
     Impulseoutputg = Psoutg * Aphyout + WOut * Vout/C_GRAVITY;
     Eout1 = abs_D((ImpulseMixed - Impulseoutputg)/ ImpulseMixed);
-    
+
     /* determine iteration constants */
     iter3a = 0;
     Ptoutg_new = Ptoutg + 0.05;
@@ -323,7 +322,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         else {
             Ptoutg = Ptoutg_new;
         }
-        
+
         iter3b = 0;
         /* iterate to find static pressure, calculated area should be close to actual area */
         do{
@@ -341,7 +340,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             Aoutcalc = WOut/(Vout * rhosout/C_SINtoSFT);
             /*determine error */
             Eout2 = (Aphyout - Aoutcalc)/Aphyout;
-            
+
             if (abs_D(Eout2) > Eout2thr) {
                 /* determine next guess pressure by secant algorithm */
                 Psoutg_new = Psoutg - Eout2 *(Psoutg - Psoutg_old)/(Eout2 - Eout2_old);
@@ -355,7 +354,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             }
             iter3b = iter3b + 1;
         }while ( abs_D(Eout2) > Eout2thr && iter3b < maxiter);
-        
+
         /* verify Ps is <= Pt */
         if (Psoutg > Ptoutg){
             Psoutg = Ptoutg;
@@ -365,12 +364,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             }
         }
         /* end Psout iteration for current Ptout guess */
-        
+
         /* calculate impulse output based on current Pt guess */
         Impulseoutputg = Psoutg * Aphyout + WOut * Vout/C_GRAVITY;
         /* calculate impulse error */
         Eout1 = abs_D((ImpulseMixed - Impulseoutputg)/ ImpulseMixed);
-        
+
         if (abs_D(Eout1) > Eout1thr) {
             /* determine next guess pressure by secant algorithm */
             Ptoutg_new = Ptoutg - Eout1 *(Ptoutg - Ptoutg_old)/(Eout1 - Eout1_old);
@@ -382,31 +381,31 @@ static void mdlOutputs(SimStruct *S, int_T tid)
                 Ptoutg_new = 0.9 * Ptoutg;
             }
         }
-        
-        
+
+
         iter3a = iter3a + 1;
     }
     /* end PtOut iteration */
     Psout = Psoutg;
     PtOut = Ptoutg;
-    
+
     if (iter3a == maxiter && ssGetIWork(S)[6]==0){
         printf("Error in %s, unable to calculate PtOut\n", BlkNm);
         ssSetIWorkValue(S,6,1);
     }
-    
+
     if (iter3b == maxiter && ssGetIWork(S)[7]==0){
         printf("Warning in %s, unable to caluclate PsOut, PtOut may contain high error\n", BlkNm);
         ssSetIWorkValue(S,7,1);
     }
-    
+
     /*------Assign output values------------*/
     y[0] = WOut;     /* Output Air Flow [pps]						*/
     y[1] = htOut; 	  /* Output Enthalpy [BTU/lbm] 					*/
     y[2] = TtOut;     /* Output Temperature  [degR]					*/
     y[3] = PtOut;     /* Output Pressure [psia]						*/
     y[4] = FARcOut;   /* Output Combusted Fuel to Air Ratio [frac] 	*/
-    
+
 }
 
 static void mdlTerminate(SimStruct *S)
