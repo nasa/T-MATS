@@ -18,31 +18,35 @@ outFlow(10) = flow1(10);
  %write out a mass composition array for cantera
    tempcomp = '';
    compname = {'', '', '', '', '', '', '', '', '', '', '', ''};
-   fract = [0 0 0 0 0 0 0 0 0 0 0 0]
+   fract = [0 0 0 0 0 0 0 0 0 0 0 0];
    numcurrent = 0;
    for cName = 1:6
        for cSpecies = 1:6
-           if Species{cName,cSpecies}*outFlow(cName+4) > 0.00001
-               numcurrent = numcurrent+1;
+           if Species{cName,cSpecies}*outFlow(cName+4) > 0.00000001
+               numcurrent = numcurrent+1
                fract(numcurrent)=Species{cName,cSpecies}*outFlow(cName+4);
                fprintf('%g\n',numcurrent );
                
                compname{numcurrent} = Name{cName,cSpecies};
-               tempcomp = sprintf( '%s %s:%f', tempcomp, Name{cName,cSpecies},Species{cName,cSpecies}*outFlow(cName+4) );
+               tempcomp = sprintf( '%s %s:%f', tempcomp, Name{cName,cSpecies},Species{cName,cSpecies}*outFlow(cName+4) )
            end
        end 
    end
    
+   outFlow
+   if  numcurrent >  1 
    for count1 = numcurrent:1;
-      for  cont2 = count1-1:1
-          if strcmp( compname(count2),compname(cont1) )
+      for  count2 = count1-1:1
+          if strcmp( compname(count2),compname(count1) )
               fract(count2)=fract(count2)+fract(count1);
           else
               tempcomp = sprintf( '%s %s:%f', tempcomp,compname(count1),fract(count1) );
           end
       end
    end
-   
+   end
+
+   tempcomp
    set( fs, 'Y',tempcomp);
 
 % set the conditions
