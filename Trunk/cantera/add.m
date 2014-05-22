@@ -41,15 +41,16 @@ function [outFlow] = add( flow1, flow2 )
            end
        end 
    end
-   
+   if ( numcurrent > 1 ) 
    for count1 = numcurrent:1;
-      for  cont2 = count1-1:1
-          if strcmp( compname(count2),compname(cont1) )
+      for  count2 = count1-1:1
+          if strcmp( compname(count2),compname(count1 ))
               fract(count2)=fract(count2)+fract(count1);
           else
               tempcomp = sprintf( '%s %s:%f', tempcomp,compname(count1),fract(count1) );
           end
       end
+   end
    end
    
    set( fs, 'Y',tempcomp);
