@@ -1,0 +1,102 @@
+<font size="6" color="Magenta">T-MATS: Compressor, Cantera Library Block</font>
+<br>
+This block simulates the performance of a compressor using basic 
+thermodynamic equations, properties, Cantera functions, and table lookups.
+To utilize this block a Cantera object must exist in the workspace as a
+global variable named fs, which may be created with the Cantera importPhase command.
+The fs variable must include all Species defined in the file TMATSC_canteraload.m.
+<br>
+<br>
+<font size="5" color="Blue">Compressor Inputs:</font>
+<table border="1"> <tr><td>Compressor Input</td><td>Description</td></tr>
+    <tr><td>Flow In</td><td>Flow Data Input, 25x1 vector consisting of:
+            <br>-1- W      - gas path flow [pps]
+            <br>-2- Tt     - total temperature [degR] 
+            <br>-3- Pt     - total pressure [psia]
+            <br>-4- ht     - total enthlapy [BTU/lbm]
+            <br>-5to10- species array values, defined in TMATSC_canteraload.m
+            <br>-11- s     - entropy [BTU/(lbm*degR)]
+            <br>-12- rhot  - total density [lbm/ft3]
+            <br>-13- Ts    - static temperature [degR]
+            <br>-14- Ps    - static pressure [psia]
+            <br>-15- hs    - static enthalpy [BTU/lbm]
+            <br>-16- rhos  - static density [lbm/ft3]
+            <br>-17- Vflow - flow velocity [ft/sec]
+            <br>-18- MNin  - Mach number
+            <br>-19- A     - flow area [in2]
+            <br>-20- gamt  - total specific heat ratio
+            <br>-21- gams  - static specific heat ratio
+            <br>-22to25- future use
+        </td></tr>
+    <tr><td>Speed</td><td>shaft speed [rpm]</td></tr>
+    <tr><td>Rline</td><td>R-line, position on compressor map 
+            <br>Determines pressure ratio, efficiency, and gas path flow. 
+            <br>The value for this variable will need be solved for by driving 
+    <br>flow error across the engine to zero.</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Compressor Outputs:</font>
+<table border="1"><tr><td>Compressor Output</td><td>Description</td></tr>
+    <tr><td>Flow Out</td><td>Flow Data Output, 25x1 vector consisting of:
+            <br>-1- W      - gas path flow [pps]
+            <br>-2- Tt     - total temperature [degR] 
+            <br>-3- Pt     - total pressure [psia]
+            <br>-4- ht     - total enthlapy [BTU/lbm]
+            <br>-5to10- species array values, defined in TMATSC_canteraload.m
+            <br>-11- s     - entropy [BTU/(lbm*degR)]
+            <br>-12- rhot  - total density [lbm/ft3]
+            <br>-13- Ts    - static temperature [degR]
+            <br>-14- Ps    - static pressure [psia]
+            <br>-15- hs    - static enthalpy [BTU/lbm]
+            <br>-16- rhos  - static density [lbm/ft3]
+            <br>-17- Vflow - flow velocity [ft/sec]
+            <br>-18- MNin  - Mach number
+            <br>-19- A     - flow area [in2]
+            <br>-20- gamt  - total specific heat ratio
+            <br>-21- gams  - static specific heat ratio
+            <br>-22to25- future use
+        </td></tr>
+    <tr><td>Bleed 1</td><td>Fractional Bleed 1, 25x1 vector defined as Flow Out above.</td></tr>
+    <tr><td>Bleed 2</td><td>Fractional Bleed 2, 25x1 vector defined as Flow Out above.</td></tr>
+    <tr><td>Flow Error</td><td>Normalized Error [frac], in a typical system this will 
+    <br>be driven to zero by an iterative solver </td></tr>
+    <tr><td>Power</td><td>Compressor power output [hp], negative value for a compressor.</td></tr>
+    <tr><td>C_Data</td><td>Compressor internal calculation Data, 4x1 vector including:
+            <br>- SMavail - Stall Margin Available [%]
+            <br>- eff - Efficiency [frac] 
+            <br>- Wc - corrected flow [pps]
+            <br>- PR - pressure ratio [frac]</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Compressor Mask Variables: </font>
+<table border="1"> <tr><td>Compressor Mask Variablet</td><td>Description</td></tr>
+    <tr><td>MapFile_M</td><td>compressor map file name</td></tr>
+    <tr><td>s_C_Nc_in_M</td><td>corrected speed scalar constant</td></tr>
+    <tr><td>s_C_Wc_in_M</td><td>corrected flow scalar constant</td></tr>
+    <tr><td>s_C_PR_in_M</td><td>pressure ratio scalar constant</td></tr>
+    <tr><td>s_C_eff_in_M</td><td>cefficiency scalar constant</td></tr>
+    <tr><td>Wfrac1_M</td><td>Fractional Bleed 1 Demand[frac]</td></tr>
+    <tr><td>hfrac1_M</td><td>engine Bleed 1 Fractional enthalpy [frac]</td></tr>
+    <tr><td>Pfrac1_M</td><td>engine Bleed 1 Fractional Total Pressure [frac]</td></tr>
+    <tr><td>Wfrac2_M</td><td>Fractional Bleed 2 Demand[frac]</td></tr>
+    <tr><td>hfrac2_M</td><td>engine Bleed 2 Fractional enthalpy [frac]</td></tr>
+    <tr><td>Pfrac2_M</td><td>engine Bleed 2 Fractional Total Pressure [frac]</td></tr>
+    <tr><td>iDes_M</td><td> Design fork (0, 1, 2)
+            <br>0 - Calculate compressor map scalars based on design variables
+            <br>    When iDesign is set to 0, scalar constants from the General tab will not be used.
+            <br>    Scalars calculated will be saved to the workspace.
+            <br>1 - Scalar variables will be overwritten with scalar values from the workspace.
+            <br>    When iDesign is set to 1, scalar constants from the General tab and the Design values 
+            <br>    from the iDesign tab will not be used. 
+            <br>2 - Scalar variables from the general tab will be used as the map scalars.
+            <br>    When iDesign is set to 2, scalar constants from the General tab will be used; Design values 
+    <br>            from the iDesign tab will not be used. </td></tr>
+    <tr><td>NcDes_M</td><td>map Design Corrected Shaft Speed [rpm], design point speed used in map</td></tr>
+    <tr><td>effDes_M</td><td>Design Efficiency [frac], actual design point compressor efficiency</td></tr>
+    <tr><td>PRdes_M</td><td>Design Pressure Ratio [frac], actual design point compressor PR</td></tr>
+    <tr><td>RlineDes_M</td><td>map Design Rline, design point Rline used in map</td></tr>
+</table>
+<br>
+
+
+

@@ -1,4 +1,4 @@
-function splitter(block)
+function TMATSC_splitter(block)
 
 %%
 setup(block);
