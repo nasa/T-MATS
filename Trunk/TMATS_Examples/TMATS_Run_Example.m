@@ -16,8 +16,10 @@ InpMsg{1} = 'Select the enumeration of the T-MATS Example to be setup:';
 InpMsg{2} = '1) NewtonRaphson_Equation_Solver';
 InpMsg{3} = '2) Steady State GasTurbine';
 InpMsg{4} = '3) Dynamic GasTurbine';
-InpMsg{5} = '5) Steady State JT9D, Cantera';
-InpMsg{6} = '6) Cancel Setup';
+InpMsg{5} = '4) Steady State Dual Spool High Bypass Engine JT9D';
+InpMsg{6} = '5) Dynamic Dual Spool High Bypass Engine JT9D';
+InpMsg{7} = '6) Steady State JT9D, Cantera';
+InpMsg{8} = '7) Cancel Setup';
 InpMsgFinal = '';
 
 for i = 1: length(InpMsg)
@@ -35,28 +37,47 @@ switch TMATS.S
         
         % loading complete
         disp('** NewtonRaphson_Equation_Solver example ready to execute **')
+        cd ..
     case '2'
         disp(strcat('Loading Simulation from: ', TMATS.P ,TMATS.POp,'Example_GasTurbine_SS'))
         cd Example_GasTurbine_SS
         %------ Performs example setup ---------
         GasTurbine_SS_setup_everything;
+        cd ..
+        
     case '3'
         disp(strcat('Loading Simulation from: ', TMATS.P ,TMATS.POp,'Example_GasTurbine_Dyn'))
         cd Example_GasTurbine_Dyn
         %------ Performs example setup ---------
         GasTurbine_Dyn_setup_everything;
+        cd ..
         
     case '4'
+        disp(strcat('Loading Simulation from: ', TMATS.P ,TMATS.POp,'Example_JT9D_SS'))
+        cd Example_JT9D
+        %------ Performs example setup ---------
+        JT9D_setup_everything_SS;
+        cd ..
+        
+    case '5'
+        disp(strcat('Loading Simulation from: ', TMATS.P ,TMATS.POp,'Example_JT9D_Dyn'))
+        cd Example_JT9D
+        %------ Performs example setup ---------
+        JT9D_setup_everything_Dyn;
+        cd ..
+        
+    case '6'
         disp(strcat('Loading Simulation from: ', TMATS.P ,TMATS.POp,'Example_JT9D_SS_Cantera'))
         cd Example_JT9D_SS_Cantera
         %------ Performs example setup ---------
         JT9D_SS_Cantera_setup_everything;
+        cd ..
         
-    case '5'
+    case '7'
         disp('Example Setup Canceled');
     otherwise,
         disp('Selection Invalid')
 end
+
 clear TMATS;
 
-cd ..
