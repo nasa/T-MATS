@@ -53,7 +53,7 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetInputPortDirectFeedThrough(S, 0, 1);
 
     if (!ssSetNumOutputPorts(S, 1)) return;
-    ssSetOutputPortWidth(S, 0, 5);
+    ssSetOutputPortWidth(S, 0, 6);
 
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
@@ -133,7 +133,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double Rt1, ht1in, Ps1, S1in, Ts1, hs1, rhos1, V1, Ps1g_new, Ps1g_old, E1_old, MN1g, gammat1g, Ts1g;
     double Rt2, ht2in, Ps2, S2in, Ts2, hs2, rhos2, V2, Ps2g_new, Ps2g_old, E2_old, MN2g, gammat2g, Ts2g;
     double Rtout, htOut, Psout, Sout, Tsout, hsout, rhosout, Vout, Psoutg_new, Psoutg_old, Eout1_old, Eout2_old, MNoutg, gammatoutg, Tsoutg;
-    double E1thr, E2thr, Eout1thr, Eout2thr, Ptoutg, Ptoutg_old, Ptoutg_new, Impulseoutputg, ImpulseMixed;
+    double E1thr, E2thr, Eout1thr, Eout2thr, Ptoutg, Ptoutg_old, Ptoutg_new, Impulseoutputg, ImpulseMixed, NErr;
     int iter1, iter2, iter3a, iter3b, maxiter;
     int interpErr = 0;
 
@@ -287,6 +287,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /* end Ps2 iteration */
 
 
+
     /* start iteration to find Psout */
     /* guess a Ptout */
     Ptoutg = (W1In* Pt1In + W2In * Pt2In) / WOut;
@@ -359,7 +360,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         if (Psoutg > Ptoutg){
             Psoutg = Ptoutg;
             if (ssGetIWork(S)[5]==0){
-                printf ("Warning in %s, Psout calculated is less than Ptout", BlkNm);
+                printf ("Warning in %s, Psout calculated is less than Ptout\n", BlkNm);
                 ssSetIWorkValue(S,5,1);
             }
         }
@@ -382,12 +383,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             }
         }
 
-
         iter3a = iter3a + 1;
     }
     /* end PtOut iteration */
     Psout = Psoutg;
     PtOut = Ptoutg;
+
 
     if (iter3a == maxiter && ssGetIWork(S)[6]==0){
         printf("Error in %s, unable to calculate PtOut\n", BlkNm);
@@ -399,12 +400,16 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         ssSetIWorkValue(S,7,1);
     }
 
+    /* Compute static pressure error between input 1 and 2 */
+    NErr = (Ps1 - Ps2)/Ps1;
+
     /*------Assign output values------------*/
-    y[0] = WOut;     /* Output Air Flow [pps]						*/
+    y[0] = WOut;      /* Output Air Flow [pps]						*/
     y[1] = htOut; 	  /* Output Enthalpy [BTU/lbm] 					*/
     y[2] = TtOut;     /* Output Temperature  [degR]					*/
     y[3] = PtOut;     /* Output Pressure [psia]						*/
     y[4] = FARcOut;   /* Output Combusted Fuel to Air Ratio [frac] 	*/
+    y[5] = NErr;      /* Normalized Static Pressure Error           */
 
 }
 

@@ -1,6 +1,6 @@
-<font size="6" color="Magenta">T-MATS: Inlet, Cantera Library Block</font>
+<font size="6" color="Magenta">T-MATS: Inlet Library Block</font>
 <br>
-This block simulates the performance of an inlet using basic fluid dynamic
+This block simulates the performance of an inlet using basic fluid dynamic 
 equations and properties, and Cantera functions.
 To utilize this block a Cantera object must exist in the workspace as a
 global variable named fs, which may be created with the Cantera importPhase command.
@@ -11,7 +11,7 @@ The fs variable must include all Species defined in the file TMATSC_canteraload.
 <table border="1"> <tr><td>Inlet Input</td><td>Description</td></tr>
     <tr><td>Flow In</td><td>Flow Data Input, 25x1 vector consisting of:
             <br>-1- W      - gas path flow [pps]
-            <br>-2- Tt     - total temperature [degR]
+            <br>-2- Tt     - total temperature [degR] 
             <br>-3- Pt     - total pressure [psia]
             <br>-4- ht     - total enthlapy [BTU/lbm]
             <br>-5to10- species array values, defined in TMATSC_canteraload.m
@@ -34,7 +34,7 @@ The fs variable must include all Species defined in the file TMATSC_canteraload.
 <table border="1"> <tr><td>Inlet Output</td><td>Description</td></tr>
     <tr><td>Flow Out</td><td>Flow Data Output, 25x1 vector consisting of:
             <br>-1- W      - gas path flow [pps]
-            <br>-2- Tt     - total temperature [degR]
+            <br>-2- Tt     - total temperature [degR] 
             <br>-3- Pt     - total pressure [psia]
             <br>-4- ht     - total enthlapy [BTU/lbm]
             <br>-5to10- species array values, defined in TMATSC_canteraload.m

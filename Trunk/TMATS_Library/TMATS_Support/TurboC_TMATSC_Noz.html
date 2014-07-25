@@ -1,6 +1,6 @@
-<font size="6" color="Magenta">T-MATS: Nozzle, Cantera Library Block</font>
+<font size="6" color="Magenta">T-MATS: Nozzle Library Block</font>
 <br>
-This block simulates the performance of a nozzle using
+This block simulates the performance of a nozzle using 
 thermodynamic equations, properties, table lookups, and Cantera functions.
 To utilize this block a Cantera object must exist in the workspace as a
 global variable named fs, which may be created with the Cantera importPhase command.
@@ -11,7 +11,7 @@ The fs variable must include all Species defined in the file TMATSC_canteraload.
 <table border="1"> <tr><td>Nozzle Input</td><td>Description</td></tr>
     <tr><td>Flow In</td><td>Flow Data Input, 25x1 vector consisting of:
             <br>-1- W      - gas path flow [pps]
-            <br>-2- Tt     - total temperature [degR]
+            <br>-2- Tt     - total temperature [degR] 
             <br>-3- Pt     - total pressure [psia]
             <br>-4- ht     - total enthlapy [BTU/lbm]
             <br>-5to10- species array values, defined in TMATSC_canteraload.m
@@ -33,7 +33,7 @@ The fs variable must include all Species defined in the file TMATSC_canteraload.
 <br>
 <font size="5" color="Blue">Nozzle Outputs:</font>
 <table border="1"> <tr><td>Nozzle Output</td><td>Description</td></tr>
-    <tr><td>Flow Error</td><td>Flow Error [frac], in a typical system this will
+    <tr><td>Flow Error</td><td>Flow Error [frac], in a typical system this will 
     <br>be driven to zero by an iterative solver</td></tr>
     <tr><td>Fg</td><td>Gross thrust [lbf]</td></tr>
     <tr><td>N_Data</td><td>Nozzle internal calculation Data</td></tr>
@@ -48,10 +48,10 @@ The fs variable must include all Species defined in the file TMATSC_canteraload.
             <br>    When iDesign is set to 0, Ath_in_M from the General tab will not be used.
             <br>    Throat area calculated will be saved to the workspace.
             <br>1 - Nozzle throat area variables are taken from the workspace.
-            <br>    When iDesign is set to 1, Ath_in_M from the General tab and the Design values
-            <br>    from the iDesign tab will not be used.
+            <br>    When iDesign is set to 1, Ath_in_M from the General tab and the Design values 
+            <br>    from the iDesign tab will not be used. 
             <br>2 - Nozzle throat area from the General tab will be used in the nozzle module.
-            <br>    When iDesign is set to 2, Ath_in_M from the General tab will be used; Design values
+            <br>    When iDesign is set to 2, Ath_in_M from the General tab will be used; Design values 
     <br>            from the iDesign tab will not be used. </td></tr>
     <tr><td>Wdes_M</td><td>Design flow[pps]</td></tr>
 </table>
