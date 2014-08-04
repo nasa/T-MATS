@@ -1,0 +1,88 @@
+<font size="6" color="Magenta">T-MATS: Turbine_NPSS Library Block</font>
+<br>
+This block simulates the performance of a turbine using basic thermodynamic 
+equations, properties, and table lookups. This block has been updated to be 
+more similar to the baseline NPSS turbine module. Update include removing 
+the Tstd component of the Nc calculation and updating the Flow error term 
+to use input flow only, which translates to a turbine map in which Wc is 
+defined as input flow only.
+<br>
+<br>
+<font size="5" color="Blue">Turbine Inputs:</font>
+<table border="1"> <tr><td>Turbine Input</td><td>Description</td></tr>
+    <tr><td>CoolingFlwCharIn</td><td>Cooling flow Gas Characteristics Input, 
+            <br> 5x1 vector (for each cooling flow) consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+            <br>- FARc - Combusted Fuel to Air Ratio [frac]
+    <br> This feature must be enabled, see Cooling Flow tab variable (CFlwEn_M) definition</td></tr>
+    <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 vector consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FARc - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>PRmapIn</td><td>Map turbine Pressure Ratio, position on turbine map
+            <br> Determines Pressure ratio, efficiency, and gas path flow.
+            <br> The value for this variable will need to be solved for by driving
+    <br> the flow error accross the engine to zero.</td></tr>
+    <tr><td>Nmech</td><td>shaft speed [rpm]</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Turbine Outputs:</font>
+<table border="1"> <tr><td>Turbine Output</td><td>Description</td></tr>
+    <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 vector consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FARc - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>NErr</td><td>Normalized Error [frac], in a typical system this will 
+    <br>be driven to zero by an iterative solver</td></tr>
+    <tr><td>TrqOut</td><td>turbine Torque Output (lbf*ft), positive value for a turbine.</td></tr>
+    <tr><td>T_Data</td><td>Turbine internal calculation Data</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Turbine Mask Variables: </font>
+<table border="1"> <tr><td>Turbine Mask Variable</td><td>Description</td></tr>
+    <tr><td>X_T_PRVec_M</td><td>Turbine Map Pressure Ratio Vector (X-axis)(nx1)</td></tr>
+    <tr><td>Y_T_NcVec_M</td><td>Turbine Map Corrected Speed Vector (Y-axis)(mx1)</td></tr>
+    <tr><td>T_T_Map_WcArray_M</td><td>Turbine Map Flow Array (Wc=f(Nc,PR))(mxn)</td></tr>
+    <tr><td>T_T_Map_EffArray_M</td><td>Turbine Map Efficiency Array (Eff = f(Nc,PR))(mxn)</td></tr>
+    <tr><td>s_T_Nc_M</td><td>Corrected Speed Scalar Constant (T_Nc)</td></tr>
+    <tr><td>s_T_PR_M</td><td>Pressure Ratio Scalar Constant (T_PR)</td></tr>
+    <tr><td>s_T_Wc_M</td><td>Flow Scalar Constant (T_Wc)</td></tr>
+    <tr><td>s_T_Eff_M</td><td>Efficiency Scalar Constant (T_Eff)</td></tr>
+    <tr><td>CFlwEn_M</td><td>Cooling Flow Enable [check - enabled]</td></tr>
+    <tr><td>T_CoolFlwPos_M</td><td>Cooling Flow position [0 at inlet,  1 at exit](cx1)
+            <br> With Cooling Flow Enabled, the turbine will expect cooling flow input 
+    <br> vector lenght of c *5. See CoolingFlwCharIn definition </td></tr>
+    <tr><td>iDesign_M</td><td> Design fork (0, 1, 2)
+            <br>0 - iDes Enabled, Calculate turbine map scalars based on design variables
+            <br>    When iDesign is set to 0, scalar constants from the Map tab will not be used.
+            <br>    Scalars calculated will be saved in the specified file (FVar_M).
+            <br>1 - Scalar variables will be overwritten (mask Initialization) with 
+            <br>    values from a specified file (FVar_M).
+            <br>    When iDesign is set to 1, scalar constants from the Map tab and the Design values 
+            <br>    from the iDesign tab will not be used. 
+            <br>2 - Scalar variables from the map tab will be used as the map scalars.
+            <br>    When iDesign is set to 2, scalar constants from the Map tab will be used; Design values 
+    <br>    and file definitions from the iDesign tab will not be used. </td></tr>
+    <tr><td>NcDes_M</td><td>map Design Corrected Shaft Speed [rpm], design point corrected speed used in map</td></tr>
+    <tr><td>EffDes_M</td><td>Design Efficiency [frac], actual design point tubine efficiency </td></tr>
+    <tr><td>PRDes_M</td><td>map Design Pressure Ratio [frac], design point PR used in map</td></tr>
+    <tr><td>NDes_M</td><td>Design Shaft Speed [rpm], actual design point speed</td></tr>
+    <tr><td>FVar_M</td><td>File name for iDes Variables</td></tr>
+    <tr><td>SVar_M</td><td>iDes Variable Surname</td></tr>
+    <tr><td>NcNm_M</td><td>iDes Nc scalar variable name</td></tr>
+    <tr><td>WcNm_M</td><td>iDes Wc scalar variable name</td></tr>
+    <tr><td>PRNm_M</td><td>iDes PR scalar variable name</td></tr>
+    <tr><td>EffNm_M</td><td>iDes Eff scalar variable name</td></tr>
+</table>
+<br>
+Note: Vectors are the x and/or y axis to a table made of an array.<br>
+&nbsp; &nbsp; Scalars are used to "scale" the turbine map for off design turbines. 
+
+
