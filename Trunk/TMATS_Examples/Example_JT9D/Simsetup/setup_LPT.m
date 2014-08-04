@@ -75,7 +75,7 @@ MWS.LPT.s_PR = 1/1.394931;
 MWS.LPT.s_eff = 1.001294;
 
 %--------- scalar for corrected LPT speed ----------
-MWS.LPT.s_Nc = 1/0.054135;
+MWS.LPT.s_Nc = 0.81019;
 
 %--------- Cooling flow position ----------
 % 0 - inlet,  1 - exit

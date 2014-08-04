@@ -76,8 +76,10 @@ MWS.HPT.s_eff = 0.9803;
 %--------- scalar for corrected HPT speed ----------
 % Note: Determined by equation taken from NPSS data
 % 1/(Perf_Nc * sqrt(518.67)/ NcMap) 
-% MWS.HPT.s_Nc = 0.028678;
-MWS.HPT.s_Nc = 34.87023;
+% MWS.HPT.s_Nc = 0.028678; % calculated
+% MWS.HPT.s_Nc = 34.87023; % inverse of previous line, used in Turbine
+% block
+MWS.HPT.s_Nc = 1.53112; % Std Temp removed, used with Turbine_NPSS block
 
 %--------- Cooling flow position ----------
 % 0 - inlet,  1 - exit
