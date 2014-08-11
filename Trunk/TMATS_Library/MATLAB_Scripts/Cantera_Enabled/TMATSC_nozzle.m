@@ -157,7 +157,7 @@ else
    end
 end
             
-Fg   = ( FTh(W) / 32.174 ) * FTh(Vflow) +  ( FTh(Ps) - PsExh ) * FTh(A)*Cfg;
+Fg   = (( FTh(W) / 32.174 ) * FTh(Vflow) +  ( FTh(Ps) - PsExh ) * FTh(A))*Cfg;
 
 
 block.OutputPort(1).Data = err;
