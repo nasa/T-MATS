@@ -28,7 +28,7 @@ thermodynamic equations, properties, and table lookups.
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
     <br>- FARc - Combusted Fuel to Air Ratio [frac]</td></tr>
-    <tr><td>NErr</td><td>Normalized static pressure error</td></tr>
+    <tr><td>NErr</td><td>Normalized error</td></tr>
 </table>
 <br>
 <font size="5" color="Blue">Mixer Mask Variables: </font>
@@ -39,8 +39,28 @@ thermodynamic equations, properties, and table lookups.
     <tr><td>s_M_Imp2_M</td><td>Impulse 2 scalar</td></tr>
     <tr><td>s_M_V1_M</td><td>Velocity 1 scalar</td></tr>
     <tr><td>s_M_V2_M</td><td>Velocity 2 scalar</td></tr>
-    <tr><td>Y_M_FARVec_M</td><td>Fuel to Air Ratio Vector (Y-axis)(nx1)</td></tr>
-    <tr><td>T_M_RtArray_M</td><td>Rt Array (Rt = f(FAR))(nx1)</td></tr>
+    <tr><td>Y_M_FARVec_M</td><td>Fuel to Air Ratio Vector (Y-axis)(cx1)</td></tr>
+    <tr><td>T_M_RtArray_M</td><td>Rt Array (Rt = f(FAR))(cx1)</td></tr>
+    <tr><td>X_M_TVec_M</td><td>Mixer Temperature Vector (X-axis for Gamma calc)(dx1)</td></tr>
+    <tr><td>T_M_gammaArray_M</td><td>Mixer Gamma Array (Gamma = f(Tt,FAR))(dxc)</td></tr>
+    <tr><td>iDesign_M</td><td> Design fork (0, 1, 2)
+            <br>0 - iDes Enabled, Calculate mixer input areas based on design variables
+            <br>    When iDesign is set to 0, Aphy1_M and Aphy2_M from the General tab will not be used.
+            <br>    Throat areas calculated will be saved in the specified file (FVar_M).
+            <br>1 - Mixer throat area variables will be overwritten (mask Initialization) with 
+            <br>    values from a specified file (FVar_M).
+            <br>    When iDesign is set to 1, Aphy1_M and Aphy2_M from the General tab and the Design values 
+            <br>    from the iDesign tab will not be used. 
+            <br>2 - Mixer throat area from the General tab will be used in the nozzle module.
+            <br>    When iDesign is set to 2, Aphy1_M and Aphy2_M from the General tab will be used; Design values 
+    <br>    and file definitions from the iDesign tab will not be used. </td></tr>
+    <tr><td>SWPS_M</td><td>primary flow switch ( 0 - primary flow is input 1 , 1 - primary flow is input 2</td></tr>
+    <tr><td>BPRDes_M</td><td>Design pressure ratio [W1/W2]</td></tr>
+    <tr><td>MNDes_M</td><td>Primary flow mach number</td></tr>
+    <tr><td>FVar_M</td><td>File name for iDes Variables</td></tr>
+    <tr><td>SVar_M</td><td>iDes Variable Surname</td></tr>
+    <tr><td>Aphy1des_M</td><td>iDes mixer input 1 throat area variable name</td></tr>
+    <tr><td>Aphy2des_M</td><td>iDes mixer input 2 throat area variable name</td></tr>
 </table>
 <br>
 Notes: Vectors are the x and/or y axis to a table made of an array.
