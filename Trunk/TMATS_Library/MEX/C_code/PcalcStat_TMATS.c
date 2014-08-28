@@ -8,6 +8,7 @@
 % *************************************************************************/
 
 #include <math.h>
+#include "constants_TMATS.h"
 
 extern double t2hc(double a, double b);
 extern double pt2sc(double c, double d, double e);
@@ -16,9 +17,6 @@ extern double sp2tc(double f, double g, double h);
 void PcalcStat(double Pt, double Ps, double Tt, double ht, double FAR, double Rt, double *S, double *Ts, double *hs, double *rhos, double *V)
 {
             double Rs;
-            double C_GRAVITY    =  32.174;
-            double JOULES_CONST = 778.169;
-            double C_PSItoPSF   = 144; 
 
             /* Compute entropy */
             *S = pt2sc(Pt, Tt, FAR);
