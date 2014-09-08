@@ -1,0 +1,67 @@
+<font size="6" color="Magenta">T-MATS: HeatExchanger_Eff Library Block</font>
+<br>
+This block simulates the performance of a heat exchanger using 
+effectiveness-NTU method based on heat transfer efffectiveness, E.
+
+<br>
+<br>
+<font size="5" color="Blue">Heat Exchanger Inputs:</font>
+<table border="1"> <tr><td>Heat Exchanger Input</td><td>Description</td></tr>
+    <tr><td>GasPthCharIn1</td><td>Gas Path Characteristics Input 1, 5x1 vector consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FARc - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>GasPthCharIn2</td><td>Gas Path Characteristics Input 2, 5x1 vector consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FARc - Combusted Fuel to Air Ratio [frac]</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Heat Exchanger Outputs:</font>
+<table border="1"><tr><td>Heat Exchanger Output</td><td>Description</td></tr>
+    <tr><td>GasPthCharOut1</td><td>Gas Path Characteristics Output 1, 5x1 vector consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FARc - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>GasPthCharOut2</td><td>Gas Path Characteristics Output 2, 5x1 vector consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FARc - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>E_data</td><td>Heat Exchanger Data, 2x1 vector consisting of:
+            <br>- dQ - Delta Energy [BTU/sec]
+            <br>- E - heat exchanger effectiveness </td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Heat Exchanger Mask Variables: </font>
+<table border="1"> <tr><td>Heat Exchanger Mask Variablet</td><td>Description</td></tr>
+    <tr><td>dP1_M</td><td>Delta Pressure of input 1 (frac loss)</td></tr>
+    <tr><td>dP2_M</td><td>Delta Pressure of input 2 (frac loss)</td></tr>
+    <tr><td>E_M</td><td>Heat Exchanger Effectiveness</td></tr>
+    <tr><td>iDesign_M</td><td> Design fork (0, 1, 2)
+            <br>0 - iDes Enabled, Calculate heat exchanger input effectiveness based on design variable
+            <br>    When iDesign is set to 0, E_M from the General tab will not be used.
+            <br>    Delta energy calculated will be saved in the specified file (FVar_M).
+            <br>1 - Heat Exchanger effectiveness will be overwritten (mask Initialization) with 
+            <br>    values from a specified file (FVar_M).
+            <br>    When iDesign is set to 1, E_M from the General tab and the Design values 
+            <br>    from the iDesign tab will not be used. 
+            <br>2 - Effectiveness from the General tab will be used in the module.
+            <br>    When iDesign is set to 2, E_M from the General tab will be used; Design values 
+    <br>    and file definitions from the iDesign tab will not be used. </td></tr>
+    <tr><td>dQDes_M</td><td>Design delta energy [BTU/sec]</td></tr>
+    <tr><td>FVar_M</td><td>File name for iDes Variables</td></tr>
+    <tr><td>SVar_M</td><td>iDes Variable Surname</td></tr>
+    <tr><td>ENm_M</td><td>iDes effectiveness variable name</td></tr>
+</table>
+<br>
+
+
+
