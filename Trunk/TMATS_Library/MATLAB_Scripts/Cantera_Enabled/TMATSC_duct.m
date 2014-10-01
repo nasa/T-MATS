@@ -61,26 +61,22 @@ block.RegBlockMethod('Outputs', @Outputs);     % Required
 
 
 function Outputs(block)
-
-global fs;
-
-
-TMATSC_flowindicies
-
+import TMATSC.*
 
 % grap the data from the input port
-FI=block.InputPort(1).Data;
+FI = FlowDef(block.InputPort(1).Data);
 
 % grap the pressure drop from the input port
 dP = block.DialogPrm(1).Data;
 
 % set the exit conditions based on incoming enthalpy
 % and exit pressure
-PtOut = FI(Pt)*( 1 - dP );
-FO = TMATSC_set_hP( FI, FI(ht), PtOut );
+PtOut = FI.Pt * ( 1 - dP );
+FO = FI.set_hP(FI.ht, PtOut );
 
+FO_vec = FO.FlwVec();
 % set the exit condition in the exit port
-block.OutputPort(1).Data = FO;
+block.OutputPort(1).Data = FO_vec;
 %block.OutputPort(2).Data = [dP];
 
 %end Outputs

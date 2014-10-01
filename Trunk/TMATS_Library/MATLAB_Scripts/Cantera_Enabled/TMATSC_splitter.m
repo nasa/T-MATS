@@ -7,7 +7,6 @@ setup(block);
 
 function setup(block)
 
-
 % Register number of ports
 block.NumDialogPrms = 0;
 block.NumInputPorts  = 2;
@@ -70,26 +69,26 @@ block.SimStateCompliance = 'DefaultSimState';
 block.RegBlockMethod('Outputs', @Outputs);     % Required
 
 function Outputs(block)
-
-global fs;
+import TMATSC.*
 
 % load the input data in
 BPR = block.InputPort(2).Data;
 
-TMATSC_flowindicies
-
 % grab the input flow
-FI = block.InputPort(1).Data;
+FI = FlowDef(block.InputPort(1).Data);
 
 % set the output flows
-FS = TMATSC_flowcopy( FI );
-FP = TMATSC_flowcopy( FI );
-FS( W ) = FI( W )*BPR/ (1. + BPR );
-FP( W ) = FI( W )*1/( 1. + BPR );
+FS = FI.flowcopy();
+FP = FI.flowcopy();
+FS.W = FI.W * BPR/ (1. + BPR );
+FP.W = FI.W * 1/( 1. + BPR );
+
+FS_vec = FS.FlwVec();
+FP_vec = FP.FlwVec();
 
 % load the output conditions
-block.OutputPort(1).Data = FS;
-block.OutputPort(2).Data = FP;
+block.OutputPort(1).Data = FS_vec;
+block.OutputPort(2).Data = FP_vec;
 block.OutputPort(3).Data = [0];
 
 %end Outputs

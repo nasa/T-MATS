@@ -94,13 +94,7 @@ block.SimStateCompliance = 'DefaultSimState';
 block.RegBlockMethod('Outputs', @Outputs);     % Required
 
 function Outputs(block)
-
-
-C_TSTD = 518.67;
-C_PSTD = 14.696;
-
-
-TMATSC_flowindicies 
+import TMATSC.*
 
 % load input data
 MapFile = block.DialogPrm(1).Data;
@@ -121,48 +115,48 @@ Nmech = block.InputPort(4).Data;
 PR = block.InputPort(5).Data;
 
 % load the input flow
-FI = block.InputPort(1).Data;
+FI = FlowDef(block.InputPort(1).Data);
 
 % load in the bleed flows
-b1 = block.InputPort(2).Data;
-b2 = block.InputPort(3).Data;
-F41 = FI;
+b1 = FlowDef(block.InputPort(2).Data);
+b2 = FlowDef(block.InputPort(3).Data);
+F41 = FI.flowcopy();
 
 % determine the F41 flowstation by adding the bleed flows 
 % in that come in the front of the turbine
 
 if BSW1 > .5 
-  F41 = TMATSC_flowadd( F41, b1 );
+  F41 = F41.flowadd( b1 );
 end
 
 if BSW2 > .5
-  F41 = TMATSC_flowadd( F41, b2 );
+  F41 = F41.flowadd( b2 );
 end
 
 % determine the incoming entropy
-sin = F41( s );
+sin = F41.s;
 
 % determine the correct conditons
-NcIn = Nmech/ sqrt( F41(Tt) );
-WcIn = F41(W)*sqrt( F41(Tt) )/( F41( Pt) );
+NcIn = Nmech/ sqrt( F41.Tt );
+WcIn = F41.W * sqrt( F41.Tt )/( F41.Pt );
 
 % create workspace values for design value
-path = TMATSC_stripchar( gcb() );
-tempNc = sprintf( '%s_sNc', path);  
-tempeff = sprintf( '%s_seff', path);  
-tempPR = sprintf( '%s_sPR', path);  
-tempWc = sprintf( '%s_sWc', path);  
+Tpath = stripchar( gcb() );
+% tempNc = sprintf( '%s_sNc', Tpath);  
+% tempeff = sprintf( '%s_seff', Tpath);  
+% tempPR = sprintf( '%s_sPR', Tpath);  
+% tempWc = sprintf( '%s_sWc', Tpath);  
 
 % if design point then calculate and store the values
 if IDes < 0.5
-    path = TMATSC_stripchar( gcb() );
+    Tpath = stripchar( gcb() );
     s_C_Nc = NcDes / NcIn;
-    TMATSC_setV( 's_C_Nc', path, s_C_Nc );
+    setV( 's_C_Nc', Tpath, s_C_Nc );
     s_PR = ( PRmapDes - 1 )/( PR - 1 );
-    TMATSC_setV( 's_PR', path, s_PR );    
+    setV( 's_PR', Tpath, s_PR );    
 elseif IDes < 1.5 
-    s_C_Nc = TMATSC_getV( 's_C_Nc', path );
-    s_PR = TMATSC_getV( 's_PR', path );
+    s_C_Nc = getV( 's_C_Nc', Tpath );
+    s_PR = getV( 's_PR', Tpath );
 else
     s_C_Nc = s_C_Nc_in;
     s_PR = s_PR_in;
@@ -174,19 +168,18 @@ NcMap = NcIn * s_C_Nc;
 PRmap = s_PR*( PR - 1 ) + 1;
 
 % read the map values
-[effMap, WcMap ] = TMATSC_PRmapFile( MapFile, NcMap, PRmap );
+[effMap, WcMap ] = PRmapFile( MapFile, NcMap, PRmap );
 
 % if off design then calculate design values
 if IDes < .5
     s_eff = effDes / effMap; 
-    s_PR = ( PRmapDes - 1 )/( PRmap - 1 );
     s_Wc = WcIn/ WcMap;
-    TMATSC_setV( 's_eff', path, s_eff );
-    TMATSC_setV( 's_Wc', path, s_Wc );
+    setV( 's_eff', Tpath, s_eff );
+    setV( 's_Wc', Tpath, s_Wc );
 elseif IDes < 1.5
     % get the design values from the worksapce
-    s_eff= TMATSC_getV( 's_eff', path );
-    s_Wc= TMATSC_getV( 's_Wc', path );
+    s_eff= getV( 's_eff', Tpath );
+    s_Wc= getV( 's_Wc', Tpath );
 else 
     s_eff = s_eff_in;
     s_Wc = s_Wc_in;
@@ -206,31 +199,33 @@ else
     err = ( Wc - WcIn )/Wc; 
 end
     
-PtOut = F41(Pt)/PR;
+PtOut = F41.Pt/PR;
 
 % determine the ideal exit conditions
-FoutIdeal = TMATSC_set_SP( F41, sin, PtOut );
+FoutIdeal = F41.set_SP( sin, PtOut );
 
 % determine the actual exit conditions by adjusting the enthalpy
 % for the efficiency
-htOut = F41( ht ) + ( FoutIdeal( ht ) - F41(ht) )*eff;
-F48 = TMATSC_set_hP( F41, htOut, PtOut );
+htOut = F41.ht + ( FoutIdeal.ht - F41.ht )*eff;
+F48 = F41.set_hP( htOut, PtOut );
 
 % calculate the power
-pwr = F41(W) * (  F41(ht) - F48(ht) ) * 1.4148;
+pwr = F41.W * (  F41.ht - F48.ht ) * 1.4148;
 
 % add in the bleeds that are after the turbine
 F5 = F48;
 if BSW1 < .5 
-  F5= TMATSC_flowadd( F5, b1);
+  F5= F5.flowadd( b1 );
 end
 
 if BSW2 < .5
-  F5 = TMATSC_flowadd( F5, b2);
+  F5 = F5.flowadd( b2 );
 end
 
+F5_vec = F5.FlwVec();
+
 % set the output values
-block.OutputPort(1).Data= F5;
+block.OutputPort(1).Data= F5_vec;
 block.OutputPort(2).Data(1) = err;
 block.OutputPort(3).Data(1) = pwr;
 block.OutputPort(4).Data = [eff, WcMap];

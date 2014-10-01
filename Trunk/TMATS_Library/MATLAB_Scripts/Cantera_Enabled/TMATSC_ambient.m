@@ -75,10 +75,7 @@ block.RegBlockMethod('Outputs', @Outputs);     % Required
 
 
 function Outputs(block)
-
-global fs;
-
-
+import TMATSC.*
 
 % grab data from input
 Wout = block.InputPort(1).Data;
@@ -86,21 +83,14 @@ alt = block.DialogPrm(1).Data;
 MN = block.DialogPrm(2).Data;
 dTs = block.DialogPrm(3).Data;
 
+%Flow definition tables
 compNN = [1,0,0,0,0,0];
-
-TMATSC_flowindicies
-
-
-
 REARTH = 6369.0;
 GMR = 34.163195;
 htab = [ 0.0,  11.0, 20.0, 32.0, 47.0, 51.0, 71.0, 84.852 ];
 ttab = [ 288.15, 216.65, 216.65, 228.65, 270.65, 270.65, 214.65, 186.946 ];
 ptab = [ 1.0, 2.2336110E-1, 5.4032950E-2, 8.5666784E-3, 1.0945601E-3, 6.6063531E-4, 3.9046834E-5, 3.68501E-6 ];
 gtab = [ -6.5, 0.0, 1.0, 2.8, 0, -2.8, -2.0, 0.0 ];
-
-Ts=0;
-Ps=0;
 
 h = alt/3280.84*REARTH/(alt/3280.84+REARTH);	
 
@@ -122,22 +112,13 @@ end
 % adjust the temperature for the input delta
 Ts = dTs + Ts;
 
+FO = FlowDef(compNN, Wout, Ts, Ps, MN);
 
-if ( MN > 0 )
-   FO = TMATSC_set_TsPsMN( Ts, Ps, MN, compNN );
-else
-   FO(5) = 1; 
-   FO( 25 ) = 0; 
-   FO = set_TP( FO, Ts, Ps );
-end
-FO( W ) = Wout;
-Fram = FO(Vflow)*FO(W)/32.174;
+Fram = FO.Vflow*FO.W/32.174;
+FO_vec = FO.FlwVec();
 
-FO( W ) = Wout;
-
-
-block.OutputPort(1).Data = FO;
-block.OutputPort(2).Data = Ps;
+block.OutputPort(1).Data = FO_vec;
+block.OutputPort(2).Data = FO.Ps;
 block.OutputPort(3).Data = Fram;
 block.OutputPort(4).Data = [0];
 

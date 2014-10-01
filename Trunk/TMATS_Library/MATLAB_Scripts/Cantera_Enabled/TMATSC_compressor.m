@@ -94,13 +94,10 @@ block.SimStateCompliance = 'DefaultSimState';
 block.RegBlockMethod('Outputs', @Outputs);     % Required
 
 function Outputs(block)
-
-global fs;
+import TMATSC.*
 
 C_TSTD = 518.67;
 C_PSTD = 14.696;
-
-TMATSC_flowindicies;
 
 %Grab the values from the input
 Nmech = block.InputPort(2).Data;
@@ -123,24 +120,24 @@ s_C_Nc_in =  block.DialogPrm(15).Data;
 IDes =  block.DialogPrm(16).Data;
 
 % copy the incoming conditions to FI
-FI = block.InputPort(1).Data;
+FI = FlowDef(block.InputPort(1).Data);
 
 % calcalate the corrected speed and corrected flow
-NcIn = Nmech/ sqrt( FI(Tt)/ C_TSTD );
-WcIn = FI(W)*sqrt(FI(Tt)/C_TSTD)/(FI(Pt)/C_PSTD);
+NcIn = Nmech/ sqrt( FI.Tt/ C_TSTD );
+WcIn = FI.W*sqrt(FI.Tt/C_TSTD)/(FI.Pt/C_PSTD);
 
 % determine the name of this element
-path = TMATSC_stripchar( gcb() );
+Cpath = stripchar( gcb() );
 
 % if we are at design point calculated the design speed scalar
 % and store the value in the workspace
 if IDes < 0.5
     s_C_Nc = NcDes / NcIn;
-    path = TMATSC_stripchar( gcb() );
-    TMATSC_setV( 's_C_Nc', path, s_C_Nc );
+    Cpath = stripchar( gcb() );
+    setV( 's_C_Nc', Cpath, s_C_Nc );
 elseif IDes < 1.5
     % get the speed scalar from the workspace
-    s_C_Nc = TMATSC_getV( 's_C_Nc', path );
+    s_C_Nc = getV( 's_C_Nc', Cpath );
 else
     s_C_Nc = s_C_Nc_in;
 end
@@ -149,7 +146,7 @@ end
 NcMap = NcIn * s_C_Nc;
 
 % read the map based on Rline and NcMap
-[effMap, PRmap, WcMap, stallMargin ] = TMATSC_RlineMap( MapFile, NcMap, Rline);
+[effMap, PRmap, WcMap, stallMargin ] = RlineMap( MapFile, NcMap, Rline);
 
 % if we are at design point calculate the scalars for eff, PW
 % and wc
@@ -158,15 +155,15 @@ if IDes < .5
     s_eff = effDes / effMap;
     s_PR = ( PRdes - 1 )/( PRmap - 1 );
     s_Wc = WcIn/ WcMap;
-    TMATSC_setV( 's_eff', path, s_eff );
-    TMATSC_setV( 's_Wc', path, s_Wc );
-    TMATSC_setV( 's_PR', path, s_PR );
+    setV( 's_eff', Cpath, s_eff );
+    setV( 's_Wc', Cpath, s_Wc );
+    setV( 's_PR', Cpath, s_PR );
     
 elseif IDes < 1.5
     % get the maps scalars from the workspace
-    s_eff= TMATSC_getV( 's_eff', path );
-    s_Wc= TMATSC_getV( 's_Wc', path );
-    s_PR= TMATSC_getV( 's_PR', path );
+    s_eff = getV( 's_eff', Cpath );
+    s_Wc= getV( 's_Wc', Cpath );
+    s_PR= getV( 's_PR', Cpath );
 
 else 
     % use the input values
@@ -191,44 +188,47 @@ else
 end
     
 % calculate exit pressure
-PtOut = FI(Pt)*PR;
+PtOut = FI.Pt*PR;
 
 
 % determine the ideal exit conditions from 
-FOideal = TMATSC_set_SP( FI, FI(s),PtOut ); 
+FOideal = FI.set_SP(FI.s,PtOut ); 
 
 % determine the actual enthalpy
-htOut = FI(ht) + ( FOideal(ht) - FI(ht) )/eff;
+htOut = FI.ht + ( FOideal.ht - FI.ht )/eff;
  
 % set the exit conditions to knowm enthalpy and pressure
-FO = TMATSC_set_hP( FI, htOut, PtOut );
+FO = FI.set_hP(htOut, PtOut);
 
 % set the condtions for bleed 1
-Wbleed1 = Wfrac1*FI(W);
-htBleed1 = FI(ht)+1.*hfrac1*( FO(ht) - FI(ht) );
-PtBleed1 = FI(Pt) + Pfrac1*( FO(Pt) - FI(Pt) );
-Fbleed1 = TMATSC_set_hP( FI, htBleed1,PtBleed1 );
-Fbleed1( W ) = Wbleed1;
+Wbleed1 = Wfrac1*FI.W;
+htBleed1 = FI.ht+1.*hfrac1*( FO.ht - FI.ht );
+PtBleed1 = FI.Pt + Pfrac1*( FO.Pt - FI.Pt );
+Fbleed1 = FI.set_hP(htBleed1,PtBleed1 );
+Fbleed1.W = Wbleed1;
 
 % set the conditions for bleed 2
-Wbleed2 = Wfrac2*FI(W);
-htBleed2 = FI(ht)+1.*hfrac2*( FO(ht) - FI(ht) );
-PtBleed2 = FI(Pt) + Pfrac2*( FO(Pt) - FI(Pt) );
-Fbleed2 = TMATSC_set_hP( FI, htBleed2,PtBleed2 );
-Fbleed2( W ) = Wbleed2;
+Wbleed2 = Wfrac2*FI.W;
+htBleed2 = FI.ht + 1.*hfrac2*( FO.ht - FI.ht );
+PtBleed2 = FI.Pt + Pfrac2*( FO.Pt - FI.Pt );
+Fbleed2 = FI.set_hP(htBleed2,PtBleed2 );
+Fbleed2.W = Wbleed2;
 
 % subtract the bleed flow from the exit flow
-Wout = FI(W) - Fbleed1(W) - Fbleed2(W);
-FO( W ) = Wout;
+Wout = FI.W - Fbleed1.W - Fbleed2.W;
+FO.W = Wout;
 
 % determine the power
-pwr = FI(W) * (  FI(ht) - FO(ht) ) * 1.4148;
-pwr = pwr + Fbleed1(W)*(Fbleed1(ht)-FO(ht))*1.4148 + Fbleed2(W)*(Fbleed2(ht)-FO(ht))*1.4148;
+pwr = FI.W * (FI.ht - FO.ht) * 1.4148;
+pwr = pwr + Fbleed1.W*(Fbleed1.ht - FO.ht)*1.4148 + Fbleed2.W*(Fbleed2.ht - FO.ht)*1.4148;
 
+FO_vec = FO.FlwVec();
+FB1_vec = Fbleed1.FlwVec();
+FB2_vec = Fbleed2.FlwVec();
 % set the output conditions
-block.OutputPort(1).Data = FO;
-block.OutputPort(2).Data = Fbleed1;
-block.OutputPort(3).Data = Fbleed2;
+block.OutputPort(1).Data = FO_vec;
+block.OutputPort(2).Data = FB1_vec;
+block.OutputPort(3).Data = FB2_vec;
 
 block.OutputPort(4).Data(1) = err;
 block.OutputPort(5).Data(1) = pwr;

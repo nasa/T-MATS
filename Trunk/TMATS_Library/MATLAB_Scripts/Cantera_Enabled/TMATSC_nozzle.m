@@ -68,12 +68,7 @@ block.RegBlockMethod('Outputs', @Outputs);     % Required
 
 
 function Outputs(block)
-
-
-C_TSTD = 518.67;
-C_PSTD = 14.696;
-
-TMATSC_flowindicies
+import TMATSC.*
 
 % load in static ppressure from static pressure port
 PsExh = block.InputPort(2).Data;
@@ -85,82 +80,82 @@ Ath_in = block.DialogPrm(3).Data;
 IDes = block.DialogPrm(4).Data;
 
 % grab the input flow conditions
-FI = block.InputPort(1).Data;
+FI = FlowDef(block.InputPort(1).Data);
 
 % grab the name of the element for use in storing values
-path = TMATSC_stripchar( gcb() );
+path = stripchar( gcb() );
 
 % set the throat conditions based on MN
-FTh = TMATSC_set_MNPs( FI, PsExh );
+FTh = FI.set_MNPs( PsExh );
 
-if FTh(MNin) > 1.0
+if FTh.MN > 1.0
    % static pressur results in MN > 1  Nozzle is choked
    % set MN to 1
-   FTh = TMATSC_set_MN1( FTh );
+   FTh = FTh.set_MN1();
    if IDes < .5
       % design point
       % determine the area to pass the flow
-      Ath = FTh(W) / ( FTh(rhos) * FTh(Vflow) )*144.;
+      Ath = FTh.W / ( FTh.rhos * FTh.Vflow )*144;
       % store area for use in off-design
-      TMATSC_setV( 'Ath', path, Ath );
-      FTh(A) = Ath;
+      setV( 'Ath', path, Ath );
+      FTh.A = Ath;
       % error is actual flow versus design flow
-      err = ( FI(W) - Wdes );
+      err = ( FI.W - Wdes );
    elseif IDes < 1.5
       % off-design
       % load the area in from workspace
-      Ath = TMATSC_getV( 'Ath', path );
-      FTh(A)=Ath;
+      Ath = getV( 'Ath', path );
+      FTh.A = Ath;
       % determine the weight flow this area
-      Wnoz = FTh(A) * FTh(rhos)* FTh(Vflow)/144.;
+      Wnoz = FTh.A * FTh.rhos* FTh.Vflow/144.;
       % error is difference between this weight flow and incoming flow
-      err = FI(W) - Wnoz;
+      err = FI.W - Wnoz;
    else 
       % off-design
       % use the input throat area
       Ath = Ath_in;
-      FTh(A)=Ath;
+      FTh.A = Ath;
       % determine the weight flow this area
-      Wnoz = FTh(A) * FTh(rhos)* FTh(Vflow)/144.;
+      Wnoz = FTh.A * FTh.rhos* FTh.Vflow/144.;
       % error is difference between this weight flow and incoming flow
-      err = FI(W) - Wnoz;
+      err = FI.W - Wnoz;
    end
        
 else
    % not choked
    if IDes < .5
       % calculate area based on flow conditions and weight flow
-      Ath = FTh(W) / ( FTh(rhos) * FTh(Vflow) )*144.;
+      Ath = FTh.W / ( FTh.rhos * FTh.Vflow )*144.;
       % store area for use in off-design      
-      TMATSC_setV( 'Ath', path, Ath );
-      FTh(A)=Ath;
+      setV( 'Ath', path, Ath );
+      FTh.A = Ath;
       % error is actual flow versus design flow      
-      err = ( FTh(W) - Wdes );
+      err = ( FTh.W - Wdes );
    elseif IDes < 1.5
       % off-design
       % load the area in from workspace     
-      Ath = TMATSC_getV( 'Ath', path );
-      FTh(A)=Ath;
+      Ath = getV( 'Ath', path );
+      FTh.A = Ath;
       % determine the weight flow this area     
-      Wnoz = FTh(A) * FTh(rhos)* FTh(Vflow)/144.;
+      Wnoz = FTh.A * FTh.rhos* FTh.Vflow/144.;
       % error is difference between this weight flow and incoming flow
-      err = FI(W) - Wnoz;  
+      err = FI.W - Wnoz;  
    else
       % off-design
       % load the area in from workspace     
       Ath = Ath_in;
-      FTh(A)=Ath;
+      FTh.A = Ath;
       % determine the weight flow this area     
-      Wnoz = FTh(A) * FTh(rhos)* FTh(Vflow)/144.;
+      Wnoz = FTh.A * FTh.rhos * FTh.Vflow/144.;
       % error is difference between this weight flow and incoming flow
-      err = FI(W) - Wnoz;  
+      err = FI.W - Wnoz;  
    end
 end
             
-Fg   = (( FTh(W) / 32.174 ) * FTh(Vflow) +  ( FTh(Ps) - PsExh ) * FTh(A))*Cfg;
+Fg   = (( FTh.W / 32.174 ) * FTh.Vflow +  ( FTh.Ps - PsExh ) * FTh.A)*Cfg;
 
 
 block.OutputPort(1).Data = err;
 block.OutputPort(2).Data = Fg;
-block.OutputPort(3).Data = [Ath];
+block.OutputPort(3).Data = Ath;
 %end Outputs

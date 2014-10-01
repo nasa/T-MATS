@@ -1,4 +1,4 @@
-function [namer] = TMATSC_stripchar( name )
+function [namer] = stripchar( name )
 lengtht = length( name );
 ii = 1;
 while  ii < (lengtht)

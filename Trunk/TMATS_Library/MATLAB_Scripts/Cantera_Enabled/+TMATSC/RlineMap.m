@@ -1,4 +1,4 @@
-function [effMap,PRmap,WcMap, stallMargin]=TMATSC_RlineMap(MapFile, NcMapIn, RlineIn  )
+function [effMap,PRmap,WcMap, stallMargin] = RlineMap(MapFile, NcMapIn, RlineIn )
     % determine the name of this instance of the map
     tempparent = gcb();
     
@@ -14,7 +14,7 @@ function [effMap,PRmap,WcMap, stallMargin]=TMATSC_RlineMap(MapFile, NcMapIn, Rli
         end
     ii= ii + 1;
     end
-    tempparent(ii) = '';
+%     tempparent(ii) = '';
     
     %create names to store the map values
     tempR = sprintf( '%s_RlineArray', tempparent );
@@ -24,7 +24,13 @@ function [effMap,PRmap,WcMap, stallMargin]=TMATSC_RlineMap(MapFile, NcMapIn, Rli
     tempPR = sprintf( '%s_PRarray', tempparent );
     
     % if the variable does not exist, the map has not been read in
-    check = exist( tempR );
+    try
+        TMATSC_getV(tempR,'');
+        check = 1;
+    catch
+        check = 0;
+    end
+    
     if  check==0
        % read in the map
        fileID = fopen(MapFile);
@@ -66,12 +72,12 @@ function [effMap,PRmap,WcMap, stallMargin]=TMATSC_RlineMap(MapFile, NcMapIn, Rli
     eff = evalin( 'base', tempEff );
     Wc = evalin( 'base', tempWflow );
     PR = evalin( 'base', tempPR );
-    
+
     % interpolate the map
     PRmap = interp2(Rline,N,PR,RlineIn,NcMapIn ); 
     effMap = interp2(Rline,N,eff,RlineIn,NcMapIn );    
     WcMap = interp2(Rline,N,Wc,RlineIn,NcMapIn ); 
-    
+
     %determine the stall margin
     PRstall = interp2(Rline,N,PR,1.0,NcMapIn ); 
     stallMargin = ( PRstall - PRmap )/ PRmap * 100.;

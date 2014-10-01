@@ -48,27 +48,25 @@ block.RegBlockMethod('Outputs', @Outputs);     % Required
 
 
 function Outputs(block)
+import TMATSC.*
 
-global fs;
-
-TMATSC_flowindicies
-
-gams = 21;
 % load the input values
 TtOut = block.DialogPrm(1).Data;
 PtOut = block.DialogPrm(2).Data;
 Wout = block.InputPort(1).Data;
 
 % load in the composition values
-FO(5) = block.DialogPrm(3).Data;
-FO(6) = block.DialogPrm(4).Data;
-FO(7) = block.DialogPrm(5).Data;
-FO(8) = block.DialogPrm(6).Data;
-FO(9) = block.DialogPrm(7).Data;
-FO(10)  = block.DialogPrm(8).Data;
+compNN(1) = block.DialogPrm(3).Data;
+compNN(2) = block.DialogPrm(4).Data;
+compNN(3) = block.DialogPrm(5).Data;
+compNN(4) = block.DialogPrm(6).Data;
+compNN(5) = block.DialogPrm(7).Data;
+compNN(6)  = block.DialogPrm(8).Data;
 
-% set the the flow conditions
-FO(W) = Wout;
-FO = TMATSC_set_TP( FO, TtOut, PtOut );               
-block.OutputPort(1).Data = FO;
+%Create flow object
+FO = FlowDef(compNN, Wout, TtOut, PtOut);
+
+
+FO_vec = FO.FlwVec();
+block.OutputPort(1).Data = FO_vec;
 %end Outputs

@@ -55,14 +55,13 @@ block.SampleTimes = [-1 0];
 block.SimStateCompliance = 'DefaultSimState';
 block.RegBlockMethod('Outputs', @Outputs);     % Required
 function Outputs(block)
-
-TMATSC_flowindicies;
+import TMATSC.*
 
 % load the incoming flow data into FI
-FI =  block.InputPort(1).Data;
+FI =  FlowDef(block.InputPort(1).Data);
 
 % copy FI into FO to use as a starting point for the combustion
-FO = TMATSC_flowcopy( block.InputPort(1).Data );
+FO = FI.flowcopy();
 
 % grab the input values 
 FAR = block.DialogPrm(1).Data;
@@ -70,24 +69,29 @@ hFuel = block.DialogPrm(2).Data;
 dP= block.DialogPrm(3).Data;
 
 %apply the pressure drop
-FO(Pt) = FI(Pt) *(1-dP);
+FO.Pt = FI.Pt *(1-dP);
 
 % create an array to describe the fuel
-fuel(W) = FI(W)*FAR;
-%set the fuel composition to 100%
-fuel(7)= 1.;
-fuel(ht) = hFuel;
-fuel(25) = 0;
+fuel = FlowDef();
+fuel.W = FI.W*FAR;
+
+%set the fuel composition to 100% 
+fuel.CompVal_TMATS= [0 0 1 0 0 0];
+fuel.Tt = FI.Tt;
+fuel.ht = hFuel;
+
 
 %add the fuel to the flow
-FO = TMATSC_flowadd( FO, fuel );
+FO = FO.flowadd( fuel );
 
+FuelFlow = fuel.W;
+FO_vec = FO.FlwVec();
 
 % load FO into the output port
-block.OutputPort(1).Data = FO;
+block.OutputPort(1).Data = FO_vec;
 
 % set the fuel flow in the fuel output port
-block.OutputPort(2).Data = fuel(1);
+block.OutputPort(2).Data = FuelFlow;
 block.OutputPort(3).Data = [0];
 
 
