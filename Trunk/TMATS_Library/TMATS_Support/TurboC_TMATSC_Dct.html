@@ -3,28 +3,28 @@
 This block simulates the performance of a duct using basic fluid dynamic equations and properties.
 To utilize this block a Cantera object must exist in the workspace as a
 global variable named fs, which may be created with the Cantera importPhase command.
-The fs variable must include all Species defined in the file TMATSC_canteraload.m.
+The fs variable must include all Species defined in the file canteraload.m.
 <br>
 <br>
 <font size="5" color="Blue">Duct Inputs:</font>
 <table border="1"> <tr><td>Duct Input</td><td>Description</td></tr>
     <tr><td>Flow In</td><td>Flow Data Input, 25x1 vector consisting of:
             <br>-1- W      - gas path flow [pps]
-            <br>-2- Tt     - total temperature [degR] 
-            <br>-3- Pt     - total pressure [psia]
-            <br>-4- ht     - total enthlapy [BTU/lbm]
-            <br>-5to10- species array values, defined in TMATSC_canteraload.m
-            <br>-11- s     - entropy [BTU/(lbm*degR)]
-            <br>-12- rhot  - total density [lbm/ft3]
-            <br>-13- Ts    - static temperature [degR]
-            <br>-14- Ps    - static pressure [psia]
-            <br>-15- hs    - static enthalpy [BTU/lbm]
-            <br>-16- rhos  - static density [lbm/ft3]
-            <br>-17- Vflow - flow velocity [ft/sec]
-            <br>-18- MNin  - Mach number
-            <br>-19- A     - flow area [in2]
-            <br>-20- gamt  - total specific heat ratio
-            <br>-21- gams  - static specific heat ratio
+            <br>-2- s     - entropy [BTU/(lbm*degR)]
+            <br>-3- Tt     - total temperature [degR]
+            <br>-4- Pt     - total pressure [psia]
+            <br>-5- ht     - total enthlapy [BTU/lbm]
+            <br>-6- rhot  - total density [lbm/ft3]
+            <br>-7- gamt  - total specific heat ratio
+            <br>-8- Ts    - static temperature [degR]
+            <br>-9- Ps    - static pressure [psia]
+            <br>-10- hs    - static enthalpy [BTU/lbm]
+            <br>-11- rhos  - static density [lbm/ft3]
+            <br>-12- gams  - static specific heat ratio
+            <br>-13- Vflow - flow velocity [ft/sec]
+            <br>-14- MN  - Mach number
+            <br>-15- A     - flow area [in2]
+            <br>-16to21- species array values, defined in canteraload.m
             <br>-22to25- future use
     </td></tr>
 </table>
@@ -33,21 +33,21 @@ The fs variable must include all Species defined in the file TMATSC_canteraload.
 <table border="1"> <tr><td>Duct Output</td><td>Description</td></tr>
     <tr><td>Flow Out</td><td>Flow Data Output, 25x1 vector consisting of:
             <br>-1- W      - gas path flow [pps]
-            <br>-2- Tt     - total temperature [degR] 
-            <br>-3- Pt     - total pressure [psia]
-            <br>-4- ht     - total enthlapy [BTU/lbm]
-            <br>-5to10- species array values, defined in TMATSC_canteraload.m
-            <br>-11- s     - entropy [BTU/(lbm*degR)]
-            <br>-12- rhot  - total density [lbm/ft3]
-            <br>-13- Ts    - static temperature [degR]
-            <br>-14- Ps    - static pressure [psia]
-            <br>-15- hs    - static enthalpy [BTU/lbm]
-            <br>-16- rhos  - static density [lbm/ft3]
-            <br>-17- Vflow - flow velocity [ft/sec]
-            <br>-18- MNin  - Mach number
-            <br>-19- A     - flow area [in2]
-            <br>-20- gamt  - total specific heat ratio
-            <br>-21- gams  - static specific heat ratio
+            <br>-2- s     - entropy [BTU/(lbm*degR)]
+            <br>-3- Tt     - total temperature [degR]
+            <br>-4- Pt     - total pressure [psia]
+            <br>-5- ht     - total enthlapy [BTU/lbm]
+            <br>-6- rhot  - total density [lbm/ft3]
+            <br>-7- gamt  - total specific heat ratio
+            <br>-8- Ts    - static temperature [degR]
+            <br>-9- Ps    - static pressure [psia]
+            <br>-10- hs    - static enthalpy [BTU/lbm]
+            <br>-11- rhos  - static density [lbm/ft3]
+            <br>-12- gams  - static specific heat ratio
+            <br>-13- Vflow - flow velocity [ft/sec]
+            <br>-14- MN  - Mach number
+            <br>-15- A     - flow area [in2]
+            <br>-16to21- species array values, defined in canteraload.m
             <br>-22to25- future use
     </td></tr>
     <tr><td>D_Data</td><td>Duct additional calculation Data, 1x1 vector including:
