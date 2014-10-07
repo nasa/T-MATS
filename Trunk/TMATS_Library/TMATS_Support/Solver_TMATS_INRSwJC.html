@@ -1,25 +1,27 @@
 <font size="6" color="Magenta">T-MATS: Model Source Library Block</font>
 <br>
-The Iterative Newton Raphson Solver with Jacobian Calculator block will 
+The Iterative Newton Raphson Solver with Jacobian Calculator block will
 supply the inputs to iteratively drive the outputs of a system to zero.
 <br>
 <br>
-This will be performed in three steps.<br> 
+This will be performed in three steps.<br>
 1) Jabobian calculator sends Perturbations to the plant then calculates the plant
 Jacboian based on the system response. <br>
 2) The Newton Raphson will use the inverse of the Jacobian to iteratively step the
 system toward solution.<br>
 3) Once the solution has satisfied the conditions the Newton Raphson is shut off.<br>
 <br>
-This module is designed for dynamic systems and should be paired with 
-a "do... while" block in Simulink. The "do...while" block and this module 
+This module is designed for dynamic systems and should be paired with
+a "do... while" block in Simulink. The "do...while" block and this module
 should both be located in the same subsystem as the plant that is to be solved for.
 <br>
 <br>
 <font size="5" color="Blue">Iter_NRSwJC Condition Inputs:</font>
 <table border="1"> <tr><td>Iter_NRSwJC Input</td><td>Description</td></tr>
-    <tr><td>f(x)</td><td>Output of plant to be solved for, (nx1 vector consisting of all plant outputs)</td></tr>
     <tr><td>Iterations</td><td>Number of times the do.. while block has re-run the subsystem.</td></tr>
+	<tr><td>Enable</td><td>Enable Solver</td></tr>
+    <tr><td>f(x)</td><td>Output of plant to be solved for, (nx1 vector consisting of all plant outputs)</td></tr>
+
 </table>
 <br>
 <font size="5" color="Blue">Iter_NRSwJC Condition Outputs:</font>
