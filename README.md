@@ -5,7 +5,8 @@ Toolbox for the Modeling and Analysis of Thermodynamic Systems <br>
 <meta name="keywords" content="T-MATS, TMATS, Control System, Numerical Methods, Newton-Raphson, Jacobian Calculation, Propulsion, Aircraft Engine, Jet, Turbofan, Turbojet, Compressor, Turbine, Nozzle, Inlet, open source, simulation, modeling, NASA, thermodynamics, turbomachinery, MATLAB, Simulink, jet, engine,  etc.">
 <meta name="google-site-verification" content="nqMigEmX-6lqKvj4sewxDamtZEXHEvE1VfzjVRZoJ40" />
 <b> <a href= "https://github.com/nasa/T-MATS/releases" >Click Here</a> for stable release download</b> <br>
-For questions, comments, and general support see the <b> <a href= "https://groups.google.com/forum/#!forum/t-mats-user-group" >T-MATS user's forum</a></b>. <br> <br>
+For questions, comments, and general support see the <b> <a href= "https://groups.google.com/forum/#!forum/t-mats-user-group" >T-MATS user's forum</a></b>. <br>
+Please take a moment and fill out our <b> <a href= "https://docs.google.com/forms/d/1cjcCyOKZpV49-gsdGGaKHUsZ2c2fKX5mwkKrntt60Eo/viewform?usp=send_form" >Survey</a></b>, user interest and feedback allows us to continue working on this package.<br><br>
 
 <b>Introduction</b> <br>
 The Toolbox for the Modeling and Analysis of Thermodynamic Systems (T-MATS) 
@@ -13,7 +14,7 @@ is a Simulink toolbox intended for use in the modeling and simulation of thermod
 systems and their controls. T-MATS contains generic thermodynamic and controls 
 components that may be combined with a variable input iterative solver and optimization 
 algorithm to create complex systems to meet the needs of a developer. Development of this tool
-was completed on behalf of the NASA Aviation Safety Program's Vehicle Systems Safety Technologies
+was initiated on behalf of the NASA Aviation Safety Program's Vehicle Systems Safety Technologies
 (VSST) project.
 <br><br>
 <b>Description</b> <br>
