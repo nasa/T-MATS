@@ -46,28 +46,28 @@ static void mdlInitializeSizes(SimStruct *S)
         /* Return if number of expected != number of actual parameters */
         return;
     }
-    
+
     for (i = 0; i < NPARAMS; i++)
         ssSetSFcnParamTunable(S, i, 0);
-    
+
     ssSetNumContStates(S, 0);
     ssSetNumDiscStates(S, 0);
-    
+
     if (!ssSetNumInputPorts(S, 1)) return;
     ssSetInputPortWidth(S, 0, 8);
     ssSetInputPortRequiredContiguous(S, 0, true);
     ssSetInputPortDirectFeedThrough(S, 0, 1);
-    
+
     if (!ssSetNumOutputPorts(S, 1)) return;
     ssSetOutputPortWidth(S, 0, 6);
-    
+
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
     ssSetNumIWork(S, 11);
     ssSetNumPWork(S, 0);
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
-    
+
 }
 
 static void mdlInitializeSampleTimes(SimStruct *S)
@@ -98,13 +98,13 @@ static void mdlStart(SimStruct *S)
 
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
-    
+
     /*--------parameters defined in S-function block--------*/
     const real_T SwitchType             = *mxGetPr(SwitchType_p(S)); /* Nozzle type */
     const real_T flowLoss               = *mxGetPr(flowLoss_p(S));
     const real_T IDes                   = *mxGetPr(iDesign_p(S));
     const real_T WDes                   = *mxGetPr(WDes_p(S));
-    
+
     /* vector & array data */
     const real_T *Y_N_FARVec            = mxGetPr(Y_N_FARVec_p(S));
     const real_T *T_N_RtArray           = mxGetPr(T_N_RtArray_p(S));
@@ -116,17 +116,17 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     const real_T *T_N_CfgArray          = mxGetPr(T_N_CfgArray_p(S));
     const real_T *T_N_TGArray           = mxGetPr(T_N_TGArray_p(S));
     const real_T *X_N_TtVecTG           = mxGetPr(X_N_TtVecTG_p(S));
-    
+
     /*------get dimensions of parameter arrays-------*/
     const int_T A   = mxGetNumberOfElements(Y_N_FARVec_p(S));
     const int_T B   = mxGetNumberOfElements(X_N_TtVec_p(S));
     const int_T B1  = mxGetNumberOfElements(X_N_PEQPaVec_p(S));
     const int_T C   = mxGetNumberOfElements(X_N_TtVecTG_p(S));
-    
-    
+
+
     /*---------Define Inputs--------*/
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
-    
+
     double WIn       = u[0];     /* Input Flow [pps] 	*/
     double htIn      = u[1];     /* enthaply [BTU/lbm] 	*/
     double TtIn      = u[2];     /* Temperature Input [degR] 	*/
@@ -135,9 +135,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double PambIn    = u[5];     /* Ambient Pressure [psia] 	*/
     double AthroatIn = u[6];     /* Throat area [in2] 	*/
     double AexitIn   = u[7];     /* Exit area [in2] 	*/
-    
+
     real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);   /* Output Array */
-    
+
     /*--------Define Constants-------*/
     double choked, Ps, Ts, rhos, V, Test, MN1;
     double CdTh, Cv, Cfg, Therm_growth, PQPa, PQPaMap, AthroatHot;
@@ -151,17 +151,17 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double erMN_old, erMN, erthr;
     int maxiter, iter, maxiterx, iterx, CDNoz;
     int interpErr = 0;
-    
+
     /* ------- get strings -------------- */
     char * BlkNm;
     int_T buflen;
     int_T status;
-    
+
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
     BlkNm = mxMalloc(buflen);
     status = mxGetString(BN_p(S), BlkNm, buflen);
-    
+
     /* Determine Nozzle Type                  */
     /*SwitchType:                             */
     /*        1: Convergent Nozzle            */
@@ -170,14 +170,14 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         CDNoz = 0;
     else
         CDNoz = 1;
-    
+
     /* Calc entropy */
     Sin = pt2sc(PtIn, TtIn, FARcIn);
-    
+
     /*-- Compute Input enthalpy --------*/
-    
+
     htin = t2hc(TtIn,FARcIn);
-    
+
     /*  Where gas constant is R = f(FAR), but NOT P & T */
     Rt = interp1Ac(Y_N_FARVec,T_N_RtArray,FARcIn,A,&interpErr);
     if (interpErr == 1 && ssGetIWork(S)[0]==0){
@@ -185,7 +185,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         ssSetIWorkValue(S,0,1);
     }
     Rs = Rt;
-    
+
     /*---- set MN = 1 and calc SS Ps for iteration IC --------*/
     MNg = 1;
     gammatg = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,TtIn,A,B,&interpErr);
@@ -195,7 +195,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     }
     TsMNg = TtIn /(1+MNg*MNg*(gammatg-1)/2);
     PsMNg = PtIn*pow((TsMNg/TtIn),(gammatg/(gammatg-1)));
-    
+
     PcalcStat(PtIn, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
     gammasg = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,TsMNg,A,B,&interpErr);
     if (interpErr == 1 && ssGetIWork(S)[2]==0){
@@ -239,18 +239,18 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     rhos = rhosg;
     hs = hsg;
     gammas = gammasg;
-    
+
     /* Determine if Nozzle is choked  */
     if (PsMN1<PambIn)
         choked = 0;
     else {
         choked = 1;
-        
+
     }
     /* Assumed not choked,  set Ps to ambient pressure and calculate parameters */
     if (choked ==0){
         Psth = PambIn;
-        PcalcStat(PtIn, Ps, TtIn, htin, FARcIn, Rt, &Sin, &Ts, &hs, &rhos, &V);
+        PcalcStat(PtIn, Psth, TtIn, htin, FARcIn, Rt, &Sin, &Ts, &hs, &rhos, &V);
         gammas = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,Ts,A,B,&interpErr);
         if (interpErr == 1 && ssGetIWork(S)[5]==0){
             printf("Warning in %s, Error calculating gammas. Vector definitions may need to be expanded.\n", BlkNm);
@@ -261,7 +261,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         Vth = V;
         rhosth = rhos;
     }
-    
+
     else{  /* Assuming choked, determine static pressure and tempurature */
         Psth = PsMN1;
         Tsth = TsMN1;
@@ -270,18 +270,18 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         Vth = MNth*sqrt(gammas*Rs*Tsth*C_GRAVITY*JOULES_CONST);
         rhosth = rhos;
     }
-    
+
     /* error('Nozzle Error: Negative Mach number!!') */
     if (MN<0 && ssGetIWork(S)[6]==0){
         printf("Error in %s: negative mach number,  MN = %f. Vector definitions may need to be expanded.\n", BlkNm, MN);
     }
-    
+
     /* Pressure before nozzle/P ambient */
     PQPa = PtIn / PambIn;
-    
+
     /* cacluate Thermal Constants */
     PQPaMap = PQPa;
-    
+
     CdTh = interp1Ac(X_N_PEQPaVec,T_N_CdThArray,PQPaMap,B1,&interpErr);
     if (interpErr == 1 && ssGetIWork(S)[7]==0){
         printf("Warning in %s, Error calculating CdTh. Vector definitions may need to be expanded.\n", BlkNm);
@@ -302,8 +302,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         printf("Warning in %s, Error calculating Therm_growth. Vector definitions may need to be expanded.\n", BlkNm);
         ssSetIWorkValue(S,9,1);
     }
-    
-    
+
+
     /* Determine throat area in^2 */
     if (IDes < 0.5)
         Ath = WIn * C_PSItoPSF / (Therm_growth *(1-flowLoss/100)*CdTh*rhosth*Vth);
@@ -314,8 +314,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     }
     else
         Ath = AthroatIn;
-    
-    
+
+
     /* Calculate Flow out of nozzle */
     AthroatHot = Ath * Therm_growth;
     Woutcalc = (1-flowLoss/100)*AthroatHot*CdTh*rhosth*Vth/C_PSItoPSF;
@@ -331,7 +331,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         Axcalc = Woutcalc/(V * rhos/C_SINtoSFT);
         if (IDes > 0.5) {   /* for IDes pressure is equal to ambient so no need to continue */
             Ex = abs_D((AexitIn - Axcalc)/AexitIn);
-            
+
             /* iterate to find static pressure, calculated area should be close to actual area */
             maxiterx = 15;
             iterx = 0;
@@ -344,14 +344,14 @@ static void mdlOutputs(SimStruct *S, int_T tid)
                     Psxg = Psxg + 0.05;
                 else
                     Psxg = Psxg_new;
-                
+
                 /* calculate flow velocity and rhos */
                 PcalcStat(PtIn, Psxg, TtIn, htin, FARcIn, Rt, &Sin, &Ts, &hs, &rhos, &V);
                 /* calculated Area */
                 Axcalc = Woutcalc/(V * rhos/C_SINtoSFT);
                 /*determine error */
                 Ex = (AexitIn - Axcalc)/AexitIn;
-                
+
                 if (abs_D(Ex) > Exthr) {
                     /* determine next guess pressure by secant algorithm */
                     Psxg_new = Psxg - Ex *(Psxg - Psxg_old)/(Ex - Ex_old);
@@ -366,7 +366,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
                 iterx = iterx + 1;
             }
         }
-        
+
         Vx = V;
         if (Psxg >= PambIn) {
             Psx = Psxg;
@@ -379,18 +379,18 @@ static void mdlOutputs(SimStruct *S, int_T tid)
                 printf("Warning in %s, Error calculating Static Pressure at the exit.\n", BlkNm);
                 ssSetIWorkValue(S,10,1);
             }
-        }        
+        }
     }
-    
+
     WOut = WIn;
     Test = Psx;
-    
+
     /*----- calc gross thrust -----------*/
     if (CDNoz ==1)
         FgOut = (((WOut/C_GRAVITY) * Vx * Cv) + ((Psx-PambIn) * Ax))*Cfg;
     else
         FgOut = (((WOut/C_GRAVITY) * Vth * Cv) + ((Psth-PambIn) * Ath))*Cfg;
-    
+
     /* ----- Compute Normalized Flow Error ----- */
     if (IDes < 0.5 && WDes == 0)
         NErrorOut = 100;
@@ -408,7 +408,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     y[3] = Ath;           /* Throat Area [in^2] */
     y[4] = Ax;            /* Exit Area [in^2] */
     y[5] = Test;
-    
+
 }
 
 static void mdlTerminate(SimStruct *S)
