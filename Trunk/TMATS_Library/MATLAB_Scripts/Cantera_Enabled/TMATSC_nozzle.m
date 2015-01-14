@@ -86,7 +86,7 @@ FI = FlowDef(block.InputPort(1).Data);
 path = stripchar( gcb() );
 
 % set the throat conditions based on MN
-FTh = FI.set_MNPs( PsExh );
+FTh = FI.set_Ps( PsExh );
 
 if FTh.MN > 1.0
    % static pressur results in MN > 1  Nozzle is choked

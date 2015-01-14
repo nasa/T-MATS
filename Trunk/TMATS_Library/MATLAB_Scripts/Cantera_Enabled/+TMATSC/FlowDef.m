@@ -95,7 +95,7 @@ classdef FlowDef
                     else
                         % Speed = 0, Total = Static
                         obj = obj.set_TP(Ts, Ps);
-                        obj = obj.StaticSet(FO.Tt, FO.Pt, FO.ht, FO.rhot, FO.gams);
+                        obj = obj.StaticSet(obj.Tt, obj.Pt, obj.ht, obj.rhot, obj.gams);
                         obj = obj.SpeedSet(0,0,0);
                     end
                 case('None')
@@ -309,16 +309,13 @@ classdef FlowDef
             obj = obj.SpeedSet(MNing, AOut, Vflowg);
             fclose( 'all' );
         end
-        function obj = set_MNPs(obj, PsExh)
-            %Set the static conditions based on flwo and static pressure
+        function obj = set_Ps(obj, PsExh)
+            %Set the static conditions based on flow and static pressure
             global fs
             set( fs, 'Y',obj.CompVal_Can);
             
-            sign = 1;
-            
             if ( PsExh >  obj.Pt )
-                PsExh = obj.Pt * obj.Pt/ PsExh;
-                sign = -1.0;
+                PsExh = obj.Pt;
             end
             
             % set the conditions based on entropy and input pressure
@@ -333,7 +330,10 @@ classdef FlowDef
             PsOut = PsExh;
             MMW = meanMolecularWeight(fs );
             Vson = sqrt(gamsOut * TsOut*5./9.*8314.4621/ MMW )*3.28084;
-            VflowOut =   sign*sqrt(778.169 * 32.1740 * 2. * (obj.ht - hsOut));
+            if obj.ht < hsOut
+                hsOut = obj.ht;
+            end
+            VflowOut = sqrt(778.169 * 32.1740 * 2. * (obj.ht - hsOut));
             MNOut = VflowOut/ Vson;
             AOut = obj.W/ (VflowOut * rhosOut/144);
             
