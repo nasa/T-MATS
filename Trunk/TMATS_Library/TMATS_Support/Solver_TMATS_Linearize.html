@@ -1,0 +1,47 @@
+<font size="6" color="Magenta">T-MATS: Linearization Library Block</font>
+<br>
+Determine State-space equation for a given system where:<br>
+<br>
+(xdot - xdot_0) = A*(x - x0) + B*(u - u0)<br>
+(y - y0) = C*(x - x0) + D*(u - u0)<br>
+<br>
+During operation each plant state (x) and input (u) will be set to an initial condition then perturbed separately. Perturbed inputs and system effects are compared against the baseline to determine the A,B,C, and D matricies. Perturbation sized are specified below. x0, u0, xdot_0, and y0 values are initial conditions.
+Matrix sizes are specified as:<br>
+xdot and x : mx1<br>
+y : px1<br>
+u : nx1<br>
+A : mxm<br>
+B : mxn<br>
+C : pxm<br>
+D : pxn<br>
+<br>
+<br>
+<font size="5" color="Blue">Linearize Inputs:</font>
+<table border="1"> <tr><td>Lin. Input</td><td>Description</td></tr>
+    <tr><td>x0</td><td>value of x to be linearized around, initial x (mx1)</td></tr>
+    <tr><td>u0</td><td>value of u to be linearized around, initial u (nx1)</td></tr>
+    <tr><td>xdot</td><td>delta x. Determined form x perturbation (mx1)</td></tr>
+    <tr><td>y</td><td>system output data (px1)</td></tr>
+    <tr><td>Enable</td><td>Enables the linearize block. If block is disabled x0 and u0 will be passed through to outputs x and u respectively</td></tr>
+    <tr><td>Reset</td><td>Reset the linearize block</td></tr>
+</table>
+<br>
+    <font size="5" color="Blue">Linearize Outputs:</font>
+<table border="1"> <tr><td>Lin. Output</td><td>Description</td></tr>
+    <tr><td>ABCD_matrices</td><td>bus containing the ABCD matrices</td></tr>
+    <tr><td>x</td><td>current value of x, used for perturbing the system (mx1)</td></tr>
+    <tr><td>u</td><td>current value of u, used for perturbing the system (nx1)</td></tr>
+    <tr><td>xdot_0</td><td>xdot value when x = x0 and y = y0 (mx1)</td></tr>
+    <tr><td>y0</td><td>y value when x = x0 and y = y0 (px1)</td></tr>
+    <tr><td>Iter</td><td>number of time Linerize block has run</td></tr>
+    <tr><td>Active</td><td>Linearize block is actively running</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Linearize Mask Variables: </font>
+<table border="1"> <tr><td>Linearize Mask Variable</td><td>Description</td></tr>
+    <tr><td>N_XPer_M</td><td>Perturbation values for each x (mx1)</td></tr>
+    <tr><td>N_UPer_M</td><td>Perturbation values for each u (nx1)</td></tr>
+    <tr><td>N_Y_M</td><td>Number of y values or p above </td></tr>
+</table>
+<br>
+Updated in MATLAB 2014b
