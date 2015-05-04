@@ -1,0 +1,32 @@
+<font size="6" color="Magenta">T-MATS: 1-D Trans Cond Model(FDE) Block</font>
+<br>
+This function models the transient conduction of a plate with fluid on either side via the finite difference method (explicit). 
+
+<br>Export values are calculated based on a single time step. If additional dynamic behavior is required a simulink memory block may be used to update the temperature initial conditions.
+<br>Units must be specified consistantly. (i.e. If temperature is in Celsius all temperature units must in Celsius)
+<br>
+<font size="5" color="Blue"> 1-D Trans Conduction Inputs:</font>
+<table border="1"> <tr><td> 1-D Trans Conduction Inputs</td><td>Description</td></tr>
+    <tr><td>Tinner</td><td>Inner Fluid Temperature</td></tr>
+    <tr><td>Touter</td><td>Outer Fluid Temperature</td></tr>
+    <tr><td>TiVec</td><td>Initial Temperature at each Node (mx1)</td></tr>
+</table>
+<br>
+<font size="5" color="Blue"> 1-D Trans Conduction Outputs:</font>
+<table border="1"> <tr><td>1-D Trans Conduction Output</td><td>Description</td></tr>
+    <tr><td>Tavg</td><td>Final Average Temperature within the Plate</td></tr>
+    <tr><td>TfVec</td><td>Final Temperature at each Node (mx1)</td></tr>
+    <tr><td>Xdist</td><td>Placement of each Node (mx1)</td></tr>
+</table>
+<br>
+<font size="5" color="Blue"> 1-D Trans Conduction Mask Variables: </font>
+<table border="1"> <tr><td> 1-D Trans Conduction Mask Variable</td><td>Description</td></tr>
+    <tr><td>dt_M</td><td>Time Step</td></tr>
+    <tr><td>Nod_M</td><td>Number of Nodes, m</td></tr>
+    <tr><td>w_M</td><td>Plate total Width</td></tr>
+    <tr><td>h_M</td><td>Material Convection Heat Transfer Coefficient</td></tr>
+    <tr><td>k_M</td><td>Material Thermal Conductivity (k)</td></tr>
+    <tr><td>rho_M</td><td>Material Density (rho)</td></tr>
+    <tr><td>c_M</td><td>Material Specific Heat (C)</td></tr>
+    <tr><td>BlkNm_M</td><td>Block Name (hidden from view)</td></tr>
+</table>

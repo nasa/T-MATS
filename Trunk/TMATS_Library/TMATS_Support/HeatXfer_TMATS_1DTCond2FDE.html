@@ -1,0 +1,41 @@
+<font size="6" color="Magenta">T-MATS: 1-D Trans Cond Model 2mat(FDE) Block</font>
+<br>
+This function models the transient conduction of a plate ,consisting of two different materials, A and B coinciding with inner and outer respectively, with fluid on either side via the finite difference method (explicit). 
+
+<br>Export values are calculated based on a single time step. If additional dynamic behavior is required a simulink memory block may be used to update the temperature initial conditions.
+<br>Units must be specified consistantly. (i.e. If temperature is in Celsius all temperature units must in Celsius)
+<br>
+<font size="5" color="Blue"> 1-D Trans Conduction 2mat Inputs:</font>
+<table border="1"> <tr><td> 1-D Trans Conduction 2mat Inputs</td><td>Description</td></tr>
+    <tr><td>Tinner</td><td>Inner Fluid Temperature</td></tr>
+    <tr><td>Touter</td><td>Outer Fluid Temperature</td></tr>
+    <tr><td>TiVec</td><td>Initial Temperature at each Node ((a+b)x1)</td></tr>
+</table>
+<br>
+<font size="5" color="Blue"> 1-D Trans Conduction 2mat Outputs:</font>
+<table border="1"> <tr><td>1-D Trans Conduction 2mat Output</td><td>Description</td></tr>
+    <tr><td>TAavg</td><td>Final Average Temperature within the Plate A</td></tr>
+    <tr><td>TBavg</td><td>Final Average Temperature within the Plate B</td></tr>
+    <tr><td>TfVec</td><td>Final Temperature at each Node ((a+b)x1)</td></tr>
+    <tr><td>Xdist</td><td>Placement of each Node in A (ax1)</td></tr>
+    <tr><td>Xdist</td><td>Placement of each Node in B (bx1)</td></tr>
+</table>
+<br>
+<font size="5" color="Blue"> 1-D Trans Conduction 2mat Mask Variables: </font>
+<table border="1"> <tr><td> 1-D Trans Conduction 2mat Mask Variable</td><td>Description</td></tr>
+    <tr><td>dt_M</td><td>Time Step</td></tr>
+    <tr><td>BlkNm_M</td><td>Block Name (hidden from view)</td></tr>
+    <tr><td>wA_M</td><td>Plate A total Width</td></tr>
+    <tr><td>NodA_M</td><td>Number of A Nodes, a</td></tr>
+    <tr><td>hA_M</td><td>Material A Convection Heat Transfer Coefficient</td></tr>
+    <tr><td>kA_M</td><td>Material A Thermal Conductivity</td></tr>
+    <tr><td>rhoA_M</td><td>Material A Density</td></tr>
+    <tr><td>cA_M</td><td>Material A Specific Heat</td></tr>
+    <tr><td>wB_M</td><td>Plate B total Width</td></tr>
+    <tr><td>NodB_M</td><td>Number of B Nodes, b</td></tr>
+    <tr><td>hB_M</td><td>Material B Convection Heat Transfer Coefficient</td></tr>
+    <tr><td>kB_M</td><td>Material B Thermal Conductivity</td></tr>
+    <tr><td>rhoB_M</td><td>Material B Density</td></tr>
+    <tr><td>cB_M</td><td>Material B Specific Heat</td></tr>
+
+</table>

@@ -1,0 +1,27 @@
+<font size="6" color="Magenta">T-MATS: 0-D Trans Conduction model (Lumped Cap) Block</font>
+<br>
+This function models the transient conduction of a lumped system via the lumped capacitance method.
+<br>Export values are calculated based on a single time step. If additional dynamic behavior is required a simulink memory block may be used to update the temperature initial conditions.
+<br>Units must be specified consistantly. (i.e. If temperature is in Celsius all temperature units must in Celsius) 
+<br>
+<font size="5" color="Blue"> 0-D Trans Conduction Inputs:</font>
+<table border="1"> <tr><td> 0-D Trans Conduction Inputs</td><td>Description</td></tr>
+    <tr><td>Tinf</td><td>Out of Lumped System Temperature</td></tr>
+    <tr><td>Ti</td><td>Initial Lumped System Temperature</td></tr>
+</table>
+<br>
+<font size="5" color="Blue"> 0-D Trans Conduction Outputs:</font>
+<table border="1"> <tr><td>Heat Transfer Lumped System Output</td><td>Description</td></tr>
+    <tr><td>Tf</td><td>Final Lumped System Temperature</td></tr>
+</table>
+<br>
+<font size="5" color="Blue"> 0-D Trans Conduction Mask Variables: </font>
+<table border="1"> <tr><td> 0-D Trans Conduction Mask Variable</td><td>Description</td></tr>
+    <tr><td>dt_M</td><td>Time Step (dt)</td></tr>
+    <tr><td>h_M</td><td>Material Convection Heat Transfer Coefficient</td></tr>
+    <tr><td>k_M</td><td>Material Thermal Conductivity (k)</td></tr>
+    <tr><td>rho_M</td><td>Material Density (rho)</td></tr>
+    <tr><td>c_M</td><td>Material Specific Heat (C)</td></tr>
+    <tr><td>L_M</td><td>System Characteristic Length (Lenghc = Volume/Area)</td></tr>
+    <tr><td>BlkNm_M</td><td>Block Name (hidden from view)</td></tr>
+</table>
