@@ -11,7 +11,7 @@ thermodynamic equations, properties, and table lookups.
             <br>- ht - enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FARc - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>Rline</td><td>R-line, position on compressor map 
             <br>Determines pressure ratio, efficiency, and gas path flow. 
             <br>The value for this variable will need be solved for by driving 
@@ -22,32 +22,33 @@ thermodynamic equations, properties, and table lookups.
 <font size="5" color="Blue">Compressor Outputs:</font>
 <table border="1"><tr><td>Compressor Output</td><td>Description</td></tr>
     <tr><td>CustBldsCharOut</td><td>Customer or flow based Bleeds Characteristics Output,
-            <br>[5 x 1] vector for each customer bleed (total #cbleeds *5 x 1)
-            <br> consisting of the following repeating format:<br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
-            <br>- Tt - Total Temperature [degR]
-            <br>- Pt - Total Pressure [psia]
-            <br>- FARc - Combusted Fuel to Air Ratio [frac]
-    <br> This feature must be enabled, see Bleed tab variable (CBLDEN_M) definition</td></tr>
-    <tr><td>FBldsCharOut</td><td>Fractional Bleeds Characteristics Output,
-            <br>[5 x 1] vector for each customer bleed (total #fbleeds *5 x 1)
+            <br>[5 x 1] bus/vector for each customer bleed (total #cbleeds *5 x 1)
             <br> consisting of the following repeating format:
             <br>- W - gas path flow [pps]
             <br>- ht - enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-            <br>- FARc - Combusted Fuel to Air Ratio [frac]
-    <br> This feature must be enabled, see Bleed tab variable (FBLDEN_M) definition<br></td></tr>
-    <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 vector consisting of:
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]
+    <br> This feature must be enabled, see Bleed tab variable (CBLDEN_M) definition</td></tr>
+    <tr><td>FBldsCharOut</td><td>Fractional Bleeds Characteristics Output,
+            <br>[5 x 1] bus/vector for each customer bleed (total #fbleeds *5 x 1)
+            <br> consisting of the following repeating format:
             <br>- W - gas path flow [pps]
             <br>- ht - enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FARc - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]
+    <br> This feature must be enabled, see Bleed tab variable (FBLDEN_M) definition<br></td></tr>
+    <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr> <td>NErr</td><td>Normalized Error [frac], in a typical system this will 
     <br>be driven to zero by an iterative solver </td></tr>
     <tr><td>TrqOut</td><td>compressor Torque Output (lbf*ft), negative value for a compressor.</td></tr>
-    <tr><td>C_Data</td><td>Compressor internal calculation Data, 2x1 vector including:
+    <tr><td>C_Data</td><td>Compressor internal calculation Data, 2x1 bus/vector including:
             <br>- SMavail - Stall Margin Available [%]
     <br>- Test - Compressor internal calculation Data </td></tr>
 </table>

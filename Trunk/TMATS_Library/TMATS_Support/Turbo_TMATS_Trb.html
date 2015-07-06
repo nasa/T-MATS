@@ -7,19 +7,19 @@ thermodynamic equations, properties, and table lookups.
 <font size="5" color="Blue">Turbine Inputs:</font>
 <table border="1"> <tr><td>Turbine Input</td><td>Description</td></tr>
     <tr><td>CoolingFlwCharIn</td><td>Cooling flow Gas Characteristics Input, 
-            <br> 5x1 vector (for each cooling flow) consisting of:
+            <br> 5x1 bus/vector (for each cooling flow) consisting of:
             <br>- W - gas path flow [pps]
             <br>- ht - enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-            <br>- FARc - Combusted Fuel to Air Ratio [frac]
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]
     <br> This feature must be enabled, see Cooling Flow tab variable (CFlwEn_M) definition</td></tr>
-    <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 vector consisting of:
+    <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 bus/vector consisting of:
             <br>- W - gas path flow [pps]
             <br>- ht - enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FARc - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>PRmapIn</td><td>Map turbine Pressure Ratio, position on turbine map
             <br> Determines Pressure ratio, efficiency, and gas path flow.
             <br> The value for this variable will need to be solved for by driving
@@ -29,12 +29,12 @@ thermodynamic equations, properties, and table lookups.
 <br>
 <font size="5" color="Blue">Turbine Outputs:</font>
 <table border="1"> <tr><td>Turbine Output</td><td>Description</td></tr>
-    <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 vector consisting of:
+    <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
             <br>- W - gas path flow [pps]
             <br>- ht - enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FARc - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>NErr</td><td>Normalized Error [frac], in a typical system this will 
     <br>be driven to zero by an iterative solver</td></tr>
     <tr><td>TrqOut</td><td>turbine Torque Output (lbf*ft), positive value for a turbine.</td></tr>
