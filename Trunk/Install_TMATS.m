@@ -55,10 +55,9 @@ switch questdlg(TMATSInstallmsg, 'T-MATS Library', 'Yes', 'No', 'No');
         try
             % component mex make file
             
-            cd(strcat('TMATS_Library',POp,'MEX',POp,'C_code'));
+            cd(strcat('TMATS_Library',POp,'MEX'));
             disp('Compiling T-MATS, please wait...');
             make_file_TMATS;
-            eval(['cd ' CurrDir]);
             
             % return to the root directory
             eval(['cd ' CurrDir]);
