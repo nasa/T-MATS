@@ -55,7 +55,7 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetNumDiscStates(S, 0);
 
     if (!ssSetNumInputPorts(S, 2)) return;
-    ssSetInputPortWidth(S, 0, 7);
+    ssSetInputPortWidth(S, 0, 8);
     ssSetInputPortRequiredContiguous(S, 0, true);
     ssSetInputPortDirectFeedThrough(S, 0, 1);
 
@@ -146,11 +146,11 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double FARcIn   = u[4];     /* Compusted Fuel to Air Ratio [frac] */
     double Nmech    = u[5];     /* Mechancial Shaft Speed [rpm]*/
     double PRIn     = u[6];     /* Pressure Ratio [NA] 	 */
+    int    cfWidth  = u[7];     /* Cooling Flow vector length	*/
 
     /*---------Define Inputs for input port 2--------*/
     /* N 5x1 vectors consisting of W, ht, Tt, Pt and FAR, where N is the number of cooling flows */
     const real_T *CoolFlow = ssGetInputPortRealSignal(S, 1);
-    int cfWidth = ssGetCurrentInputPortDimensions(S, 1, 0);
 
     real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);   /* Output Array */
 

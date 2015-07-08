@@ -35,7 +35,9 @@
 #define CustBldEn_p(S)          ssGetSFcnParam(S,20)
 #define FBldEn_p(S)             ssGetSFcnParam(S,21)
 #define BN_p(S)                 ssGetSFcnParam(S,22)
-#define NPARAMS 23
+#define CustBldNm_p(S)          ssGetSFcnParam(S,23)
+#define FracBldNm_p(S)          ssGetSFcnParam(S,24)
+#define NPARAMS 25
 
 extern double h2tc(double a, double b);
 extern double pt2sc(double c, double d, double e);
@@ -141,6 +143,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     const real_T IDes               = *mxGetPr(IDesign_p(S));
     const real_T CustBldEn          = *mxGetPr(CustBldEn_p(S));
     const real_T FBldEn             = *mxGetPr(FBldEn_p(S));
+    const real_T CustBldNm          = *mxGetPr(CustBldNm_p(S));
+    const real_T FracBldNm          = *mxGetPr(FracBldNm_p(S));
 
     /* vector & array data */
     const real_T *Y_C_NcVec            = mxGetPr(Y_C_NcVec_p(S));
@@ -175,11 +179,11 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 
     /*---------Define Inputs for input port 2--------*/
     const real_T *Wcust = ssGetInputPortRealSignal(S, 1);
-    int uWidth1 = ssGetCurrentInputPortDimensions(S, 1, 0);
+    int uWidth1 = CustBldNm;
 
     /*---------Define Inputs for input port 3--------*/
     const real_T *FracWbld  = ssGetInputPortSignal(S,2);
-    int uWidth2 = ssGetCurrentInputPortDimensions(S, 2, 0);
+    int uWidth2 = FracBldNm;
 
     real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);   /* Output Array port 1 */
     real_T *y1  = (real_T *)ssGetOutputPortRealSignal(S,1);   /* Output Array port 2 */
