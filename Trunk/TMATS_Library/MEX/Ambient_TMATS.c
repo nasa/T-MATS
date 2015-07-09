@@ -11,7 +11,6 @@
 #include "simstruc.h"
 #include "constants_TMATS.h"
 #include <math.h>
-#include "funcs_TMATS.h"
 
 #define X_A_AltVec_p(S)      ssGetSFcnParam(S,0)
 #define T_A_TsVec_p(S)       ssGetSFcnParam(S,1)
@@ -182,10 +181,10 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     iter = 0;
     erthr = 0.001;
     
-    while (abs_D(er) > erthr && iter < maxiter) {
+    while (fabs(er) > erthr && iter < maxiter) {
         er_old = er;
         Ptg_old = Ptg;
-        if(abs_D(Ptg - Ptg_new) < 0.03)
+        if(fabs(Ptg - Ptg_new) < 0.03)
             Ptg = Ptg + 0.05;
         else
             Ptg = Ptg_new;
@@ -200,7 +199,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         Vsg = sqrt(gammasg*Rs*TsOut*C_GRAVITY*JOULES_CONST);
         MNg = Vg/Vsg;
         er = MNIn - MNg;
-        if (abs_D(er) > erthr) {
+        if (fabs(er) > erthr) {
             /* determine next guess pressure by secant algorithm */
             Ptg_new = Ptg - er *(Ptg - Ptg_old)/(er - er_old);
         }

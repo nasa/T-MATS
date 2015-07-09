@@ -11,7 +11,6 @@
 #include "simstruc.h"
 #include "constants_TMATS.h"
 #include <math.h>
-#include "funcs_TMATS.h"
 
 #define SwitchType_p(S)             ssGetSFcnParam(S,0)
 #define flowLoss_p(S)               ssGetSFcnParam(S,1)
@@ -209,10 +208,10 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     iter = 0;
     erthr = 0.001;
     /* if Ps is not close enough to Ps at MN = 1, iterate to find Ps at MN = 1 */
-    while (abs_D(erMN) > erthr && iter < maxiter) {
+    while (fabs(erMN) > erthr && iter < maxiter) {
         erMN_old = erMN;
         PsMNg_old = PsMNg;
-        if(abs_D(PsMNg - PsMNg_new) < 0.03)
+        if(fabs(PsMNg - PsMNg_new) < 0.03)
             PsMNg = PsMNg + 0.05;
         else
             PsMNg = PsMNg_new;
@@ -224,7 +223,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         }
         MNg = Vg/sqrt(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST);
         erMN =1 - MNg;
-        if (abs_D(erMN) > erthr) {
+        if (fabs(erMN) > erthr) {
             /* determine next guess pressure by secant algorithm */
             PsMNg_new = PsMNg - erMN *(PsMNg - PsMNg_old)/(erMN - erMN_old);
         }
@@ -330,17 +329,17 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         PcalcStat(PtIn, Psxg, TtIn, htin, FARcIn, Rt, &Sin, &Ts, &hs, &rhos, &V);
         Axcalc = Woutcalc/(V * rhos/C_SINtoSFT);
         if (IDes > 0.5) {   /* for IDes pressure is equal to ambient so no need to continue */
-            Ex = abs_D((AexitIn - Axcalc)/AexitIn);
+            Ex = fabs((AexitIn - Axcalc)/AexitIn);
 
             /* iterate to find static pressure, calculated area should be close to actual area */
             maxiterx = 15;
             iterx = 0;
             Psxg_new = Psxg + 0.05;
             Exthr = 0.0001;
-            while ( abs_D(Ex) > Exthr && iterx < maxiter) {
+            while ( fabs(Ex) > Exthr && iterx < maxiter) {
                 Ex_old = Ex;
                 Psxg_old = Psxg;
-                if (abs_D(Psxg - Psxg_new) < 0.03)
+                if (fabs(Psxg - Psxg_new) < 0.03)
                     Psxg = Psxg + 0.05;
                 else
                     Psxg = Psxg_new;
@@ -352,7 +351,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
                 /*determine error */
                 Ex = (AexitIn - Axcalc)/AexitIn;
 
-                if (abs_D(Ex) > Exthr) {
+                if (fabs(Ex) > Exthr) {
                     /* determine next guess pressure by secant algorithm */
                     Psxg_new = Psxg - Ex *(Psxg - Psxg_old)/(Ex - Ex_old);
                     /* limit algorthim change */

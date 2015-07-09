@@ -68,7 +68,6 @@
 #include "simstruc.h"
 #include <math.h>
 #include "constants_TMATS.h"
-#include "funcs_TMATS.h"
 
 #define Aphy1In_p(S)                    ssGetSFcnParam(S,0)
 #define Aphy2In_p(S)                    ssGetSFcnParam(S,1)
@@ -324,10 +323,10 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         iter = 0;
         erthr = 0.0001;
         /* if Ps is not close enough to Ps at MN = MNp, iterate to find Ps at MN = MNp */
-        while (abs_D(erMN) > erthr && iter < maxiter) {
+        while (fabs(erMN) > erthr && iter < maxiter) {
             erMN_old = erMN;
             PsMNg_old = PsMNg;
-            if(abs_D(PsMNg - PsMNg_new) < 0.03)
+            if(fabs(PsMNg - PsMNg_new) < 0.03)
                 PsMNg = PsMNg + 0.05;
             else
                 PsMNg = PsMNg_new;
@@ -347,7 +346,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             }
             MNg = Vg/sqrt(gammasg*Rsp*TsMNg*C_GRAVITY*JOULES_CONST);
             erMN = MNp - MNg;
-            if (abs_D(erMN) > erthr) {
+            if (fabs(erMN) > erthr) {
                 /* determine next guess pressure by secant algorithm */
                 PsMNg_new = PsMNg - erMN *(PsMNg - PsMNg_old)/(erMN - erMN_old);
             }
@@ -412,16 +411,16 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         Ps1g = Pt1In*pow((Ts1g/Tt1In),(gammat1g/(gammat1g-1)));
         PcalcStat(Pt1In, Ps1g, Tt1In, ht1in, FARc1In, Rt1, &S1in, &Ts1, &hs1, &rhos1, &V1);
         A1calc = W1In/(V1 * rhos1/C_SINtoSFT);
-        E1 = abs_D((Aphy1 - A1calc)/Aphy1);
+        E1 = fabs((Aphy1 - A1calc)/Aphy1);
         
         /* iterate to find static pressure, calculated area should be close to actual area */
         iter1 = 0;
         Ps1g_new = Ps1g + 0.05;
         E1thr = 0.001;
-        while ( abs_D(E1) > E1thr && iter1 < maxiter) {
+        while ( fabs(E1) > E1thr && iter1 < maxiter) {
             E1_old = E1;
             Ps1g_old = Ps1g;
-            if(abs_D(Ps1g - Ps1g_new) < 0.03) {
+            if(fabs(Ps1g - Ps1g_new) < 0.03) {
                 Ps1g = Ps1g + 0.05;
             }
             else {
@@ -442,7 +441,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             A1calc = W1In/(V1 * rhos1/C_SINtoSFT);
             /*determine error */
             E1 = (Aphy1 - A1calc)/Aphy1;
-            if (abs_D(E1) > E1thr) {
+            if (fabs(E1) > E1thr) {
                 /* determine next guess pressure by secant algorithm */
                 Ps1g_new = Ps1g - E1 *(Ps1g - Ps1g_old)/(E1 - E1_old);
                 /* limit algorthim change */
@@ -470,16 +469,16 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         Ps2g = Pt2In*pow((Ts2g/Tt2In),(gammat2g/(gammat2g-1)));
         PcalcStat(Pt2In, Ps2g, Tt2In, ht2in, FARc2In, Rt2, &S2in, &Ts2, &hs2, &rhos2, &V2);
         A2calc = W2In/(V2 * rhos2/C_SINtoSFT);
-        E2 = abs_D((Aphy2 - A2calc)/Aphy2);
+        E2 = fabs((Aphy2 - A2calc)/Aphy2);
         
         /* iterate to find static pressure, calculated area should be close to actual area */
         iter2 = 0;
         Ps2g_new = Ps2g + 0.05;
         E2thr = E1thr;
-        while ( abs_D(E2) > E2thr  && iter2 < maxiter) {
+        while ( fabs(E2) > E2thr  && iter2 < maxiter) {
             E2_old = E2;
             Ps2g_old = Ps2g;
-            if(abs_D(Ps2g - Ps2g_new) < 0.03) {
+            if(fabs(Ps2g - Ps2g_new) < 0.03) {
                 Ps2g = Ps2g + 0.05;
             }
             else {
@@ -499,7 +498,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             /*determine error */
             E2 = (Aphy2 - A2calc)/Aphy2;
             
-            if (abs_D(E2) > E2thr) {
+            if (fabs(E2) > E2thr) {
                 /* determine next guess pressure by secant algorithm */
                 Ps2g_new = Ps2g - E2 *(Ps2g - Ps2g_old)/(E2 - E2_old);
                 /* limit algorthim change */
@@ -542,13 +541,13 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     PcalcStat(Ptoutg, Psoutg, TtOut, htOut, FARcOut, Rtout, &Sout, &Tsout, &hsout, &rhosout, &Vout);
     Aoutcalc = WOut/(Vout * rhosout/C_SINtoSFT);
     /* determine guess error for static pressure iteration */
-    Eout2 = abs_D((Aphyout - Aoutcalc)/Aphyout);
+    Eout2 = fabs((Aphyout - Aoutcalc)/Aphyout);
     
     /* determine guess error for total pressure iteration */
     
     ImpulseMixed = s_M_Imp1*(Ps1*Aphy1 + W1In * V1 * s_M_V1/C_GRAVITY) + s_M_Imp2*(Ps2 * Aphy2 + W2In * V2 * s_M_V2/ C_GRAVITY);
     Impulseoutputg = Psoutg * Aphyout + WOut * Vout/C_GRAVITY;
-    Eout1 = abs_D((ImpulseMixed - Impulseoutputg)/ ImpulseMixed);
+    Eout1 = fabs((ImpulseMixed - Impulseoutputg)/ ImpulseMixed);
     /* determine iteration constants */
     iter3a = 0;
     iter3b = 0;
@@ -557,10 +556,10 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     Eout1thr = 0.001;
     Eout2thr = 0.001;
     /* iterate to find total pressure, calculated from errors in Impulse  */
-    while ( (abs_D(Eout1) > Eout1thr || abs_D(Eout2) > Eout2thr) && iter3a < maxiter) {
+    while ( (fabs(Eout1) > Eout1thr || fabs(Eout2) > Eout2thr) && iter3a < maxiter) {
         Eout1_old = Eout1;
         Ptoutg_old = Ptoutg;
-        if(abs_D(Ptoutg - Ptoutg_new) < 0.03) {
+        if(fabs(Ptoutg - Ptoutg_new) < 0.03) {
             Ptoutg = Ptoutg + 0.05;
         }
         else {
@@ -572,7 +571,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         do{
             Eout2_old = Eout2;
             Psoutg_old = Psoutg;
-            if(abs_D(Psoutg - Psoutg_new) < 0.03) {
+            if(fabs(Psoutg - Psoutg_new) < 0.03) {
                 Psoutg = Psoutg + 0.05;
             }
             else {
@@ -591,7 +590,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             Aoutcalc = WOut/(Vout * rhosout/C_SINtoSFT);
             /*determine error */
             Eout2 = (Aphyout - Aoutcalc)/Aphyout;
-            if (abs_D(Eout2) > Eout2thr) {
+            if (fabs(Eout2) > Eout2thr) {
                 /* determine next guess pressure by secant algorithm */
                 Psoutg_new = Psoutg - Eout2 *(Psoutg - Psoutg_old)/(Eout2 - Eout2_old);
                 /* limit algorthim change */
@@ -603,7 +602,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
                 }
             }
             iter3b = iter3b + 1;
-        } while ( abs_D(Eout2) > Eout2thr && iter3b < maxiter);
+        } while ( fabs(Eout2) > Eout2thr && iter3b < maxiter);
         
         /* verify Ps is <= Pt */
         if (Psoutg > Ptoutg){
@@ -618,8 +617,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         /* calculate impulse output based on current Pt guess */
         Impulseoutputg = Psoutg * Aphyout + WOut * Vout/C_GRAVITY;
         /* calculate impulse error */
-        Eout1 = abs_D((ImpulseMixed - Impulseoutputg)/ ImpulseMixed);
-        if (abs_D(Eout1) > Eout1thr) {
+        Eout1 = fabs((ImpulseMixed - Impulseoutputg)/ ImpulseMixed);
+        if (fabs(Eout1) > Eout1thr) {
             /* determine next guess pressure by secant algorithm */
             Ptoutg_new = Ptoutg - Eout1 *(Ptoutg - Ptoutg_old)/(Eout1 - Eout1_old);
             /* limit algorthim change */

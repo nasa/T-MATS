@@ -12,7 +12,6 @@
 #include "simstruc.h"
 #include "constants_TMATS.h"
 #include <math.h>
-#include "funcs_TMATS.h"
 
 #define AthroatIn_p(S)              ssGetSFcnParam(S,0)
 #define MNIn_p(S)                   ssGetSFcnParam(S,1)
@@ -183,10 +182,10 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         erthr = 0.0001;
 
         /* if Ps is not close enough to Ps at MN = MNIn, iterate to find Ps at MN = MNIn */
-        while (abs_D(erMN) > erthr && iter < maxiter) {
+        while (fabs(erMN) > erthr && iter < maxiter) {
             erMN_old = erMN;
             PsMNg_old = PsMNg;
-            if(abs_D(PsMNg - PsMNg_new) < 0.003)
+            if(fabs(PsMNg - PsMNg_new) < 0.003)
                 PsMNg = PsMNg + 0.005;
             else
                 PsMNg = PsMNg_new;
@@ -204,7 +203,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
                 Acalc = 999; /* if velocity is close to zero assume a very large Ath */}
 
             erMN = MNIn - MNg;
-            if (abs_D(erMN) > erthr) {
+            if (fabs(erMN) > erthr) {
                 /* determine next guess pressure by secant algorithm */
                 PsMNg_new = PsMNg - erMN *(PsMNg - PsMNg_old)/(erMN - erMN_old);
             }
@@ -241,10 +240,10 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         Psg_new = Psg + 0.05;
         erthr = 0.0001;
 
-        while ( abs_D(erA) > erthr && iter < maxiter){
+        while ( fabs(erA) > erthr && iter < maxiter){
             erA_old = erA;
             Psg_old = Psg;
-            if(abs_D(Psg - Psg_new) < 0.0003) {
+            if(fabs(Psg - Psg_new) < 0.0003) {
                 Psg = Psg + 0.0005;
             }
             else {
@@ -273,7 +272,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
                 Tsg = TtIn;
                 Acalc = 999;
             }
-            if (abs_D(erA) > erthr) {
+            if (fabs(erA) > erthr) {
                 /* determine next guess pressure by secant algorithm */
                 Psg_new = Psg - erA *(Psg - Psg_old)/(erA - erA_old);
                 /* limit algorthim change */

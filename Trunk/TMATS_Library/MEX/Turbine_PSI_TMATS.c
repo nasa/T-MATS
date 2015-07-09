@@ -11,7 +11,6 @@
 #include "simstruc.h"
 #include "constants_TMATS.h"
 #include <math.h>
-#include "funcs_TMATS.h"
 
 #define s_T_Nc_p(S)             ssGetSFcnParam(S,0)
 #define s_T_PR_p(S)             ssGetSFcnParam(S,1)
@@ -330,14 +329,14 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /* Determine starting point for iteration to find PR */
     Ptoutg = PtIn*pow((TtOutIdeal/TtIn),(gamma_T/(gamma_T-1)));
     TtOutIdealg = sp2tc(Sout,Ptoutg,FARs1in);
-    erT = 100*abs_D(TtOutIdealg - TtOutIdeal)/TtOutIdeal;
+    erT = 100*fabs(TtOutIdealg - TtOutIdeal)/TtOutIdeal;
     Ptoutg_new = Ptoutg;
 
     /* iterate to find Ptout when TtOutIdeal guess = TtOutIdeal */
-    while (abs_D(erT) > 0.05) {
+    while (fabs(erT) > 0.05) {
         erT_old = erT;
         Ptoutg_old = Ptoutg;
-        if(abs_D(Ptoutg - Ptoutg_new) < 0.02)
+        if(fabs(Ptoutg - Ptoutg_new) < 0.02)
             Ptoutg = Ptoutg + 0.05;
         else
             Ptoutg = Ptoutg_new;
@@ -345,7 +344,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         Ptoutg = Ptoutg + 0.05;
         TtOutIdealg = sp2tc(Sout,Ptoutg,FARs1in);
         erT = 100*(TtOutIdealg - TtOutIdeal)/TtOutIdeal;
-        if (abs_D(erT) > 0.05) {
+        if (fabs(erT) > 0.05) {
             /* determine next guess pressure by secant algorithm */
             Ptoutg_new = Ptoutg - erT *(Ptoutg - Ptoutg_old)/(erT - erT_old);
         }
