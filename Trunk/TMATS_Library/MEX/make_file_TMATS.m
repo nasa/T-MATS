@@ -14,6 +14,7 @@ delete '*.mex*'
 mex Ambient_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp1Ac_TMATS.c interp2Ac_TMATS.c
 mex Burner_TMATS.c t2hc_TMATS.c h2tc_TMATS.c
 mex Compressor_TMATS.c h2tc_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp1Ac_TMATS.c interp2Ac_TMATS.c
+mex DO_TMATS.c
 mex Enth2Temp_TMATS.c h2tc_TMATS.c
 mex Mixer_TMATS.c h2tc_TMATS.c PcalcStat_TMATS.c t2hc_TMATS.c interp1Ac_TMATS.c interp2Ac_TMATS.c sp2tc_TMATS.c pt2sc_TMATS.c
 mex Nozzle_TMATS.c PcalcStat_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp1Ac_TMATS.c interp2Ac_TMATS.c
