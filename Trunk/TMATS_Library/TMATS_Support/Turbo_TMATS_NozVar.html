@@ -1,6 +1,6 @@
-<font size="6" color="Magenta">T-MATS: Nozzle Library Block</font>
+<font size="6" color="Magenta">T-MATS: Var Nozzle Library Block</font>
 <br>
-This block simulates the performance of a nozzle using basic 
+This block simulates the performance of a variable area nozzle using basic
 thermodynamic equations, properties, and table lookups.
 <br>
 <br>
@@ -14,14 +14,14 @@ thermodynamic equations, properties, and table lookups.
     <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>Pamb</td><td>Ambient static Pressure [psia]</td></tr>
     <tr><td>Ath</td><td>Nozzle Throat Area [in^2]</td></tr>
-    <tr><td>Aexit</td><td>Nozzle Exit Area [in^2]</td></tr>
+    <tr><td>Aexit</td><td>Nozzle Exit Area (only for CD nozzle types) [in^2]</td></tr>
 </table>
 <br>
 <font size="5" color="Blue">Nozzle Outputs:</font>
 <table border="1"> <tr><td>Nozzle Output</td><td>Description</td></tr>
     <tr><td>Wout</td><td>gas path flow [pps]</td></tr>
     <tr><td>Fg</td><td>Gross thrust [lbf]</td></tr>
-    <tr><td>NErr</td><td>Normalized Error [frac], in a typical system this will 
+    <tr><td>NErr</td><td>Normalized Error [frac], in a typical system this will
     <br>be driven to zero by an iterative solver</td></tr>
     <tr><td>N_Data</td><td>Nozzle internal calculation Data</td></tr>
 </table>
@@ -35,6 +35,7 @@ thermodynamic equations, properties, and table lookups.
     <tr><td>T_N_CdThArray_M</td><td>Nozzle CdTh Array, Throat blockage factor [frac](CdTh = f(PEQPa))(bx1)
     <br> 0 - Fully Blocked, 1 - Fully unblocked</td></tr>
     <tr><td>T_N_CvArray_M</td><td>Nozzle Velocity Coefficient Array (Cv = f(PEQPa))(bx1)</td></tr>
+    <tr><td>CfgEn_M</td><td>Enable Thrust Coefficient. Note, this will disable the Velocity Coefficient</td></tr>
     <tr><td>T_N_CfgArray_M</td><td>Nozzle Thrust Coefficient Array (Cfg = f(PEQPa))(bx1)</td></tr>
     <tr><td>X_N_FARVec_M</td><td>Nozzle Fuel to Air Ratio Vector(X-axis)(cx1)</td></tr>
     <tr><td>T_N_RtArray_M</td><td>Nozzle Gas Constant, R, Array (R = f(FAR))(cx1)</td></tr>
@@ -44,12 +45,13 @@ thermodynamic equations, properties, and table lookups.
             <br>0 - iDes Enabled, Calculate nozzle throat area based on design variables
             <br>    When iDesign is set to 0, N_TArea_M from the General tab will not be used.
             <br>    Throat area calculated will be saved in the specified file (FVar_M).
-            <br>1 - nozzle throat area variables will be overwritten (mask Initialization) with 
+            <br>    This option will also disable input Areas.
+            <br>1 - nozzle throat area variables will be overwritten (mask Initialization) with
             <br>    values from a specified file (FVar_M).
-            <br>    When iDesign is set to 1, N-TArea_M from the General tab and the Design values 
-            <br>    from the iDesign tab will not be used. 
+            <br>    When iDesign is set to 1, N-TArea_M from the General tab and the Design values
+            <br>    from the iDesign tab will not be used. This option will also disable input Areas.
             <br>2 - Nozzle throat area from the General tab will be used in the nozzle module.
-            <br>    When iDesign is set to 2, N_TArea_M from the General tab will be used; Design values 
+            <br>    When iDesign is set to 2, N_TArea_M from the General tab will be used; Design values
     <br>    and file definitions from the iDesign tab will not be used. </td></tr>
     <tr><td>WDes_M</td><td>Design flow[pps]</td></tr>
     <tr><td>FVar_M</td><td>File name for iDes Variables</td></tr>
