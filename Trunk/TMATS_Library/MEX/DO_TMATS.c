@@ -57,7 +57,7 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 #if defined(MDL_START)
 static void mdlStart(SimStruct *S)
 {
-
+    
 }
 #endif
 
@@ -78,13 +78,19 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     buflen = mxGetN(FN_p(S))*sizeof(mxChar)+1;
     FileNm = mxMalloc(buflen);
     status = mxGetString(FN_p(S), FileNm, buflen);
-
+    
     
     Width = VecIn[0];
     fp = fopen(FileNm,"w");
-    for (i = 1; i <= Width; i++) {
-       Val = max(min(VecIn[i],99999),-99999);
-       fprintf(fp,"%f\n",Val);
+    for (i = 1; i <= Width; i++){
+        
+        Val = VecIn[i];
+        if (Val >= 99999)
+            Val = 99999;
+        else if (Val <= -99999)
+            Val = -99999;
+        
+        fprintf(fp,"%f\n",Val);
     }
     
     fclose(fp);
