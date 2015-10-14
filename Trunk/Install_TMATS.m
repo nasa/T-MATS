@@ -93,7 +93,9 @@ switch InstallType
             fclose(fid);
             eval(['cd ' CurrDir]);
         end
-        disp('T-MATS installation complete.');
+        disp('T-MATS Simulink library installation complete.');
+        disp('For T-MATS Tools installation instructions, please see the users guide.');
+
     case 'Cancel',
         disp('T-MATS installation aborted.');
 end
