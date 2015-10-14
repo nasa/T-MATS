@@ -12,11 +12,11 @@ switch questdlg(TMATSRemovemsg, 'T-MATS Library', 'Yes', 'No', 'No');
         p = path;                               % current path
         CurrDir = pwd;                          % current directory
         % define new paths
-        Pth{1} = strcat(pwd,POp,'TMATS_Library ');  
-        Pth{2} = strcat(pwd,POp,'TMATS_Library',POp,'MEX'); 
-        Pth{3} = strcat(pwd,POp,'TMATS_Library',POp,'TMATS_Support'); 
-        Pth{4} = strcat(pwd,POp,'TMATS_Tools'); 
-        Pth{5} = strcat(pwd,POp,'TMATS_Library',POp,'MATLAB_Scripts');    
+        Pth{1} = strcat(pwd,POp,'TMATS_Library ');
+        Pth{2} = strcat(pwd,POp,'TMATS_Library',POp,'MEX');
+        Pth{3} = strcat(pwd,POp,'TMATS_Library',POp,'TMATS_Support');
+        Pth{4} = strcat(pwd,POp,'TMATS_Tools');
+        Pth{5} = strcat(pwd,POp,'TMATS_Library',POp,'MATLAB_Scripts');
         Pth{6} = strcat(pwd,POp,'TMATS_Library',POp,'MATLAB_Scripts',POp,'Cantera_Enabled');
         
         perm = zeros( 1 , length(Pth));  % allocate memory for perm
@@ -53,12 +53,15 @@ switch questdlg(TMATSRemovemsg, 'T-MATS Library', 'Yes', 'No', 'No');
         end
         
         if error ==0;
-            disp('Removing Contents.m');
-            cd( 'TMATS_Library')
-            fid = fopen('Contents.m');
-            fclose(fid);
-            delete('Contents.m');
-            eval(['cd ' CurrDir]);
+            FileExist = exist(strcat(pwd,POp,'TMATS_Library ',POp,'Contents.m'), 'file');
+            if FileExist == 2
+                cd( 'TMATS_Library')
+                disp('Removing Contents.m');
+                fid = fopen('Contents.m');
+                fclose(fid);
+                delete('Contents.m');
+                eval(['cd ' CurrDir]);
+            end
             
             disp('T-MATS path removal complete.');
             disp('Note: changes made to the startup.m file will need to be removed manually.. see User Manual for details');

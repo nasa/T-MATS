@@ -10,15 +10,24 @@ error = 0;
 TMATSInstallmsg = 'Install T-MATS matlab toolbox? Note: Installation will add MATLAB paths and generate MEX files.';
 POp = filesep;
 
-switch questdlg(TMATSInstallmsg, 'T-MATS Library', 'Yes', 'No', 'No');
-    
-    % check if T-MATS_Library is in the path
-    
-    case 'Yes',
+switch questdlg(TMATSInstallmsg, 'T-MATS Library','Temporary Install', 'Install', 'Cancel', 'Cancel');
+    case 'Temporary Install'
+        InstallType = 'Install';
+        PermInstall = 0;
+    case 'Install'
+        InstallType = 'Install';
+        PermInstall = 1;
+    case 'Cancel'
+        InstallType = 'Cancel';
+        PermInstall = 0;
+end
+% check if T-MATS_Library is in the path
+switch InstallType
+    case 'Install',
         p = path;                               % current path
         CurrDir = pwd;                          % current directory
         % define new paths
-        Pth{1} = strcat(pwd,POp,'TMATS_Library');    
+        Pth{1} = strcat(pwd,POp,'TMATS_Library');
         Pth{2} = strcat(pwd,POp,'TMATS_Library',POp,'MEX');
         Pth{3} = strcat(pwd,POp,'TMATS_Library',POp,'TMATS_Support');
         Pth{4} = strcat(pwd,POp,'TMATS_Tools');
@@ -33,12 +42,16 @@ switch questdlg(TMATSInstallmsg, 'T-MATS Library', 'Yes', 'No', 'No');
             if perm(i)                               % for each path if it is not defined,  define it
                 path(pathdef);
                 addpath(Pth{i});
-                SP = savepath;
-                if SP==0
-                    disp(sprintf(' %s has been saved to the Path structure.',Pth{i}));
+                if PermInstall == 1;
+                    SP = savepath;
+                    if SP==0
+                        disp(sprintf(' %s has been saved to the permanent Path structure.',Pth{i}));
+                    else
+                        error = 1;
+                        disp(sprintf('Error: %s has not been added to the permanent Path structure. To use TMATS blocks Install_TMATS.m will need to be run each time MATLAB is opened.',Pth{i}));
+                    end
                 else
-                    error = 1;
-                    disp(sprintf('Error: %s has not been added to the Path structure. To use TMATS blocks Install_TMATS.m will need to be run each time MATLAB is opened.',Pth{i}));
+                    disp(sprintf(' %s has been added to the Path structure.',Pth{i}));
                 end
             else
                 disp (sprintf('%s is already defined in the path structure',Pth{i}));
@@ -69,7 +82,7 @@ switch questdlg(TMATSInstallmsg, 'T-MATS Library', 'Yes', 'No', 'No');
             % rethrow exception to generate error on screen
             throw(ME);
         end
-        if error ==0;
+        if error ==0 && PermInstall == 1
             cd( 'TMATS_Library')
             disp('Building Contents.m file');
             fid = fopen('Contents.m','w');
@@ -79,10 +92,9 @@ switch questdlg(TMATSInstallmsg, 'T-MATS Library', 'Yes', 'No', 'No');
             fprintf(fid,'%%   Uninstall_TMATS - This subroutine uninstalls T-MATS\n');
             fclose(fid);
             eval(['cd ' CurrDir]);
-            
-            disp('T-MATS installation complete.');
         end
-    case 'No',
+        disp('T-MATS installation complete.');
+    case 'Cancel',
         disp('T-MATS installation aborted.');
 end
 
