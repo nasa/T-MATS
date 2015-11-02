@@ -42,13 +42,27 @@ defined as input flow only.
     <tr><td>NErr</td><td>Normalized Error [frac], in a typical system this will 
     <br>be driven to zero by an iterative solver</td></tr>
     <tr><td>TrqOut</td><td>turbine Torque Output (lbf*ft), positive value for a turbine.</td></tr>
-    <tr><td>T_Data</td><td>Turbine internal calculation Data</td></tr>
+    <tr><td>T_Data</td><td>Turbine internal calculation Data, 13x1 bus/vector including:
+    <br>- s_T_Nc - Corrected shaft speed map scalar value
+    <br>- s_T_Wc - Corrected mass flow map scalar value
+    <br>- s_T_PR - Pressure ratio map scalar value
+    <br>- s_T_Eff - Efficiency map scalar value
+    <br>- Wcin - Corrected mass flow input [pps]
+    <br>- Wcs1in - Corrected mass flow after station 1 (contains input bleed air) [pps]
+    <br>- Nc - Corrected shaft speed [rpm]
+    <br>- NcMap - Corrected shaft speed from the turbine map
+    <br>- WcMap - Corrected mass flow from the turbine map
+    <br>- PRMap - Pressure ratio from the turbine map
+    <br>- EffMap - Efficiency from the turbine map
+    <br>- Pwrout - output power [hp]
+    <br>- Test - Turbine interal calculation Data
+</td></tr>
 </table>
 <br>
 <font size="5" color="Blue">Turbine Mask Variables: </font>
 <table border="1"> <tr><td>Turbine Mask Variable</td><td>Description</td></tr>
-    <tr><td>X_T_PRVec_M</td><td>Turbine Map Pressure Ratio Vector (X-axis)(nx1)</td></tr>
-    <tr><td>Y_T_NcVec_M</td><td>Turbine Map Corrected Speed Vector (Y-axis)(mx1)</td></tr>
+    <tr><td>X_T_Map_PRVec_M</td><td>Turbine Map Pressure Ratio Vector (X-axis)(nx1)</td></tr>
+    <tr><td>Y_T_Map_NcVec_M</td><td>Turbine Map Corrected Speed Vector (Y-axis)(mx1)</td></tr>
     <tr><td>T_T_Map_WcArray_M</td><td>Turbine Map Flow Array (Wc=f(Nc,PR))(mxn)</td></tr>
     <tr><td>T_T_Map_EffArray_M</td><td>Turbine Map Efficiency Array (Eff = f(Nc,PR))(mxn)</td></tr>
     <tr><td>s_T_Nc_M</td><td>Corrected Speed Scalar Constant (T_Nc)</td></tr>
