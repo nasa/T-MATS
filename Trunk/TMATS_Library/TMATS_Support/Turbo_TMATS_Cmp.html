@@ -24,20 +24,20 @@ thermodynamic equations, properties, and table lookups.
     <tr><td>CustBldsCharOut</td><td>Customer or flow based Bleeds Characteristics Output,
             <br>[5 x 1] bus/vector for each customer bleed (total #cbleeds *5 x 1)
             <br> consisting of the following repeating format:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
-            <br>- Tt - Total Temperature [degR]
-            <br>- Pt - Total Pressure [psia]
-            <br>- FAR - Combusted Fuel to Air Ratio [frac]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
+            <br>- Tt - Total temperature [degR]
+            <br>- Pt - Total pressure [psia]
+            <br>- FAR - Combusted fuel to air ratio [frac]
     <br> This feature must be enabled, see Bleed tab variable (CBLDEN_M) definition</td></tr>
     <tr><td>FBldsCharOut</td><td>Fractional Bleeds Characteristics Output,
             <br>[5 x 1] bus/vector for each customer bleed (total #fbleeds *5 x 1)
             <br> consisting of the following repeating format:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
-            <br>- Tt - Total Temperature [degR]
-            <br>- Pt - Total Pressure [psia]
-            <br>- FAR - Combusted Fuel to Air Ratio [frac]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
+            <br>- Tt - Total temperature [degR]
+            <br>- Pt - Total pressure [psia]
+            <br>- FAR - Combusted fuel to air ratio [frac]
     <br> This feature must be enabled, see Bleed tab variable (FBLDEN_M) definition<br></td></tr>
     <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
             <br>- W - gas path flow [pps]
@@ -48,8 +48,23 @@ thermodynamic equations, properties, and table lookups.
     <tr> <td>NErr</td><td>Normalized Error [frac], in a typical system this will 
     <br>be driven to zero by an iterative solver </td></tr>
     <tr><td>TrqOut</td><td>compressor Torque Output (lbf*ft), negative value for a compressor.</td></tr>
-    <tr><td>C_Data</td><td>Compressor internal calculation Data, 2x1 bus/vector including:
-            <br>- SMavail - Stall Margin Available [%]
+    <tr><td>C_Data</td><td>Compressor internal calculation Data, 18x1 bus/vector including:
+            <br>- SMavail - Stall margin available [%]
+            <br>- s_C_Nc - Corrected shaft speed map scalar value
+            <br>- s_C_Wc - Corrected mass flow map scalar value
+            <br>- s_C_PR - Pressure ratio map scalar value
+            <br>- s_C_Eff - Efficiency ratio map scalar value
+            <br>- Wcin - Corrected input mass flow [pps]
+            <br>- Nc - Corrected shaft speed [rpm]
+            <br>- PR - Pressure ratio
+            <br>- NcMap - Corrected shaft speed from the compressor map
+            <br>- WcMap - Corrected mass flow from the compressor map
+            <br>- PRMap - Pressure ratio from the compressor map
+            <br>- SurgePR - Presssure ratio for surge at current corrected mass flow
+            <br>- Wbleeds - Mass flow being diverted to the bleeds [pps]
+            <br>- Pwrb4bleeds - Power required to run compressor if there were no bleeds [hp]
+            <br>- PwrBld - Bled off power [hp]
+            <br>- Pwrout - Total output power [hp]
     <br>- Test - Compressor internal calculation Data </td></tr>
 </table>
 <br>
@@ -72,8 +87,10 @@ thermodynamic equations, properties, and table lookups.
     <tr><td>C_FBD_M</td><td>Fractional Bleed Demand[frac](bx1)</td></tr>
     <tr><td>C_BFht_M</td><td>engine Bleed Fractional enthalpy (bx1)[frac](bx1)</td></tr>
     <tr><td>C_BFPt_M</td><td>engine Bleed Fractional Total Pressure (bx1)[frac](bx1)</td></tr>
-    <tr><td>X_C_WcSurgeVec_M</td><td>Compensated flow Surge Vector [pps](sx1)</td></tr>
-    <tr><td>T_C_PRSurgeVec_M</td><td>Surge line Pressure Ratio Vector [frac](sx1)</td></tr>
+    <tr><td>DefSMEn_M</td><td>Enable default surge margin(set - use SRline_M, un-set - define manually via X_C_Map_WcSurgeVec_M and T_C_Map_PRSurgeVec_M </td></tr>
+    <tr><td>SRline_M</td><td>Rline defined as the surge line (typically defined as 1)</td></tr>
+    <tr><td>X_C_Map_WcSurgeVec_M</td><td>Compensated flow surge vector (map value)(sx1)</td></tr>
+    <tr><td>T_C_Map_PRSurgeVec_M</td><td>Surge line pressure ratio vector (map value)(sx1)</td></tr>
     <tr><td>iDesign_M</td><td> Design fork (0, 1, 2)
             <br>0 - iDes Enabled, Calculate compressor map scalars based on design variables
             <br>    When iDesign is set to 0, scalar constants from the Map tab will not be used.

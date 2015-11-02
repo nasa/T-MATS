@@ -1,25 +1,32 @@
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
 <font size="6" color="Magenta">T-MATS: 1st Order Actuator Library Block</font>
-<br>
-This block models a generic actuator with a first order lag. 
-<br>
-<br>
+<p>This block models a generic actuator with a first order lag.</p>
+$$
+\frac {Y(s)}{X(s)} = \frac {Gain}{\tau s+1}
+$$
+<p>Additionally nonlinearities have been included to allow for actuator deadbands, rate limits
+and saturation points. Deadbands are used to simulate the mechanical play in the system. Rate limits can be
+set to simulate physical movement limitations of the actuator. </p>
 <font size="5" color="Blue">1-O Actuator Inputs:</font>
 <table border="1"> <tr><td>1-O Actuator Input</td><td>Description</td></tr>
-    <tr><td>Command</td><td> control commanded value</td></tr>
+    <tr><td>Command</td><td>Control commanded value (X)</td></tr>
 </table>
 <br>
 <font size="5" color="Blue">1-O Actuator Outputs:</font>
 <table border="1"> <tr><td>1-O Actuator Output</td><td>Description</td></tr>
-    <tr><td>Actual</td><td>actual value</td></tr>
+    <tr><td>Actual</td><td>Actual value (Y)</td></tr>
 </table>
 <br>
 <font size="5" color="Blue">1-O Actuator Mask Variables: </font>
 <table border="1"> <tr><td>1-O Actuator Mask Variable</td><td>Description</td></tr>
-    <tr><td>Gain_M</td><td>Actuator Gain</td></tr>
-    <tr><td>Tau_M</td><td>Actuator time constant</td></tr>
-    <tr><td>IC_M</td><td>Actuator Initial Condition </td></tr>
-    <tr><td>MaxSat_M</td><td>Actuator Max Saturation point</td></tr>
-    <tr><td>MinSat_M</td><td>Actuator Min Saturation point</td></tr>
+    <tr><td>Gain_M</td><td>Actuator gain</td></tr>
+    <tr><td>Tau_M</td><td>Actuator time constant(\( \tau \))</td></tr>
+    <tr><td>IC_M</td><td>Actuator initial condition </td></tr>
+    <tr><td>MaxSat_M</td><td>Actuator Max saturation point</td></tr>
+    <tr><td>MinSat_M</td><td>Actuator Min saturation point</td></tr>
     <tr><td>deadband_M</td><td>Acturator deadband</td></tr>
     <tr><td>rateLimit_M</td><td>Acturator rate limit</td></tr>
 </table>

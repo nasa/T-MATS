@@ -1,33 +1,48 @@
+<script type="text/javascript"
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 <font size="6" color="Magenta">T-MATS: 1st order sensor Library Block</font>
-<br>
-This block models a generic sensor with a first order lag.
-Y = Gain/(Tau*s+1)
-<br>
-Additionally it may be used to simulate sensor white 
-noise, a sensor gain fault, and sensor drift fault.
-With noise enabled
-Y(noise) = Y + GN
-Utilizing faults
-Y(fault) = Y*FGain + Drift
-<br>
-<br>
+<p>This block models a generic sensor with a first order lag.</p>
+$$
+\frac {Y(s)}{X(s)} = \frac {Gain}{\tau s+1}
+$$
+<p>Additionally, it may be used to simulate sensor white
+noise, a sensor gain fault, and sensor drift fault.</p>
+<p>With noise enabled:</p>
+$$
+Y_{noise} = Y + C_{noise} * Noise(Rand,T_s)
+$$
+<p>Noise is generated with the MATLAB Random Number block then is scaled
+    based on the current sensor value and sensor range(with higher noise at higher relative sensed values). 
+    This scaled value is then sent through a filter to remove sampling time effects and tuned
+to maintain a typical noise form. A gain is then applied to the final noise value to adjust magnitude.</p>
+<p>Utilizing faults</p>
+$$
+X_{fault} = X*C_{GainFault} + C_{Drift}
+$$
+<p> Gain and drift faults are generated before sensor dynamics are taken
+into account</p>
 <font size="5" color="Blue">1-O Sensor Inputs:</font>
 <table border="1"> <tr><td>1-O Sensor Input</td><td>Description</td></tr>
-    <tr><td>actual</td><td> actual value to be sensed.</td></tr>
+    <tr><td>Actual</td><td>Actual value to be sensed (X)</td></tr>
 </table>
 <br>
 <font size="5" color="Blue">1-O Sensor Outputs:</font>
 <table border="1"> <tr><td>1-O Sensor Output</td><td>Description</td></tr>
-    <tr><td>Sens</td><td> value of input with simulated input delay, noise, and/or fault</td></tr>
+    <tr><td>Sens</td><td>Value of input with simulated input delay, noise, and/or fault (Y)</td></tr>
 </table>
 <br>
 <font size="5" color="Blue">1-O Sensor Mask Variables: </font>
 <table border="1"> <tr><td>1-O Sensor Mask Variable</td><td>Description</td></tr>
     <tr><td>Sen_Max_M</td><td>Max readable sensor value</td></tr>
-    <tr><td>Gain_M</td><td>sensor model Gain</td></tr>
-    <tr><td>Tau_M</td><td>sensor model time constant</td></tr>
-    <tr><td>GN_EN_M</td><td>Noise Enabled(1 = On, 0 = Off)</td></tr>
-    <tr><td>GN_NST_M</td><td>sensor Noise Sample Time (Ts)</td></tr>
-    <tr><td>F_Gain_M</td><td>Sensor Fault Gain</td></tr>
-    <tr><td>F_Drift_M</td><td>Sensor Drift Fault Adder</td></tr>
+    <tr><td>Sen_Min_M</td><td>Min readable sensor value</td></tr>
+    <tr><td>Gain_M</td><td>Sensor model Gain</td></tr>
+    <tr><td>Tau_M</td><td>Sensor model time constant(\( \tau \)) </td></tr>
+    <tr><td>GN_EN_M</td><td>Noise enabled(1 = On, 0 = Off)</td></tr>
+    <tr><td>GN_NST_M</td><td>Simulation sample time(\(T_s\))</td></tr>
+    <tr><td>GN_C_M</td><td>Sensor noise magnitude gain</td></tr>
+    <tr><td>GN_MinNoise_M</td><td>Minimum level of noise in singal relative 
+    to max sensable value (\(C_{noise}\)) [frac]</td></tr>
+    <tr><td>F_Gain_M</td><td>Sensor fault gain</td></tr>
+    <tr><td>F_Drift_M</td><td>Sensor drift fault adder</td></tr>
 </table>
