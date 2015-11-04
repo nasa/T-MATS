@@ -1,0 +1,52 @@
+<script type="text/javascript"
+     src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<font size="6" color="Magenta">T-MATS: 1-D Trans Cond Model(FDI) Block</font>
+<p>This function models the transient conduction of a plate with fluid or additional plates on either side via the finite difference method (implicit).</p>
+<p>Setup requires the use of an external solver for determining Next temperature states.</p>
+<p>This block is setup to be a general use material that is devided into 3 regions, A,B,C.</p>
+<p> Region A can be defined as a fluid or a solid material at the inner boundary. If it is a fluid, a TinnerNext is set to a constant.
+If it is defined as a solid the thermodynamic properties need to be defined and TinnerNext needs to be connected to the adjacent node
+of another 1-D Trans Conduction Model (FDI) block.
+<br> Region B is the material as defined in the General Tab
+<br> Region C is defined similarly to A, however it is considered the outer material. </p>
+<p>Export values are calculated based on a single time step. If additional dynamic behavior is required a simulink memory block may be used to update the temperature initial conditions.
+Units must be specified consistantly. (i.e. If temperature is in Celsius all temperature units must in Celsius)</p>
+<font size="5" color="Blue"> 1-D Trans Conduction Inputs:</font>
+<table border="1"> <tr><td> 1-D Trans Conduction Inputs</td><td>Description</td></tr>
+    <tr><td>TinnerNext</td><td>Next temperature adjacent to the inner most node</td></tr>
+    <tr><td>TouterNext</td><td>Next temperature adjacent to the outer most node</td></tr>
+    <tr><td>ToVec</td><td>Initial Temperature at each Node (mx1)</td></tr>
+    <tr><td>TNext</td><td>Temperature at each Node for next time step (mx1)</td></tr>
+</table>
+<br>
+<font size="5" color="Blue"> 1-D Trans Conduction Outputs:</font>
+<table border="1"> <tr><td>1-D Trans Conduction Output</td><td>Description</td></tr>
+    <tr><td>Tavg</td><td>Final Average Temperature within the Plate</td></tr>
+    <tr><td>TfVec</td><td>Final Temperature at each Node (mx1)</td></tr>
+    <tr><td>Xdist</td><td>Placement of each Node (mx1)</td></tr>
+    <tr><td>Terr</td><td>Difference between initial and calculated intial temperatures (mx1)</td></tr>
+</table>
+<br>
+<font size="5" color="Blue"> 1-D Trans Conduction Mask Variables: </font>
+<table border="1"> <tr><td> 1-D Trans Conduction Mask Variable</td><td>Description</td></tr>
+    <tr><td>dt_M</td><td>Time Step</td></tr>
+    <tr><td>w_M</td><td>Plate total Width</td></tr>
+    <tr><td>Node_M</td><td>Number of Nodes in material B</td></tr>
+    <tr><td>hB_M</td><td>Material Convection Heat Transfer Coefficient (h)</td></tr>
+    <tr><td>kB_M</td><td>Material Thermal Conductivity (k)</td></tr>
+    <tr><td>rhoB_M</td><td>Material Density (rho)</td></tr>
+    <tr><td>cB_M</td><td>Material Specific Heat (Cp)</td></tr>
+    <tr><td>TypeA_M</td><td>Material type adjacent to side A (inner), unset - fluid, set - solid</td></tr>
+    <tr><td>wNodeA_M</td><td>width of side A material node</td></tr>
+    <tr><td>hA_M</td><td>Material A Convection Heat Transfer Coefficient (h)</td></tr>
+	<tr><td>kA_M</td><td>Material A Thermal Conductivity (k)</td></tr>
+	<tr><td>rhoA_M</td><td>Material A Density (rho)</td></tr>
+    <tr><td>cA_M</td><td>Material A Specific Heat (Cp)</td></tr>
+    <tr><td>TypeC_M</td><td>Material type adjacent to side C (inner), unset - fluid, set - solid</td></tr>
+	<tr><td>wNodeC_M</td><td>width of side A material node</td></tr>
+	<tr><td>hC_M</td><td>Material A Convection Heat Transfer Coefficient (h)</td></tr>
+    <tr><td>kC_M</td><td>Material A Thermal Conductivity (k)</td></tr>
+	<tr><td>rhoC_M</td><td>Material A Density (rho)</td></tr>
+    <tr><td>cC_M</td><td>Material A Specific Heat (Cp)</td></tr>
+</table>
