@@ -23,7 +23,6 @@ mex SP2T_TMATS.c sp2tc_TMATS.c
 mex StaticCalc_TMATS.c PcalcStat_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp1Ac_TMATS.c interp2Ac_TMATS.c
 mex Temp2Enth_TMATS.c t2hc_TMATS.c
 mex Turbine_TMATS.c h2tc_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp2Ac_TMATS.c
-mex Turbine_NPSS_TMATS.c h2tc_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp2Ac_TMATS.c
 mex Turbine_PSI_TMATS.c h2tc_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp2Ac_TMATS.c
 mex Valve_TMATS.c interp1Ac_TMATS.c
 mex ValvePHY_TMATS.c interp2Ac_TMATS.c interp1Ac_TMATS.c calc_Pstatic_TMATS.c calc_WvsMN_TMATS.c calc_PsvsMN_TMATS.c 
