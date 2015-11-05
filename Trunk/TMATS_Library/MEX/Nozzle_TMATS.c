@@ -59,7 +59,7 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetInputPortDirectFeedThrough(S, 0, 1);
     
     if (!ssSetNumOutputPorts(S, 1)) return;
-    ssSetOutputPortWidth(S, 0, 6);
+    ssSetOutputPortWidth(S, 0, 17);
     
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
@@ -92,6 +92,8 @@ static void mdlStart(SimStruct *S)
     ssSetIWorkValue(S,7,0);
     ssSetIWorkValue(S,8,0);
     ssSetIWorkValue(S,9,0);
+    ssSetIWorkValue(S,10,0);
+    ssSetIWorkValue(S,11,0);
 }
 #endif
 
@@ -139,14 +141,16 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);   /* Output Array */
     
     /*--------Define Constants-------*/
-    double choked, Ps, Ts, rhos, V, Test, MN1;
+    double choked, Ts, rhos, V, Test, MN1;
     double CdTh, Cv, Cfg, Therm_growth, PQPa, PQPaMap, AthroatHot;
-    double Rt, gammat, rhot, MN, TsMN1, PsMN1, Woutcalc;
-    double WOut, FgOut, NErrorOut, Ath, Vth, Psth, Ax, Vx, Psx;
-    double gammatg, gammas, gammasg, MNg, TsMNg, PsMNg, PsMNg_new, PsMNg_old;
-    double MNth, Tsth, rhosth;
+    double Rt, TsMN1, PsMN1, Woutcalc;
+    double WOut, FgOut, NErrorOut, Ath, Vth, Psth, Ax, Vx, Psx, Tsx, gammasx, MNx;
+    double gammatg, gammasth,gammasMN1, gammasg, MNg, TsMNg, PsMNg, PsMNg_new, PsMNg_old, VMN1;
+    double MNth, Tsth, rhosth, rhosMN1, rhosx;
     double Axcalc, Psxg, Psxg_new, Psxg_old, Exthr;
+    double Athcalc, Psthg, Psthg_new, Psthg_old;
     double Sin, hsg, hs, htin, rhosg, Rs, Vg;
+    double gammas_s, MN_s, V_s, rhos_s, Ts_s;
     double Ex, Ex_old;
     double erMN_old, erMN, erthr;
     int maxiter, iter, maxiterx, iterx, CDNoz;
@@ -186,16 +190,32 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     }
     Rs = Rt;
     
-    /*---- set MN = 1 and calc SS Ps for iteration IC --------*/
+    /* Determine ideal velocity defined by perfect expansion to Pambient */
+    PcalcStat(PtIn, PambIn, TtIn, htin, FARcIn, Rt, &Sin, &Ts, &hs, &rhos, &V);
+    gammas_s = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,Ts,A,B,&interpErr);
+    if (interpErr == 1 && ssGetIWork(S)[5]==0){
+        printf("Warning in %s, Error calculating gammas. Vector definitions may need to be expanded.\n", BlkNm);
+        ssSetIWorkValue(S,5,1);
+    }
+    MN_s = V/sqrt(gammas_s*Rs*Ts*C_GRAVITY*JOULES_CONST);
+    Ts_s = Ts;
+    V_s = V;
+    rhos_s = rhos;
+    
+    
+    /* Determine if nozzle throat is choked by comparing pressure when MN = 1 to ambient pressure
+     * ---- set MN = 1 and calc throat Ps for iteration IC --------*/
     MNg = 1;
     gammatg = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,TtIn,A,B,&interpErr);
     if (interpErr == 1 && ssGetIWork(S)[1]==0){
         printf("Warning in %s, Error calculating gammatg. Vector definitions may need to be expanded.\n", BlkNm);
         ssSetIWorkValue(S,1,1);
     }
+    /* use isentropic equations for a first cut guess */
     TsMNg = TtIn /(1+MNg*MNg*(gammatg-1)/2);
     PsMNg = PtIn*pow((TsMNg/TtIn),(gammatg/(gammatg-1)));
     
+    /* Calculate velcocity and MN using guessed static pressure */
     PcalcStat(PtIn, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
     gammasg = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,TsMNg,A,B,&interpErr);
     if (interpErr == 1 && ssGetIWork(S)[2]==0){
@@ -203,17 +223,21 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         ssSetIWorkValue(S,2,1);
     }
     MNg = Vg/sqrt(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST);
+    
+    /* determine error based on calculated MN and 1 */
     erMN =1 - MNg;
+    
     PsMNg_new = PsMNg + 0.05;
-    maxiter = 15;
+    maxiter = 200;
     iter = 0;
     erthr = 0.001;
+    
     /* if Ps is not close enough to Ps at MN = 1, iterate to find Ps at MN = 1 */
     while (fabs(erMN) > erthr && iter < maxiter) {
         erMN_old = erMN;
         PsMNg_old = PsMNg;
-        if(fabs(PsMNg - PsMNg_new) < 0.03)
-            PsMNg = PsMNg + 0.05;
+        if(fabs(PsMNg - PsMNg_new) < 0.003)
+            PsMNg = PsMNg + 0.005;
         else
             PsMNg = PsMNg_new;
         PcalcStat(PtIn, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
@@ -231,49 +255,21 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         iter = iter + 1;
     }
     if (iter == maxiter && ssGetIWork(S)[4]==0 ){
-        printf("Warning in %s, Error calculating Ps at MN = 1. There may be error in output pressure\n", BlkNm);
+        printf("Warning in %s, Error calculating Ps at MN = 1.\n", BlkNm);
         ssSetIWorkValue(S,4,1);
     }
+    /*  MN = 1 parameters */
     TsMN1 = TsMNg;
     PsMN1 = PsMNg;
-    rhos = rhosg;
-    hs = hsg;
-    gammas = gammasg;
+    rhosMN1 = rhosg;
+    gammasMN1 = gammasg;
+    VMN1 = Vg;
     
     /* Determine if Nozzle is choked  */
     if (PsMN1<PambIn)
         choked = 0;
     else {
         choked = 1;
-        
-    }
-    /* Assumed not choked,  set Ps to ambient pressure and calculate parameters */
-    if (choked ==0){
-        Psth = PambIn;
-        PcalcStat(PtIn, Psth, TtIn, htin, FARcIn, Rt, &Sin, &Ts, &hs, &rhos, &V);
-        gammas = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,Ts,A,B,&interpErr);
-        if (interpErr == 1 && ssGetIWork(S)[5]==0){
-            printf("Warning in %s, Error calculating gammas. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,5,1);
-        }
-        MNth = V/sqrt(gammas*Rs*Ts*C_GRAVITY*JOULES_CONST);
-        Tsth = Ts;
-        Vth = V;
-        rhosth = rhos;
-    }
-    
-    else{  /* Assuming choked, determine static pressure and tempurature */
-        Psth = PsMN1;
-        Tsth = TsMN1;
-        MNth = 1;
-        /*----- calc other values for this Mach number ----*/
-        Vth = MNth*sqrt(gammas*Rs*Tsth*C_GRAVITY*JOULES_CONST);
-        rhosth = rhos;
-    }
-    
-    /* error('Nozzle Error: Negative Mach number!!') */
-    if (MN<0 && ssGetIWork(S)[6]==0){
-        printf("Error in %s: negative mach number,  MN = %f. Vector definitions may need to be expanded.\n", BlkNm, MN);
     }
     
     /* Pressure before nozzle/P ambient */
@@ -282,11 +278,207 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /* cacluate Thermal Constants */
     PQPaMap = PQPa;
     
+    /* look up Flow Coefficient */
     CdTh = interp1Ac(X_N_PEQPaVec,T_N_CdThArray,PQPaMap,B1,&interpErr);
     if (interpErr == 1 && ssGetIWork(S)[7]==0){
         printf("Warning in %s, Error calculating CdTh. Vector definitions may need to be expanded.\n", BlkNm);
         ssSetIWorkValue(S,7,1);
     }
+    Therm_growth = interp1Ac(X_N_TtVecTG,T_N_TGArray,TtIn,C,&interpErr);
+    if (interpErr == 1 && ssGetIWork(S)[9]==0){
+        printf("Warning in %s, Error calculating Therm_growth. Vector definitions may need to be expanded.\n", BlkNm);
+        ssSetIWorkValue(S,9,1);
+    }
+    
+    
+    /* Determine throat area in^2 */
+    if (IDes < 0.5)
+        Ath = WIn * C_PSItoPSF / (Therm_growth *(1-flowLoss/100)*CdTh*rhosMN1*VMN1);
+    /* if the thoat area is larger then the exit area of a CD nozzle it is a convergent nozzle */
+    else if (CDNoz == 1 && AthroatIn > AexitIn) {
+        Ath = AexitIn;
+        CDNoz = 0;
+    }
+    else
+        Ath = AthroatIn;
+    
+    
+    /* throat not choked, calculate throat parameters based on throat area */
+    if (choked ==0 && IDes > 0.5){
+        /*guess a MN less than one and solve for throat parameters */
+        MNg = 0.7;
+        gammatg = 1.4;
+        /* use isentropic equations for a first cut guess */
+        Ts = TtIn /(1+MNg*MNg*(gammatg-1)/2);
+        Psthg = PtIn*pow((Ts/TtIn),(gammatg/(gammatg-1)));
+        
+        /* Calculate velcocity and MN using guessed static pressure */
+        PcalcStat(PtIn, Psthg, TtIn, htin, FARcIn, Rt, &Sin, &Ts, &hs, &rhos, &V);
+        
+        /* start iteration to find unchoked Psth */
+        Athcalc = WIn * C_PSItoPSF / (Therm_growth *(1-flowLoss/100)*CdTh*rhos*V);
+        
+        Ex = fabs((Ath - Athcalc)/Ath);
+        
+        /* iterate to find static pressure, calculated area should be close to actual area */
+        maxiter = 200;
+        iter = 0;
+        Psthg_new = Psthg + 0.05;
+        Exthr = 0.0001;
+        while ( fabs(Ex) > Exthr && iter < maxiter) {
+            Ex_old = Ex;
+            Psthg_old = Psthg;
+            if (fabs(Psthg - Psthg_new) < 0.003)
+                Psthg = Psthg + 0.005;
+            else
+                Psthg = Psthg_new;
+            
+            /* calculate flow velocity and rhos */
+            PcalcStat(PtIn, Psthg, TtIn, htin, FARcIn, Rt, &Sin, &Ts, &hs, &rhos, &V);
+            /* calculated Area */
+            Athcalc = WIn * C_PSItoPSF / (Therm_growth *(1-flowLoss/100)*CdTh*rhos*V);
+            /*determine error */
+            Ex = (Ath - Athcalc)/Ath;
+            
+            if (fabs(Ex) > Exthr) {
+                /* determine next guess pressure by secant algorithm */
+                Psthg_new = Psthg - Ex *(Psthg - Psthg_old)/(Ex - Ex_old);
+                /* limit algorthim change */
+                if (Psthg_new > 1.1*Psthg) {
+                    Psthg_new = 1.1 * Psthg;
+                }
+                else if (Psthg_new < 0.9 * Psthg) {
+                    Psthg_new = 0.9 * Psthg;
+                }
+            }
+            iter = iter + 1;
+        }
+        if (iter == maxiter && ssGetIWork(S)[10]==0 ){
+            printf("Warning in %s, Error calculating Ps at throat.\n", BlkNm);
+            ssSetIWorkValue(S,10,1);
+        }
+        
+        Psth = Psthg;
+        Tsth = Ts;
+        Vth = V;
+        rhosth = rhos;
+        gammasth = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,Tsth,A,B,&interpErr);
+        if (interpErr == 1 && ssGetIWork(S)[3]==0){
+            printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
+            ssSetIWorkValue(S,3,1);
+        }
+        MNth = Vth/sqrt(gammasth*Rs*Tsth*C_GRAVITY*JOULES_CONST);
+    }
+    
+    else{  /* If nozzle is choked, determine throat parameters based on MN = 1 values */
+        Psth = PsMN1;
+        Tsth = TsMN1;
+        MNth = 1;
+        gammasth = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,Tsth,A,B,&interpErr);
+        if (interpErr == 1 && ssGetIWork(S)[3]==0){
+            printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
+            ssSetIWorkValue(S,3,1);
+        }
+        Vth = MNth*sqrt(gammasth*Rs*Tsth*C_GRAVITY*JOULES_CONST);
+        rhosth = rhosMN1;
+    }
+    
+    /* error('Nozzle Error: Negative Mach number!!') */
+    if (MNth<0 && ssGetIWork(S)[6]==0){
+        printf("Error in %s: negative throat mach number,  MN = %f.\n", BlkNm, MNth);
+        ssSetIWorkValue(S,6,1);
+    }
+    
+    
+    /* Calculate Flow out of nozzle */
+    /* Calculated flow is always determined based on the throat velocity
+     * defined at MN = 1 when choked or at the throat area when unchoked */
+    AthroatHot = Ath * Therm_growth;
+    Woutcalc = (1-flowLoss/100)*AthroatHot*CdTh*rhosth*Vth/C_PSItoPSF;
+    
+    /* Initialize variables, will only be used with CD nozzle */
+    /* Psx will be used as guess to calculate Area error */
+    Psxg = PambIn;
+    Psx = Psth;
+    Tsx = Tsth;
+    MNx = MNth;
+    Vx = Vth;
+    Ax = Ath;
+    
+    /* if the nozzle is choked and convergent-divergent calculate values after the nozzle throat */
+    if (CDNoz == 1 && choked == 1) {
+        
+        /* Generate exit area */
+        if (IDes < 0.5)
+            Ax = WIn * C_PSItoPSF / (Therm_growth *(1-flowLoss/100)*CdTh*rhos_s*V_s);
+        else /* Use calculated area value when using Cv method  */
+            Ax = AexitIn;
+        
+        /* start iteration to find Psx */
+        Psxg = PambIn;
+        PcalcStat(PtIn, Psxg, TtIn, htin, FARcIn, Rt, &Sin, &Ts, &hs, &rhos, &V);
+        Axcalc = WIn/(V * rhos/C_SINtoSFT); /* Will not be used for the Cfg method */
+        
+        Ex = fabs((Ax - Axcalc)/Ax);
+        /* iterate to find static pressure, calculated area should be close to actual area */
+        maxiterx = 200;
+        iterx = 0;
+        Psxg_new = Psxg + 0.05;
+        Exthr = 0.0001;
+        while ( fabs(Ex) > Exthr && iterx < maxiter) {
+            Ex_old = Ex;
+            Psxg_old = Psxg;
+            if (fabs(Psxg - Psxg_new) < 0.0003)
+                Psxg = Psxg + 0.0005;
+            else
+                Psxg = Psxg_new;
+            
+            /* calculate flow velocity and rhos */
+            PcalcStat(PtIn, Psxg, TtIn, htin, FARcIn, Rt, &Sin, &Ts, &hs, &rhos, &V);
+            /* calculated Area */
+            Axcalc = WIn/(V * rhos/C_SINtoSFT);
+            /*determine error */
+            Ex = (Ax - Axcalc)/Ax;
+            if (fabs(Ex) > Exthr) {
+                /* determine next guess pressure by secant algorithm */
+                Psxg_new = Psxg - Ex *(Psxg - Psxg_old)/(Ex - Ex_old);
+                /* limit algorthim change */
+                if (Psxg_new > 1.1*Psxg) {
+                    Psxg_new = 1.1 * Psxg;
+                }
+                else if (Psxg_new < 0.9 * Psxg) {
+                    Psxg_new = 0.9 * Psxg;
+                }
+            }
+            iterx = iterx + 1;
+        }
+        if (iterx == maxiterx && ssGetIWork(S)[11]==0 ){
+            printf("Warning in %s, Error calculating Ps at exit.\n", BlkNm);
+            ssSetIWorkValue(S,11,1);
+        }
+        /* Collect data from the expansion to exit area: */
+        Tsx = Ts;
+        Vx = V;
+        Psx = Psxg;
+        rhosx = rhos;
+        gammasx = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,Ts,A,B,&interpErr);
+        if (interpErr == 1 && ssGetIWork(S)[5]==0){
+            printf("Warning in %s, Error calculating gammas. Vector definitions may need to be expanded.\n", BlkNm);
+            ssSetIWorkValue(S,5,1);
+        }
+        MNx = Vx/sqrt(gammasx*Rs*Tsx*C_GRAVITY*JOULES_CONST);
+    }
+    
+    /* error('Nozzle Error: Negative Mach number!!') */
+    if (MNx<0 && ssGetIWork(S)[6]==0){
+        printf("Error in %s: negative exit mach number,  MN = %f.\n", BlkNm, MNx);
+        ssSetIWorkValue(S,6,1);
+    }
+    
+    WOut = WIn;
+    Test = Psx;
+    
+    /* look up Thrust and velocity coefficients */
     if (CfgEn < 0.5){
         Cv = interp1Ac(X_N_PEQPaVec,T_N_CvArray,PQPaMap,B1,&interpErr);
         if (interpErr == 1 && ssGetIWork(S)[8]==0){
@@ -303,100 +495,17 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         }
         Cv = 1;
     }
-    Therm_growth = interp1Ac(X_N_TtVecTG,T_N_TGArray,TtIn,C,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[9]==0){
-        printf("Warning in %s, Error calculating Therm_growth. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,9,1);
-    }
-    
-    
-    /* Determine throat area in^2 */
-    if (IDes < 0.5)
-        Ath = WIn * C_PSItoPSF / (Therm_growth *(1-flowLoss/100)*CdTh*rhosth*Vth);
-    /* if the thoat area is larger then the exit area the nozzle */
-    else if (CDNoz == 1 && AthroatIn > AexitIn) {
-        Ath = AexitIn;
-        CDNoz = 0;
-    }
-    else
-        Ath = AthroatIn;
-    
-    
-    /* Calculate Flow out of nozzle */
-    AthroatHot = Ath * Therm_growth;
-    Woutcalc = (1-flowLoss/100)*AthroatHot*CdTh*rhosth*Vth/C_PSItoPSF;
-    
-    /* Initialize variables, will only be used with CD nozzle */
-    /* Psx will be used as guess to calculate Area error */
-    Psxg = PambIn;
-    Vx = Vth;
-    Ax = AthroatIn;
-    if (CDNoz == 1) {
-        /* start iteration to find Psx */
-        PcalcStat(PtIn, Psxg, TtIn, htin, FARcIn, Rt, &Sin, &Ts, &hs, &rhos, &V);
-        Axcalc = Woutcalc/(V * rhos/C_SINtoSFT);
-        if (IDes > 0.5) {   /* for IDes pressure is equal to ambient so no need to continue */
-            Ex = fabs((AexitIn - Axcalc)/AexitIn);
-            
-            /* iterate to find static pressure, calculated area should be close to actual area */
-            maxiterx = 15;
-            iterx = 0;
-            Psxg_new = Psxg + 0.05;
-            Exthr = 0.0001;
-            while ( fabs(Ex) > Exthr && iterx < maxiter) {
-                Ex_old = Ex;
-                Psxg_old = Psxg;
-                if (fabs(Psxg - Psxg_new) < 0.03)
-                    Psxg = Psxg + 0.05;
-                else
-                    Psxg = Psxg_new;
-                
-                /* calculate flow velocity and rhos */
-                PcalcStat(PtIn, Psxg, TtIn, htin, FARcIn, Rt, &Sin, &Ts, &hs, &rhos, &V);
-                /* calculated Area */
-                Axcalc = Woutcalc/(V * rhos/C_SINtoSFT);
-                /*determine error */
-                Ex = (AexitIn - Axcalc)/AexitIn;
-                
-                if (fabs(Ex) > Exthr) {
-                    /* determine next guess pressure by secant algorithm */
-                    Psxg_new = Psxg - Ex *(Psxg - Psxg_old)/(Ex - Ex_old);
-                    /* limit algorthim change */
-                    if (Psxg_new > 1.1*Psxg) {
-                        Psxg_new = 1.1 * Psxg;
-                    }
-                    else if (Psxg_new < 0.9 * Psxg) {
-                        Psxg_new = 0.9 * Psxg;
-                    }
-                }
-                iterx = iterx + 1;
-            }
-        }
-        
-        Vx = V;
-        if (Psxg >= PambIn) {
-            Psx = Psxg;
-            Ax = Axcalc;
-        }
-        else {
-            Psx = PambIn;
-            Ax = AexitIn;
-        }
-    }
-    
-    WOut = WIn;
-    Test = Psx;
     
     /*----- calc gross thrust -----------*/
     if (CDNoz ==1){
         if (CfgEn > 0.5)
-            FgOut = (WOut/C_GRAVITY)*Vx*Cfg;
+            FgOut = (WOut/C_GRAVITY)*V_s*Cfg;
         else
             FgOut = (WOut/C_GRAVITY)*Vx*Cv + (Psx-PambIn)*Ax;
     }
     else {
         if (CfgEn > 0.5)
-            FgOut = (WOut/C_GRAVITY)*Vth*Cfg;
+            FgOut = (WOut/C_GRAVITY)*V_s*Cfg;
         else
             FgOut = (WOut/C_GRAVITY)*Vth*Cv + (Psth-PambIn)*Ath;
     }
@@ -416,7 +525,18 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     y[2] = NErrorOut;     /* Normalized Flow Error [frac] */
     y[3] = Ath;           /* Throat Area [in^2] */
     y[4] = Ax;            /* Exit Area [in^2] */
-    y[5] = Test;
+    y[5] = Psth;          /* Throat static pressure [psi] */
+    y[6] = Tsth;          /* Throat static temperature [R] */
+    y[7] = MNth;          /* Throat Mach Number */
+    y[8] = Vth;           /* Throat velocity */
+    y[9] = Psx;           /* Exit static pressure [psi]*/
+    y[10] = Tsx;          /* Exit static temperature [R]*/
+    y[11] = MNx;          /* Exit Mach Number */
+    y[12] = Vx;           /* Exit velocity */
+    y[13] = Woutcalc;     /* Calculated mass flow [pps] */
+    y[14] = choked ;      /* nozzle is choked at the throat */
+    y[15] = V_s;          /* ideal velocity expanded to ambient */
+    y[16] = Test;
     
 }
 

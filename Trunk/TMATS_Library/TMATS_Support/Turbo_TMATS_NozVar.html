@@ -23,7 +23,22 @@ thermodynamic equations, properties, and table lookups.
     <tr><td>Fg</td><td>Gross thrust [lbf]</td></tr>
     <tr><td>NErr</td><td>Normalized Error [frac], in a typical system this will
     <br>be driven to zero by an iterative solver</td></tr>
-    <tr><td>N_Data</td><td>Nozzle internal calculation Data</td></tr>
+    <tr><td>N_Data</td><td>Nozzle internal calculation Data, 14x1 bus/vector including:
+            <br>- Ath - Throat area [in^2]
+            <br>- Aexit - Exit area [in^2]
+            <br>- Psth - Throat static pressure, ideal consistant with throat area[psia]
+            <br>- Tsth - Throat static temperature, ideal consistant with throat area[R]
+            <br>- MNth - Throat Mach Number, ideal consistant with throat area
+            <br>- Vth - Throat velocity, ideal consistant with throat area [ft/sec]
+            <br>- Psx - Exit static pressure, ideal consistant with exit area[psia]
+            <br>- Tsx - Exit static temperature, ideal consistant with exit area[R]
+            <br>- MNx - Exit Mach Number, ideal consistant with exit area
+            <br>- Vx - Exit velocity, ideal consistant with exit area [ft/sec]
+            <br>- Woutcalc - internally calculated mass flow through the throat [pps]
+            <br>- choked - Throat is choked (MN = 1 at throat) [set choked, unset not choked]
+            <br>- Vs - Ideal exit velocity, consistant with Pt/Pambient [ft/sec] 
+            <br>- Test - Nozzle test signal    
+</td></tr>
 </table>
 <br>
 <font size="5" color="Blue">Nozzle Mask Variables: </font>
