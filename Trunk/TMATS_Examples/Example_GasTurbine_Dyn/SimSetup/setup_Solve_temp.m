@@ -9,8 +9,8 @@ function MWS = setup_Solve_temp(MWS)
 % *************************************************************************
 
 
-MWS.Solve.C_Lim = 0.01;
-MWS.Solve.J_Calc_Per = [0.01 0.05 0.05]';
+MWS.Solve.C_Lim = 0.001;
+MWS.Solve.J_Calc_Per = [0.01 0.01 0.01]';
 MWS.Solve.NR_IC = [100 2 3]';
 MWS.Solve.NR_dx = 5;
 MWS.Solve.NR_Jac_Re = 20;
