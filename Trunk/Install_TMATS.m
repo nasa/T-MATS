@@ -93,6 +93,12 @@ switch InstallType
             fclose(fid);
             eval(['cd ' CurrDir]);
         end
+        
+                
+	disp('Refreshing Simulink Browser...');
+	LB = LibraryBrowser.LibraryBrowser2;
+        LB.refresh;
+        
         disp('T-MATS Simulink library installation complete.');
         disp('For T-MATS Tools installation instructions, please see the users guide.');
 
