@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>T-MATS Block Guide</title>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script>
+            $(document).ready(function() {
+            if ($('ol:first').css('list-style-type') != 'none') { /* For IE6/7 only. */
+            $('ol ol').each(function(i, ol) {
+            ol = $(ol);
+            var level1 = ol.closest('li').index() + 1;
+            ol.children('li').each(function(i, li) {
+            li = $(li);
+            var level2 = level1 + '.' + (li.index() + 1);
+            li.prepend('<span>' + level2 + '</span>');
+            });
+            });
+            }
+            });
+        </script>
+        <style>
+            html>/**/body ol { /* Won't be interpreted by IE6/7. */
+            list-style-type: none;
+            counter-reset: level1;
+            }
+            ol li:before {
+            content: counter(level1) ". ";
+            counter-increment: level1;
+            }
+            ol li ol {
+            list-style-type: none;
+            counter-reset: level2;
+            }
+            ol li ol li:before {
+            content: counter(level1) "." counter(level2) " ";
+            counter-increment: level2;
+            }
+            ol li span { /* For IE6/7. */
+            margin: 0 5px 0 -25px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1> T-MATS Block Guide</h1>
+        <p>The toolbox for the modeling and analysis of thermodynamic systems (T-MATS)is a Simulink toolbox intended for use in the modeling and
+        simulation of thermodyanmic systems and their controls. This block guide has been created to offer details on the blocks within the T-MATS package.</p>
+        <p>Below is the table of contents containing links to the various sections. These links may also be accessed for any T-MATS block
+        by double clicking the block and selecting help.</p>
+        <h2> Table of Contents</h2>
+        <ol>
+            Preface<br>
+            General Modeling Concepts
+            <br><a href="TMATS_Library/TMATS_Support/Tools_TMATS.html">T-MATS Simulink Tools</a>
+            <br><a href="TMATS_Library/TMATS_Support/FunM_TMATS.html">T-MATS MATLAB functions</a>
+            <br><a href="TMATS_Library/TMATS_Support/FunM_TMATSC.html">T-MATS_Cantera MATLAB functions</a>
+            <h3>T-MATS Simulink Block Sets</h3>
+            <li> Effectors and Controls Blocks
+                <ol>
+                    <li><a href="TMATS_Library/TMATS_Support/Control_TMATS_1OA.html">1st order actuator model</a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/Control_TMATS_1OS.html">1st order sensor model</a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/Control_TMATS_CFF.html">Corrected fuel flow calculation</a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/Control_TMATS_CGPF.html">Corrected gas path flow calculation</a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/Control_TMATS_CS.html">Corrected speed calculation</a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/Control_TMATS_PIC.html">Simple PI controller</a></li>
+                </ol>
+            </li>
+            <li>Heat Transfer Blocks
+                <ol>
+                    <li><a href="TMATS_Library/TMATS_Support/HeatXfer_TMATS_0DTCondLS.html">0-D transient conduction model (lumped capacitance method)</a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/HeatXfer_TMATS_1DTCondCN.html">1-D transient conduction model (finite difference method, Crank-Nicolson)</a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/HeatXfer_TMATS_1DTCondFDE.html">1-D transient conduction model (finite difference method, explicit)</a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/HeatXfer_TMATS_1DTCond2FDE.html">1-D transient conduction model for a 2 material plate (finite difference
+                    method, explicit)</a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/HeatXfer_TMATS_1DTCondFDI.html">1-D transient conduction model (finite difference method, implicit)</a></li>
+                </ol>
+            </li>
+            <li>Numerical Methods Blocks
+                <ol>
+                    <li><a href="TMATS_Library/TMATS_Support/NumMthd_TMATS_JC.html">Jacobian calculator </a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/NumMthd_TMATS_NRS.html">Newton Raphson solver</a></li>
+                </ol>
+            </li>
+            <li>Solver Blocks
+                <ol>
+                    <li><a href="TMATS_Library/TMATS_Support/Solver_TMATS_DOut.html">Data ouput </a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/Solver_TMATS_INRSwJC.html">Iterative Newton Raphson solver with jacobian calculator</a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/Solver_TMATS_Linearize.html">Linearize</a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/Solver_TMATS_MS.html">Model source</a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/Solver_TMATS_PR.html">Parameter ramp</a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/Solver_TMATS_PS.html">Parameter step</a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/Solver_TMATS_SSNRwJC.html">Steady state Newton Raphson solver with jacobian calculator</a></li>
+                    <li><a href="TMATS_Library/TMATS_Support/Solver_TMATS_VC.html">Vector Condition</a></li>
+                </ol>
+            </li>
+            <li>Thermo Blocks</li>
+            <ol>
+                <li><a href="TMATS_Library/TMATS_Support/Thermo_TMATS_Enth2Temp.html">Enthalpy (h) to temperature (T) </a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Thermo_TMATS_PT2S.html">Pressure (P) and temperature (T) to entropy (s)</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Thermo_TMATS_SP2T.html">Pressure (P) and entropy (s) to temperature (T)</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Thermo_TMATS_Temp2Enth.html">Temperature(T) to enthalpy (h)</a></li>
+            </ol>
+            <li>Thermo_Cantera Blocks</li>
+            <ol>
+                <li><a href="TMATS_Library/TMATS_Support/TurboC_TMATSC_Amb.html">Ambient</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/ThermoC_TMATSC_FA.html">Flow add </a></li>
+                <li><a href="TMATS_Library/TMATS_Support/TurboC_TMATSC_FS.html">Flow start</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/ThermoC_TMATSC_shP.html">Set total by total enthalpy (ht) and pressure (Pt)</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/ThermoC_TMATSC_sMN1.html">Set static by Mach number equals 1</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/ThermoC_TMATSC_sPs.html">Set static by static pressure (Ps)</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/ThermoC_TMATSC_sSP.html">Set total by entropy (s) and total pressure (Pt)</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/ThermoC_TMATSC_sTP.html">Set total by total temperature (Tt) and pressure (Pt)</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/ThermoC_TMATSC_sTsPsMN.html">Set all by static temperature (Ts), static pressure (Ps), and Mach number</a></li>
+            </ol>
+            <li>Turbomachinery Blocks</li>
+            <ol>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_Amb.html">Ambient</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_Brn.html">Burner</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_Cmp.html">Compressor</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_Dct.html">Duct</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_FPC.html">Flow path characteristics</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_HtXferEff.html">Heat exchanger (NTU method)</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_Inlet.html">Inlet</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_Mix.html">Mixer</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_Noz.html">Nozzle</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_NozVar.html">Variable area nozzle</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_SFC.html">Specific fuel consumption (SFC) calculator</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_Shft.html">Shaft</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_StCalc.html">Static parameter calculator</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_Trb.html">Turbine</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_TrbNPSS.html">Turbine NPSS maps</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_TrbPSI.html">Turbine PSI maps</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_Vlv.html">Valve simple</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/Turbo_TMATS_VlvPHY.html">Valve, physics based</a></li>
+            </ol>
+            <li>Turbomachinery_Cantera Blocks</li>
+            <ol>
+                <li><a href="TMATS_Library/TMATS_Support/TurboC_TMATSC_Amb.html">Ambient</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/TurboC_TMATSC_Brn.html">Burner</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/TurboC_TMATSC_Cmp.html">Compressor</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/TurboC_TMATSC_Dct.html">Duct</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/TurboC_TMATSC_FS.html">Flow start</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/TurboC_TMATSC_Inlet.html">Inlet</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/TurboC_TMATSC_Noz.html">Nozzle</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/TurboC_TMATSC_Splt.html">Splitter</a></li>
+                <li><a href="TMATS_Library/TMATS_Support/TurboC_TMATSC_Trb.html">Turbine</a></li>
+            </ol>
+        </ol>
+    </body>
+</html>
