@@ -28,8 +28,12 @@ thermodynamic equations and properties.
 <br>
 <font size="5" color="Blue">Burner Mask Variables: </font>
 <table border="1"> <tr><td>Burner Mask Variable</td><td>Description</td></tr>
+    <tr><td>LHVEn_M</td><td>Enable LHV method of calculating fuel energy (set use LHV method with efficiency, unset use hFuel)</td></tr>
     <tr><td>LHV_M</td><td>Fuel Lower Heating Value[BTU/lb]</td></tr>
-    <tr><td>dPnormBurner_M</td><td>Normalized Burner deltaP accross the burner[1 - psi/psi]</td></tr>
     <tr><td>Eff_M</td><td>Burner Efficiency[frac]</td></tr>
+    <tr><td>hFuel_M</td><td>Enthlapy of the fuel [BTU/lbm], typically used when heat of formation is included in enthalpy values (not default). Will be equal to LHV*eff when heat of formation is not included.</td></tr>
+    <tr><td>dPnormBurner_M</td><td>Normalized Burner deltaP accross the burner[1 - psi/psi]</td></tr>
+
+    
 </table>
 
