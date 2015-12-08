@@ -1,8 +1,31 @@
 
 
 <font size="6" color="Magenta">T-MATS: Cantera enabled MATLAB function </font>
-<p>The T-MATS package contains a simplified interface for use with Cantera. Information about these sets of function are located in section 4.5 of the users manual.</p>
-<p>As a quick reference Tables 7 and 8 are located below. They can be accessed by using the class structure TMATSC.* .</p>
+<p>The T-MATS package contains a simplified interface for use with Cantera. Information about these sets of functions are located in the users manual.</p>
+<p>As a quick reference the flow vector definition and T-MATS functions are also located below. They can be accessed by using the class structure TMATSC.* .</p>
+
+<font size="5" color="Blue"> TMATSC.* flow vector</font>
+<table border="1"> <tr><td> <b>ID</b></td><td><b>Parameter</b></td><td><b>Description</b></td></tr>
+<tr><td>1</td><td>W</td><td>gas path flow [pps]</td></tr>
+<tr><td>2</td><td>s</td><td>entropy [BTU/(lbm*degR)]</td></tr>
+<tr><td>3</td><td>Tt</td><td>total temperature [degR]</td></tr>
+<tr><td>4</td><td>Pt</td><td>total pressure [psia]</td></tr>
+<tr><td>5</td><td>ht</td><td>total enthalpy [BTM/lbm]</td></tr>
+<tr><td>6</td><td>rhot</td><td>total density (rho) [lbm/ft^3]</td></tr>
+<tr><td>7</td><td>gamt</td><td>total specific heat ratio (gamma)</td></tr>
+<tr><td>8</td><td>Ts</td><td>static temperature [degR]</td></tr>
+<tr><td>9</td><td>Ps</td><td>static pressure [psia]</td></tr>
+<tr><td>10</td><td>hs</td><td>static enthalpy [BTU/lbm]</td></tr>
+<tr><td>11</td><td>rhos</td><td>static density (rho) [lbm/ft^3]</td></tr>
+<tr><td>12</td><td>gams</td><td>static specific heat ratio (gamma)</td></tr>
+<tr><td>13</td><td>Vflow</td><td>flow velocity [ft/sec]</td></tr>
+<tr><td>14</td><td>MN</td><td>Mach number</td></tr>
+<tr><td>15</td><td>A</td><td>flow area [in^2]</td></tr>
+<tr><td>16-21</td><td>CompVal_TMATS</td><td>Flow composition vector, see canteraload.m for definition of the 6 matter types</td></tr>
+<tr><td>22-25</td><td>none</td><td>future use</td></tr>
+
+</table>
+
 
 <font size="5" color="Blue"> TMATSC.* functions</font>
 <table border="1"> <tr><td> <b>Class Method</b></td><td><b>Description</b></td></tr>
