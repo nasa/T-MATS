@@ -29,7 +29,7 @@ This Block calculates static pressure and temperature from an input flow stream 
     <br>unchecked - Assumed Ath
     <br>checked - Assumed MN </td></tr>
     <tr><td>Ath_M</td><td>Assumed Ath [in^2]</td></tr>
-    <tr><td>MN_M</td><td>Assumed Mach Number[frac]</td></tr>
+    <tr><td>MN_M</td><td>Assumed Mach Number[frac].<br> This will also be used as a first guess when using the assumed throat area method. It should be noted that tyipcally there are two solutions to a given throat area, a sub-sonic one and a super sonic one.  A guess of greater than 1 will usually find the super sonic solution and a guess of less than 1 will generally find the subsonic solution. </td></tr>
     <tr><td>X_FARVec_M</td><td>Fuel to Air Ratio Vector (X-axis) (cx1)</td></tr>
     <tr><td>Y_TtVec_M</td><td>Total Temperature Vector (Y-axis for Gamma calc)(dx1)</td></tr>
     <tr><td>T_RtArray_M</td><td>Gas Constant, R, Array (R = f(FAR))(cx1)</td></tr>

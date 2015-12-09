@@ -87,8 +87,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 {
 
     /*--------parameters defined in S-function block--------*/
-    const real_T AthroatIn              = *mxGetPr(AthroatIn_p(S)); /* input throat area (sq-in) */
-    const real_T MNIn                   = *mxGetPr(MNIn_p(S));      /* input throat area (sq-in) */
+    const real_T AthroatIn              = *mxGetPr(AthroatIn_p(S));  /* input throat area (sq-in) */
+    const real_T MNIn                   = *mxGetPr(MNIn_p(S));       /* input throat area (sq-in), note will use as initial guess when calculting based on Ath */
     const int_T SolveType               = *mxGetPr(SolveType_p(S));  /* 0-solve based on Ath, 1-solve based on MNIn*/
 
     /*-------- vector & array data -------*/
@@ -134,7 +134,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
     BlkNm = mxMalloc(buflen);
     status = mxGetString(BN_p(S), BlkNm, buflen);
-
+    
     /* Calc entropy */
     Sin = pt2sc(PtIn, TtIn, FARcIn);
 
@@ -223,7 +223,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     else if (SolveType == 0) {
 
         /* guess Psout and calculate an initial Area error */
-        MNg = 0.4;
+        MNg = MNIn;
         gammatg = 1.4;
         Tsg = TtIn /(1+MNg*MNg*(gammatg-1)/2);
         Psg = PtIn*pow((Tsg/TtIn),(gammatg/(gammatg-1)));
