@@ -1,5 +1,7 @@
 classdef FlowDef
     %T-MATS_Cantera flow class definition
+    % This function creates a flow object and defines the functions that
+    % update the gas properties. See the user's manual for more details.
     properties
         W       %Flow [pps]
         s       %Entropy
@@ -20,6 +22,7 @@ classdef FlowDef
         CompVal_TMATS     %Composition Values (6x1), T-MATS format [frac]
         CompVal_Can       %Composition Values Cantera format
     end
+        
     properties (Constant)
         Name = TMATSC.canteraload('Name');          %Species Names
         Species = TMATSC.canteraload('Species');    %Species Content values

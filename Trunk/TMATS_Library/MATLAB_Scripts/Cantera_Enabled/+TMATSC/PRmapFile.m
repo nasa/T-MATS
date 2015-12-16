@@ -1,4 +1,6 @@
 function [effMap,WcMap] = PRmapFile(MapFile, NcMapIn, PRmap  )
+% Read turbine map file
+% [effMap,WcMap] = PRmapFile(MapFile, NcMapIn, PRmap)
     tempparent = gcb();
     lengtht = length( tempparent );
     ii = 1;

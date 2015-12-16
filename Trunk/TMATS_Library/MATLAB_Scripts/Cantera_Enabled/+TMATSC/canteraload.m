@@ -1,4 +1,10 @@
 function output = canteraload(Request)
+%Return Name or Species matrix for the usable reactants
+% Name matrix is defined using Cantera symbols
+% Species is defined by weight
+% Each matrix contains 6 rows that denote 6 possible reactants
+% output = canteraload(Request)
+% Request = 'Name' or 'Species'
 
 switch (Request)
     case ('Name')

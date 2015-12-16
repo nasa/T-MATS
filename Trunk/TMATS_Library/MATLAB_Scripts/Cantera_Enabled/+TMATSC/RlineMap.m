@@ -1,5 +1,9 @@
 function [effMap,PRmap,WcMap, stallMargin] = RlineMap(MapFile, NcMapIn, RlineIn )
-    % determine the name of this instance of the map
+% Read compressor map    
+% [effMap,PRmap,WcMap, stallMargin] = RlineMap(MapFile, NcMapIn, RlineIn )
+
+
+% determine the name of this instance of the map
     tempparent = gcb();
     
     % clean up the name for characters that dont work

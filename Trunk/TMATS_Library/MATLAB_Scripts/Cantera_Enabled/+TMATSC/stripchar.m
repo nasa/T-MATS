@@ -1,4 +1,6 @@
 function [namer] = stripchar( name )
+% strip /,\, and \o from a string
+% [namer] = stripchar( name )
 lengtht = length( name );
 ii = 1;
 while  ii < (lengtht)
