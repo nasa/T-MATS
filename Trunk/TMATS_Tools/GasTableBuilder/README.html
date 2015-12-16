@@ -1,0 +1,41 @@
+<font size="6" color="Magenta">T-MATS: Cantera Gas Table Builder</font>
+<p> The Cantera Table Builder (CTB) works with the Cantera software package to create themodynamic
+    parameter lookup tables. These tables may be used to replace current
+    T-MATS tables to allow for off nominal thermodynamic paramters. It should be noted that 
+    in T-MATS the fuel energy is defined with LHV or enthalpy and the default thermodyanmic 
+    paramter tables represent 2 components, air and exhaust fumes (or fuel after combustion).
+</p>
+<p> The CTB GUI may be started by running the script "RunCTB.m". New gas property tables may then be created
+    by filling out the tool GUI.
+    Once the tables have been generated, the new files (pt2sc_TMATS.c, sp2tc_TMATS.c, h2tc_TMATS.c,
+    and t2hc_TMATS.c) will be created in the AlternateTables folder. These
+    files can be copied into \TMATS_Library\MEX replacing the 
+    current files of the same names. Once copied T-MATS should be re-compiled to complete
+    the installation. It is a good idea to save the current (default) table files
+    before they are overwritten. A folder (DefaultTables) has been created
+    to accommodate such a procedure.
+</p>
+<p>
+    Additionally, in any model that uses generated tables the burner modules must 
+    be set to use enthalpy. It should be noted that Cantera makes use of enthlapy values
+    that include the heat of formation (the default tables do not) and the enthalpy value
+    chosen for the burner must reflect this. Example values for jet fuel are LHV 
+    may be equal to 18400 BTU/lbm (used with the default gas tables and does not include heat of formation) and
+    enthlapy (used with Cantera generated gas tables and including heat of formation) may be -1200 BTU/lbm. Note, negative numbers are ok
+    because the enthalpy is based on a reference zero value.
+</p>
+<p>
+    Steps:<br>
+    1) Run \TMATS\TMATS_Tools\GasTableBuilder\Run_CTB_GUI.m.<br> 
+    2) input desired criteria in the GUI<br>
+        Names are symbols of the reactants. These must be consistant with Cantera nomneclature and appear in the .cti file<br>
+        Species are the amount by weight of each reactant in the stream<br>
+        Temperature and Pressure are the points at which the table would be generated<br>
+        Stream fraction range is the range of Stream2 to Stream1 to be generated. T-MATS currently accounts for two stream types<br>
+    3) Copy pt2sc_TMATS.c, sp2tc_TMATS.c, h2tc_TMATS.c, and t2hc_TMATS.c from
+    the MEX folder to the the Default Tables folder<br>
+    4) Copy the new .c files with the same names from the AlternateTables folder 
+    to the MEX folder<br>
+    5) re-compile T-MATS, note this may take much longer to compile as the new tables are complete lookups and the default tables use curve fits<br>
+    5) Set T-MATS burner module within the Simulink model to use hFuel for fuel energy calculation.<br>
+</p>
