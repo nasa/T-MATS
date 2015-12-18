@@ -38,28 +38,28 @@ static void mdlInitializeSizes(SimStruct *S)
         /* Return if number of expected != number of actual parameters */
         return;
     }
-
+    
     for (i = 0; i < NPARAMS; i++)
         ssSetSFcnParamTunable(S, i, 0);
-
+    
     ssSetNumContStates(S, 0);
     ssSetNumDiscStates(S, 0);
-
+    
     if (!ssSetNumInputPorts(S, 1)) return;
     ssSetInputPortWidth(S, 0, 5);
     ssSetInputPortRequiredContiguous(S, 0, true);
     ssSetInputPortDirectFeedThrough(S, 0, 1);
-
+    
     if (!ssSetNumOutputPorts(S, 1)) return;
     ssSetOutputPortWidth(S, 0, 5);
-
+    
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
     ssSetNumIWork(S, 6);
     ssSetNumPWork(S, 0);
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
-
+    
 }
 
 static void mdlInitializeSampleTimes(SimStruct *S)
@@ -85,34 +85,34 @@ static void mdlStart(SimStruct *S)
 
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
-
+    
     /*--------parameters defined in S-function block--------*/
     const real_T AthroatIn              = *mxGetPr(AthroatIn_p(S));  /* input throat area (sq-in) */
     const real_T MNIn                   = *mxGetPr(MNIn_p(S));       /* input throat area (sq-in), note will use as initial guess when calculting based on Ath */
     const int_T SolveType               = *mxGetPr(SolveType_p(S));  /* 0-solve based on Ath, 1-solve based on MNIn*/
-
+    
     /*-------- vector & array data -------*/
     const real_T *X_FARVec            = mxGetPr(X_FARVec_p(S));
     const real_T *T_RtArray           = mxGetPr(T_RtArray_p(S));
     const real_T *Y_TtVec             = mxGetPr(Y_TtVec_p(S));
     const real_T *T_gammaArray    = mxGetPr(T_gammaArray_p(S));
-
-
+    
+    
     /*------get dimensions of parameter arrays-------*/
     const int_T A   = mxGetNumberOfElements(X_FARVec_p(S));
     const int_T B   = mxGetNumberOfElements(Y_TtVec_p(S));
-
+    
     /*---------Define Inputs--------*/
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
-
+    
     double WIn      = u[0];     /* Input Flow [pps] 	*/
     double htIn     = u[1];     /* enthaply [BTU/lbm] 	*/
     double TtIn     = u[2];     /* Temperature Input [degR] 	*/
     double PtIn     = u[3];     /* Pressure Input [psia] 	*/
     double FARcIn   = u[4];     /* Combusted Fuel to Air Ratio [frac] 	*/
-
+    
     real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);  /* Output Array */
-
+    
     /*--------Define Constants-------*/
     double PsOut, TsOut, rhosOut, MNOut, AthOut;
     double Sin, htin;
@@ -124,12 +124,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double erthr;
     int maxiter, iter;
     int interpErr = 0;
-
+    
     /* ------- get strings -------------- */
     char * BlkNm;
     int_T buflen;
     int_T status;
-
+    
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
     BlkNm = mxMalloc(buflen);
@@ -137,11 +137,11 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     /* Calc entropy */
     Sin = pt2sc(PtIn, TtIn, FARcIn);
-
+    
     /*-- Compute Input enthalpy --------*/
-
+    
     htin = t2hc(TtIn,FARcIn);
-
+    
     /*  Where gas constant is R = f(FAR), but NOT P & T */
     Rt = interp1Ac(X_FARVec,T_RtArray,FARcIn,A,&interpErr);
     if (interpErr == 1 && ssGetIWork(S)[0]==0){
@@ -149,7 +149,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         ssSetIWorkValue(S,0,1);
     }
     Rs = Rt;
-
+    
     /* Solve for Ts and Ps when MN is known*/
     if (SolveType == 1) {
         /*---- set MN = MNIn and calc SS Ps for iteration IC --------*/
@@ -161,7 +161,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         }
         TsMNg = TtIn /(1+MNg*MNg*(gammatg-1)/2);
         PsMNg = PtIn*pow((TsMNg/TtIn),(gammatg/(gammatg-1)));
-
+        
         PcalcStat(PtIn, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
         gammasg = interp2Ac(X_FARVec,Y_TtVec,T_gammaArray,FARcIn,TsMNg,A,B,&interpErr);
         if (interpErr == 1 && ssGetIWork(S)[2]==0){
@@ -169,18 +169,18 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             ssSetIWorkValue(S,2,1);
         }
         MNg = Vg/sqrt(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST);
-
+        
         if (Vg > 0.0001){
             Acalc = WIn/(Vg * rhosg/C_SINtoSFT);}
         else {
             Acalc = 999; /* if velocity is close to zero assume a very large Ath */}
-
+        
         erMN = MNIn - MNg;
         PsMNg_new = PsMNg + 0.05;
         maxiter = 15;
         iter = 0;
         erthr = 0.0001;
-
+        
         /* if Ps is not close enough to Ps at MN = MNIn, iterate to find Ps at MN = MNIn */
         while (fabs(erMN) > erthr && iter < maxiter) {
             erMN_old = erMN;
@@ -201,7 +201,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
                 Acalc = WIn/(Vg * rhosg/C_SINtoSFT);}
             else {
                 Acalc = 999; /* if velocity is close to zero assume a very large Ath */}
-
+            
             erMN = MNIn - MNg;
             if (fabs(erMN) > erthr) {
                 /* determine next guess pressure by secant algorithm */
@@ -221,7 +221,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     }
     /* Solve for Ts and Ps when Ath is known*/
     else if (SolveType == 0) {
-
+        
         /* guess Psout and calculate an initial Area error */
         MNg = MNIn;
         gammatg = 1.4;
@@ -229,17 +229,22 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         Psg = PtIn*pow((Tsg/TtIn),(gammatg/(gammatg-1)));
         PcalcStat(PtIn, Psg, TtIn, htin, FARcIn, Rt, &Sin, &Tsg, &hsg, &rhosg, &Vg);
         Acalc = WIn/(Vg * rhosg/C_SINtoSFT);
+        gammasg = interp2Ac(X_FARVec,Y_TtVec,T_gammaArray,FARcIn,Tsg,A,B,&interpErr);
+        if (interpErr == 1 && ssGetIWork(S)[3]==0){
+            printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
+            ssSetIWorkValue(S,3,1);
+        }
         MNg = Vg/sqrt(gammasg*Rs*Tsg*C_GRAVITY*JOULES_CONST);
-
+        
         /* determine guess error for static pressure iteration */
         erA = (AthroatIn - Acalc)/AthroatIn;
-
+        
         /* determine iteration constants */
         iter = 0;
         maxiter = 1000;
         Psg_new = Psg + 0.05;
         erthr = 0.0001;
-
+        
         while ( fabs(erA) > erthr && iter < maxiter){
             erA_old = erA;
             Psg_old = Psg;
@@ -251,15 +256,15 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             }
             /* calculate flow velocity and rhos */
             PcalcStat(PtIn, Psg, TtIn, htin, FARcIn, Rt, &Sin, &Tsg, &hsg, &rhosg, &Vg);
-
+            
             gammasg = interp2Ac(X_FARVec,Y_TtVec,T_gammaArray,FARcIn,Tsg,A,B,&interpErr);
             if (interpErr == 1 && ssGetIWork(S)[3]==0){
                 printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
                 ssSetIWorkValue(S,3,1);
             }
-
+            
             MNg = Vg/sqrt(gammasg*Rs*Tsg*C_GRAVITY*JOULES_CONST);
-
+            
             if (Vg > 0.0001) {
                 /* calculated Area */
                 Acalc = WIn/(Vg * rhosg/C_SINtoSFT);
@@ -302,15 +307,15 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         MNOut = 0;
         AthOut = 100;
     }
-
-
+    
+    
     /*------Assign output values------------*/
     y[0] = TsOut;      /* static Temperature [degR] */
     y[1] = PsOut;      /* static Pressure [psia] */
     y[2] = rhosOut;    /* static rho [lbm/ft3]*/
     y[3] = MNOut;      /* mach number [frac]*/
     y[4] = AthOut;     /* throat area [in^2] */
-
+    
 }
 
 static void mdlTerminate(SimStruct *S)
