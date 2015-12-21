@@ -220,7 +220,7 @@ FO.W = Wout;
 
 % determine the power
 pwr = FI.W * (FI.ht - FO.ht) * 1.4148;
-pwr = pwr + Fbleed1.W*(Fbleed1.ht - FO.ht)*1.4148 + Fbleed2.W*(Fbleed2.ht - FO.ht)*1.4148;
+pwr = pwr - Fbleed1.W*(Fbleed1.ht - FO.ht)*1.4148 - Fbleed2.W*(Fbleed2.ht - FO.ht)*1.4148;
 
 FO_vec = FO.FlwVec();
 FB1_vec = Fbleed1.FlwVec();
