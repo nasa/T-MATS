@@ -407,7 +407,7 @@ classdef FlowDef
             % iterate on total pressure until the entropy of the total state
             % matches the static state
             Ptg = Ps*( 1+( gamsOut - 1 ) /2.* MN^2 )^( gamsOut /( gamsOut -1 ));
-            last = -9999;
+            last = -999;
             lasterr=1;
             count = 0;
             while  abs (lasterr)>.0000001 && count < 50
