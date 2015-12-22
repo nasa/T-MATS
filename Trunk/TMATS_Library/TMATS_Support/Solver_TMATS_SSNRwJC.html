@@ -24,7 +24,7 @@ Newton Raphson solver adequate time to develop a solution.
 <br>
 <font size="5" color="Blue">SS_NRSwJC Condition Outputs:</font>
 <table border="1"> <tr><td>SS_NRSwJC Output</td><td>Description</td></tr>
-    <tr><td>X</td><td>Input to plant to be solved for, (nx1 vector consisting of all plant inputs or independents)
+    <tr><td>X</td><td>Input to plant to be solved for, (1xm vector consisting of all plant inputs or independents)
     <br> Initial value will be set as the initial conditions</td></tr>
     <tr><td>S_Data</td><td>Solver internal calculation Data, 2x1 vector including:
             <br>- Converged - Solver Conditions have been met
@@ -33,9 +33,9 @@ Newton Raphson solver adequate time to develop a solution.
 <br>
 <font size="5" color="Blue">SS_NRSwJC Mask Variables: </font>
 <table border="1"> <tr><td>SS_NRSwJC Mask Variable</td><td>Description</td></tr>
-    <tr><td>SJac_Per_M</td><td>Jacobian Perturbation size (nx1)</td></tr>
-    <tr><td>SNR_IC_M</td><td>Newton Raphson Initial Conditions (nx1)</td></tr>
+    <tr><td>SJac_Per_M</td><td>Jacobian Perturbation size (nxm), where m is the number of inputs and n is the number of times each input is perturbed</td></tr>
+    <tr><td>SNR_IC_M</td><td>Newton Raphson Initial Conditions (1xm)</td></tr>
     <tr><td>SNR_DX_M</td><td>Newton Raphson delta x limiter (%)(1x1)</td></tr>
     <tr><td>SJacobianAttempts_M</td><td>Newton Raphson attempts before the Jacobian recalculation (1x1)</td></tr>
-    <tr><td>Cond_Limits_M</td><td>Iteration Conditions Limits (nx1 or 1x1)</td></tr>
+    <tr><td>Cond_Limits_M</td><td>Iteration Conditions Limits (1xm or 1x1)</td></tr>
 </table>

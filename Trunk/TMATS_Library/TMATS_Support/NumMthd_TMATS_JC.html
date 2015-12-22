@@ -2,8 +2,7 @@
 <br>
 The Jacobian Calculator block calculates the Jabobian of the system by perturbing
 the system around an initial point and calculating the gradient for each perturbation.
-This module will run once on start up and then again only if the reset is pressed and can operate
-with m inputs, where m is the number of independents in the system.
+This module will run once on start up and then again only if the reset.
 <br>
 <br>
 <font size="5" color="Blue">Jacobian Calculator Inputs:</font>
@@ -27,5 +26,5 @@ with m inputs, where m is the number of independents in the system.
 <br>
 <font size="5" color="Blue">Jacobian Calculator  Mask Variables: </font>
 <table border="1"> <tr><td>Jacobian Calculator Mask Variable</td><td>Description</td></tr>
-    <tr><td>N_Per_M</td><td>Perturbation sizes (mx1)</td></tr>
+    <tr><td>N_Per_M</td><td>Perturbation sizes (nxm), where m columns equal the number of inputs and n rows equals the number times each input is perturbed.</td></tr>
 </table>
