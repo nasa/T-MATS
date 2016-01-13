@@ -13,4 +13,14 @@ FAR - NA</p>
 <tr><td>[h] = t2h(T)</td><td>Look up enthalpy(h) based on temperature(T)</td>
 <tr><td>[s] = PT2s(T,P)</td><td>Look up entropy(s) based on pressure(P) and temperature(T)</td>
 <tr><td>[T] = sP2T(s,P)</td><td>Look up temperature(T) based on entropy(s) and pressure(P)</td>
+<tr><td>PlotCMap(NcV,WcA,PRA,EffA)</td><td>Plot compressor map based on an Nc vector, Wc array, PR array, and Eff array.
+<br> addtional inputs can be included by with the format PlotCMap(_,Name,Value,...,Value)
+<br> type "help TMATS.PlotCMap" for acceptable inputs and format.
+<br> An exmaple of this command might look like: 
+<br>TMATS.PlotCMap(NcV,WcA,PRA,EffA,'scalar',s_Wc,s_PR,s_Eff,'effcolor',0.5,'slformat','%2.2f','offset',0.03,'defsurge',WcA(:,1), PRA(:,1));</td>
+<tr><td>PlotTMap(NcV,PRV,WcA,EffA)</td><td>Plot turbine map based on an Nc vector, PR vector, Wc array, and Eff array
+<br> addtional inputs can be included by with the format PlotTMap(_,Name,Value,...,Value)
+<br> type "help TMATS.PlotTMap" for acceptable inputs and format.
+<br> An exmaple of this command might look like: 
+<br>TMATS.PlotTMap(NcV,WcA,PRA,EffA,'scalar',s_Wc,s_PR,s_Eff,'effcolor',0.5,'slformat','%2.2f','offset',0.03);</td>
 </table>
