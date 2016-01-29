@@ -1,0 +1,25 @@
+<font size="6" color="Magenta">T-MATS: Gain Scheduler double 2-D Library Block</font>
+<br>
+This block a double 2 dimensional gain scheduler.  Input are two critera and a common critera that are used for two 2-D lookups.  Output contains the result of the table lookups.  In general these two results will be multiplied together and can be entered into either the Ki or Kp input of the T-MATS setpoint controller block. Additionally the outputs could be separated and used as inputs to both Kp and Ki.
+<br>
+<br>
+<font size="5" color="Blue">GS Inputs:</font>
+<table border="1"> <tr><td>GS Input</td><td>Description</td></tr>
+    <tr><td>CriteraK1</td><td> Critera for gain K1 </td></tr>
+    <tr><td>CriteraK2</td><td> Critera for gain K2 </td></tr>
+    <tr><td>CriteraCommon</td><td> Critera common for K1 and K2 </td></tr>
+</table>
+<br>
+<font size="5" color="Blue">GS Outputs:</font>
+<table border="1"> <tr><td>GS Output</td><td>Description</td></tr>
+    <tr><td>K</td><td> Gain K from lookups, size 2 vector [K1 K2]</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">GS  Mask Variables: </font>
+<table border="1"> <tr><td>GS Mask Variable</td><td>Description</td></tr>
+    <tr><td>CCVec_M</td><td>Common critera vector (1xn)</td></tr>
+    <tr><td>CK1Vec_M</td><td>Gain 1 critera vector(1xm)</td></tr>
+    <tr><td>K1Array_M</td><td>Gain 1 array (mxn)</td></tr>
+    <tr><td>CK2Vec_M</td><td>Gain 2 critera vector(1xp)</td></tr>
+    <tr><td>K2Array_M</td><td>Gain 2 array (pxn)</td></tr>
+</table>

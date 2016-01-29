@@ -1,0 +1,23 @@
+<font size="6" color="Magenta">T-MATS: Set Point Calculation (Tbl)</font>
+<br>
+This block contains a set point table look up based on an external request and a manual override.<br>
+<br>
+<font size="5" color="Blue">LS Inputs:</font>
+<table border="1"> <tr><td>LS Input</td><td>Description</td></tr>
+    <tr><td>External Request</td><td> External system request for table lookup</td></tr>
+    <tr><td>Determiner Signal</td><td> Determiner signal for table lookup</td></tr>
+    <tr><td>Manual_En</td><td> Enable manual input: 1- manual input active, 0- use value based on exernal request</td></tr>
+    <tr><td>Manual Setpoint</td><td> Manual Setpoint: Setpoint used when manual mode is enabled</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">LS Outputs:</font>
+<table border="1"> <tr><td>LS Output</td><td>Description</td></tr>
+    <tr><td>Cntrl Setpoint</td><td> Setpoint for use by controller</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">LS  Mask Variables: </font>
+<table border="1"> <tr><td>LS Mask Variable</td><td>Description</td></tr>
+    <tr><td>ERVec_M</td><td>External request vector (for table lookup)(1xm)</td></tr>
+    <tr><td>DSVec_M</td><td>Determine signal vector (for table lookup)(1xn)</td></tr>
+    <tr><td>SPArray_M</td><td>Setpoint array (mxn)</td></tr>
+</table>

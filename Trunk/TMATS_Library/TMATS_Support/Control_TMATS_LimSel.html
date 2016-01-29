@@ -1,0 +1,21 @@
+<font size="6" color="Magenta">T-MATS: Limit Selection</font>
+<br>
+This block uses limit inputs to adjust a requested effector value.<br>
+<br>
+<font size="5" color="Blue">LS Inputs:</font>
+<table border="1"> <tr><td>LS Input</td><td>Description</td></tr>
+    <tr><td>Request Value</td><td> Requested Value</td></tr>
+    <tr><td>Limit Values</td><td> Values of limiters as a vector. These values may be changed for different conditions (1xn)</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">LS Outputs:</font>
+<table border="1"> <tr><td>LS Output</td><td>Description</td></tr>
+    <tr><td>Demand Value</td><td> Final value after limits are applied</td></tr>
+    <tr><td>ActiveLimit</td><td> Value of the active limit.  The limit number will coincide with it's location in the Limit Values input vector</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">LS  Mask Variables: </font>
+<table border="1"> <tr><td>LS Mask Variable</td><td>Description</td></tr>
+    <tr><td>SelectVec_M</td><td>Values of 1 denote a topping limit and -1 denote a bottoming limit. The input must be in the form of a vector with the same number of values as the Limit Values input vector. (1xn)</td></tr>
+    <tr><td>LimitsEn_M</td><td> Enable limits: 1- limits active, 0- limits disabled (1xn)</td></tr>
+</table>
