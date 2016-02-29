@@ -10,10 +10,10 @@ function setup(block)
 % Register number of ports
 block.NumInputPorts  = 1;
 block.NumOutputPorts = 1;
-block.NumDialogPrms = 8;
+block.NumDialogPrms = 0;
 
 % Override input port properties
-block.InputPort(1).Dimensions  = 1;
+block.InputPort(1).Dimensions  = 9;
 block.InputPort(1).DatatypeID  = 0;  % double
 block.InputPort(1).Complexity  = 'Real';
 block.InputPort(1).DirectFeedthrough = true;
@@ -51,18 +51,18 @@ function Outputs(block)
 import TMATSC.*
 
 % load the input values
-TtOut = block.DialogPrm(1).Data;
-PtOut = block.DialogPrm(2).Data;
-Wout = block.InputPort(1).Data;
+TtOut = block.InputPort(1).Data(2);
+PtOut = block.InputPort(1).Data(3);
+Wout = block.InputPort(1).Data(1);
 
 % load in the composition values
-compNN(1) = block.DialogPrm(3).Data;
-compNN(2) = block.DialogPrm(4).Data;
-compNN(3) = block.DialogPrm(5).Data;
-compNN(4) = block.DialogPrm(6).Data;
-compNN(5) = block.DialogPrm(7).Data;
-compNN(6)  = block.DialogPrm(8).Data;
-
+compNN(1) = block.InputPort(1).Data(4);
+compNN(2) = block.InputPort(1).Data(5);
+compNN(3) = block.InputPort(1).Data(6);
+compNN(4) = block.InputPort(1).Data(7);
+compNN(5) = block.InputPort(1).Data(8);
+compNN(6)  = block.InputPort(1).Data(9);
+compNN
 %Create flow object
 FO = FlowDef(compNN, Wout, TtOut, PtOut);
 
