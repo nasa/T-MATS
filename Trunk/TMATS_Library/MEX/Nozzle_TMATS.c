@@ -95,6 +95,7 @@ static void mdlStart(SimStruct *S)
     ssSetIWorkValue(S,10,0);
     ssSetIWorkValue(S,11,0);
     ssSetIWorkValue(S,12,0);
+    ssSetIWorkValue(S,13,0);
 }
 #endif
 
@@ -311,7 +312,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         ssSetIWorkValue(S,6,1);
     }
     
-      
+    
     /* Pressure before nozzle/P ambient */
     PQPa = Ptin / PambIn;
     
@@ -332,8 +333,13 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     
     /* Determine throat area in^2 */
-    if (IDes < 0.5)
-        Ath = WIn * C_PSItoPSF / (Therm_growth *(1-flowLoss/100)*CdTh*rhosMN1*VMN1);
+    if (IDes < 0.5) {
+        Ath = WIn * C_PSItoPSF / (Therm_growth *(1-flowLoss/100)*CdTh*rhosth*Vth);
+        if (choked == 0 && ssGetIWork(S)[13]==0){
+            printf("Warning in %s, Calculating IDes Area with un-choked nozzle.\n", BlkNm);
+            ssSetIWorkValue(S,13,1);
+        }
+    }
     /* if the thoat area is larger then the exit area of a CD nozzle it is a convergent nozzle */
     else if (CDNoz == 1 && AthroatIn > AexitIn) {
         Ath = AexitIn;
