@@ -285,7 +285,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     }
     
     /* throat not choked, set Psth to ideal expansion to Pambient values */
-    if (choked ==0 && IDes > 0.5){
+    if (choked ==0){
         Psth = PambIn;
         Tsth = Ts_s;
         Vth = V_s;
