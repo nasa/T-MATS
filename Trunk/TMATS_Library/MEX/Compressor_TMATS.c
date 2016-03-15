@@ -83,7 +83,7 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetInputPortDirectFeedThrough(S, 2, 1);
     
     if (!ssSetNumOutputPorts(S, 3)) return;
-    ssSetOutputPortWidth(S, 0, 25);
+    ssSetOutputPortWidth(S, 0, 27);
     ssSetOutputPortWidth(S, 1, DYNAMICALLY_SIZED);
     ssSetOutputPortWidth(S, 2, DYNAMICALLY_SIZED);
     
@@ -208,7 +208,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double htin, Sin, Wcin, WcCalcin, WcMap, theta,delta, Pwrout, Wbleeds, Wsumbleed;
     double TtIdealout, htIdealout, Test, Sout, NcMap, Nc, PRMap, PR, EffMap, Eff;
     double Wb4bleed, Pwrb4bleed, PwrBld;
-    double SPR, SPRMap, SMavail;
+    double SPR, SPRMap, SMavail, SMMap;
     
     /* Define Arrays for bleed calcs */
     int MaxNumberBleeds = 100;
@@ -430,6 +430,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     }
     SPR = C_PR*(SPRMap - 1) + 1;
     SMavail = (SPR - PR)/PR * 100;
+    SMMap = (SPRMap - PRMap)/PRMap * 100;
     
     /* Test variable */
     Test = SPRMap;
@@ -459,7 +460,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     y[21] = Pwrb4bleed;     /* Power if there was no bleed [hp]*/
     y[22] = PwrBld;         /* Power loss due to bleed [hp] */
     y[23] = Pwrout;         /* Output power [hp]*/
-    y[24] = Test;           /* test signal */
+    y[24] = SMMap;          /* Stall margin calculated from map values [%]*/
+    y[25] = SPRMap;         /* Map stall pressure ratio*/
+    y[26] = Test;           /* test signal */
     
     /*------Assign output values port2------------*/
     /* Customer or flow based bleed*/

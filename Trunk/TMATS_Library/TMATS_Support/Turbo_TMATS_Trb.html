@@ -39,20 +39,21 @@ thermodynamic equations, properties, and table lookups.
     <br>be driven to zero by an iterative solver</td></tr>
     <tr><td>TrqOut</td><td>turbine Torque Output (lbf*ft), positive value for a turbine.</td></tr>
     <tr><td>T_Data</td><td>Turbine internal calculation Data, 13x1 bus/vector including:
-    <br>- s_T_Nc - Corrected shaft speed map scalar value
-    <br>- s_T_Wc - Corrected mass flow map scalar value
-    <br>- s_T_PR - Pressure ratio map scalar value
-    <br>- s_T_Eff - Efficiency map scalar value
-    <br>- Wcin - Corrected mass flow input [pps]
-    <br>- Wcs1in - Corrected mass flow after station 1 (contains input bleed air) [pps]
-    <br>- Nc - Corrected shaft speed [rpm]
-    <br>- NcMap - Corrected shaft speed from the turbine map
-    <br>- WcMap - Corrected mass flow from the turbine map
-    <br>- PRMap - Pressure ratio from the turbine map
-    <br>- EffMap - Efficiency from the turbine map
-    <br>- Pwrout - output power [hp]
-    <br>- Test - Turbine interal calculation Data
-</td></tr>
+            <br>- s_T_Nc - Corrected shaft speed map scalar value
+            <br>- s_T_Wc - Corrected mass flow map scalar value
+            <br>- s_T_PR - Pressure ratio map scalar value
+            <br>- s_T_Eff - Efficiency map scalar value
+            <br>- Wcin - Corrected mass flow input [pps]
+            <br>- Wcs1in - Corrected mass flow after station 1 (contains input bleed air) [pps]
+            <br>- Nc - Corrected shaft speed [rpm]
+            <br>- NcMap - Corrected shaft speed from the turbine map
+            <br>- WcMap - Corrected mass flow from the turbine map
+            <br>- PRMap - Pressure ratio from the turbine map
+            <br>- EffMap - Efficiency from the turbine map
+            <br>- Pwrout - output power [hp]
+            <br>- Test - Turbine interal calculation Data
+            <br>- Nmech - mechanical shaft speed, from input [rpm] 
+    <br>- BlkNm - block name as double, if required use char(BlkNm) to retrieve </td></tr>
 </table>
 <br>
 <font size="5" color="Blue">Turbine Mask Variables: </font>
@@ -65,7 +66,7 @@ thermodynamic equations, properties, and table lookups.
     <tr><td>s_T_PR_M</td><td>Pressure Ratio Scalar Constant (T_PR)</td></tr>
     <tr><td>s_T_Wc_M</td><td>Flow Scalar Constant (T_Wc)</td></tr>
     <tr><td>s_T_Eff_M</td><td>Efficiency Scalar Constant (T_Eff)</td></tr>
-        <tr><td>Plot Map</td><td>Plots the block defined map
+    <tr><td>Plot Map</td><td>Plots the block defined map
             <br> - Scalars: none - plots maps as defined
             <br> - Scalars: user defined - plots maps with Wc, PR, and Eff scaled using the scalars defined in the T-map tab
     <br> - Scalars: iDesign - plots maps with Wc, PR, and Eff scaled using scalars calculated with iDesign and located within the file defined in the iDesign tab</td></tr>
