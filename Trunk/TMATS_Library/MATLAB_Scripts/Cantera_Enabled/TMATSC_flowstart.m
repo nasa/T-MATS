@@ -62,7 +62,7 @@ compNN(3) = block.InputPort(1).Data(6);
 compNN(4) = block.InputPort(1).Data(7);
 compNN(5) = block.InputPort(1).Data(8);
 compNN(6)  = block.InputPort(1).Data(9);
-compNN
+
 %Create flow object
 FO = FlowDef(compNN, Wout, TtOut, PtOut);
 
