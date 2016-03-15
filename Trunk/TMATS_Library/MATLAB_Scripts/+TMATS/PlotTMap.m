@@ -3,13 +3,14 @@ function PlotTMap(NcVec, PRVec, WcArray, EffArray, varargin)
 % TMATS.PlotTMap(NcVec, PRVec, WcArray, EffArray) - plot default compressor map
 % TMATS.PlotTMap(_,Name,Value,...,Value) - plot compressor map with alternate formating
 % Name              Definition
-% 'linesize'    -   Define linesize (Default=1), (_,'linesize',Num) 
-% 'effcolor'    -   Define efficiency color darkness (Default=1), (_,'effcolor',Num)
+% 'linesize'    -   Define linesize (Default=1), (_,'linesize',Num)
+% 'efflines'    -   Define number of efficiency lines (Default=10), (_,'efflines',Num)
 % 'slformat'    -   Define speed line marker value format (Default='%2.0f'), (_,'slformat',Str)
 % 'offset'      -   Define speed line marker location offset (Default=0.02), (_,'offset',Num)
 % 'scalar'      -   Define compressor map values updated with scalars, (_,'scalar', s_Wc, s_PR, s_Eff)
 % 'mapname'     -   Define the plot title (Default='Turbine Map'), (_,'mapname',Str)
 % 'plotlim'     -   Define the plot sizing limit by fraction of total size (Default=0.1), (_,'plotlim',Num)
+% 'EffR'        -   Remove Efficiency from plot , (_,'EffR')
 
 %% TMATS.PlotTMaps.m
 % Jeffyres Chapman based on work by Jeffrey Csank and George Thomas
@@ -29,14 +30,17 @@ offset = 0.02;
 % set speed line text format
 SLformat = '%2.0f';
 
-%effdarkness
-effdarkenss = 1;
+%efflines
+efflines = 10;
 
 %manage extra matlab plotting space
 plim = 0.1;
 
 %scalar definition
 scalar = 0;
+
+% Default plots
+PlotEff = 1;
 
 %map name
 MapName = ['Turbine' ' Map'];
@@ -46,22 +50,26 @@ n = 1;
 
 while n <= length(varargin)
     switch varargin{n}
+        case 'EffR'
+            % Remove Efficiency from plot
+            PlotEff = 0;
+            
         case 'linesize'
             % define linesize
             n = n+1;
             linesize = varargin{n};
-             
-        case 'effcolor'
-            % define Efficiency color value
+            
+        case 'efflines'
+            % define number of efficiency lines
             n = n+1;
-            effdarkenss= varargin{n};
+            efflines = varargin{n};
             
         case 'slformat'
-            % define Efficiency color value
+            % define speed line txt format
             n = n+1;
             SLformat= varargin{n};
             
-       case 'offset'
+        case 'offset'
             % define speed offset fraction
             n = n+1;
             offset= varargin{n};
@@ -81,7 +89,7 @@ while n <= length(varargin)
             n = n+1;
             MapName = varargin{n};
             
-         case 'plotlim'
+        case 'plotlim'
             % define speed offset fraction
             n = n+1;
             plim = varargin{n};
@@ -100,12 +108,15 @@ end
 
 set(gca,'fontsize',12);
 hold off;
+
 % create speed lines
-plot(WcArray,PRVec,'k-','Linewidth',linesize);
+plot(WcArray',PRVec','k-','Linewidth',linesize);
 hold on;
-%shade plot for efficiency
-surf(WcArray,ones(length(NcVec),1)*PRVec,EffArray);
-alpha(effdarkenss)
+
+if PlotEff ==1
+    %plot contour for efficiency
+    contour(WcArray,ones(length(NcVec),1)*PRVec,EffArray,efflines,'ShowText','on','Linewidth',linesize,'Linecolor','m','LineStyle','--');
+end
 
 % develop speed marker offset
 Wcmax = max(max(WcArray));
@@ -115,6 +126,7 @@ PRmin = min(PRVec);
 PRadj = (PRmax - PRmin) * offset;
 
 % create speed markers
+
 for j=1:length(WcArray(:,1))
     xmax=max(WcArray(j,:));
     ymax=max(PRVec) + PRadj;

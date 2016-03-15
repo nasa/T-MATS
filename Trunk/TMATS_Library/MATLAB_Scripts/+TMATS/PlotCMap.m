@@ -5,13 +5,15 @@ function PlotCMap(NcVec, WcArray, PRArray, EffArray, varargin)
 % Name              Definition
 % 'linesize'    -   Define linesize (Default=1), (_,'linesize',Num)
 % 'defsurge'    -   Define surge line, (_,'defsurge',Wc_SM,PR_SM)
-% 'effcolor'    -   Define efficiency color darkness (Default=1), (_,'effcolor',Num)
+% 'efflines'    -   Define number of efficiency lines (Default=10), (_,'efflines',Num)
 % 'slformat'    -   Define speed line marker value format (Default='%2.2f'), (_,'slformat',Str)
 % 'offset'      -   Define speed line marker location offset (Default=0.02), (_,'offset',Num)
 % 'scalar'      -   Define compressor map values updated with scalars, (_,'scalar', s_Wc, s_PR, s_Eff)
 % 'mapname'     -   Define the plot title (Default='Compressor Map'), (_,'mapname',Str)
 % 'plotlim'     -   Define the plot sizing limit by fraction of total size (Default=0.1), (_,'plotlim',Num)
-
+% 'NcR'         -   Remove Nc lines from plot , (_,'NcR')
+% 'RlineR'      -   Remove Rlines from plot , (_,'RlineR')
+% 'EffR'        -   Remove Efficiency from plot , (_,'EffR')
 
 %% TMATS.PlotCMaps.m
 % Jeffyres Chapman based on work by Jeffrey Csank and George Thomas
@@ -23,7 +25,7 @@ function PlotCMap(NcVec, WcArray, PRArray, EffArray, varargin)
 %--------------------------------------------------------------------------
 
 %rline/speed line size
-linesize=1;
+linesize=0.4;
 
 %set speed line text offset
 offset = 0.02;
@@ -37,14 +39,19 @@ surgesize=2.5;
 %manage extra matlab plotting space
 plim = 0.1;
 
-%effdarkness
-effdarkenss=1;
+%number of efficiency lines
+efflines=10;
 
 %define stall line
 defSline = 0;
 
 %scalar definition
 scalar = 0;
+
+% Default plots
+PlotRline = 1;
+PlotNc = 1;
+PlotEff = 1;
 
 %map name
 MapName = ['Compressor' ' Map'];
@@ -54,6 +61,16 @@ n = 1;
 
 while n <= length(varargin)
     switch varargin{n}
+        case 'RlineR'
+            % Remove Rline from plot
+            PlotRline = 0;
+        case 'NcR'
+            % Remove Nc lines from plot
+            PlotNc = 0;
+        case 'EffR'
+            % Remove Efficiency from plot
+            PlotEff = 0;
+            
         case 'linesize'
             % define linesize
             n = n+1;
@@ -67,13 +84,13 @@ while n <= length(varargin)
             n = n+1;
             PRstallMap  = varargin{n};
             
-        case 'effcolor'
-            % define Efficiency color value
+        case 'efflines'
+            % define number of efficiency lines
             n = n+1;
-            effdarkenss= varargin{n};
+            efflines = varargin{n};
             
         case 'slformat'
-            % define Efficiency color value
+            % define speed line txt format
             n = n+1;
             SLformat= varargin{n};
             
@@ -121,14 +138,21 @@ end
 
 set(gca,'fontsize',12);
 hold off;
-% create speed lines
-plot(WcArray,PRArray,'k-','Linewidth',linesize);
-hold on;
-%create
-plot(WcArray',PRArray','k-','Linewidth',linesize);
-%shade plot for efficiency
-surf(WcArray,PRArray,EffArray);
-alpha(effdarkenss)
+% create Rline
+if PlotRline ==1
+    plot(WcArray,PRArray,'c-','Linewidth',linesize);
+    hold on;
+end
+%create Speed lines
+if PlotNc ==1
+    plot(WcArray',PRArray','b-','Linewidth',linesize);
+    hold on;
+end
+%plot efficiency contour
+if PlotEff ==1
+    contour(WcArray,PRArray,EffArray,efflines,'ShowText','on','Linewidth',linesize*2,'Linecolor','m','LineStyle','--');
+    hold on;
+end
 % if stall line if defined plot stall line
 if (defSline == 1)
     plot(SM_Wc,PRstallMap,'r-','Linewidth',surgesize);
@@ -140,15 +164,17 @@ Wcmax = max(max(WcArray));
 PRmax = max(max(PRArray));
 Wcmin = min(min(WcArray));
 PRmin = min(min(PRArray));
+
+if PlotNc ==1
 Wcadj = (Wcmax - Wcmin) * offset;
 PRadj = (PRmax - PRmin) * offset;
-
-% create speed markers
-for j=1:length(WcArray(:,1))
-    xmax=WcArray(j,1)- Wcadj;
-    ymax=PRArray(j,1)+ PRadj;
-    strmin = num2str(NcVec(j),SLformat);
-    text(xmax,ymax,strmin,'HorizontalAlignment','left','fontsize',8);
+    % create speed markers
+    for j=1:length(WcArray(:,1))
+        xmax=WcArray(j,1)- Wcadj;
+        ymax=PRArray(j,1)+ PRadj;
+        strmin = num2str(NcVec(j),SLformat);
+        text(xmax,ymax,strmin,'HorizontalAlignment','left','fontsize',8);
+    end
 end
 
 %label plot
