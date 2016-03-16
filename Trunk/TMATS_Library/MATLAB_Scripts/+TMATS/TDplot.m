@@ -11,7 +11,8 @@ function TDplot(filename, varargin)
 % 'MappntsR'    -   Don't plot data points on map figures, (_,'MappntsR')
 
 %set preferences to dock the output plots
-set(0,'DefaultFigureWindowStyle','docked')
+set_old = get(0,'DefaultFigureWindowStyle');
+set(0,'DefaultFigureWindowStyle','docked');
 
 % By defualt plot everything
 PlotW = 1;
@@ -55,20 +56,22 @@ end
 % find all models being referenced in the model
 [ref, blocks] = find_mdlrefs(filename);
 
+%initialize find numbers
+CompNum = 0;
+TurbNum = 0;
+ShftSpdNum = 0;
+LibD = {};
+gb = {};
+
 % perform a search for each T-MATS data block within each model
 for n = 1:length(ref)
     load_system(ref(n));
     %Get library names of all blocks within simulink diagram
-    LibD = libinfo(ref(n));
+    LibD = [libinfo(ref(n));LibD];
     % get block names of all ToWorkspace blocks
-    gb = find_system(ref(n),'BlockType','ToWorkspace');
-    
-    CompNum = 0;
-    TurbNum = 0;
-    CTNodeNum = 0;
-    TWorkType = 'None';
-    ShftSpdNum = 0;
-    
+    gb = [find_system(ref(n),'BlockType','ToWorkspace');gb];
+end
+
     %search diagram for specific libraries that coincide with T-MATS
     %turbines or compressors (anything that needs a map)
     for i = 1:length(LibD)
@@ -155,108 +158,110 @@ for n = 1:length(ref)
             end
         end
     end % end search through To Workspace variables
+
+
+% Plot Speeds
+if ShftSpdNum > 0
+    % initialize plotted speed vector, a speed should only be plotted
+    % once
+    Nplt = zeros(size(N,2),1)';
+    n = 0;
     
-    % Plot Speeds
-    if ShftSpdNum > 0
-        % initialize plotted speed vector, a speed should only be plotted
-        % once
-        Nplt = zeros(size(N,2),1)';
-        n = 0;
-        
-        % sort shaft speeds to eliminate repeats
-        for i = 1:ShftSpdNum
-            PlotSpeed = 1;
-            for ii = 1:size(Nplt,1)
-                if N(i,:) == Nplt(ii,:)
-                    PlotSpeed = 0;
-                end
-            end
-            if PlotSpeed
-                n = n + 1;
-                Nplt(n,:) = N(i,:);
-                Tplt(n,:) = Ntime(i,:);
-                Ntitle{n} = NBlkNm{i};
+    % sort shaft speeds to eliminate repeats
+    for i = 1:ShftSpdNum
+        PlotSpeed = 1;
+        for ii = 1:size(Nplt,1)
+            if N(i,:) == Nplt(ii,:)
+                PlotSpeed = 0;
             end
         end
-        
-        if n > 0
-            f = figure;
-            set(f,'name','Speeds','numbertitle','off');
-            % plot remainder of shaft speeds
-            tempsize = size(Nplt,1);
-            for i = 1:tempsize
-                subplot(tempsize,1,i)
-                plot(Tplt(i,:), Nplt(i,:));
-                ylabel('Speed [rpm]');
-                title(Ntitle{i});
-            end
-            xlabel('Time [sec]');
+        if PlotSpeed
+            n = n + 1;
+            Nplt(n,:) = N(i,:);
+            Tplt(n,:) = Ntime(i,:);
+            Ntitle{n} = NBlkNm{i};
         end
     end
     
-    
-    %Create comporessor maps
-    if(CompNum > 0)
-        for i = 1:CompNum
-            %Get Block name
-            BN = CompBlocks{i};
-            %Get Parameters for plotting the map
-            Nc = evalin('base',get_param(BN,'Y_C_Map_NcVec_M'));
-            Wc = evalin('base',get_param(BN,'T_C_Map_WcArray_M'));
-            PR = evalin('base',get_param(BN,'T_C_Map_PRArray_M'));
-            Eff = evalin('base',get_param(BN,'T_C_Map_EffArray_M'));
-            CompNm = get_param(BN,'Name');
-            %create new figure
-            f = figure;
-            set(f,'name',CompNm,'numbertitle','off');
-            % plot map
-            TMATS.PlotCMap(Nc,Wc,PR,Eff,'mapname',['Compressor Map', ' : ' ,BN]);
-            
-            if PlotMapPnts
-                % get Map to Workspace information
-                [CTWc,CTPR,DF] = getMapTWD(gb,BN);
-                % If map workspace info was found plot it
-                if DF == 1
-                    hold on
-                    plot(CTWc, CTPR,'o');
-                    hold off
-                end
-            end
+    if n > 0
+        f = figure;
+        set(f,'name','Speeds','numbertitle','off');
+        % plot remainder of shaft speeds
+        tempsize = size(Nplt,1);
+        for i = 1:tempsize
+            subplot(tempsize,1,i)
+            plot(Tplt(i,:), Nplt(i,:));
+            ylabel('Speed [rpm]');
+            title(Ntitle{i});
         end
+        xlabel('Time [sec]');
     end
-    
-    %Create turbine maps
-    if(TurbNum > 0)
-        for i = 1:TurbNum
-            %Get Block name
-            BN = TurbBlocks{i};
-            %Get Parameters for plotting the map
-            Nc = evalin('base',get_param(BN,'Y_T_Map_NcVec_M'));
-            Wc = evalin('base',get_param(BN,'T_T_Map_WcArray_M'));
-            PR = evalin('base',get_param(BN,'X_T_Map_PRVec_M'));
-            Eff = evalin('base',get_param(BN,'T_T_Map_EffArray_M'));
-            TurbNm = get_param(BN,'Name');
-            %create new figure
-            f = figure;
-            set(f,'name',TurbNm,'numbertitle','off');
-            % plot map
-            TMATS.PlotTMap(Nc,PR,Wc,Eff,'mapname',['Turbine Map',' : ',BN]);
-            
-            if PlotMapPnts
-                % get Map to Workspace information
-                [CTWc,CTPR,DF] = getMapTWD(gb,BN);
-                % If map workspace info was found plot it
-                if DF == 1
-                    hold on
-                    plot(CTWc, CTPR,'o');
-                    hold off
-                end
-            end
-        end
-    end
-    bdclose('all')
 end
 
+
+%Create comporessor maps
+if(CompNum > 0)
+    for i = 1:CompNum
+        %Get Block name
+        BN = CompBlocks{i};
+        %Get Parameters for plotting the map
+        Nc = evalin('base',get_param(BN,'Y_C_Map_NcVec_M'));
+        Wc = evalin('base',get_param(BN,'T_C_Map_WcArray_M'));
+        PR = evalin('base',get_param(BN,'T_C_Map_PRArray_M'));
+        Eff = evalin('base',get_param(BN,'T_C_Map_EffArray_M'));
+        CompNm = get_param(BN,'Name');
+        %create new figure
+        f = figure;
+        set(f,'name',CompNm,'numbertitle','off');
+        % plot map
+        TMATS.PlotCMap(Nc,Wc,PR,Eff,'mapname',['Compressor Map', ' : ' ,BN]);
+        
+        if PlotMapPnts
+            % get Map to Workspace information
+            [CTWc,CTPR,DF] = getMapTWD(gb,BN);
+            % If map workspace info was found plot it
+            if DF == 1
+                hold on
+                plot(CTWc, CTPR,'o');
+                hold off
+            end
+        end
+    end
+end
+
+%Create turbine maps
+if(TurbNum > 0)
+    for i = 1:TurbNum
+        %Get Block name
+        BN = TurbBlocks{i};
+        %Get Parameters for plotting the map
+        Nc = evalin('base',get_param(BN,'Y_T_Map_NcVec_M'));
+        Wc = evalin('base',get_param(BN,'T_T_Map_WcArray_M'));
+        PR = evalin('base',get_param(BN,'X_T_Map_PRVec_M'));
+        Eff = evalin('base',get_param(BN,'T_T_Map_EffArray_M'));
+        TurbNm = get_param(BN,'Name');
+        %create new figure
+        f = figure;
+        set(f,'name',TurbNm,'numbertitle','off');
+        % plot map
+        TMATS.PlotTMap(Nc,PR,Wc,Eff,'mapname',['Turbine Map',' : ',BN]);
+        
+        if PlotMapPnts
+            % get Map to Workspace information
+            [CTWc,CTPR,DF] = getMapTWD(gb,BN);
+            % If map workspace info was found plot it
+            if DF == 1
+                hold on
+                plot(CTWc, CTPR,'o');
+                hold off
+            end
+        end
+    end
+end
+bdclose('all')
+
+%return settings
+set(0,'DefaultFigureWindowStyle',set_old);
 
 
 function [CTWc, CTPR, datafound] = getMapTWD(gb, FeedBlock)
