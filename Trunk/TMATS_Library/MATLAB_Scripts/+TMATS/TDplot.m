@@ -72,38 +72,39 @@ for n = 1:length(ref)
     gb = [find_system(ref(n),'BlockType','ToWorkspace');gb];
 end
 
-    %search diagram for specific libraries that coincide with T-MATS
-    %turbines or compressors (anything that needs a map)
-    for i = 1:length(LibD)
-        LibraryName = LibD(i).Library;
-        switch LibraryName
-            case 'Lib_Turbo_Compressor_TMATS'
-                if PlotCompMap
-                    CompNum = CompNum +1;
-                    CompBlocks{CompNum} = LibD(i).Block;
-                end
-            case 'Lib_Turbo_TurbineNPSS_TMATS'
-                if PlotTurbMap
-                    TurbNum = TurbNum +1;
-                    TurbBlocks{TurbNum} = LibD(i).Block;
-                end
-            case 'Lib_Turbo_Turbine_TMATS'
-                if PlotTurbMap
-                    TurbNum = TurbNum +1;
-                    TurbBlocks{TurbNum} = LibD(i).Block;
-                end
-        end
-    end % End search through libraries
+%search diagram for specific libraries that coincide with T-MATS
+%turbines or compressors (anything that needs a map)
+for i = 1:length(LibD)
+    LibraryName = LibD(i).Library;
+    switch LibraryName
+        case 'Lib_Turbo_Compressor_TMATS'
+            if PlotCompMap
+                CompNum = CompNum +1;
+                CompBlocks{CompNum} = LibD(i).Block;
+            end
+        case 'Lib_Turbo_TurbineNPSS_TMATS'
+            if PlotTurbMap
+                TurbNum = TurbNum +1;
+                TurbBlocks{TurbNum} = LibD(i).Block;
+            end
+        case 'Lib_Turbo_Turbine_TMATS'
+            if PlotTurbMap
+                TurbNum = TurbNum +1;
+                TurbBlocks{TurbNum} = LibD(i).Block;
+            end
+    end
+end % End search through libraries
+
+% Determine which ToWorkspace blocks hold flow data and plot them
+for i = 1:length(gb)
+    %get variable from workspace
+    Vnm = get_param(gb{i},'VariableName');
+    Var = evalin('base',Vnm);
     
-    % Determine which ToWorkspace blocks hold flow data and plot them
-    for i = 1:length(gb)
-        %get variable from workspace
-        Vnm = get_param(gb{i},'VariableName');
-        Var = evalin('base',Vnm);
-        % determine if data is in the expected format
-        SaveFormat = get_param(gb{i},'SaveFormat');
-        IsTSeries = strcmp(SaveFormat,'Timeseries');
-        
+    % determine if data is in the expected format
+    IsStruct = isstruct(Var);
+    
+    if IsStruct
         % Determine criteria for a Flow ToWorkspace Node
         WE = sum(strcmp(fieldnames(Var), 'W'));
         TtE = sum(strcmp(fieldnames(Var), 'Tt'));
@@ -112,52 +113,53 @@ end
         % Determine criteria for map node with shaft speed
         BlkNmE = sum(strcmp(fieldnames(Var), 'BlkNm'));
         NmechE = sum(strcmp(fieldnames(Var), 'Nmech'));
+    else
+        WE = 0;
+        TtE = 0;
+        PtE = 0;
+        BlkNmE = 0;
+        NmechE = 0;
+    end
+    
+    % If flow, temperature, and pressure exist in the variable, Get and
+    % Plot Flow variables
+    if WE && TtE && PtE && PlotW
         
-        % If flow, temperature, and pressure exist in the variable, Get and
-        % Plot Flow variables
-        if WE && TtE && PtE && PlotW
-            if IsTSeries
-                % Get the Flow
-                W = Var.W.Data;
-                Pt = Var.Pt.Data;
-                Tt = Var.Tt.Data;
-                Time = Var.W.Time;
-                
-                %create new figure
-                f = figure;
-                set(f,'name',Vnm,'numbertitle','off');
-                
-                %plot the data in a tab
-                subplot(3,1,1)
-                plot(Time,W)
-                ylabel('W [pps]')
-                title([Vnm,' Data'])
-                subplot(3,1,2)
-                plot(Time,Pt)
-                ylabel('Pt [psia]')
-                subplot(3,1,3)
-                plot(Time,Tt)
-                ylabel('Tt [degR]')
-                xlabel('Time [sec]');
-            else
-                disp('Warning: TDView requires data to be in Timeseries format');
-            end
-        end
+        % Get the Flow
+        W = Var.W.Data;
+        Pt = Var.Pt.Data;
+        Tt = Var.Tt.Data;
+        Time = Var.W.Time;
         
-        % If Nmech and Block name exist in the variable, Get Speeds
-        if NmechE && BlkNmE && PlotN
-            if IsTSeries
-                % Get the shaft speed data
-                ShftSpdNum = ShftSpdNum + 1;
-                itmp = ShftSpdNum;
-                N(itmp,:) = Var.Nmech.Data;
-                Ntime(itmp,:) = Var.Nmech.Time;
-                NBlkNm(itmp) = {char(Var.BlkNm.Data(end,:))};
-            else
-                disp('Warning: TDView requires data to be in Timeseries format');
-            end
-        end
-    end % end search through To Workspace variables
+        %create new figure
+        f = figure;
+        set(f,'name',Vnm,'numbertitle','off');
+        
+        %plot the data in a tab
+        subplot(3,1,1)
+        plot(Time,W)
+        ylabel('W [pps]')
+        title([Vnm,' Data'])
+        subplot(3,1,2)
+        plot(Time,Pt)
+        ylabel('Pt [psia]')
+        subplot(3,1,3)
+        plot(Time,Tt)
+        ylabel('Tt [degR]')
+        xlabel('Time [sec]');
+    end
+    
+    
+    % If Nmech and Block name exist in the variable, Get Speeds
+    if NmechE && BlkNmE && PlotN
+        % Get the shaft speed data
+        ShftSpdNum = ShftSpdNum + 1;
+        itmp = ShftSpdNum;
+        N(itmp,:) = Var.Nmech.Data;
+        Ntime(itmp,:) = Var.Nmech.Time;
+        NBlkNm(itmp) = {char(Var.BlkNm.Data(end,:))};
+    end
+end % end search through To Workspace variables
 
 
 % Plot Speeds
@@ -272,10 +274,20 @@ CTPR = 0;
 for i = 1:length(gb)
     %get variable from workspace
     Var = evalin('base',get_param(gb{i},'VariableName'));
-    % Determine if data set is a MapToWorkspace Node
-    WcMapE = sum(strcmp(fieldnames(Var), 'WcMap'));
-    PRMapE = sum(strcmp(fieldnames(Var), 'PRMap'));
-    BlkNmE = sum(strcmp(fieldnames(Var), 'BlkNm'));
+    
+    % determine if data is in the expected format
+    IsStruct = isstruct(Var);
+    
+    if IsStruct
+        % Determine if data set is a MapToWorkspace Node
+        WcMapE = sum(strcmp(fieldnames(Var), 'WcMap'));
+        PRMapE = sum(strcmp(fieldnames(Var), 'PRMap'));
+        BlkNmE = sum(strcmp(fieldnames(Var), 'BlkNm'));
+    else
+        WcMapE = 0;
+        PRMapE = 0;
+        BlkNmE = 0;
+    end
     
     if WcMapE && PRMapE && BlkNmE
         % Determine if the data was produced by the correct block
