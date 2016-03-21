@@ -1,10 +1,11 @@
-function TDplot(filename, varargin)
-% T-MATS Time dependent data plotter.
-% TMATS.TDplot(file name) - Search diagram for flow data and performance
-% maps and plot them.
-% TMATS.TDplot(_,Name,Value,...,Value) - plot time dependent T-MATS data with alternate formating
+function SSplot(filename, StationVarVec, varargin)
+% T-MATS steady state data plotter.
+% TMATS.SSplot(filename, StationVarVec) - Search for station data and performance
+% maps, then plot them.
+% TMATS.SSplot(_,Name,Value,...,Value) - plot steady state T-MATS data with alternate formating
 % Name              Definition
-% 'WR'          -   Don't plot flow station figures, (_,'WR')
+% 'TSR'          -   Don't plot T-s data, (_,'SR')
+% 'SR'          -   Don't plot station data, (_,'SR')
 % 'NR'          -   Don't plot speed figures, (_,'NR')
 % 'CompR'       -   Don't plot compressor map figures, (_,'CompR')
 % 'TurbR'       -   Don't plot turbine map figures, (_,'TurbR')
@@ -15,7 +16,8 @@ set_old = get(0,'DefaultFigureWindowStyle');
 set(0,'DefaultFigureWindowStyle','docked');
 
 % By defualt plot everything
-PlotW = 1;
+PlotTS = 1;
+PlotS = 1;
 PlotN = 1;
 PlotCompMap = 1;
 PlotTurbMap = 1;
@@ -26,9 +28,12 @@ PlotMapPnts = 1;
 n = 1;
 while n <= length(varargin)
     switch varargin{n}
-        case 'WR'
-            % remove flow station figures
-            PlotW = 0;
+        case 'TSR'
+            % remove station figure
+            PlotTS = 0;
+        case 'SR'
+            % remove station figure
+            PlotS = 0;
         case 'NR'
             % remove speed figure
             PlotN = 0;
@@ -95,69 +100,104 @@ for i = 1:length(LibD)
     end
 end % End search through libraries
 
-% Determine which ToWorkspace blocks hold flow data and plot them
-for i = 1:length(gb)
-    %get variable from workspace
-    Vnm = get_param(gb{i},'VariableName');
-    Var = evalin('base',Vnm);
+
+% initialize variables
+StnNum = 0;
+% Search workspace for specified station variables
+for i = 1: length(StationVarVec)
+    Var = evalin('base',StationVarVec{i});
     
     % determine if data is in the expected format
     IsStruct = isstruct(Var);
     
     if IsStruct
         % Determine criteria for a Flow ToWorkspace Node
-        WE = sum(strcmp(fieldnames(Var), 'W'));
         TtE = sum(strcmp(fieldnames(Var), 'Tt'));
         PtE = sum(strcmp(fieldnames(Var), 'Pt'));
-        
-        % Determine criteria for map node with shaft speed
-        BlkNmE = sum(strcmp(fieldnames(Var), 'BlkNm'));
-        NmechE = sum(strcmp(fieldnames(Var), 'Nmech'));
+        FARE = sum(strcmp(fieldnames(Var), 'FAR'));
     else
-        WE = 0;
         TtE = 0;
         PtE = 0;
-        BlkNmE = 0;
-        NmechE = 0;
+
     end
     
     % If flow, temperature, and pressure exist in the variable, Get and
     % Plot Flow variables
-    if WE && TtE && PtE && PlotW
-        
-        % Get the Flow
-        W = Var.W.Data;
-        Pt = Var.Pt.Data;
-        Tt = Var.Tt.Data;
-        Time = Var.W.Time;
-        
+    if TtE && PtE && PlotS && FARE
+        StnNum = StnNum +1;
+        % Get the Station data
+        Pt(StnNum) = Var.Pt.Data(end);
+        Tt(StnNum) = Var.Tt.Data(end);
+        FAR(StnNum) = Var.FAR.Data(end);
+        Nm(StnNum) = {StationVarVec{i}};
+    end
+end
+
+% plot Station Data
+if StnNum > 0
         %create new figure
         f = figure;
-        set(f,'name',Vnm,'numbertitle','off');
+        set(f,'name','Station','numbertitle','off');
         
         %plot the data in a tab
-        subplot(3,1,1)
-        plot(Time,W)
-        ylabel('W [pps]')
-        title([Vnm,' Data'])
-        subplot(3,1,2)
-        plot(Time,Pt)
-        ylabel('Pt [psia]')
-        subplot(3,1,3)
-        plot(Time,Tt)
-        ylabel('Tt [degR]')
-        xlabel('Time [sec]');
-    end
+        subplot(2,1,1)
+        plot(Tt,'-o')
+        ylabel('Temperatures [R]')
+        ax = gca;
+        set(ax,'xtick',[]);
+        subplot(2,1,2)
+        plot(Pt,'-o')
+        ylabel('Pressures [psia]')
+        ax = gca;
+        set(ax,'xtick',1:length(Nm));
+        set(ax,'xticklabel',Nm);
+        ax.XTickLabelRotation=45;
+end
+
+% plot Station Data
+if StnNum > 0 && PlotTS == 1
+        %create new figure
+        f = figure;
+        set(f,'name','T-s diagram','numbertitle','off');
+        
+        %Generate entropy values
+        for i = 1:length(Tt)
+        s(i) = TMATS.pt2s(Pt(i),Tt(i), FAR(i));
+        end
+        %plot the data in a tab
+        plot(s,Tt,'-bo')
+        hold on
+        plot([s(1),s(end)],[Tt(1),Tt(end)],'b')
+        ylabel('Temperatures [R]');
+        xlabel('Enthalpy');
+
+end
+
+
+
+% Iterate through ToWorkspace blocks to find Speeds.
+for i = 1:length(gb)
+    % get variable
+    Vnm = get_param(gb{i},'VariableName');
+    Var = evalin('base',Vnm);
     
+    if IsStruct
+        % Determine criteria for map node with shaft speed
+        BlkNmE = sum(strcmp(fieldnames(Var), 'BlkNm'));
+        NmechE = sum(strcmp(fieldnames(Var), 'Nmech'));
+    else
+        BlkNmE = 0;
+        NmechE = 0;
+    end
     
     % If Nmech and Block name exist in the variable, Get Speeds
     if NmechE && BlkNmE && PlotN
         % Get the shaft speed data
         ShftSpdNum = ShftSpdNum + 1;
         itmp = ShftSpdNum;
-        N(itmp,:) = Var.Nmech.Data;
-        Ntime(itmp,:) = Var.Nmech.Time;
-        NBlkNm(itmp) = {char(Var.BlkNm.Data(end,:))};
+        N(itmp) = Var.Nmech.Data(end);
+        SimpleBlkNm = get_param(char(Var.BlkNm.Data(end,:)), 'name');
+        NBlkNm(itmp) = {SimpleBlkNm};
     end
 end % end search through To Workspace variables
 
@@ -166,22 +206,21 @@ end % end search through To Workspace variables
 if ShftSpdNum > 0
     % initialize plotted speed vector, a speed should only be plotted
     % once
-    Nplt = zeros(size(N,2),1)';
+    Nplt = 0;
     n = 0;
     
     % sort shaft speeds to eliminate repeats
     for i = 1:ShftSpdNum
         PlotSpeed = 1;
-        for ii = 1:size(Nplt,1)
-            if N(i,:) == Nplt(ii,:)
+        for ii = 1:length(Nplt)
+            if N(i) == Nplt(ii)
                 PlotSpeed = 0;
             end
         end
         if PlotSpeed
             n = n + 1;
-            Nplt(n,:) = N(i,:);
-            Tplt(n,:) = Ntime(i,:);
-            Ntitle{n} = NBlkNm{i};
+            Nplt(n) = N(i);
+            NpltNm(n) = NBlkNm(i);
         end
     end
     
@@ -189,14 +228,16 @@ if ShftSpdNum > 0
         f = figure;
         set(f,'name','Speeds','numbertitle','off');
         % plot remainder of shaft speeds
-        tempsize = size(Nplt,1);
-        for i = 1:tempsize
-            subplot(tempsize,1,i)
-            plot(Tplt(i,:), Nplt(i,:));
+            bar(Nplt);
             ylabel('Speed [rpm]');
-            title(Ntitle{i});
-        end
-        xlabel('Time [sec]');
+            ax = gca;
+            set(ax,'xtick',1:length(NpltNm));
+            set(ax,'xticklabel',NpltNm);
+            ax.XTickLabelRotation=45;
+            axis([0.5,length(Nplt)+0.5,0,max(N)*1.1])
+            for ii = 1: length(Nplt)
+                text(ii,Nplt(ii)*1.05,[num2str(Nplt(ii)), ' [rpm]'],'HorizontalAlignment','left','fontsize',13)
+            end
     end
 end
 
@@ -224,7 +265,6 @@ if(CompNum > 0)
             % If map workspace info was found plot it
             if DF == 1
                 hold on
-                plot(CTWc, CTPR,'o');
                 plot(CTWc(end), CTPR(end),'bo','MarkerSize',7,'LineWidth',2);
                 hold off
             end
@@ -255,7 +295,6 @@ if(TurbNum > 0)
             % If map workspace info was found plot it
             if DF == 1
                 hold on
-                plot(CTWc, CTPR,'o');
                 plot(CTWc(end), CTPR(end),'bo','MarkerSize',7,'LineWidth',2);
                 hold off
             end
