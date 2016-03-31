@@ -52,7 +52,8 @@ extern double t2hc(double i, double j);
 extern double interp1Ac(double aa[], double bb[], double cc, int ii,int *error);
 extern double interp2Ac(double kk[], double ll[], double mm[], double nn, double oo,int pp, int qq, int *error);
 
-
+/* create enumeration for Iwork */
+typedef enum {Er1 = 0, Er2, Er3, Er4, Er5, NUM_IWORK}IWorkIdx;
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -89,7 +90,7 @@ static void mdlInitializeSizes(SimStruct *S)
     
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
-    ssSetNumIWork(S, 6);
+    ssSetNumIWork(S, NUM_IWORK);
     ssSetNumPWork(S, 0);
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
@@ -126,12 +127,11 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 static void mdlStart(SimStruct *S)
 {
     /* initialize print error variables */
-    ssSetIWorkValue(S,0,0);
-    ssSetIWorkValue(S,1,0);
-    ssSetIWorkValue(S,2,0);
-    ssSetIWorkValue(S,3,0);
-    ssSetIWorkValue(S,4,0);
-    ssSetIWorkValue(S,5,0);
+    ssSetIWorkValue(S,Er1,0);
+    ssSetIWorkValue(S,Er2,0);
+    ssSetIWorkValue(S,Er3,0);
+    ssSetIWorkValue(S,Er4,0);
+    ssSetIWorkValue(S,Er5,0);
 }
 #endif
 
@@ -265,13 +265,13 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /*-- Compute Total Flow input (from Compressor map)  --------*/
     
     WcMap = interp2Ac(X_C_RlineVec,Y_C_Map_NcVec,T_C_Map_WcArray,Rline,NcMap,B,A,&interpErr);
-    if ((WcMapCol != B || WcMapRw != A) && ssGetIWork(S)[0]==0){
+    if ((WcMapCol != B || WcMapRw != A) && ssGetIWork(S)[Er1]==0){
         printf("Warning in %s, Error calculating WcMap. Table size does not match axis vector lengths.\n", BlkNm);
-        ssSetIWorkValue(S,0,1);
+        ssSetIWorkValue(S,Er1,1);
     }
-    else if (interpErr == 1 && ssGetIWork(S)[0]==0){
+    else if (interpErr == 1 && ssGetIWork(S)[Er1]==0){
         printf("Warning in %s, Error calculating WcMap. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,0,1);
+        ssSetIWorkValue(S,Er1,1);
     }
     
     if (IDes < 0.5)
@@ -284,13 +284,13 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /*-- Compute Pressure Ratio (from Compressor map)  --------*/
     
     PRMap = interp2Ac(X_C_RlineVec,Y_C_Map_NcVec,T_C_Map_PRArray,Rline,NcMap,B,A,&interpErr);
-    if ((PRMapCol != B || PRMapRw != A) && ssGetIWork(S)[1]==0){
+    if ((PRMapCol != B || PRMapRw != A) && ssGetIWork(S)[Er2]==0){
         printf("Warning in %s, Error calculating PRMap. Table size does not match axis vector lengths.\n", BlkNm);
-        ssSetIWorkValue(S,1,1);
+        ssSetIWorkValue(S,Er2,1);
     }
-    else if (interpErr == 1 && ssGetIWork(S)[1]==0){
+    else if (interpErr == 1 && ssGetIWork(S)[Er2]==0){
         printf("Warning in %s, Error calculating PRMap. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,1,1);
+        ssSetIWorkValue(S,Er2,1);
     }
     
     if (IDes < 0.5)
@@ -303,13 +303,13 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /*-- Compute Efficiency (from Compressor map) ---*/
     
     EffMap = interp2Ac(X_C_RlineVec,Y_C_Map_NcVec,T_C_Map_EffArray,Rline,NcMap,B,A,&interpErr);
-    if ((EffMapCol != B || EffMapRw != A) && ssGetIWork(S)[2]==0){
+    if ((EffMapCol != B || EffMapRw != A) && ssGetIWork(S)[Er3]==0){
         printf("Warning in %s, Error calculating EffMap. Table size does not match axis vector lengths.\n", BlkNm);
-        ssSetIWorkValue(S,2,1);
+        ssSetIWorkValue(S,Er3,1);
     }
-    else if (interpErr == 1 && ssGetIWork(S)[2]==0){
+    else if (interpErr == 1 && ssGetIWork(S)[Er3]==0){
         printf("Warning in %s, Error calculating EffMap. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,2,1);
+        ssSetIWorkValue(S,Er3,1);
     }
     
     if (IDes < 0.5)
@@ -366,9 +366,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             TtcustOut[i] = h2tc(htcustOut[i],FARcustOut[i]); /* calculate customer bleed Total Temp */
             PwrBld = PwrBld + WcustOut[i]*(htcustOut[i]-htOut)*C_BTU_PER_SECtoHP;  /* calculate customer bleed power */
         }
-        if (i > 4*MaxNumberBleeds && ssGetIWork(S)[3]==0){
+        if (i > 4*MaxNumberBleeds && ssGetIWork(S)[Er4]==0){
             printf("Error in %s, Number of bleeds in compressor exceeds 100... Array overflow! Reading Bad Data\n", BlkNm);
-            ssSetIWorkValue(S,3,1);
+            ssSetIWorkValue(S,Er4,1);
         }
     }
     
@@ -394,9 +394,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             TtbldOut[i] = h2tc(htbldOut[i],FARbldOut[i]); /* calculate  bleed Total Temp */
             PwrBld = PwrBld + WbldOut[i]*(htbldOut[i]-htOut)*C_BTU_PER_SECtoHP;  /* calculate bleed power */
         }
-        if (i > 4*MaxNumberBleeds && ssGetIWork(S)[4]==0){
+        if (i > 4*MaxNumberBleeds && ssGetIWork(S)[Er4]==0){
             printf("Error in %s, Number of bleeds in compressor exceeds 100... Array overflow! Reading Bad Data\n", BlkNm);
-            ssSetIWorkValue(S,4,1);
+            ssSetIWorkValue(S,Er4,1);
         }
     }
     
@@ -424,9 +424,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     /* Compute Stall Margin */
     SPRMap = interp1Ac(X_C_Map_WcSurgeVec,T_C_Map_PRSurgeVec,WcMap,C,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[5]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er5]==0){
         printf("Warning in %s, Error calculating SPR. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,5,1);
+        ssSetIWorkValue(S,Er5,1);
     }
     SPR = C_PR*(SPRMap - 1) + 1;
     SMavail = (SPR - PR)/PR * 100;

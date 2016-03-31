@@ -93,6 +93,13 @@ extern double interp1Ac(double aa[], double bb[], double cc, int ii,int *error);
 extern double interp2Ac(double aa[], double bb[], double cc[], double aaa, double bbb,int ccc, int ddd, int *error);
 extern void PcalcStat(double dd,double ee,double ff,double gg,double hh,double mm,double *nn,double *oo,double *pp,double *qq,double *rr);
 
+/* create enumeration for Iwork */
+typedef enum {Er1=0, Er2 , Er3 , Er4 , Er5 ,
+              Er6  , Er7 , Er8 , Er9 , Er10,
+              Er11 , Er12, Er13, Er14, Er15,
+              Er16 , Er17, NUM_IWORK}IWorkIdx;
+
+
 static void mdlInitializeSizes(SimStruct *S)
 {
     int i;
@@ -118,7 +125,7 @@ static void mdlInitializeSizes(SimStruct *S)
     
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
-    ssSetNumIWork(S, 8);
+    ssSetNumIWork(S, NUM_IWORK);
     ssSetNumPWork(S, 0);
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
@@ -137,24 +144,23 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 static void mdlStart(SimStruct *S)
 {
     /* initialize print error variables */
-    ssSetIWorkValue(S,0,0);
-    ssSetIWorkValue(S,1,0);
-    ssSetIWorkValue(S,2,0);
-    ssSetIWorkValue(S,3,0);
-    ssSetIWorkValue(S,4,0);
-    ssSetIWorkValue(S,5,0);
-    ssSetIWorkValue(S,6,0);
-    ssSetIWorkValue(S,7,0);
-    ssSetIWorkValue(S,8,0);
-    ssSetIWorkValue(S,9,0);
-    ssSetIWorkValue(S,10,0);
-    ssSetIWorkValue(S,11,0);
-    ssSetIWorkValue(S,12,0);
-    ssSetIWorkValue(S,13,0);
-    ssSetIWorkValue(S,14,0);
-    ssSetIWorkValue(S,15,0);
-    ssSetIWorkValue(S,16,0);
-    ssSetIWorkValue(S,17,0);
+    ssSetIWorkValue(S,Er1,0);
+    ssSetIWorkValue(S,Er2,0);
+    ssSetIWorkValue(S,Er3,0);
+    ssSetIWorkValue(S,Er4,0);
+    ssSetIWorkValue(S,Er5,0);
+    ssSetIWorkValue(S,Er6,0);
+    ssSetIWorkValue(S,Er7,0);
+    ssSetIWorkValue(S,Er8,0);
+    ssSetIWorkValue(S,Er9,0);
+    ssSetIWorkValue(S,Er10,0);
+    ssSetIWorkValue(S,Er11,0);
+    ssSetIWorkValue(S,Er12,0);
+    ssSetIWorkValue(S,Er13,0);
+    ssSetIWorkValue(S,Er14,0);
+    ssSetIWorkValue(S,Er15,0);
+    ssSetIWorkValue(S,Er16,0);
+    ssSetIWorkValue(S,Er17,0);
 }
 #endif
 
@@ -239,19 +245,19 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /* determine gas characteristics */
     /*  Where gas constant is R = f(FAR), but NOT P & T */
     Rt1 = interp1Ac(Y_M_FARVec,T_M_RtArray,FARc1In,A,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[0]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er1]==0){
         printf("Warning in %s, Error calculating Rt1. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,0,1);
+        ssSetIWorkValue(S,Er1,1);
     }
     Rt2 = interp1Ac(Y_M_FARVec,T_M_RtArray,FARc2In,A,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[1]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er2]==0){
         printf("Warning in %s, Error calculating Rt2. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,1,1);
+        ssSetIWorkValue(S,Er2,1);
     }
     Rtout = interp1Ac(Y_M_FARVec,T_M_RtArray,FARcOut,A,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[2]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er3]==0){
         printf("Warning in %s, Error calculating Rtout. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,2,1);
+        ssSetIWorkValue(S,Er3,1);
     }
     
     /* determine calculated enthalpy for input flows */
@@ -303,18 +309,18 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         /* Determine primary flow Area and Ps */
         MNg = MNp;
         gammatg = interp2Ac(Y_M_FARVec,X_M_TVec,T_M_gammaArray,FARp,Ttp,A,B,&interpErr);
-        if (interpErr == 1 && ssGetIWork(S)[3]==0){
+        if (interpErr == 1 && ssGetIWork(S)[Er4]==0){
             printf("Warning in %s, Error calculating gammatg. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,3,1);
+            ssSetIWorkValue(S,Er4,1);
         }
         TsMNg = Ttp /(1+MNg*MNg*(gammatg-1)/2);
         PsMNg = Ptp*pow((TsMNg/Ttp),(gammatg/(gammatg-1)));
         
         PcalcStat(Ptp, PsMNg, Ttp, htp, FARp, Rtp, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
         gammasg = interp2Ac(Y_M_FARVec,X_M_TVec,T_M_gammaArray,FARp,TsMNg,A,B,&interpErr);
-        if (interpErr == 1 && ssGetIWork(S)[4]==0){
+        if (interpErr == 1 && ssGetIWork(S)[Er4]==0){
             printf("Warning in %s, Error calculating gammasg. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,4,1);
+            ssSetIWorkValue(S,Er4,1);
         }
         MNg = Vg/sqrt(gammasg*Rsp*TsMNg*C_GRAVITY*JOULES_CONST);
         
@@ -333,15 +339,15 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 
             PcalcStat(Ptp, PsMNg, Ttp, htp, FARp, Rtp, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
             gammasg = interp2Ac(Y_M_FARVec,X_M_TVec,T_M_gammaArray,FARp,TsMNg,A,B,&interpErr);
-            if (interpErr == 1 && ssGetIWork(S)[5]==0){
+            if (interpErr == 1 && ssGetIWork(S)[Er5]==0){
                 printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
-                ssSetIWorkValue(S,5,1);
+                ssSetIWorkValue(S,Er5,1);
             }
             if (Vg <= 0) {
                 Vg = 0.00001;
-                if(iter >= maxiter && ssGetIWork(S)[6]==0 ){
+                if(iter >= maxiter && ssGetIWork(S)[Er6]==0 ){
                     printf("Warning in %s, Primary flow velocity is zero\n", BlkNm);
-                    ssSetIWorkValue(S,6,1);
+                    ssSetIWorkValue(S,Er6,1);
                 }
             }
             MNg = Vg/sqrt(gammasg*Rsp*TsMNg*C_GRAVITY*JOULES_CONST);
@@ -352,9 +358,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             }
             iter = iter + 1;
         }
-        if (iter >= maxiter && ssGetIWork(S)[7]==0 ){
+        if (iter >= maxiter && ssGetIWork(S)[Er7]==0 ){
             printf("Warning in %s, Error calculating Ps at MN = MNp. There may be error in output pressure\n", BlkNm);
-            ssSetIWorkValue(S,7,1);
+            ssSetIWorkValue(S,Er7,1);
         }
         Ap = Wp/(Vg * rhosg/C_SINtoSFT);
         Vp = Vg;
@@ -367,9 +373,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         PcalcStat(Pts, Pss, Tts, hts, FARs, Rts, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
         if (Vg <= 0) {
             Vg = 0.00001;
-            if(iter >= maxiter && ssGetIWork(S)[8]==0 ){
+            if(iter >= maxiter && ssGetIWork(S)[Er8]==0 ){
                 printf("Warning in %s, Secondary flow velocity is zero\n", BlkNm);
-                ssSetIWorkValue(S,8,1);
+                ssSetIWorkValue(S,Er8,1);
             }
         }
         
@@ -431,9 +437,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             
             if (V1 <= 0) {
                 V1 = 0.00001;
-                if(iter >= maxiter && ssGetIWork(S)[9]==0 ){
+                if(iter >= maxiter && ssGetIWork(S)[Er9]==0 ){
                     printf("Warning in %s, Input 1 flow velocity is zero\n", BlkNm);
-                    ssSetIWorkValue(S,9,1);
+                    ssSetIWorkValue(S,Er9,1);
                 }
             }
             
@@ -455,9 +461,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             iter1 = iter1 + 1;
         }
         Ps1 = Ps1g;
-        if (iter1 >= maxiter && ssGetIWork(S)[10]==0){
+        if (iter1 >= maxiter && ssGetIWork(S)[Er10]==0){
             printf("Warning in %s, unable to caluclate Ps1 within allowed iterations, PtOut may contain high error\n", BlkNm);
-            ssSetIWorkValue(S,10,1);
+            ssSetIWorkValue(S,Er10,1);
         }
         /* end Ps1in iteration */
         
@@ -488,9 +494,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             PcalcStat(Pt2In, Ps2g, Tt2In, ht2in, FARc2In, Rt2, &S2in, &Ts2, &hs2, &rhos2, &V2);
             if (V2 <= 0) {
                 V2 = 0.00001;
-                if(iter >= maxiter && ssGetIWork(S)[11]==0 ){
+                if(iter >= maxiter && ssGetIWork(S)[Er11]==0 ){
                     printf("Warning in %s, Input 2 flow velocity is zero\n", BlkNm);
-                    ssSetIWorkValue(S,11,1);
+                    ssSetIWorkValue(S,Er11,1);
                 }
             }
             /* calculated Area */
@@ -512,9 +518,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             iter2 = iter2 + 1;
         }
         Ps2 = Ps2g;
-        if (iter1 >= maxiter && ssGetIWork(S)[12]==0){
+        if (iter1 >= maxiter && ssGetIWork(S)[Er12]==0){
             printf("Warning in %s, unable to caluclate Ps2 within allowed iterations, PtOut may contain high error\n", BlkNm);
-            ssSetIWorkValue(S,12,1);
+            ssSetIWorkValue(S,Er12,1);
         }
         /* end Ps2 iteration */
         
@@ -522,9 +528,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     } /* end off-Design caulcation of Ps1, Ps2, Aphy1, Aphy2 ,V1, and V2 */
     
     
-    if ((Ps1 > Pt1In || Ps2 > Pt2In) && ssGetIWork(S)[13]==0 ){
+    if ((Ps1 > Pt1In || Ps2 > Pt2In) && ssGetIWork(S)[Er13]==0 ){
         printf("Warning in %s, Error calculating input static pressures\n", BlkNm);
-        ssSetIWorkValue(S,13,1);
+        ssSetIWorkValue(S,Er13,1);
     }
     
     /* determine area */
@@ -581,9 +587,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             PcalcStat(Ptoutg, Psoutg, TtOut, htOut, FARcOut, Rtout, &Sout, &Tsout, &hsout, &rhosout, &Vout);
             if (Vout <= 0) {
                 Vout = 0.00001;
-                if(iter >= maxiter && ssGetIWork(S)[14]==0 ){
+                if(iter >= maxiter && ssGetIWork(S)[Er14]==0 ){
                     printf("Warning in %s, Output flow velocity is zero\n", BlkNm);
-                    ssSetIWorkValue(S,14,1);
+                    ssSetIWorkValue(S,Er14,1);
                 }
             }
             /* calculated Area */
@@ -607,9 +613,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         /* verify Ps is <= Pt */
         if (Psoutg > Ptoutg){
             Psoutg = Ptoutg;
-            if (ssGetIWork(S)[15]==0){
+            if (ssGetIWork(S)[Er15]==0){
                 printf ("Warning in %s, Error calculating Psout\n", BlkNm);
-                ssSetIWorkValue(S,15,1);
+                ssSetIWorkValue(S,Er15,1);
             }
         }
         /* end Psout iteration for current Ptout guess */
@@ -636,14 +642,14 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     Psout = Psoutg;
     PtOut = Ptoutg;
     
-    if (iter3a >= maxiter && ssGetIWork(S)[16]==0){
+    if (iter3a >= maxiter && ssGetIWork(S)[Er16]==0){
         printf("Error in %s, unable to calculate PtOut\n", BlkNm);
-        ssSetIWorkValue(S,16,1);
+        ssSetIWorkValue(S,Er16,1);
     }
     
-    if (iter3b >= maxiter && ssGetIWork(S)[17]==0){
+    if (iter3b >= maxiter && ssGetIWork(S)[Er17]==0){
         printf("Warning in %s, unable to caluclate PsOut, PtOut may contain high error\n", BlkNm);
-        ssSetIWorkValue(S,17,1);
+        ssSetIWorkValue(S,Er17,1);
     }
     
     /* Compute normalized error */

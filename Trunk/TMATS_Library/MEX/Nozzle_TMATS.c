@@ -37,6 +37,11 @@ extern double interp1Ac(double a[], double b[], double c, int d, int *error);
 extern double interp2Ac(double aa[], double bb[], double cc[], double aaa, double bbb,int ccc, int ddd, int *error);
 extern void PcalcStat(double dd,double ee,double ff,double gg,double hh,double mm,double *nn,double *oo,double *pp,double *qq,double *rr);
 
+/* create enumeration for Iwork */
+typedef enum {Er1=0, Er2 , Er3 , Er4 , Er5 ,
+              Er6  , Er7 , Er8 , Er9 , Er10,
+              Er11 , Er12, Er13, Er14, Er15, 
+              Er16 , NUM_IWORK}IWorkIdx;
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -63,7 +68,7 @@ static void mdlInitializeSizes(SimStruct *S)
     
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
-    ssSetNumIWork(S, 11);
+    ssSetNumIWork(S, NUM_IWORK);
     ssSetNumPWork(S, 0);
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
@@ -82,20 +87,22 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 static void mdlStart(SimStruct *S)
 {
     /* initialize print error variables */
-    ssSetIWorkValue(S,0,0);
-    ssSetIWorkValue(S,1,0);
-    ssSetIWorkValue(S,2,0);
-    ssSetIWorkValue(S,3,0);
-    ssSetIWorkValue(S,4,0);
-    ssSetIWorkValue(S,5,0);
-    ssSetIWorkValue(S,6,0);
-    ssSetIWorkValue(S,7,0);
-    ssSetIWorkValue(S,8,0);
-    ssSetIWorkValue(S,9,0);
-    ssSetIWorkValue(S,10,0);
-    ssSetIWorkValue(S,11,0);
-    ssSetIWorkValue(S,12,0);
-    ssSetIWorkValue(S,13,0);
+    ssSetIWorkValue(S,Er1,0);
+    ssSetIWorkValue(S,Er2,0);
+    ssSetIWorkValue(S,Er3,0);
+    ssSetIWorkValue(S,Er4,0);
+    ssSetIWorkValue(S,Er5,0);
+    ssSetIWorkValue(S,Er6,0);
+    ssSetIWorkValue(S,Er7,0);
+    ssSetIWorkValue(S,Er8,0);
+    ssSetIWorkValue(S,Er9,0);
+    ssSetIWorkValue(S,Er10,0);
+    ssSetIWorkValue(S,Er11,0);
+    ssSetIWorkValue(S,Er12,0);
+    ssSetIWorkValue(S,Er13,0);
+    ssSetIWorkValue(S,Er14,0);
+    ssSetIWorkValue(S,Er15,0);
+    ssSetIWorkValue(S,Er16,0);
 }
 #endif
 
@@ -186,9 +193,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     /*  Where gas constant is R = f(FAR), but NOT P & T */
     Rt = interp1Ac(Y_N_FARVec,T_N_RtArray,FARcIn,A,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[0]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er1]==0){
         printf("Warning in %s, Error calculating Rt1. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,0,1);
+        ssSetIWorkValue(S,Er1,1);
     }
     Rs = Rt;
     
@@ -197,17 +204,17 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     Ptin = PtIn;
     if (Ptin <= PambIn) {
         Ptin = PambIn + 0.1;
-        if (ssGetIWork(S)[12]==0){
+        if (ssGetIWork(S)[Er2]==0){
             printf("Warning in %s, Backflow warning PtIn <= Pamb\n", BlkNm);
-            ssSetIWorkValue(S,12,1);
+            ssSetIWorkValue(S,Er2,1);
         }
     }
     /* Determine ideal velocity defined by perfect expansion to Pambient */
     PcalcStat(Ptin, PambIn, TtIn, htin, FARcIn, Rt, &Sin, &Ts, &hs, &rhos, &V);
     gammas_s = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,Ts,A,B,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[5]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er3]==0){
         printf("Warning in %s, Error calculating gammas. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,5,1);
+        ssSetIWorkValue(S,Er3,1);
     }
     MN_s = V/sqrt(gammas_s*Rs*Ts*C_GRAVITY*JOULES_CONST);
     Ts_s = Ts;
@@ -219,9 +226,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
      * ---- set MN = 1 and calc throat Ps for iteration IC --------*/
     MNg = 1;
     gammatg = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,TtIn,A,B,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[1]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er4]==0){
         printf("Warning in %s, Error calculating gammatg. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,1,1);
+        ssSetIWorkValue(S,Er4,1);
     }
     /* use isentropic equations for a first cut guess */
     TsMNg = TtIn /(1+MNg*MNg*(gammatg-1)/2);
@@ -230,9 +237,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /* Calculate velcocity and MN using guessed static pressure */
     PcalcStat(Ptin, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
     gammasg = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,TsMNg,A,B,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[2]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er4]==0){
         printf("Warning in %s, Error calculating gammasg. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,2,1);
+        ssSetIWorkValue(S,Er4,1);
     }
     MNg = Vg/sqrt(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST);
     
@@ -254,9 +261,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             PsMNg = PsMNg_new;
         PcalcStat(Ptin, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
         gammasg = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,TsMNg,A,B,&interpErr);
-        if (interpErr == 1 && ssGetIWork(S)[3]==0){
+        if (interpErr == 1 && ssGetIWork(S)[Er5]==0){
             printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,3,1);
+            ssSetIWorkValue(S,Er5,1);
         }
         MNg = Vg/sqrt(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST);
         erMN =1 - MNg;
@@ -266,9 +273,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         }
         iter = iter + 1;
     }
-    if (iter == maxiter && ssGetIWork(S)[4]==0 ){
+    if (iter == maxiter && ssGetIWork(S)[Er6]==0 ){
         printf("Warning in %s, Error calculating Ps at MN = 1.\n", BlkNm);
-        ssSetIWorkValue(S,4,1);
+        ssSetIWorkValue(S,Er6,1);
     }
     /*  MN = 1 parameters */
     TsMN1 = TsMNg;
@@ -298,18 +305,18 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         Tsth = TsMN1;
         MNth = 1;
         gammasth = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,Tsth,A,B,&interpErr);
-        if (interpErr == 1 && ssGetIWork(S)[3]==0){
+        if (interpErr == 1 && ssGetIWork(S)[Er7]==0){
             printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,3,1);
+            ssSetIWorkValue(S,Er7,1);
         }
         Vth = MNth*sqrt(gammasth*Rs*Tsth*C_GRAVITY*JOULES_CONST);
         rhosth = rhosMN1;
     }
     
     /* error('Nozzle Error: Negative Mach number!!') */
-    if (MNth<0 && ssGetIWork(S)[6]==0){
+    if (MNth<0 && ssGetIWork(S)[Er8]==0){
         printf("Error in %s: negative throat mach number,  MN = %f.\n", BlkNm, MNth);
-        ssSetIWorkValue(S,6,1);
+        ssSetIWorkValue(S,Er8,1);
     }
     
     
@@ -321,23 +328,23 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     /* look up Flow Coefficient */
     CdTh = interp1Ac(X_N_PEQPaVec,T_N_CdThArray,PQPaMap,B1,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[7]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er9]==0){
         printf("Warning in %s, Error calculating CdTh. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,7,1);
+        ssSetIWorkValue(S,Er9,1);
     }
     Therm_growth = interp1Ac(X_N_TtVecTG,T_N_TGArray,TtIn,C,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[9]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er10]==0){
         printf("Warning in %s, Error calculating Therm_growth. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,9,1);
+        ssSetIWorkValue(S,Er10,1);
     }
     
     
     /* Determine throat area in^2 */
     if (IDes < 0.5) {
         Ath = WIn * C_PSItoPSF / (Therm_growth *(1-flowLoss/100)*CdTh*rhosth*Vth);
-        if (choked == 0 && ssGetIWork(S)[13]==0){
+        if (choked == 0 && ssGetIWork(S)[Er11]==0){
             printf("Warning in %s, Calculating IDes Area with un-choked nozzle.\n", BlkNm);
-            ssSetIWorkValue(S,13,1);
+            ssSetIWorkValue(S,Er11,1);
         }
     }
     /* if the thoat area is larger then the exit area of a CD nozzle it is a convergent nozzle */
@@ -411,9 +418,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             }
             iterx = iterx + 1;
         }
-        if (iterx == maxiterx && ssGetIWork(S)[11]==0 ){
+        if (iterx == maxiterx && ssGetIWork(S)[Er12]==0 ){
             printf("Warning in %s, Error calculating Ps at exit.\n", BlkNm);
-            ssSetIWorkValue(S,11,1);
+            ssSetIWorkValue(S,Er12,1);
         }
         /* Collect data from the expansion to exit area: */
         Tsx = Ts;
@@ -421,17 +428,17 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         Psx = Psxg;
         rhosx = rhos;
         gammasx = interp2Ac(Y_N_FARVec,X_N_TtVec,T_N_MAP_gammaArray,FARcIn,Ts,A,B,&interpErr);
-        if (interpErr == 1 && ssGetIWork(S)[5]==0){
+        if (interpErr == 1 && ssGetIWork(S)[Er13]==0){
             printf("Warning in %s, Error calculating gammas. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,5,1);
+            ssSetIWorkValue(S,Er13,1);
         }
         MNx = Vx/sqrt(gammasx*Rs*Tsx*C_GRAVITY*JOULES_CONST);
     }
     
     /* error('Nozzle Error: Negative Mach number!!') */
-    if (MNx<0 && ssGetIWork(S)[6]==0){
+    if (MNx<0 && ssGetIWork(S)[Er14]==0){
         printf("Error in %s: negative exit mach number,  MN = %f.\n", BlkNm, MNx);
-        ssSetIWorkValue(S,6,1);
+        ssSetIWorkValue(S,Er14,1);
     }
     
     WOut = WIn;
@@ -440,17 +447,17 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /* look up Thrust and velocity coefficients */
     if (CfgEn < 0.5){
         Cv = interp1Ac(X_N_PEQPaVec,T_N_CvArray,PQPaMap,B1,&interpErr);
-        if (interpErr == 1 && ssGetIWork(S)[8]==0){
+        if (interpErr == 1 && ssGetIWork(S)[Er15]==0){
             printf("Warning in %s, Error calculating Cv. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,8,1);
+            ssSetIWorkValue(S,Er15,1);
         }
         Cfg = 1;
     }
     else {
         Cfg = interp1Ac(X_N_PEQPaVec,T_N_CfgArray,PQPaMap,B1,&interpErr);
-        if (interpErr == 1 && ssGetIWork(S)[8]==0){
+        if (interpErr == 1 && ssGetIWork(S)[Er16]==0){
             printf("Warning in %s, Error calculating Cfg. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,8,1);
+            ssSetIWorkValue(S,Er16,1);
         }
         Cv = 1;
     }

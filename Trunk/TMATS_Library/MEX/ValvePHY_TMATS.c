@@ -28,6 +28,9 @@ extern double calc_Pstatic(double aaa, double bbb, double ccc, double ddd, doubl
 extern double calc_WvsMN(double jj, double kk, double ll, double mm, double nn, double oo);
 extern double calc_PsvsMN(double pp, double qq, double rr);
 
+/* create enumeration for Iwork */
+typedef enum {Er1=0, Er2 , Er3, NUM_IWORK}IWorkIdx;
+
 static void mdlInitializeSizes(SimStruct *S)
 {
     int i;
@@ -53,7 +56,7 @@ static void mdlInitializeSizes(SimStruct *S)
 
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
-    ssSetNumIWork(S, 3);
+    ssSetNumIWork(S, NUM_IWORK);
     ssSetNumPWork(S, 0);
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
@@ -72,9 +75,9 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 static void mdlStart(SimStruct *S)
 {
     /* initialize print error variables */
-    ssSetIWorkValue(S,0,0);
-    ssSetIWorkValue(S,1,0);
-    ssSetIWorkValue(S,2,0);
+    ssSetIWorkValue(S,Er1,0);
+    ssSetIWorkValue(S,Er2,0);
+    ssSetIWorkValue(S,Er3,0);
 }
 #endif
 
@@ -131,9 +134,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     status = mxGetString(BN_p(S), BlkNm, buflen);
 
     /* Input validation */
-    if ((WbyIn <= 0 || WmfpIn <= 0) && ssGetIWork(S)[0]==0){
+    if ((WbyIn <= 0 || WmfpIn <= 0) && ssGetIWork(S)[Er1]==0){
         printf("Flow rates must be nonzero !!");
-        ssSetIWorkValue(S,0,1);
+        ssSetIWorkValue(S,Er1,1);
     }
 
     if (VlvPosIn > 0){
@@ -143,14 +146,14 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 
         /* define gas constants for booster discharge air */
         Rb = interp1Ac(X_V_FAR_vec,T_V_Rt_vec,FARcmfpIn,A1,&interpErr);
-        if (interpErr == 1 && ssGetIWork(S)[1]==0){
+        if (interpErr == 1 && ssGetIWork(S)[Er2]==0){
             printf("Warning in %s, Error calculating Rb. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,1,1);
+            ssSetIWorkValue(S,Er2,1);
         }
         gamb = interp2Ac(X_V_FAR_vec,Y_V_Tt_vec,T_V_gamma_array,FARcmfpIn,TtmfpIn,A1,B1,&interpErr);
-        if (interpErr == 1 && ssGetIWork(S)[2]==0){
+        if (interpErr == 1 && ssGetIWork(S)[Er3]==0){
             printf("Warning in %s, Error calculating gamb. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,2,1);
+            ssSetIWorkValue(S,Er3,1);
         }
         Cpb = Rb*gamb/(gamb-1);
 

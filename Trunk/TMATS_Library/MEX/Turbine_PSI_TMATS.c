@@ -42,6 +42,8 @@ extern double sp2tc(double f, double g, double h);
 extern double t2hc(double i, double j);
 extern double interp2Ac(double kk[], double ll[], double mm[], double nn, double oo,int pp, int qq, int *error);
 
+/* create enumeration for Iwork */
+typedef enum {Er1=0, Er2 , Er3 , Er4 , Er5 , NUM_IWORK}IWorkIdx;
 
 
 static void mdlInitializeSizes(SimStruct *S)
@@ -73,7 +75,7 @@ static void mdlInitializeSizes(SimStruct *S)
 
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
-    ssSetNumIWork(S, 5);
+    ssSetNumIWork(S, NUM_IWORK);
     ssSetNumPWork(S, 0);
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
@@ -106,11 +108,11 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 static void mdlStart(SimStruct *S)
 {
     /* initialize print error variables */
-    ssSetIWorkValue(S,0,0);
-    ssSetIWorkValue(S,1,0);
-    ssSetIWorkValue(S,2,0);
-    ssSetIWorkValue(S,3,0);
-    ssSetIWorkValue(S,4,0);
+    ssSetIWorkValue(S,Er1,0);
+    ssSetIWorkValue(S,Er2,0);
+    ssSetIWorkValue(S,Er3,0);
+    ssSetIWorkValue(S,Er4,0);
+    ssSetIWorkValue(S,Er5,0);
 }
 #endif
 
@@ -196,13 +198,13 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 
     /* Verify input bleed vector is a multiple of 5 */
     Vtest = cfWidth/5;
-    if(5*Vtest != cfWidth && CoolFlwEn > 0.5 && ssGetIWork(S)[0]==0){
+    if(5*Vtest != cfWidth && CoolFlwEn > 0.5 && ssGetIWork(S)[Er1]==0){
         printf("Error in %s, one or more of the cooling flow input vector eleements is missing(Vector form; 5x1: W,ht,Tt,Pt,FAR)\n",BlkNm);
-        ssSetIWorkValue(S,0,1);
+        ssSetIWorkValue(S,Er1,1);
     }
-    else if(BldPosLeng != cfWidth/5 && CoolFlwEn > 0.5 && ssGetIWork(S)[1]==0){
+    else if(BldPosLeng != cfWidth/5 && CoolFlwEn > 0.5 && ssGetIWork(S)[Er2]==0){
         printf("Errorin %s, number of cooling flow inputs does not match the length of the Cooling flow postion vector in the mask\n",BlkNm);
-        ssSetIWorkValue(S,1,1);
+        ssSetIWorkValue(S,Er2,1);
     }
 
     /* unpack CoolFlow vector */
@@ -236,9 +238,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /* calc cooling flow constants for stage 1 and output of the turbine */
     for (i = 0; i < cfWidth/5; i++)
     {
-        if ((T_BldPos[i] > 1 || T_BldPos[i] < 0) && CoolFlwEn > 0.5 && ssGetIWork(S)[2]==0){
+        if ((T_BldPos[i] > 1 || T_BldPos[i] < 0) && CoolFlwEn > 0.5 && ssGetIWork(S)[Er3]==0){
             printf(" Error in %s, cooling flow postion element %i needs to be defined as a 0 or 1\n",BlkNm,i+1);
-            ssSetIWorkValue(S,2,1);
+            ssSetIWorkValue(S,Er3,1);
         }
 
         /* calc mass flow for cooling flows */
@@ -300,9 +302,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /*-- Compute Turbine Efficiency (from Turbine map)  --------*/
 
     psiMapI = interp2Ac(X_T_PRpsiVec,Y_T_NcpsiVec,T_T_Map_psiArray,psiMapIn,NcMap,B,A,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[3]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er4]==0){
         printf("Warning in %s, Error calculating psiMapI. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,3,1);
+        ssSetIWorkValue(S,Er4,1);
     }
     EffMap = psiMapIn/psiMapI;
     if(IDes < 0.5)
@@ -365,9 +367,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /*-- Compute Total Flow input (from Turbine map)  --------*/
 
     WoWMap = interp2Ac(X_T_PRwowVec,Y_T_NcwowVec,T_T_Map_WoWArray,PRmapRead,NcMap,D,C,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[4]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er5]==0){
         printf("Warning in %s, Error calculating WoWMap. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,4,1);
+        ssSetIWorkValue(S,Er5,1);
     }
     WpqAcrit = sqrt((gamma_T*C_GRAVITY)/(Rt_T*JOULES_CONST))/pow((1+(gamma_T-1)/2),((gamma_T+1)/(2*(gamma_T-1))));
     WMap = WoWMap * WpqAcrit * (PtIn/sqrt(Tts1in));

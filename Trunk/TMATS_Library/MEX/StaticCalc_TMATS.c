@@ -29,6 +29,8 @@ extern double interp1Ac(double f[], double g[], double h, int l,int *error);
 extern double interp2Ac(double aa[], double bb[], double cc[], double aaa, double bbb,int ccc, int ddd, int *error);
 extern void PcalcStat(double dd,double ee,double ff,double gg,double hh,double mm,double *nn,double *oo,double *pp,double *qq,double *rr);
 
+/* create enumeration for Iwork */
+typedef enum {Er1=0, Er2 , Er3 , Er4 , Er5 , NUM_IWORK}IWorkIdx;
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -55,7 +57,7 @@ static void mdlInitializeSizes(SimStruct *S)
     
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
-    ssSetNumIWork(S, 6);
+    ssSetNumIWork(S, NUM_IWORK);
     ssSetNumPWork(S, 0);
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
@@ -74,12 +76,11 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 static void mdlStart(SimStruct *S)
 {
     /* initialize print error variables */
-    ssSetIWorkValue(S,0,0);
-    ssSetIWorkValue(S,1,0);
-    ssSetIWorkValue(S,2,0);
-    ssSetIWorkValue(S,3,0);
-    ssSetIWorkValue(S,4,0);
-    ssSetIWorkValue(S,5,0);
+    ssSetIWorkValue(S,Er1,0);
+    ssSetIWorkValue(S,Er2,0);
+    ssSetIWorkValue(S,Er3,0);
+    ssSetIWorkValue(S,Er4,0);
+    ssSetIWorkValue(S,Er5,0);
 }
 #endif
 
@@ -144,9 +145,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     /*  Where gas constant is R = f(FAR), but NOT P & T */
     Rt = interp1Ac(X_FARVec,T_RtArray,FARcIn,A,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[0]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er1]==0){
         printf("Warning in %s, Error calculating Rt. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,0,1);
+        ssSetIWorkValue(S,Er1,1);
     }
     Rs = Rt;
     
@@ -155,18 +156,18 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         /*---- set MN = MNIn and calc SS Ps for iteration IC --------*/
         MNg = MNIn;
         gammatg = interp2Ac(X_FARVec,Y_TtVec,T_gammaArray,FARcIn,TtIn,A,B,&interpErr);
-        if (interpErr == 1 && ssGetIWork(S)[1]==0){
+        if (interpErr == 1 && ssGetIWork(S)[Er2]==0){
             printf("Warning in %s, Error calculating gammatg. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,1,1);
+            ssSetIWorkValue(S,Er2,1);
         }
         TsMNg = TtIn /(1+MNg*MNg*(gammatg-1)/2);
         PsMNg = PtIn*pow((TsMNg/TtIn),(gammatg/(gammatg-1)));
         
         PcalcStat(PtIn, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
         gammasg = interp2Ac(X_FARVec,Y_TtVec,T_gammaArray,FARcIn,TsMNg,A,B,&interpErr);
-        if (interpErr == 1 && ssGetIWork(S)[2]==0){
+        if (interpErr == 1 && ssGetIWork(S)[Er2]==0){
             printf("Warning in %s, Error calculating gammasg. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,2,1);
+            ssSetIWorkValue(S,Er2,1);
         }
         MNg = Vg/sqrt(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST);
         
@@ -191,9 +192,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
                 PsMNg = PsMNg_new;
             PcalcStat(PtIn, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
             gammasg = interp2Ac(X_FARVec,Y_TtVec,T_gammaArray,FARcIn,TsMNg,A,B,&interpErr);
-            if (interpErr == 1 && ssGetIWork(S)[3]==0){
+            if (interpErr == 1 && ssGetIWork(S)[Er2]==0){
                 printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
-                ssSetIWorkValue(S,3,1);
+                ssSetIWorkValue(S,Er2,1);
             }
             MNg = Vg/sqrt(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST);
             /* calculated Area */
@@ -209,9 +210,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             }
             iter = iter + 1;
         }
-        if (iter == maxiter && ssGetIWork(S)[4]==0 ){
+        if (iter == maxiter && ssGetIWork(S)[Er3]==0 ){
             printf("Warning in %s, Error calculating Ps at MN = MNIn. There may be error in block outputs\n", BlkNm);
-            ssSetIWorkValue(S,4,1);
+            ssSetIWorkValue(S,Er3,1);
         }
         TsOut = TsMNg;
         PsOut = PsMNg;
@@ -230,9 +231,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         PcalcStat(PtIn, Psg, TtIn, htin, FARcIn, Rt, &Sin, &Tsg, &hsg, &rhosg, &Vg);
         Acalc = WIn/(Vg * rhosg/C_SINtoSFT);
         gammasg = interp2Ac(X_FARVec,Y_TtVec,T_gammaArray,FARcIn,Tsg,A,B,&interpErr);
-        if (interpErr == 1 && ssGetIWork(S)[3]==0){
+        if (interpErr == 1 && ssGetIWork(S)[Er4]==0){
             printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,3,1);
+            ssSetIWorkValue(S,Er4,1);
         }
         MNg = Vg/sqrt(gammasg*Rs*Tsg*C_GRAVITY*JOULES_CONST);
         
@@ -258,9 +259,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             PcalcStat(PtIn, Psg, TtIn, htin, FARcIn, Rt, &Sin, &Tsg, &hsg, &rhosg, &Vg);
             
             gammasg = interp2Ac(X_FARVec,Y_TtVec,T_gammaArray,FARcIn,Tsg,A,B,&interpErr);
-            if (interpErr == 1 && ssGetIWork(S)[3]==0){
+            if (interpErr == 1 && ssGetIWork(S)[Er4]==0){
                 printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
-                ssSetIWorkValue(S,3,1);
+                ssSetIWorkValue(S,Er4,1);
             }
             
             MNg = Vg/sqrt(gammasg*Rs*Tsg*C_GRAVITY*JOULES_CONST);
@@ -297,9 +298,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         AthOut = Acalc;
     }
     else {
-        if (ssGetIWork(S)[5]==0 ){
+        if (ssGetIWork(S)[Er5]==0 ){
             printf("Warning in %s, SolveType_M is not valid. There may be error in block outputs\n", BlkNm);
-            ssSetIWorkValue(S,5,1);
+            ssSetIWorkValue(S,Er5,1);
         }
         TsOut = TtIn;
         PsOut = PtIn;

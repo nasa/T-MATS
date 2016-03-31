@@ -21,6 +21,9 @@
 
 extern double interp1Ac(double aa[], double bb[], double cc, int ii,int *error);
 
+/* create enumeration for Iwork */
+typedef enum {Er1=0, NUM_IWORK}IWorkIdx;
+
 static void mdlInitializeSizes(SimStruct *S)
 {
     int i;
@@ -46,7 +49,7 @@ static void mdlInitializeSizes(SimStruct *S)
 
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
-    ssSetNumIWork(S, 1);
+    ssSetNumIWork(S, NUM_IWORK);
     ssSetNumPWork(S, 0);
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
@@ -65,7 +68,7 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 static void mdlStart(SimStruct *S)
 {
     /* initialize print error variables */
-    ssSetIWorkValue(S,0,0);
+    ssSetIWorkValue(S,Er1,0);
 }
 #endif
 
@@ -130,9 +133,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 
         /* compute corrected flow based on pressure ratio */
         bleedFlxCr = interp1Ac(X_V_PRVec,T_V_WcVec,ValvePR,A,&interpErr);
-        if (interpErr == 1 && ssGetIWork(S)[0]==0){
+        if (interpErr == 1 && ssGetIWork(S)[Er1]==0){
             printf("Warning in %s, Error calculating bleedFlxCr. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,0,1);
+            ssSetIWorkValue(S,Er1,1);
         }
         /*------ Compute Air flow through valve ---------*/
         WthOut = bleedFlxCr*PtmfpIn/sqrt(TtmfpIn)*Valve_active_Ae;  /* Valve throat flow [pps] */

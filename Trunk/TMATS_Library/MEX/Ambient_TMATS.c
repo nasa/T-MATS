@@ -29,6 +29,10 @@ extern double t2hc(double i, double j);
 extern double interp1Ac(double aa[], double bb[], double cc, int ii,int *error);
 extern double interp2Ac(double aaa[], double bbb[], double ccc[], double aaa1, double bbb1,int ccc1, int ddd1, int *error);
 
+/* create enumeration for Iwork */
+typedef enum {Er1 = 0, Er2, Er3, Er4, Er5, NUM_IWORK}IWorkIdx;
+
+
 static void mdlInitializeSizes(SimStruct *S)
 {
     int i;
@@ -54,7 +58,7 @@ static void mdlInitializeSizes(SimStruct *S)
     
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
-    ssSetNumIWork(S, 2);
+    ssSetNumIWork(S, NUM_IWORK);
     ssSetNumPWork(S, 0);
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
@@ -73,8 +77,11 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 static void mdlStart(SimStruct *S)
 {
     /* initialize print error variables */
-    ssSetIWorkValue(S,0,0);
-    ssSetIWorkValue(S,1,0);
+    ssSetIWorkValue(S, Er1, 0);
+    ssSetIWorkValue(S, Er2, 0);
+    ssSetIWorkValue(S, Er3, 0);
+    ssSetIWorkValue(S, Er4, 0);
+    ssSetIWorkValue(S, Er5, 0);
 }
 #endif
 
@@ -115,6 +122,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     int interpErr = 0;
     
+
+    
     /* ------- get strings -------------- */
     char * BlkNm;
     int_T buflen;
@@ -128,26 +137,26 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     FAR = AFARc;
     
     Rt = interp1Ac(X_A_FARVec,T_A_RtArray,FAR,B,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[0]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er1] == 0){
         printf("Warning in %s, Error calculating Rt. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,0,1);
+        ssSetIWorkValue(S,Er1,1);
     }
     
     Rs = Rt;
     
     /*  Static Temperature */
     TsStDayOut = interp1Ac(X_A_AltVec,T_A_TsVec,AltIn,A,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[1]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er2] == 0){
         printf("Warning in %s, Error calculating TsStDayOut. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,0,1);
+        ssSetIWorkValue(S,Er2,1);
     }
     TsOut = TsStDayOut + dTempIn;
     
     /* Static Pressure*/
     PsOut = interp1Ac(X_A_AltVec,T_A_PsVec,AltIn,A,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[2]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er3] == 0){
         printf("Warning in %s, Error calculating PsOut. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,1,1);
+        ssSetIWorkValue(S,Er3,1);
     }
     
     /* Calc output entropy */
@@ -169,9 +178,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     Vg = sqrt(2 * (htg - hs)*C_GRAVITY*JOULES_CONST);
     
     gammasg = interp2Ac(X_A_FARVec,Y_A_TVec,T_A_gammaArray,FAR,TsOut,B,C,&interpErr);
-    if (interpErr == 1 && ssGetIWork(S)[3]==0){
+    if (interpErr == 1 && ssGetIWork(S)[Er4] == 0){
         printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,3,1);
+        ssSetIWorkValue(S,Er4,1);
     }
     Vsg = sqrt(gammasg*Rs*TsOut*C_GRAVITY*JOULES_CONST);
     MNg = Vg/Vsg;
@@ -205,9 +214,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         }
         iter = iter + 1;
     }
-    if (iter == maxiter && ssGetIWork(S)[3]==0 ){
+    if (iter == maxiter && ssGetIWork(S)[Er5]==0 ){
         printf("Warning in %s, Error calculating Pt at input MN. There may be error in output pressure\n", BlkNm);
-        ssSetIWorkValue(S,4,1);
+        ssSetIWorkValue(S,Er5,1);
     }
     
     htOut = htg;
