@@ -181,6 +181,9 @@ for i = 1:length(gb)
     Vnm = get_param(gb{i},'VariableName');
     Var = evalin('base',Vnm);
     
+    % determine if data is in the expected format
+    IsStruct = isstruct(Var);
+    
     if IsStruct
         % Determine criteria for map node with shaft speed
         BlkNmE = sum(strcmp(fieldnames(Var), 'BlkNm'));
