@@ -13,6 +13,7 @@ FAR - NA</p>
 <tr><td>[h] = t2h(T)</td><td>Look up enthalpy(h) based on temperature(T)</td>
 <tr><td>[s] = PT2s(T,P)</td><td>Look up entropy(s) based on pressure(P) and temperature(T)</td>
 <tr><td>[T] = sP2T(s,P)</td><td>Look up temperature(T) based on entropy(s) and pressure(P)</td>
+<tr><td>DViewGUI</td><td>Run T-MATS Data Viewer. This tool consists of a GUI that runs the SSplot and TDplot among other things.</td>
 <tr><td>PlotCMap(NcV,WcA,PRA,EffA)</td><td>Plot compressor map based on an Nc vector, Wc array, PR array, and Eff array.
 <br> addtional inputs can be included by with the format PlotCMap(_,Name,Value,...,Value)
 <br> type "help TMATS.PlotCMap" for acceptable inputs and format.
@@ -23,4 +24,7 @@ FAR - NA</p>
 <br> type "help TMATS.PlotTMap" for acceptable inputs and format.
 <br> An exmaple of this command might look like: 
 <br>TMATS.PlotTMap(NcV,WcA,PRA,EffA,'scalar',s_Wc,s_PR,s_Eff,'effcolor',0.5,'slformat','%2.2f','offset',0.03);</td>
+<tr><td>DViewGUI</td><td>Run T-MATS Data Viewer. This tool consists of a GUI that runs the SSplot and TDplot among other things.</td>
+<tr><td>SSplot(filename, StationVarVec)</td><td> Autogenerate steady state data plots. Note: all data must be generated with the Simulink/ToWorkspace block as a TimeSeries and consistant with the GasPropChar bus or Data bus (from compressors or turbines).</td>
+<tr><td>TDplot(filename)</td><td> Autogenerate transient data plots. Note: all data must be generated with the Simulink/ToWorkspace block as a TimeSeries and be consistant with the GasPropChar bus or Data bus (from compressors or turbines).</td>
 </table>
