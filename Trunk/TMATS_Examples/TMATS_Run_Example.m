@@ -19,12 +19,25 @@ InpMsg{4} = '3) Dynamic GasTurbine';
 InpMsg{5} = '4) Steady State Dual Spool High Bypass Engine JT9D';
 InpMsg{6} = '5) Dynamic Dual Spool High Bypass Engine JT9D';
 InpMsg{7} = '6) Steady State JT9D, Cantera';
-InpMsg{8} = '7) Cancel Setup';
+InpMsg{8} = '7) Cycle Model';
+InpMsg{9} = '8) Cancel Setup';
 InpMsgFinal = '';
 
 for i = 1: length(InpMsg)
     InpMsgFinal = strcat(InpMsgFinal,InpMsg{i},'\n');
 end
+
+%Messages for Cycle Model Selection
+InpMsg2{1} = 'Select Cycle Model';
+InpMsg2{2} = '1) Brayton Cycle';
+InpMsg2{3} = '2) Cancel';
+InpMsgFinal2 = '';
+
+for i = 1: length(InpMsg2)
+    InpMsgFinal2 = strcat(InpMsgFinal2,InpMsg2{i},'\n');
+end
+
+%Start Menu
 TMATS.S = input(InpMsgFinal,'s');
 
 switch TMATS.S
@@ -74,6 +87,23 @@ switch TMATS.S
         cd ..
         
     case '7'
+        
+        TMATS.S2 = input(InpMsgFinal2,'s');
+        switch TMATS.S2
+            case '1'
+                disp(strcat('Loading Simulation from: ', TMATS.P ,TMATS.POp,'Cycles'))
+                cd Cycles
+                open_system('BraytonCycle.slx');
+                cd ..
+                
+            case '2'
+                disp('Example Setup Canceled')
+            otherwise,
+                disp('Selection Invalid')
+        end
+        
+        
+    case '8'
         disp('Example Setup Canceled');
     otherwise,
         disp('Selection Invalid')
