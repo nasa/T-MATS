@@ -12,29 +12,25 @@
 #include "constants_TMATS.h"
 #include <math.h>
 
-#define s_T_Nc_p(S)             ssGetSFcnParam(S,0)
-#define s_T_PR_p(S)             ssGetSFcnParam(S,1)
-#define s_T_Wc_p(S)             ssGetSFcnParam(S,2)
-#define s_T_Eff_p(S)            ssGetSFcnParam(S,3)
-#define Y_T_NcVec_p(S)          ssGetSFcnParam(S,4)
-#define X_T_PRVec_p(S)          ssGetSFcnParam(S,5)
-#define T_T_Map_WcArray_p(S)    ssGetSFcnParam(S,6)
-#define T_T_Map_EffArray_p(S)   ssGetSFcnParam(S,7)
-#define T_BldPos_p(S)           ssGetSFcnParam(S,8)
-#define BldPosLeng_p(S)         ssGetSFcnParam(S,9)
-#define CoolFlwEn_p(S)          ssGetSFcnParam(S,10)
-#define IDesign_p(S)            ssGetSFcnParam(S,11)
-#define NcDes_p(S)              ssGetSFcnParam(S,12)
-#define EffDes_p(S)             ssGetSFcnParam(S,13)
-#define PRmapDes_p(S)           ssGetSFcnParam(S,14)
-#define NDes_p(S)               ssGetSFcnParam(S,15)
-#define BN_p(S)                 ssGetSFcnParam(S,16)
-#define WcMapCol_p(S)           ssGetSFcnParam(S,17)
-#define EffMapCol_p(S)          ssGetSFcnParam(S,18)
-#define WcMapRw_p(S)            ssGetSFcnParam(S,19)
-#define EffMapRw_p(S)           ssGetSFcnParam(S,20)
-#define ConfigNPSS_p(S)         ssGetSFcnParam(S,21)
-#define NPARAMS 22
+#define Y_T_NcVec_p(S)          ssGetSFcnParam(S,0)
+#define X_T_PRVec_p(S)          ssGetSFcnParam(S,1)
+#define T_T_Map_WcArray_p(S)    ssGetSFcnParam(S,2)
+#define T_T_Map_EffArray_p(S)   ssGetSFcnParam(S,3)
+#define T_BldPos_p(S)           ssGetSFcnParam(S,4)
+#define BldPosLeng_p(S)         ssGetSFcnParam(S,5)
+#define CoolFlwEn_p(S)          ssGetSFcnParam(S,6)
+#define IDesign_p(S)            ssGetSFcnParam(S,7)
+#define NcDes_p(S)              ssGetSFcnParam(S,8)
+#define EffDes_p(S)             ssGetSFcnParam(S,9)
+#define PRmapDes_p(S)           ssGetSFcnParam(S,10)
+#define NDes_p(S)               ssGetSFcnParam(S,11)
+#define BN_p(S)                 ssGetSFcnParam(S,12)
+#define WcMapCol_p(S)           ssGetSFcnParam(S,13)
+#define EffMapCol_p(S)          ssGetSFcnParam(S,14)
+#define WcMapRw_p(S)            ssGetSFcnParam(S,15)
+#define EffMapRw_p(S)           ssGetSFcnParam(S,16)
+#define ConfigNPSS_p(S)         ssGetSFcnParam(S,17)
+#define NPARAMS 18
 
 extern double h2tc(double a, double b);
 extern double pt2sc(double c, double d, double e);
@@ -62,7 +58,7 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetNumDiscStates(S, 0);
     
     if (!ssSetNumInputPorts(S, 2)) return;
-    ssSetInputPortWidth(S, 0, 8);
+    ssSetInputPortWidth(S, 0, 12);
     ssSetInputPortRequiredContiguous(S, 0, true);
     ssSetInputPortDirectFeedThrough(S, 0, 1);
     
@@ -120,10 +116,6 @@ static void mdlStart(SimStruct *S)
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
     /*--------Define Parameters-------*/
-    const real_T s_T_Nc             = *mxGetPr(s_T_Nc_p(S));
-    const real_T s_T_PR             = *mxGetPr(s_T_PR_p(S));
-    const real_T s_T_Wc             = *mxGetPr(s_T_Wc_p(S));
-    const real_T s_T_Eff            = *mxGetPr(s_T_Eff_p(S));
     const real_T NcDes              = *mxGetPr(NcDes_p(S));
     const real_T PRmapDes           = *mxGetPr(PRmapDes_p(S));
     const real_T EffDes             = *mxGetPr(EffDes_p(S));
@@ -159,7 +151,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double FARcIn   = u[4];     /* Compusted Fuel to Air Ratio [frac] */
     double Nmech    = u[5];     /* Mechancial Shaft Speed [rpm]*/
     double PRIn     = u[6];     /* Pressure Ratio [NA] 	 */
-    int    cfWidth  = u[7];     /* Cooling Flow vector length	*/
+    double s_T_Nc   = u[7];     /* Nc map scalar [NA]	*/
+    double s_T_Wc   = u[8];     /* Wc map scalar [NA]	*/
+    double s_T_PR   = u[9];     /* PR map scalar [NA]	*/
+    double s_T_Eff  = u[10];     /* Eff map scalar [NA]	*/
+    int    cfWidth  = u[11];     /* Cooling Flow vector length	*/
+
     
     /*---------Define Inputs for input port 2--------*/
     /* N 5x1 vectors consisting of W, ht, Tt, Pt and FAR, where N is the number of cooling flows */
