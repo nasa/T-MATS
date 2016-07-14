@@ -14,32 +14,36 @@
 
 #define Y_C_Map_NcVec_p(S)      ssGetSFcnParam(S,0)
 #define X_C_RlineVec_p(S)       ssGetSFcnParam(S,1)
-#define T_C_Map_WcArray_p(S)    ssGetSFcnParam(S,2)
-#define T_C_Map_PRArray_p(S)    ssGetSFcnParam(S,3)
-#define T_C_Map_EffArray_p(S)   ssGetSFcnParam(S,4)
-#define FracCusBldht_p(S)       ssGetSFcnParam(S,5)
-#define FracCusBldPt_p(S)       ssGetSFcnParam(S,6)
-#define FracBldht_p(S)          ssGetSFcnParam(S,7)
-#define FracBldPt_p(S)          ssGetSFcnParam(S,8)
-#define X_C_Map_WcSurgeVec_p(S) ssGetSFcnParam(S,9)
-#define T_C_Map_PRSurgeVec_p(S) ssGetSFcnParam(S,10)
-#define IDesign_p(S)            ssGetSFcnParam(S,11)
-#define NcDes_p(S)              ssGetSFcnParam(S,12)
-#define EffDes_p(S)             ssGetSFcnParam(S,13)
-#define PRDes_p(S)              ssGetSFcnParam(S,14)
-#define RlineDes_p(S)           ssGetSFcnParam(S,15)
-#define CustBldEn_p(S)          ssGetSFcnParam(S,16)
-#define FBldEn_p(S)             ssGetSFcnParam(S,17)
-#define BN_p(S)                 ssGetSFcnParam(S,18)
-#define CustBldNm_p(S)          ssGetSFcnParam(S,19)
-#define FracBldNm_p(S)          ssGetSFcnParam(S,20)
-#define WcMapCol_p(S)           ssGetSFcnParam(S,21)
-#define PRMapCol_p(S)           ssGetSFcnParam(S,22)
-#define EffMapCol_p(S)          ssGetSFcnParam(S,23)
-#define WcMapRw_p(S)            ssGetSFcnParam(S,24)
-#define PRMapRw_p(S)            ssGetSFcnParam(S,25)
-#define EffMapRw_p(S)           ssGetSFcnParam(S,26)
-#define NPARAMS 27
+#define Z_C_AlphaVec_p(S)       ssGetSFcnParam(S,2)
+#define T_C_Map_WcArray_p(S)    ssGetSFcnParam(S,3)
+#define T_C_Map_PRArray_p(S)    ssGetSFcnParam(S,4)
+#define T_C_Map_EffArray_p(S)   ssGetSFcnParam(S,5)
+#define FracCusBldht_p(S)       ssGetSFcnParam(S,6)
+#define FracCusBldPt_p(S)       ssGetSFcnParam(S,7)
+#define FracBldht_p(S)          ssGetSFcnParam(S,8)
+#define FracBldPt_p(S)          ssGetSFcnParam(S,9)
+#define X_C_Map_WcSurgeVec_p(S) ssGetSFcnParam(S,10)
+#define T_C_Map_PRSurgeVec_p(S) ssGetSFcnParam(S,11)
+#define IDesign_p(S)            ssGetSFcnParam(S,12)
+#define NcDes_p(S)              ssGetSFcnParam(S,13)
+#define EffDes_p(S)             ssGetSFcnParam(S,14)
+#define PRDes_p(S)              ssGetSFcnParam(S,15)
+#define RlineDes_p(S)           ssGetSFcnParam(S,16)
+#define CustBldEn_p(S)          ssGetSFcnParam(S,17)
+#define FBldEn_p(S)             ssGetSFcnParam(S,18)
+#define BN_p(S)                 ssGetSFcnParam(S,19)
+#define CustBldNm_p(S)          ssGetSFcnParam(S,20)
+#define FracBldNm_p(S)          ssGetSFcnParam(S,21)
+#define WcMapCol_p(S)           ssGetSFcnParam(S,22)
+#define PRMapCol_p(S)           ssGetSFcnParam(S,23)
+#define EffMapCol_p(S)          ssGetSFcnParam(S,24)
+#define WcMapRw_p(S)            ssGetSFcnParam(S,25)
+#define PRMapRw_p(S)            ssGetSFcnParam(S,26)
+#define EffMapRw_p(S)           ssGetSFcnParam(S,27)
+#define WcMapLay_p(S)           ssGetSFcnParam(S,28)
+#define PRMapLay_p(S)           ssGetSFcnParam(S,29)
+#define EffMapLay_p(S)          ssGetSFcnParam(S,30)
+#define NPARAMS 31
 
 extern double h2tc(double a, double b);
 extern double pt2sc(double c, double d, double e);
@@ -47,6 +51,7 @@ extern double sp2tc(double f, double g, double h);
 extern double t2hc(double i, double j);
 extern double interp1Ac(double aa[], double bb[], double cc, int ii,int *error);
 extern double interp2Ac(double kk[], double ll[], double mm[], double nn, double oo,int pp, int qq, int *error);
+extern double interp3Ac(double kkk[], double lll[], double mmm[], double uuu[], double u, double nnn, double ooo,int ppp, int qqq, int uu, int *error);
 
 /* create enumeration for Iwork */
 typedef enum {Er1 = 0, Er2, Er3, Er4, Er5, NUM_IWORK}IWorkIdx;
@@ -67,7 +72,7 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetNumDiscStates(S, 0);
     
     if (!ssSetNumInputPorts(S, 3)) return;
-    ssSetInputPortWidth(S, 0, 11);
+    ssSetInputPortWidth(S, 0, 12);
     ssSetInputPortRequiredContiguous(S, 0, true);
     ssSetInputPortDirectFeedThrough(S, 0, 1);
     
@@ -147,6 +152,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /* vector & array data */
     const real_T *Y_C_Map_NcVec        = mxGetPr(Y_C_Map_NcVec_p(S));
     const real_T *X_C_RlineVec         = mxGetPr(X_C_RlineVec_p(S));
+    const real_T *Z_C_AlphaVec         = mxGetPr(Z_C_AlphaVec_p(S));
     const real_T *T_C_Map_WcArray      = mxGetPr(T_C_Map_WcArray_p(S));
     const real_T *T_C_Map_PRArray      = mxGetPr(T_C_Map_PRArray_p(S));
     const real_T *T_C_Map_EffArray     = mxGetPr(T_C_Map_EffArray_p(S));
@@ -162,7 +168,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /*------get dimensions of parameter arrays-------*/
     const int_T A   = mxGetNumberOfElements(Y_C_Map_NcVec_p(S));
     const int_T B   = mxGetNumberOfElements(X_C_RlineVec_p(S));
-    const int_T C   = mxGetNumberOfElements(X_C_Map_WcSurgeVec_p(S));
+    const int_T C   = mxGetNumberOfElements(Z_C_AlphaVec_p(S));
+    const int_T D   = mxGetNumberOfElements(X_C_Map_WcSurgeVec_p(S));
     
     const int_T WcMapCol  = *mxGetPr(WcMapCol_p(S));
     const int_T PRMapCol  = *mxGetPr(PRMapCol_p(S));
@@ -170,6 +177,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     const int_T WcMapRw   = *mxGetPr(WcMapRw_p(S));
     const int_T PRMapRw   = *mxGetPr(PRMapRw_p(S));
     const int_T EffMapRw  = *mxGetPr(EffMapRw_p(S));
+    const int_T WcMapLay   = *mxGetPr(WcMapLay_p(S));
+    const int_T PRMapLay   = *mxGetPr(PRMapLay_p(S));
+    const int_T EffMapLay  = *mxGetPr(EffMapLay_p(S));
     
     /*---------Define Inputs for input port 1--------*/
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
@@ -181,10 +191,11 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double FARcIn   = u[4];     /* Combusted Fuel to Air Ratio [frac] 	*/
     double Nmech    = u[5];     /* Mechancial Shaft Speed [rpm] 	*/
     double Rline    = u[6];     /* Rline [NA]  */
-    double s_C_Nc   = u[7];     /* Nc map scalar [NA]  */
-    double s_C_Wc   = u[8];     /* Wc map scalar [NA] */
-    double s_C_PR   = u[9];     /* PR map scalar [NA]  */
-    double s_C_Eff  = u[10];    /* Eff map scalar [NA]  */
+    double Alpha    = u[7];     /* Alpha [NA]  */
+    double s_C_Nc   = u[8];     /* Nc map scalar [NA]  */
+    double s_C_Wc   = u[9];     /* Wc map scalar [NA] */
+    double s_C_PR   = u[10];     /* PR map scalar [NA]  */
+    double s_C_Eff  = u[11];    /* Eff map scalar [NA]  */
     
     /*---------Define Inputs for input port 2--------*/
     const real_T *Wcust = ssGetInputPortRealSignal(S, 1);
@@ -218,6 +229,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double TtbldOut[500];
     double htbldOut[500];
     double htcustOut[500];
+    
+    double SMWcVec[500];
+    double SMPRVec[500];
     
     int interpErr = 0;
     int i;
@@ -259,9 +273,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     NcMap = Nc / C_Nc;
     
     /*-- Compute Total Flow input (from Compressor map)  --------*/
-    
-    WcMap = interp2Ac(X_C_RlineVec,Y_C_Map_NcVec,T_C_Map_WcArray,Rline,NcMap,B,A,&interpErr);
-    if ((WcMapCol != B || WcMapRw != A) && ssGetIWork(S)[Er1]==0){
+    if(C > 1)
+        WcMap = interp3Ac(X_C_RlineVec,Y_C_Map_NcVec,Z_C_AlphaVec,T_C_Map_WcArray,Rline,NcMap,Alpha,B,A,C,&interpErr);
+    else
+        WcMap = interp2Ac(X_C_RlineVec,Y_C_Map_NcVec,T_C_Map_WcArray,Rline,NcMap,B,A,&interpErr);
+        
+    if ((WcMapCol != B || WcMapRw != A || WcMapLay !=C) && ssGetIWork(S)[Er1]==0){
         printf("Warning in %s, Error calculating WcMap. Table size does not match axis vector lengths.\n", BlkNm);
         ssSetIWorkValue(S,Er1,1);
     }
@@ -278,9 +295,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     WcCalcin = WcMap * C_Wc;
     
     /*-- Compute Pressure Ratio (from Compressor map)  --------*/
+    if(C > 1)
+        PRMap = interp3Ac(X_C_RlineVec,Y_C_Map_NcVec,Z_C_AlphaVec,T_C_Map_PRArray,Rline,NcMap,Alpha,B,A,C,&interpErr);
+    else
+        PRMap = interp2Ac(X_C_RlineVec,Y_C_Map_NcVec,T_C_Map_PRArray,Rline,NcMap,B,A,&interpErr);
     
-    PRMap = interp2Ac(X_C_RlineVec,Y_C_Map_NcVec,T_C_Map_PRArray,Rline,NcMap,B,A,&interpErr);
-    if ((PRMapCol != B || PRMapRw != A) && ssGetIWork(S)[Er2]==0){
+    if ((PRMapCol != B || PRMapRw != A || PRMapLay !=C) && ssGetIWork(S)[Er2]==0){
         printf("Warning in %s, Error calculating PRMap. Table size does not match axis vector lengths.\n", BlkNm);
         ssSetIWorkValue(S,Er2,1);
     }
@@ -297,9 +317,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     PR = C_PR*(PRMap - 1) + 1 ;
     
     /*-- Compute Efficiency (from Compressor map) ---*/
+    if(C > 1)
+        EffMap = interp3Ac(X_C_RlineVec,Y_C_Map_NcVec,Z_C_AlphaVec,T_C_Map_EffArray,Rline,NcMap,Alpha,B,A,C,&interpErr);
+    else
+        EffMap = interp2Ac(X_C_RlineVec,Y_C_Map_NcVec,T_C_Map_EffArray,Rline,NcMap,B,A,&interpErr);
     
-    EffMap = interp2Ac(X_C_RlineVec,Y_C_Map_NcVec,T_C_Map_EffArray,Rline,NcMap,B,A,&interpErr);
-    if ((EffMapCol != B || EffMapRw != A) && ssGetIWork(S)[Er3]==0){
+    if ((EffMapCol != B || EffMapRw != A || EffMapLay !=C) && ssGetIWork(S)[Er3]==0){
         printf("Warning in %s, Error calculating EffMap. Table size does not match axis vector lengths.\n", BlkNm);
         ssSetIWorkValue(S,Er3,1);
     }
@@ -419,7 +442,29 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         NErrorOut = (Wcin - WcCalcin)/Wcin ;
     
     /* Compute Stall Margin */
-    SPRMap = interp1Ac(X_C_Map_WcSurgeVec,T_C_Map_PRSurgeVec,WcMap,C,&interpErr);
+    if (C > 1){
+        /* Define 1-D surge margin vectors based on alpha */
+        for (i = 0; i < D/C; i++){
+            SMWcVec[i] = interp1Ac(Z_C_AlphaVec, X_C_Map_WcSurgeVec + C*i, Alpha,C, &interpErr);
+            if (interpErr == 1 && ssGetIWork(S)[Er5]==0){
+                printf("Warning in %s, Error calculating 1D SMWcVec. Vector definitions may need to be adjusted.\n", BlkNm);
+                ssSetIWorkValue(S,Er5,1);
+            }
+            SMPRVec[i] = interp1Ac(Z_C_AlphaVec, T_C_Map_PRSurgeVec + C*i, Alpha,C, &interpErr);
+            if (interpErr == 1 && ssGetIWork(S)[Er5]==0){
+                printf("Warning in %s, Error calculating 1D SMPRVec. Vector definitions may need to be adjusted.\n", BlkNm);
+                ssSetIWorkValue(S,Er5,1);
+            }
+        }
+        SPRMap = interp1Ac(SMWcVec, SMPRVec,WcMap,A,&interpErr);
+        if (interpErr == 1 && ssGetIWork(S)[Er5]==0){
+            printf("Warning in %s, Error calculating 2D SPR. Vector definitions may need to be adjusted.\n", BlkNm);
+            ssSetIWorkValue(S,Er5,1);
+        }
+    }
+    else
+        SPRMap = interp1Ac(X_C_Map_WcSurgeVec,T_C_Map_PRSurgeVec,WcMap,D,&interpErr);
+    
     if (interpErr == 1 && ssGetIWork(S)[Er5]==0){
         printf("Warning in %s, Error calculating SPR. Vector definitions may need to be expanded.\n", BlkNm);
         ssSetIWorkValue(S,Er5,1);
