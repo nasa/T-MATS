@@ -1,30 +1,39 @@
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
 <font size="6" color="Magenta">T-MATS: Newton Raphson Solver Library Block</font>
 <br>
 Newton Raphson Solver: 
 <br>
 <br>
-x(n+1) = x(n) - inverse(f'(x(n)))*f(x(n))
+$$
+x(n+1) = x(n) - \frac{f(x(n))}{f'(x(n)}
+$$
 <br>
 <br>
 Note: 
-inverse(f'(x(n))) is an m x m matrix and f(x(n)) is an m x 1 matrix 
-where m is the length of the initial conditions matrix and number of system independents.
+f'(x(n)) is an m x m matrix and f(x(n)) is an m x 1 matrix 
+where m is the length of the initial conditions matrix and number of system independents. n denotes a time step.
 <br>
 <br>
 <font size="5" color="Blue">Newton Raphson Solver Inputs:</font>
 <table border="1"> <tr><td>NRS Input</td><td>Description</td></tr>
-    <tr><td>Enable</td><td>Enables the Newton Raphson Solver</td></tr>
-    <tr><td>inv(f'(x(n)))</td><td>receprical of the derivative of the system</td></tr>
-    <tr><td>f(x(n))</td><td>output of the system</td></tr>
+    <tr><td>Enable</td><td>Enables the newton raphson solver</td></tr>
+    <tr><td>inv(f'(x(n)))</td><td>Receprical of the derivative of the system</td></tr>
+    <tr><td>f(x(n))</td><td>Output of the system as function of x(n)</td></tr>
 </table>
 <br>
 <font size="5" color="Blue">Newton Raphson Solver Outputs:</font>
 <table border="1"> <tr><td>NRS Output</td><td>Description</td></tr>
-    <tr><td>x(n+1)</td><td>Next system input to use (mx1)</td></tr>
+    <tr><td>x(n)</td><td>Current value(mx1)</td></tr>
+    <tr><td>x(n+1)</td><td>Next time step value(mx1)</td></tr>
 </table>
 <br>
 <font size="5" color="Blue">Newton Raphson Solver  Mask Variables: </font>
 <table border="1"> <tr><td>NRS Mask Variable</td><td>Description</td></tr>
     <tr><td>NR_IC_M</td><td>Initial Conditions of Newton Raphson (mx1)</td></tr>
     <tr><td>NR_dx_Lim_M</td><td>Newton Raphson dx limit[%](1x1), used for stability purposes</td></tr>
+    <tr><td>NR_Mx_Lim_M</td><td>Max limit on output(1x1 or mx1)</td></tr>
+    <tr><td>NR_Mn_Lim_M</td><td>Min limit on output(1x1 or mx1)</td></tr>
 </table>

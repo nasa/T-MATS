@@ -20,13 +20,13 @@ should both be located in the same subsystem as the plant that is to be solved f
 <table border="1"> <tr><td>Iter_NRSwJC Input</td><td>Description</td></tr>
     <tr><td>Iterations</td><td>Number of times the do.. while block has re-run the subsystem.</td></tr>
 	<tr><td>Enable</td><td>Enable Solver</td></tr>
-    <tr><td>f(x)</td><td>Output of plant to be solved for, (nx1 vector consisting of all plant outputs)</td></tr>
+    <tr><td>f(x)</td><td>Output of plant to be solved for, (mx1 vector consisting of all plant outputs)</td></tr>
 
 </table>
 <br>
 <font size="5" color="Blue">Iter_NRSwJC Condition Outputs:</font>
 <table border="1"> <tr><td>Iter_NRSwJC Output</td><td>Description</td></tr>
-    <tr><td>X</td><td>Input to plant to be solved for, (nx1 vector consisting of all plant inputs)
+    <tr><td>X</td><td>Input to plant to be solved for, (mx1 vector consisting of all plant inputs)
     <br> Initial value will be set as the initial conditions</td></tr>
     <tr><td>do_while Condition</td><td>Input to the do... while loop.
     <br> The current subystem should repeat until the Solver's conditions are met.</td></tr>
@@ -37,8 +37,10 @@ should both be located in the same subsystem as the plant that is to be solved f
 <font size="5" color="Blue">Iter_NRSwJC Mask Variables: </font>
 <table border="1"> <tr><td>Iter_NRSwJC Mask Variable</td><td>Description</td></tr>
     <tr><td>SJac_Per_M</td><td>Jacobian Perturbation size (nxm), where m is the number of inputs and n is the number of times each input is perturbed</td></tr>
-    <tr><td>SNR_IC_M</td><td>Newton Raphson Initial Conditions (1xm)</td></tr>
-    <tr><td>SNR_DX_M</td><td>Newton Raphson delta x limiter (%)(1x1)</td></tr>
+    <tr><td>SNR_IC_M</td><td>Newton Raphson Initial Conditions (mx1)</td></tr>
+    <tr><td>SNR_DX_M</td><td>Newton Raphson step size (dx) limiter (%)(1x1)</td></tr>
+    <tr><td>SNR_Mx_M</td><td>Newton Raphson max value limit(1x1 or mx1)</td></tr>
+    <tr><td>SNR_Mn_M</td><td>Newton Raphson min value limit (1x1 or mx1)</td></tr>
     <tr><td>SJacobianAttempts_M</td><td>Newton Raphson attempts before the Jacobian recalculation (1x1)</td></tr>
-    <tr><td>Cond_Limits_M</td><td>Iteration Conditions Limits (1xm or 1x1)</td></tr>
+    <tr><td>Cond_Limits_M</td><td>Iteration Conditions Limits (mx1 or 1x1)</td></tr>
 </table>
