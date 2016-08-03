@@ -10,6 +10,7 @@
 #define S_FUNCTION_LEVEL 2
 #include "simstruc.h"
 #include "constants_TMATS.h"
+#include "functions_TMATS.h"
 #include <math.h>
 
 #define s_V_Ae_vlv_p(S)                 ssGetSFcnParam(S,0)
@@ -21,12 +22,6 @@
 #define T_V_gamma_array_p(S)            ssGetSFcnParam(S,6)
 #define BN_p(S)                         ssGetSFcnParam(S,7)
 #define NPARAMS 8
-
-extern double interp2Ac(double kk[], double ll[], double mm[], double nn, double oo,int pp, int qq, int *error);
-extern double interp1Ac(double aa[], double bb[], double cc, int ii,int *error);
-extern double calc_Pstatic(double aaa, double bbb, double ccc, double ddd, double eee[], double fff[], double ggg[], double hhh[],double kkk, int iii, int jjj);
-extern double calc_WvsMN(double jj, double kk, double ll, double mm, double nn, double oo);
-extern double calc_PsvsMN(double pp, double qq, double rr);
 
 /* create enumeration for Iwork */
 typedef enum {Er1=0, Er2 , Er3, NUM_IWORK}IWorkIdx;
@@ -155,44 +150,43 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             printf("Warning in %s, Error calculating gamb. Vector definitions may need to be expanded.\n", BlkNm);
             ssSetIWorkValue(S,Er3,1);
         }
-        Cpb = Rb*gamb/(gamb-1);
+        Cpb = Rb*gamb*divby(gamb-1);
 
         /* determine static pressure at the exit plane (entering fan); */
         /* assume bypass flow >> bleed flow */
         Pe = calc_Pstatic(PtbyIn,TtbyIn,WbyIn,s_V_Ae_byp,X_V_FAR_vec,T_V_Rt_vec,Y_V_Tt_vec,T_V_gamma_array,FARcbyIn,A1,B1);
 
         /* compute exit to critical area ratio */
-        Me = sqrt(2/(gamb-1)*(pow(Pe/PtmfpIn, (1-gamb)/gamb)-1));
-        Tcr_o_Te = (2/(gamb+1))*(1 + 0.5*(gamb-1)*Me*Me);
-        Ae_o_Acr = pow(Tcr_o_Te, (gamb+1)/(2*(gamb-1)))/Me;
-
+        Me = sqrtT(2*divby(gamb-1)*(powT(Pe*divby(PtmfpIn), (1-gamb)*divby(gamb))-1));
+        Tcr_o_Te = (2*divby(gamb+1))*(1 + 0.5*(gamb-1)*Me*Me);
+        Ae_o_Acr = powT(Tcr_o_Te, (gamb+1)*divby(2*(gamb-1)))*divby(Me);
+        
         /* obtain throat to critical area ratio */
-        Ath_o_Acr = Ae_o_Acr*Ath/s_V_Ae_vlv;
-
+        Ath_o_Acr = Ae_o_Acr*Ath*divby(s_V_Ae_vlv);
+        
         /* determine throat Mach no. iteratively; initialize guesses, errors */
         Mth0 = 0.1;      /* subsonic guess values */
         Mth1 = 0.2;
 
-        Tcr_o_Tth0 = (2/(gamb+1))*(1 + 0.5*(gamb-1)*Mth0*Mth0);
-        Tcr_o_Tth1 = (2/(gamb+1))*(1 + 0.5*(gamb-1)*Mth1*Mth1);
-        Ath_o_Acr0 = pow(Tcr_o_Tth0, (gamb+1)/(2*(gamb-1)))/Mth0;
-        Ath_o_Acr1 = pow(Tcr_o_Tth1, (gamb+1)/(2*(gamb-1)))/Mth1;
+        Tcr_o_Tth0 = (2*divby(gamb+1))*(1 + 0.5*(gamb-1)*Mth0*Mth0);
+        Tcr_o_Tth1 = (2*divby(gamb+1))*(1 + 0.5*(gamb-1)*Mth1*Mth1);
+        Ath_o_Acr0 = powT(Tcr_o_Tth0, (gamb+1)*divby(2*(gamb-1)))*divby(Mth0);
+        Ath_o_Acr1 = powT(Tcr_o_Tth1, (gamb+1)*divby(2*(gamb-1)))*divby(Mth1);
         err0 = Ath_o_Acr - Ath_o_Acr0;
         err1 = Ath_o_Acr - Ath_o_Acr1;
-
         err = 100;
         count = 0;
 
         while (fabs(err) > 0.002 && (err0 - err1) != 0 && count < 100){
 
             /* compute new Mach no. guess */
-            Mth = Mth0 - err0*(Mth0 - Mth1)/(err0 - err1);
+            Mth = Mth0 - err0*(Mth0 - Mth1)*divby(err0 - err1);
             if (Mth > 1.0)
                 Mth = 1.0;
 
             /* compute error to drive solution towards specified area ratio */
-            Tcr_o_Tth_it = (2/(gamb+1))*(1 + 0.5*(gamb-1)*Mth*Mth);
-            Ath_o_Acr_it = pow(Tcr_o_Tth_it, (gamb+1)/(2*(gamb-1)))/Mth;
+            Tcr_o_Tth_it = (2*divby(gamb+1))*(1 + 0.5*(gamb-1)*Mth*Mth);
+            Ath_o_Acr_it = powT(Tcr_o_Tth_it, (gamb+1)*divby(2*(gamb-1)))*divby(Mth);
             err = Ath_o_Acr - Ath_o_Acr_it;
 
             /* propagate errors & guesses */
@@ -206,18 +200,18 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 
         /* compute throat static pressure, temperature and Mach no.; */
         /* modify if choked */
-        Tcr_o_T0 = 2/(gamb+1);
-        Tth_o_T0 = 1/(1 + 0.5*(gamb-1)*Mth*Mth);
+        Tcr_o_T0 = 2*divby(gamb+1);
+        Tth_o_T0 = 1*divby(1 + 0.5*(gamb-1)*Mth*Mth);
         if (Tth_o_T0 < Tcr_o_T0)
             Tth_o_T0 = Tcr_o_T0;
         Tth = TtmfpIn*Tth_o_T0;
-        Pth = PtmfpIn*pow(Tth_o_T0, gamb/(gamb-1));
+        Pth = PtmfpIn*powT(Tth_o_T0, gamb*divby(gamb-1));
 
         /* recompute the actual flow rate, assume no pressure loss */
-        rhoth = Pth*144/(Rb*JOULES_CONST*Tth);      /* [lb/ft^3] */
-        Vth = sqrt(2*Cpb*C_GRAVITY*JOULES_CONST*(TtmfpIn - Tth));     /* [ft/s] */
+        rhoth = Pth*144*divby(Rb*JOULES_CONST*Tth);      /* [lb/ft^3] */
+        Vth = sqrtT(2*Cpb*C_GRAVITY*JOULES_CONST*(TtmfpIn - Tth));     /* [ft/s] */
         Wth = rhoth*Ath/144*Vth;        /* [lb/s] */
-        Mth = Vth/sqrt(gamb*Rb*C_GRAVITY*JOULES_CONST*Tth);
+        Mth = Vth*divby(sqrtT(gamb*Rb*C_GRAVITY*JOULES_CONST*Tth));
     }
     else {
         Wth = 0;
@@ -226,7 +220,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 
     WthOut = Wth;
 
-    Test = WthOut;
+    Test = Vth;
 
     /*------Assign output values------------*/
     y[0] = WthOut;      /* Valve throat flow [pps] */

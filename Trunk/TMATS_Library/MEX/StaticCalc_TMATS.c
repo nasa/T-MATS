@@ -11,6 +11,7 @@
 #define S_FUNCTION_LEVEL 2
 #include "simstruc.h"
 #include "constants_TMATS.h"
+#include "functions_TMATS.h"
 #include <math.h>
 
 #define AthroatIn_p(S)              ssGetSFcnParam(S,0)
@@ -22,12 +23,6 @@
 #define T_gammaArray_p(S)           ssGetSFcnParam(S,6)
 #define BN_p(S)                     ssGetSFcnParam(S,7)
 #define NPARAMS 8
-
-extern double t2hc(double a, double b);
-extern double pt2sc(double c, double d, double e);
-extern double interp1Ac(double f[], double g[], double h, int l,int *error);
-extern double interp2Ac(double aa[], double bb[], double cc[], double aaa, double bbb,int ccc, int ddd, int *error);
-extern void PcalcStat(double dd,double ee,double ff,double gg,double hh,double mm,double *nn,double *oo,double *pp,double *qq,double *rr);
 
 /* create enumeration for Iwork */
 typedef enum {Er1=0, Er2 , Er3 , Er4 , Er5 , NUM_IWORK}IWorkIdx;
@@ -160,8 +155,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             printf("Warning in %s, Error calculating gammatg. Vector definitions may need to be expanded.\n", BlkNm);
             ssSetIWorkValue(S,Er2,1);
         }
-        TsMNg = TtIn /(1+MNg*MNg*(gammatg-1)/2);
-        PsMNg = PtIn*pow((TsMNg/TtIn),(gammatg/(gammatg-1)));
+        TsMNg = TtIn*divby(1+MNg*MNg*(gammatg-1)/2);
+        PsMNg = PtIn*powT((TsMNg*divby(TtIn)),(gammatg*divby(gammatg-1)));
         
         PcalcStat(PtIn, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
         gammasg = interp2Ac(X_FARVec,Y_TtVec,T_gammaArray,FARcIn,TsMNg,A,B,&interpErr);
@@ -169,10 +164,10 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             printf("Warning in %s, Error calculating gammasg. Vector definitions may need to be expanded.\n", BlkNm);
             ssSetIWorkValue(S,Er2,1);
         }
-        MNg = Vg/sqrt(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST);
+        MNg = Vg*divby(sqrtT(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST));
         
         if (Vg > 0.0001){
-            Acalc = WIn/(Vg * rhosg/C_SINtoSFT);}
+            Acalc = WIn*divby(Vg * rhosg/C_SINtoSFT);}
         else {
             Acalc = 999; /* if velocity is close to zero assume a very large Ath */}
         
@@ -196,17 +191,17 @@ static void mdlOutputs(SimStruct *S, int_T tid)
                 printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
                 ssSetIWorkValue(S,Er2,1);
             }
-            MNg = Vg/sqrt(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST);
+            MNg = Vg*divby(sqrtT(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST));
             /* calculated Area */
             if (Vg > 0.0001){
-                Acalc = WIn/(Vg * rhosg/C_SINtoSFT);}
+                Acalc = WIn*divby(Vg * rhosg/C_SINtoSFT);}
             else {
                 Acalc = 999; /* if velocity is close to zero assume a very large Ath */}
             
             erMN = MNIn - MNg;
             if (fabs(erMN) > erthr) {
                 /* determine next guess pressure by secant algorithm */
-                PsMNg_new = PsMNg - erMN *(PsMNg - PsMNg_old)/(erMN - erMN_old);
+                PsMNg_new = PsMNg - erMN *(PsMNg - PsMNg_old)*divby(erMN - erMN_old);
             }
             iter = iter + 1;
         }
@@ -226,19 +221,19 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         /* guess Psout and calculate an initial Area error */
         MNg = MNIn;
         gammatg = 1.4;
-        Tsg = TtIn /(1+MNg*MNg*(gammatg-1)/2);
-        Psg = PtIn*pow((Tsg/TtIn),(gammatg/(gammatg-1)));
+        Tsg = TtIn*divby(1+MNg*MNg*(gammatg-1)/2);
+        Psg = PtIn*powT((Tsg*divby(TtIn)),(gammatg*divby(gammatg-1)));
         PcalcStat(PtIn, Psg, TtIn, htin, FARcIn, Rt, &Sin, &Tsg, &hsg, &rhosg, &Vg);
-        Acalc = WIn/(Vg * rhosg/C_SINtoSFT);
+        Acalc = WIn*divby(Vg * rhosg/C_SINtoSFT);
         gammasg = interp2Ac(X_FARVec,Y_TtVec,T_gammaArray,FARcIn,Tsg,A,B,&interpErr);
         if (interpErr == 1 && ssGetIWork(S)[Er4]==0){
             printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
             ssSetIWorkValue(S,Er4,1);
         }
-        MNg = Vg/sqrt(gammasg*Rs*Tsg*C_GRAVITY*JOULES_CONST);
+        MNg = Vg*divby(sqrtT(gammasg*Rs*Tsg*C_GRAVITY*JOULES_CONST));
         
         /* determine guess error for static pressure iteration */
-        erA = (AthroatIn - Acalc)/AthroatIn;
+        erA = (AthroatIn - Acalc)*divby(AthroatIn);
         
         /* determine iteration constants */
         iter = 0;
@@ -264,13 +259,13 @@ static void mdlOutputs(SimStruct *S, int_T tid)
                 ssSetIWorkValue(S,Er4,1);
             }
             
-            MNg = Vg/sqrt(gammasg*Rs*Tsg*C_GRAVITY*JOULES_CONST);
+            MNg = Vg*divby(sqrtT(gammasg*Rs*Tsg*C_GRAVITY*JOULES_CONST));
             
             if (Vg > 0.0001) {
                 /* calculated Area */
-                Acalc = WIn/(Vg * rhosg/C_SINtoSFT);
+                Acalc = WIn*divby(Vg * rhosg/C_SINtoSFT);
                 /*determine error */
-                erA = (AthroatIn - Acalc)/AthroatIn;
+                erA = (AthroatIn - Acalc)*divby(AthroatIn);
             }
             else {
                 erA = 0;
@@ -280,7 +275,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             }
             if (fabs(erA) > erthr) {
                 /* determine next guess pressure by secant algorithm */
-                Psg_new = Psg - erA *(Psg - Psg_old)/(erA - erA_old);
+                Psg_new = Psg - erA *(Psg - Psg_old)*divby(erA - erA_old);
                 /* limit algorthim change */
                 if (Psg_new > 1.001*Psg) {
                     Psg_new = 1.002 * Psg;

@@ -10,6 +10,7 @@
 #define S_FUNCTION_LEVEL 2
 #include "simstruc.h"
 #include "constants_TMATS.h"
+#include "functions_TMATS.h"
 #include <math.h>
 
 #define Y_T_NcpsiVec_p(S)       ssGetSFcnParam(S,0)
@@ -32,11 +33,11 @@
 #define BN_p(S)                 ssGetSFcnParam(S,17)
 #define NPARAMS 18
 
-extern double h2tc(double a, double b);
-extern double pt2sc(double c, double d, double e);
-extern double sp2tc(double f, double g, double h);
-extern double t2hc(double i, double j);
-extern double interp2Ac(double kk[], double ll[], double mm[], double nn, double oo,int pp, int qq, int *error);
+// extern double h2tc(double a, double b);
+// extern double pt2sc(double c, double d, double e);
+// extern double sp2tc(double f, double g, double h);
+// extern double t2hc(double i, double j);
+// extern double interp2Ac(double kk[], double ll[], double mm[], double nn, double oo,int pp, int qq, int *error);
 
 /* create enumeration for Iwork */
 typedef enum {Er1=0, Er2 , Er3 , Er4 , Er5 , NUM_IWORK}IWorkIdx;
@@ -244,8 +245,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         Wcoolout = Wcoolout + Wcool[i];
 
         /* calc fuel mass flow for cooling flows*/
-        Wfcools1 = Wfcools1 + FARcool[i]*Wcool[i]*(1-T_BldPos[i])/(1+FARcool[i]);
-        Wfcoolout = Wfcoolout + FARcool[i]*Wcool[i]/(1+FARcool[i]);
+        Wfcools1 = Wfcools1 + FARcool[i]*Wcool[i]*(1-T_BldPos[i])*divby(1+FARcool[i]);
+        Wfcoolout = Wfcoolout + FARcool[i]*Wcool[i]*divby(1+FARcool[i]);
     }
     /*-- Compute Total Flow  --------*/
 
@@ -254,8 +255,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 
     /*-- Compute Fuel to Air Ratios ---*/
 
-    FARs1in = (FARcIn* WIn/(1+FARcIn) + Wfcools1)/(WIn/(1+FARcIn) + Wcools1- Wfcools1);
-    FARcOut = (FARcIn* WIn/(1+FARcIn)+ Wfcoolout)/(WIn/(1+FARcIn) + Wcoolout- Wfcoolout);
+    FARs1in = (FARcIn* WIn*divby(1+FARcIn) + Wfcools1)*divby(WIn*divby(1+FARcIn) + Wcools1- Wfcools1);
+    FARcOut = (FARcIn* WIn*divby(1+FARcIn)+ Wfcoolout)*divby(WIn*divby(1+FARcIn) + Wcoolout- Wfcoolout);
 
     /* calc input enthalpy of cooling flow for stage 1 */
     for (i = 0; i < cfWidth/5; i++)
@@ -268,7 +269,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 
     /*-- Compute avg enthalpy at stage 1 --------*/
     htin = t2hc(TtIn,FARcIn);
-    hts1in = (htin* WIn + dHcools1)/Ws1in;
+    hts1in = (htin* WIn + dHcools1)*divby(Ws1in);
 
 
     /*-- Compute  stage 1 total temp--------*/
@@ -283,14 +284,14 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     theta = TtIn / C_TSTD;
 
     /*------ Calculate corrected speed ---------*/
-    Nc = Nmech/sqrt(theta);
+    Nc = Nmech*divby(sqrtT(theta));
 
     if(IDes < 0.5)
-        C_Nc = Nc / NcDes;
+        C_Nc = Nc*divby(NcDes);
     else
         C_Nc = s_T_Nc;
 
-    NcMap = Nc / C_Nc;
+    NcMap = Nc*divby(C_Nc);
 
     /* ---- Calculate output entropy ----*/
     Sout = Ss1in;
@@ -302,9 +303,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         printf("Warning in %s, Error calculating psiMapI. Vector definitions may need to be expanded.\n", BlkNm);
         ssSetIWorkValue(S,Er4,1);
     }
-    EffMap = psiMapIn/psiMapI;
+    EffMap = psiMapIn*divby(psiMapI);
     if(IDes < 0.5)
-        C_Eff = EffDes / EffMap;
+        C_Eff = EffDes*divby(EffMap);
     else
         C_Eff = s_T_Eff;
 
@@ -325,9 +326,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     TtOutIdeal = h2tc(htIdealout,FARs1in);
 
     /* Determine starting point for iteration to find PR */
-    Ptoutg = PtIn*pow((TtOutIdeal/TtIn),(gamma_T/(gamma_T-1)));
+    Ptoutg = PtIn*powT((TtOutIdeal*divby(TtIn)),(gamma_T*divby(gamma_T-1)));
     TtOutIdealg = sp2tc(Sout,Ptoutg,FARs1in);
-    erT = 100*fabs(TtOutIdealg - TtOutIdeal)/TtOutIdeal;
+    erT = 100*fabs(TtOutIdealg - TtOutIdeal)*divby(TtOutIdeal);
     Ptoutg_new = Ptoutg;
 
     /* iterate to find Ptout when TtOutIdeal guess = TtOutIdeal */
@@ -341,24 +342,24 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 
         Ptoutg = Ptoutg + 0.05;
         TtOutIdealg = sp2tc(Sout,Ptoutg,FARs1in);
-        erT = 100*(TtOutIdealg - TtOutIdeal)/TtOutIdeal;
+        erT = 100*(TtOutIdealg - TtOutIdeal)*divby(TtOutIdeal);
         if (fabs(erT) > 0.05) {
             /* determine next guess pressure by secant algorithm */
-            Ptoutg_new = Ptoutg - erT *(Ptoutg - Ptoutg_old)/(erT - erT_old);
+            Ptoutg_new = Ptoutg - erT *(Ptoutg - Ptoutg_old)*divby(erT - erT_old);
         }
     }
-    PRin = PtIn/Ptoutg;
+    PRin = PtIn*divby(Ptoutg);
 
 
     /*------ Compute pressure output --------*/
     if(IDes < 0.5)
-        C_PR = (PRin - 1)/(PRmapDes -1);
+        C_PR = (PRin - 1)*divby(PRmapDes -1);
     else
         C_PR = s_T_PR;
 
-    PRmapRead = (PRin -1)/C_PR + 1;
+    PRmapRead = (PRin -1)*divby(C_PR) + 1;
 
-    PtOut = PtIn/PRin;
+    PtOut = PtIn*divby(PRin);
 
     /*-- Compute Total Flow input (from Turbine map)  --------*/
 
@@ -367,11 +368,11 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         printf("Warning in %s, Error calculating WoWMap. Vector definitions may need to be expanded.\n", BlkNm);
         ssSetIWorkValue(S,Er5,1);
     }
-    WpqAcrit = sqrt((gamma_T*C_GRAVITY)/(Rt_T*JOULES_CONST))/pow((1+(gamma_T-1)/2),((gamma_T+1)/(2*(gamma_T-1))));
-    WMap = WoWMap * WpqAcrit * (PtIn/sqrt(Tts1in));
-    WcMap = WMap * sqrt(theta)/delta;
+    WpqAcrit = sqrtT((gamma_T*C_GRAVITY)*divby(Rt_T*JOULES_CONST))*divby(powT((1+(gamma_T-1)/2),((gamma_T+1)*divby(2*(gamma_T-1)))));
+    WMap = WoWMap * WpqAcrit * (PtIn*divby(sqrtT(Tts1in)));
+    WcMap = WMap * sqrtT(theta)*divby(delta);
     if(IDes < 0.5)
-        C_Wc = Ws1in*sqrt(theta)/delta / WcMap;
+        C_Wc = Ws1in*sqrtT(theta)*divby(delta)*divby(WcMap);
     else
         C_Wc = s_T_Wc;
 
@@ -383,25 +384,25 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 
     /* ---- enthalpy output ----*/
 
-    htOut = ((((htIdealout - hts1in)*Eff) + hts1in)*Ws1in + dHcoolout)/WOut;
+    htOut = ((((htIdealout - hts1in)*Eff) + hts1in)*Ws1in + dHcoolout)*divby(WOut);
 
     /*------ Compute Temperature output (empirical) ---------*/
 
     TtOut = h2tc(htOut,FARcOut);
 
     /*----- Compute output Torque to shaft ----*/
-    TorqueOut = C_HP_PER_RPMtoFT_LBF * Pwrout/Nmech;
+    TorqueOut = C_HP_PER_RPMtoFT_LBF * Pwrout*divby(Nmech);
 
     /* ----- Compute Normalized Flow Error ----- */
     if (IDes < 0.5 && NDes == 0)
         NErrorOut = 100;
     else if (IDes < 0.5)
-        NErrorOut = (Nmech - NDes)/NDes;
+        NErrorOut = (Nmech - NDes)*divby(NDes);
     else if (Ws1in == 0) {
         NErrorOut = 100;
     }
     else {
-        NErrorOut = (Ws1in*sqrt(theta)/delta-WcCalcin)/(Ws1in*sqrt(theta)/delta) ;
+        NErrorOut = (Ws1in*sqrtT(theta)*divby(delta)-WcCalcin)*divby(Ws1in*sqrtT(theta)*divby(delta)) ;
     }
     Test = Wcool[0];
     /*------Assign output values------------        */

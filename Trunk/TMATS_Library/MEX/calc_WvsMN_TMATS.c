@@ -9,23 +9,24 @@
  * % Mach number (MN). Also needs gas constant (Rt) and gammat (Gt).
  * % *************************************************************************/
 
+#include "functions_TMATS.h"
+#include "constants_TMATS.h"
 #include <math.h>
+
 
 double calc_WvsMN(double MN, double Pt, double Tt, double Rt, double gammat, double A)
 {
     double temp, Ts, V, rhot, rhos, W;
-    double C_GRAVITY =  32.174;
-    double JOULES_CONST = 778.169;
     
     /*-------- calc Ts from Mack's eqn --------*/
     temp = 1 + (0.5*(gammat-1)*MN*MN);
-    Ts = Tt/temp;
+    Ts = Tt*divby(temp);
     /*---- calc V from Tom's eqn-------------*/
-    V = MN*sqrt(gammat*Rt*Ts*C_GRAVITY*JOULES_CONST); 
+    V = MN*sqrtT(gammat*Rt*Ts*C_GRAVITY*JOULES_CONST); 
     /*---- calc total density via Tom's eqn----------------*/
-    rhot = Pt*144/(Rt*Tt*778.161);               
+    rhot = Pt*144*divby(Rt*Tt*778.161);               
     /*----- calc static density from Ton's eqn---------*/
-    rhos = rhot*pow((Ts/Tt),(1/(gammat-1)));       
+    rhos = rhot*powT((Ts*divby(Tt)),(1*divby(gammat-1)));       
     /*---- calc flow rate from Tom's eqn ------------*/
     W = A*rhos*V/144;                            
     return W;

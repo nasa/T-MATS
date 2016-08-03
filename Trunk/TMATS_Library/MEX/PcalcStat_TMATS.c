@@ -9,10 +9,7 @@
 
 #include <math.h>
 #include "constants_TMATS.h"
-
-extern double t2hc(double a, double b);
-extern double pt2sc(double c, double d, double e);
-extern double sp2tc(double f, double g, double h);
+#include "functions_TMATS.h"
 
 void PcalcStat(double Pt, double Ps, double Tt, double ht, double FAR, double Rt, double *S, double *Ts, double *hs, double *rhos, double *V)
 {
@@ -33,8 +30,8 @@ void PcalcStat(double Pt, double Ps, double Tt, double ht, double FAR, double Rt
             /* Assume Rt = Rs */
             Rs = Rt;
             /* Compute static rho */
-            *rhos = Ps * C_PSItoPSF/(Rs* *Ts * JOULES_CONST);
+            *rhos = Ps * C_PSItoPSF*divby(Rs* *Ts * JOULES_CONST);
             /* Compute Velocity */
-            *V = sqrt(2 * (ht - *hs)*C_GRAVITY*JOULES_CONST);
+            *V = sqrtT(2 * (ht - *hs)*C_GRAVITY*JOULES_CONST);
             
 }

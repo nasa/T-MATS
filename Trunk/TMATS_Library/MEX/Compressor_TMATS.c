@@ -10,6 +10,7 @@
 #define S_FUNCTION_LEVEL 2
 #include "simstruc.h"
 #include "constants_TMATS.h"
+#include "functions_TMATS.h"
 #include <math.h>
 
 #define Y_C_Map_NcVec_p(S)      ssGetSFcnParam(S,0)
@@ -44,14 +45,6 @@
 #define PRMapLay_p(S)           ssGetSFcnParam(S,29)
 #define EffMapLay_p(S)          ssGetSFcnParam(S,30)
 #define NPARAMS 31
-
-extern double h2tc(double a, double b);
-extern double pt2sc(double c, double d, double e);
-extern double sp2tc(double f, double g, double h);
-extern double t2hc(double i, double j);
-extern double interp1Ac(double aa[], double bb[], double cc, int ii,int *error);
-extern double interp2Ac(double kk[], double ll[], double mm[], double nn, double oo,int pp, int qq, int *error);
-extern double interp3Ac(double kkk[], double lll[], double mmm[], double uuu[], double u, double nnn, double ooo,int ppp, int qqq, int uu, int *error);
 
 /* create enumeration for Iwork */
 typedef enum {Er1 = 0, Er2, Er3, Er4, Er5, NUM_IWORK}IWorkIdx;
@@ -261,16 +254,16 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /*---- calculate misc. fluid condition related variables and corrected Flow --*/
     delta = PtIn / C_PSTD;
     theta = TtIn / C_TSTD;
-    Wcin = WIn*sqrt(theta)/delta;
+    Wcin = WIn*sqrtT(theta)*divby(delta);
     
     /*------ Calculate corrected speed ---------*/
-    Nc = Nmech/sqrt(theta);
+    Nc = Nmech*divby(sqrtT(theta));
     if (IDes < 0.5)
-        C_Nc = Nc / NcDes ;
+        C_Nc = Nc *divby(NcDes) ;
     else
         C_Nc = s_C_Nc;
     
-    NcMap = Nc / C_Nc;
+    NcMap = Nc *divby(C_Nc);
     
     /*-- Compute Total Flow input (from Compressor map)  --------*/
     if(C > 1)
@@ -288,7 +281,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     }
     
     if (IDes < 0.5)
-        C_Wc = Wcin / WcMap;
+        C_Wc = Wcin*divby(WcMap);
     else
         C_Wc = s_C_Wc;
     
@@ -310,7 +303,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     }
     
     if (IDes < 0.5)
-        C_PR = (PRDes -1) / (PRMap-1);
+        C_PR = (PRDes -1)*divby(PRMap-1);
     else
         C_PR = s_C_PR;
     
@@ -332,7 +325,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     }
     
     if (IDes < 0.5)
-        C_Eff = EffDes / EffMap;
+        C_Eff = EffDes*divby(EffMap);
     else
         C_Eff = s_C_Eff;
     
@@ -353,7 +346,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     /* ---- Final enthalpy output ----*/
     
-    htOut = ((htIdealout - htin)/Eff) + htin;
+    htOut = ((htIdealout - htin)*divby(Eff)) + htin;
     
     /*------ Compute Temperature output ---------*/
     
@@ -429,17 +422,17 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     Pwrout = Pwrb4bleed - PwrBld;
     
     /*----- Compute output Torque to shaft ----*/
-    TorqueOut = C_HP_PER_RPMtoFT_LBF * Pwrout/Nmech;
+    TorqueOut = C_HP_PER_RPMtoFT_LBF * Pwrout*divby(Nmech);
     
     /* ----- Compute Normalized Flow Error ----- */
     if (IDes < 0.5 && Rline == 0)
         NErrorOut = 100;
     else if (IDes < 0.5)
-        NErrorOut = (Rline - RlineDes)/Rline;
+        NErrorOut = (Rline - RlineDes)*divby(Rline);
     else if (WIn == 0)
         NErrorOut = 100;
     else
-        NErrorOut = (Wcin - WcCalcin)/Wcin ;
+        NErrorOut = (Wcin - WcCalcin)*divby(Wcin);
     
     /* Compute Stall Margin */
     if (C > 1){
@@ -470,8 +463,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         ssSetIWorkValue(S,Er5,1);
     }
     SPR = C_PR*(SPRMap - 1) + 1;
-    SMavail = (SPR - PR)/PR * 100;
-    SMMap = (SPRMap - PRMap)/PRMap * 100;
+    SMavail = (SPR - PR)*divby(PR) * 100;
+    SMMap = (SPRMap - PRMap)*divby(PRMap) * 100;
     
     /* Test variable */
     Test = SPRMap;

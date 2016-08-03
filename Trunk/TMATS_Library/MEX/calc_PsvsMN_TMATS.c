@@ -9,12 +9,13 @@
  * % Also needs gas constant (Rt) and gammat (Gt).
  * % *************************************************************************/
 
+#include "functions_TMATS.h"
 #include <math.h>
 
 double calc_PsvsMN(double MN, double Pt, double gammat)
 {
     /*------ calc Ps via Mack's eqn  -----------*/
     double temp = 1 + (0.5*(gammat-1)*MN*MN);
-    double Ps = Pt*pow((1/temp),(gammat/(gammat-1)));
+    double Ps = Pt*powT((1/temp),(gammat*divby(gammat-1)));
     return Ps;
 }

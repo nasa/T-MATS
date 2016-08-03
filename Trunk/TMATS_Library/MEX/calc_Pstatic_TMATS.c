@@ -6,16 +6,10 @@
  * %
  * %  standalone form of static pressure computation
  * % *************************************************************************/
-
+#include "functions_TMATS.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
-extern double interp2Ac(double a[], double b[], double c[], double i, double j, int v, int w, int *error);
-extern double interp1Ac(double aa[], double bb[], double cc, int ii, int *error);
-extern double calc_WvsMN(double jj, double kk, double ll, double mm, double nn, double oo);
-extern double calc_PsvsMN(double pp, double qq, double rr);
-
 
 /*------ the following code uses secant method to calc static pressure ----*/
 double calc_Pstatic(double PtOut, double TtOut, double Wout, double Aexit, double *FAR_vec, double *Rt_vec, double *Tt_vec, double *gamma_array, double FAR, int A1, int B1)
@@ -57,8 +51,8 @@ double calc_Pstatic(double PtOut, double TtOut, double Wout, double Aexit, doubl
     ncount = 0;
     /*---- iterate x until the error is within tolerance ----*/
     while ((fabs(e3) > tolerance) && (ncount < maxIters)) {
-        if (x2 - (e2*(x2-x1)/(e2-e1)) > 0.01)
-            x3 = x2 - (e2*(x2-x1)/(e2-e1));
+        if (x2 - (e2*(x2-x1)*divby(e2-e1)) > 0.01)
+            x3 = x2 - (e2*(x2-x1)*divby(e2-e1));
         else
             x3 = 0.01;
         

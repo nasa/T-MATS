@@ -9,6 +9,7 @@
 #define S_FUNCTION_NAME  Burner_TMATS
 #define S_FUNCTION_LEVEL 2
 #include "simstruc.h"
+#include "functions_TMATS.h"
 #include <math.h>
 
 #define LHV_p(S)			    ssGetSFcnParam(S,0)
@@ -18,8 +19,6 @@
 #define hFuel_p(S)              ssGetSFcnParam(S,4)
 #define NPARAMS 5
 
-extern double t2hc(double a, double b);
-extern double h2tc(double c, double d);
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -106,13 +105,13 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     /*-- Compute Input fuel to air ratio --*/
     
-    FARcOut = (WIn* FARcIn + WfIn)/(WIn*(1-FARcIn));
+    FARcOut = (WIn* FARcIn + WfIn)*divby(WIn*(1-FARcIn));
     
     /*------ Compute enthalpy output ---------*/
     if (LHVEn < 0.5)
-        htOut = (WIn*htin + WfIn*hFuel)/WOut;
+        htOut = (WIn*htin + WfIn*hFuel)*divby(WOut);
     else
-        htOut = (WIn*htin + WfIn*LHV*Eff)/WOut;
+        htOut = (WIn*htin + WfIn*LHV*Eff)*divby(WOut);
     
     /*------ Compute Temperature output ---------*/
     

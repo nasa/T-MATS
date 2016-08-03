@@ -9,6 +9,7 @@
 #define S_FUNCTION_NAME  Valve_TMATS
 #define S_FUNCTION_LEVEL 2
 #include "simstruc.h"
+#include "functions_TMATS.h"
 #include <math.h>
 
 #define VlvfullyOpen_p(S)			ssGetSFcnParam(S,0)
@@ -18,8 +19,6 @@
 #define T_V_WcVec_p(S)              ssGetSFcnParam(S,4)
 #define BN_p(S)                     ssGetSFcnParam(S,5)
 #define NPARAMS 6
-
-extern double interp1Ac(double aa[], double bb[], double cc, int ii,int *error);
 
 /* create enumeration for Iwork */
 typedef enum {Er1=0, NUM_IWORK}IWorkIdx;
@@ -115,10 +114,10 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     status = mxGetString(BN_p(S), BlkNm, buflen);
 
     /* Compute Valve open fraction */
-    ValveFrac = (VlvPosIn-VlvdeadZone)/(VlvfullyOpen-VlvdeadZone);
+    ValveFrac = (VlvPosIn-VlvdeadZone)*divby(VlvfullyOpen-VlvdeadZone);
 
     /* ratio of total pressures at inlet and exit of bleed line */
-    ValvePR = PtmfpIn/PtbyIn;
+    ValvePR = PtmfpIn*divby(PtbyIn);
 
     /* Determine flow properties of the valve */
     if ((ValveFrac <= 0) || (ValvePR <= 1.0))	/* dead zone or one-way valve */
@@ -138,7 +137,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             ssSetIWorkValue(S,Er1,1);
         }
         /*------ Compute Air flow through valve ---------*/
-        WthOut = bleedFlxCr*PtmfpIn/sqrt(TtmfpIn)*Valve_active_Ae;  /* Valve throat flow [pps] */
+        WthOut = bleedFlxCr*PtmfpIn*divby(sqrtT(TtmfpIn))*Valve_active_Ae;  /* Valve throat flow [pps] */
         if (WthOut > WmfpIn) /* Flow check */
         {
             WthOut = WmfpIn;

@@ -10,6 +10,7 @@
 #define S_FUNCTION_LEVEL 2
 #include "simstruc.h"
 #include "constants_TMATS.h"
+#include "functions_TMATS.h"
 #include <math.h>
 
 #define Y_T_NcVec_p(S)          ssGetSFcnParam(S,0)
@@ -31,12 +32,6 @@
 #define EffMapRw_p(S)           ssGetSFcnParam(S,16)
 #define ConfigNPSS_p(S)         ssGetSFcnParam(S,17)
 #define NPARAMS 18
-
-extern double h2tc(double a, double b);
-extern double pt2sc(double c, double d, double e);
-extern double sp2tc(double f, double g, double h);
-extern double t2hc(double i, double j);
-extern double interp2Ac(double kk[], double ll[], double mm[], double nn, double oo,int pp, int qq, int *error);
 
 /* create enumeration for Iwork */
 typedef enum {Er1=0, Er2 , Er3 , Er4 , Er5 , NUM_IWORK}IWorkIdx;
@@ -242,8 +237,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         Wcoolout = Wcoolout + Wcool[i];
         
         /* calc fuel mass flow for cooling flows*/
-        Wfcools1 = Wfcools1 + FARcool[i]*Wcool[i]*(1-T_BldPos[i])/(1+FARcool[i]);
-        Wfcoolout = Wfcoolout + FARcool[i]*Wcool[i]/(1+FARcool[i]);
+        Wfcools1 = Wfcools1 + FARcool[i]*Wcool[i]*(1-T_BldPos[i])*divby(1+FARcool[i]);
+        Wfcoolout = Wfcoolout + FARcool[i]*Wcool[i]*divby(1+FARcool[i]);
     }
     /*-- Compute Total Flow  --------*/
     
@@ -252,8 +247,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     /*-- Compute Fuel to Air Ratios ---*/
     
-    FARs1in = (FARcIn* WIn/(1+FARcIn) + Wfcools1)/(WIn/(1+FARcIn) + Wcools1- Wfcools1);
-    FARcOut = (FARcIn* WIn/(1+FARcIn)+ Wfcoolout)/(WIn/(1+FARcIn) + Wcoolout- Wfcoolout);
+    FARs1in = (FARcIn* WIn*divby(1+FARcIn) + Wfcools1)*divby(WIn*divby(1+FARcIn) + Wcools1- Wfcools1);
+    FARcOut = (FARcIn* WIn*divby(1+FARcIn)+ Wfcoolout)*divby(WIn*divby(1+FARcIn) + Wcoolout- Wfcoolout);
     
     /* calc input enthalpy of cooling flow for stage 1 */
     for (i = 0; i < cfWidth/5; i++)
@@ -266,7 +261,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     /*-- Compute avg enthalpy at stage 1 --------*/
     htin = t2hc(TtIn,FARcIn);
-    hts1in = (htin* WIn + dHcools1)/Ws1in;
+    hts1in = (htin* WIn + dHcools1)*divby(Ws1in);
     
     /*-- Compute  stage 1 total temp--------*/
     
@@ -281,28 +276,28 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     /*------ Calculate corrected speed ---------*/
     if (ConfigNPSS > 0.5)
-        Nc = Nmech/sqrt(theta*C_TSTD);
+        Nc = Nmech*divby(sqrtT(theta*C_TSTD));
     else
-        Nc = Nmech/sqrt(theta);
+        Nc = Nmech*divby(sqrtT(theta));
     
     
     if(IDes < 0.5)
-        C_Nc = Nc / NcDes;
+        C_Nc = Nc*divby(NcDes);
     else
         C_Nc = s_T_Nc;
     
     
-    NcMap = Nc / C_Nc;
+    NcMap = Nc*divby(C_Nc);
     
     /*------ Compute pressure output --------*/
     if(IDes < 0.5)
-        C_PR = (PRIn - 1)/(PRmapDes -1);
+        C_PR = (PRIn - 1)*divby(PRmapDes -1);
     else
         C_PR = s_T_PR;
     
-    PRmapRead = ((PRIn -1)/C_PR)+1;
+    PRmapRead = ((PRIn -1)*divby(C_PR))+1;
     
-    PtOut = PtIn/PRIn;	/* using PR from input */
+    PtOut = PtIn*divby(PRIn);	/* using PR from input */
     
     /*-- Compute Total Flow input (from Turbine map)  --------*/
     
@@ -317,17 +312,17 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     }
     if(IDes < 0.5) {
         if (ConfigNPSS > 0.5)
-            C_Wc = WIn*sqrt(theta)/delta / WcMap;
+            C_Wc = WIn*sqrtT(theta)*divby(delta)*divby(WcMap);
         else
-            C_Wc = Ws1in*sqrt(theta)/delta / WcMap;
+            C_Wc = Ws1in*sqrtT(theta)*divby(delta)*divby(WcMap);
     }
     else {
         C_Wc = s_T_Wc;
     }
     
     WcCalcin = WcMap * C_Wc;
-    Wcin = WIn*sqrt(theta)/delta;
-    Wcs1in =  Ws1in*sqrt(theta)/delta;
+    Wcin = WIn*sqrtT(theta)*divby(delta);
+    Wcs1in =  Ws1in*sqrtT(theta)*divby(delta);
     
     /*-- Compute Turbine Efficiency (from Turbine map)  --------*/
     
@@ -341,7 +336,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         ssSetIWorkValue(S,Er5,1);
     }
     if(IDes < 0.5)
-        C_Eff = EffDes / EffMap;
+        C_Eff = EffDes*divby(EffMap);
     else
         C_Eff = s_T_Eff;
     
@@ -360,31 +355,31 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     /* ---- enthalpy output ----*/
     
-    htOut = ((((htIdealout - hts1in)*Eff) + hts1in)*Ws1in + dHcoolout)/WOut;
+    htOut = ((((htIdealout - hts1in)*Eff) + hts1in)*Ws1in + dHcoolout)*divby(WOut);
     
     /*------ Compute Temperature output (empirical) ---------*/
     
     TtOut = h2tc(htOut,FARcOut);
     
     /*----- Compute output Torque to shaft ----*/
-    TorqueOut = C_HP_PER_RPMtoFT_LBF * Pwrout/Nmech;
+    TorqueOut = C_HP_PER_RPMtoFT_LBF * Pwrout*divby(Nmech);
     
     /* ----- Compute Normalized Flow Error ----- */
     if (IDes < 0.5 && NDes == 0)
         NErrorOut = 100;
     else if (IDes < 0.5)
-        NErrorOut = (Nmech - NDes)/NDes;
+        NErrorOut = (Nmech - NDes)*divby(NDes);
     else if (Ws1in == 0) {
         NErrorOut = 100;
     }
     else {
         if (ConfigNPSS > 0.5){
             /* map contains turbine input flow only */
-            NErrorOut = (Wcin-WcCalcin)/Wcin ;
+            NErrorOut = (Wcin-WcCalcin)*divby(Wcin);
         }
         else {
             /* map contains turbine input flow and input bleed flow */
-            NErrorOut = (Wcs1in-WcCalcin)/Wcs1in ;
+            NErrorOut = (Wcs1in-WcCalcin)*divby(Wcs1in);
         }
     }
     Test = PRmapRead;

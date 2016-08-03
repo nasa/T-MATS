@@ -10,6 +10,7 @@
 #define S_FUNCTION_LEVEL 2
 #include "simstruc.h"
 #include "constants_TMATS.h"
+#include "functions_TMATS.h"
 #include <math.h>
 
 #define SwitchType_p(S)             ssGetSFcnParam(S,0)
@@ -30,12 +31,12 @@
 #define BN_p(S)                     ssGetSFcnParam(S,15)
 #define NPARAMS 16
 
-extern double pt2sc(double c, double d, double e);
-extern double sp2tc(double f, double g, double h);
-extern double t2hc(double i, double j);
-extern double interp1Ac(double a[], double b[], double c, int d, int *error);
-extern double interp2Ac(double aa[], double bb[], double cc[], double aaa, double bbb,int ccc, int ddd, int *error);
-extern void PcalcStat(double dd,double ee,double ff,double gg,double hh,double mm,double *nn,double *oo,double *pp,double *qq,double *rr);
+// extern double pt2sc(double c, double d, double e);
+// extern double sp2tc(double f, double g, double h);
+// extern double t2hc(double i, double j);
+// extern double interp1Ac(double a[], double b[], double c, int d, int *error);
+// extern double interp2Ac(double aa[], double bb[], double cc[], double aaa, double bbb,int ccc, int ddd, int *error);
+// extern void PcalcStat(double dd,double ee,double ff,double gg,double hh,double mm,double *nn,double *oo,double *pp,double *qq,double *rr);
 
 /* create enumeration for Iwork */
 typedef enum {Er1=0, Er2 , Er3 , Er4 , Er5 ,
@@ -216,7 +217,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         printf("Warning in %s, Error calculating gammas. Vector definitions may need to be expanded.\n", BlkNm);
         ssSetIWorkValue(S,Er3,1);
     }
-    MN_s = V/sqrt(gammas_s*Rs*Ts*C_GRAVITY*JOULES_CONST);
+    MN_s = V*divby(sqrtT(gammas_s*Rs*Ts*C_GRAVITY*JOULES_CONST));
     Ts_s = Ts;
     V_s = V;
     rhos_s = rhos;
@@ -231,8 +232,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         ssSetIWorkValue(S,Er4,1);
     }
     /* use isentropic equations for a first cut guess */
-    TsMNg = TtIn /(1+MNg*MNg*(gammatg-1)/2);
-    PsMNg = Ptin*pow((TsMNg/TtIn),(gammatg/(gammatg-1)));
+    TsMNg = TtIn*divby(1+MNg*MNg*(gammatg-1)/2);
+    PsMNg = Ptin*powT((TsMNg*divby(TtIn)),(gammatg*divby(gammatg-1)));
     
     /* Calculate velcocity and MN using guessed static pressure */
     PcalcStat(Ptin, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
@@ -241,7 +242,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         printf("Warning in %s, Error calculating gammasg. Vector definitions may need to be expanded.\n", BlkNm);
         ssSetIWorkValue(S,Er4,1);
     }
-    MNg = Vg/sqrt(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST);
+    MNg = Vg*divby(sqrtT(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST));
     
     /* determine error based on calculated MN and 1 */
     erMN =1 - MNg;
@@ -265,11 +266,11 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
             ssSetIWorkValue(S,Er5,1);
         }
-        MNg = Vg/sqrt(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST);
+        MNg = Vg*divby(sqrtT(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST));
         erMN =1 - MNg;
         if (fabs(erMN) > erthr) {
             /* determine next guess pressure by secant algorithm */
-            PsMNg_new = PsMNg - erMN *(PsMNg - PsMNg_old)/(erMN - erMN_old);
+            PsMNg_new = PsMNg - erMN *(PsMNg - PsMNg_old)*divby(erMN - erMN_old);
         }
         iter = iter + 1;
     }
@@ -309,7 +310,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
             ssSetIWorkValue(S,Er7,1);
         }
-        Vth = MNth*sqrt(gammasth*Rs*Tsth*C_GRAVITY*JOULES_CONST);
+        Vth = MNth*sqrtT(gammasth*Rs*Tsth*C_GRAVITY*JOULES_CONST);
         rhosth = rhosMN1;
     }
     
@@ -321,7 +322,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     
     /* Pressure before nozzle/P ambient */
-    PQPa = Ptin / PambIn;
+    PQPa = Ptin*divby(PambIn);
     
     /* cacluate Thermal Constants */
     PQPaMap = PQPa;
@@ -341,7 +342,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     /* Determine throat area in^2 */
     if (IDes < 0.5) {
-        Ath = WIn * C_PSItoPSF / (Therm_growth *(1-flowLoss/100)*CdTh*rhosth*Vth);
+        Ath = WIn * C_PSItoPSF*divby(Therm_growth *(1-flowLoss/100)*CdTh*rhosth*Vth);
         if (choked == 0 && ssGetIWork(S)[Er11]==0){
             printf("Warning in %s, Calculating IDes Area with un-choked nozzle.\n", BlkNm);
             ssSetIWorkValue(S,Er11,1);
@@ -376,16 +377,16 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         
         /* Generate exit area */
         if (IDes < 0.5)
-            Ax = WIn * C_PSItoPSF / (Therm_growth *(1-flowLoss/100)*CdTh*rhos_s*V_s);
+            Ax = WIn * C_PSItoPSF*divby(Therm_growth *(1-flowLoss/100)*CdTh*rhos_s*V_s);
         else /* Use calculated area value when using Cv method  */
             Ax = AexitIn;
         
         /* start iteration to find Psx */
         Psxg = PambIn;
         PcalcStat(Ptin, Psxg, TtIn, htin, FARcIn, Rt, &Sin, &Ts, &hs, &rhos, &V);
-        Axcalc = WIn/(V * rhos/C_SINtoSFT); /* Will not be used for the Cfg method */
+        Axcalc = WIn*divby(V * rhos/C_SINtoSFT); /* Will not be used for the Cfg method */
         
-        Ex = fabs((Ax - Axcalc)/Ax);
+        Ex = fabs((Ax - Axcalc)*divby(Ax));
         /* iterate to find static pressure, calculated area should be close to actual area */
         maxiterx = 200;
         iterx = 0;
@@ -402,12 +403,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             /* calculate flow velocity and rhos */
             PcalcStat(Ptin, Psxg, TtIn, htin, FARcIn, Rt, &Sin, &Ts, &hs, &rhos, &V);
             /* calculated Area */
-            Axcalc = WIn/(V * rhos/C_SINtoSFT);
+            Axcalc = WIn*divby(V * rhos/C_SINtoSFT);
             /*determine error */
-            Ex = (Ax - Axcalc)/Ax;
+            Ex = (Ax - Axcalc)*divby(Ax);
             if (fabs(Ex) > Exthr) {
                 /* determine next guess pressure by secant algorithm */
-                Psxg_new = Psxg - Ex *(Psxg - Psxg_old)/(Ex - Ex_old);
+                Psxg_new = Psxg - Ex *(Psxg - Psxg_old)*divby(Ex - Ex_old);
                 /* limit algorthim change */
                 if (Psxg_new > 1.1*Psxg) {
                     Psxg_new = 1.1 * Psxg;
@@ -432,7 +433,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             printf("Warning in %s, Error calculating gammas. Vector definitions may need to be expanded.\n", BlkNm);
             ssSetIWorkValue(S,Er13,1);
         }
-        MNx = Vx/sqrt(gammasx*Rs*Tsx*C_GRAVITY*JOULES_CONST);
+        MNx = Vx*divby(sqrtT(gammasx*Rs*Tsx*C_GRAVITY*JOULES_CONST));
     }
     
     /* error('Nozzle Error: Negative Mach number!!') */
@@ -479,11 +480,11 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     if (IDes < 0.5 && WDes == 0)
         NErrorOut = 100;
     else if (IDes < 0.5)
-        NErrorOut = (WIn - WDes)/WDes;
+        NErrorOut = (WIn - WDes)*divby(WDes);
     else if (WIn == 0) {
         NErrorOut = 100;}
     else {
-        NErrorOut = (WIn-Woutcalc)/WIn ;
+        NErrorOut = (WIn-Woutcalc)*divby(WIn);
     }
     /*------Assign output values------------*/
     y[0] = WOut;          /* Outlet Total Flow [pps]	*/

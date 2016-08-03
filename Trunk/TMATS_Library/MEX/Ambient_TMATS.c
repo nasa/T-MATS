@@ -10,6 +10,7 @@
 #define S_FUNCTION_LEVEL 2
 #include "simstruc.h"
 #include "constants_TMATS.h"
+#include "functions_TMATS.h"
 #include <math.h>
 
 #define X_A_AltVec_p(S)      ssGetSFcnParam(S,0)
@@ -22,12 +23,6 @@
 #define AFARc_p(S)           ssGetSFcnParam(S,7)
 #define BN_p(S)              ssGetSFcnParam(S,8)
 #define NPARAMS 9
-
-extern double pt2sc(double c, double d, double e);
-extern double sp2tc(double f, double g, double h);
-extern double t2hc(double i, double j);
-extern double interp1Ac(double aa[], double bb[], double cc, int ii,int *error);
-extern double interp2Ac(double aaa[], double bbb[], double ccc[], double aaa1, double bbb1,int ccc1, int ddd1, int *error);
 
 /* create enumeration for Iwork */
 typedef enum {Er1 = 0, Er2, Er3, Er4, Er5, NUM_IWORK}IWorkIdx;
@@ -54,7 +49,7 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetInputPortDirectFeedThrough(S, 0, 1);
     
     if (!ssSetNumOutputPorts(S, 1)) return;
-    ssSetOutputPortWidth(S, 0, 7);
+    ssSetOutputPortWidth(S, 0, 8);
     
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
@@ -116,7 +111,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /*--------Define Constants-------*/
     double PsOut, TsOut, TtOut, PtOut, VengOut, TsStDayOut, Vsound;
     double Ttg, Ptg, Vg, Vsg, MNg, Sout, htg, gammasg, Rs, Rt;
-    double hs, htOut; 
+    double hs, htOut, Test; 
     double er, er_old, erthr, Ptg_new, Ptg_old, FAR, FAROut;
     int iter, maxiter;
     
@@ -168,22 +163,22 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /*------ Total Temperature ---------*/
     Ttg = TsOut * (1+MNIn*MNIn*(C_GAMMA-1)/2);
     /*------ Total Pressure ---------*/
-    Ptg = PsOut/(pow((TsOut/Ttg),(C_GAMMA/(C_GAMMA-1))));
+    Ptg = PsOut*divby((powT((TsOut*divby(Ttg)),(C_GAMMA*divby(C_GAMMA-1)))));
     
     /* calculate total temperature */
     Ttg = sp2tc(Sout,Ptg,FAR);
     /* calculate total enthalpy */
     htg = t2hc(Ttg,FAR);
     /* calculate velocity */
-    Vg = sqrt(2 * (htg - hs)*C_GRAVITY*JOULES_CONST);
+    Vg = sqrtT(2 * (htg - hs)*C_GRAVITY*JOULES_CONST);
     
     gammasg = interp2Ac(X_A_FARVec,Y_A_TVec,T_A_gammaArray,FAR,TsOut,B,C,&interpErr);
     if (interpErr == 1 && ssGetIWork(S)[Er4] == 0){
         printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
         ssSetIWorkValue(S,Er4,1);
     }
-    Vsg = sqrt(gammasg*Rs*TsOut*C_GRAVITY*JOULES_CONST);
-    MNg = Vg/Vsg;
+    Vsg = sqrtT(gammasg*Rs*TsOut*C_GRAVITY*JOULES_CONST);
+    MNg = Vg*divby(Vsg);
     er = MNIn - MNg;
     Ptg_new = Ptg + 0.05;
     maxiter = 15;
@@ -203,14 +198,14 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         /* calculate total enthalpy */
         htg = t2hc(Ttg,FAR);
         /* calculate velocity */
-        Vg = sqrt(2 * (htg - hs)*C_GRAVITY*JOULES_CONST);
+        Vg = sqrtT(2 * (htg - hs)*C_GRAVITY*JOULES_CONST);
         
-        Vsg = sqrt(gammasg*Rs*TsOut*C_GRAVITY*JOULES_CONST);
-        MNg = Vg/Vsg;
+        Vsg = sqrtT(gammasg*Rs*TsOut*C_GRAVITY*JOULES_CONST);
+        MNg = Vg*divby(Vsg);
         er = MNIn - MNg;
         if (fabs(er) > erthr) {
             /* determine next guess pressure by secant algorithm */
-            Ptg_new = Ptg - er *(Ptg - Ptg_old)/(er - er_old);
+            Ptg_new = Ptg - er *(Ptg - Ptg_old)*divby(er - er_old);
         }
         iter = iter + 1;
     }
@@ -228,6 +223,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     VengOut = Vsound * MNIn;
     
     FAROut = FAR;
+
+    Test = divby(dTempIn);
     
     /*------Assign output values------------*/
     y[0] = htOut;      /* Total enthalpy */
@@ -237,6 +234,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     y[4] = PsOut;      /* Static Pressure [psia] */
     y[5] = TsOut;      /* Static Temperature [degR] */
     y[6] = VengOut;    /* Engine Velocity [ft/sec] */
+    y[7] = Test;       /* Test signal */
     
 }
 
