@@ -50,6 +50,10 @@ open_system('JT9D_Model_Dyn.slx');
 
 % loading complete
 disp('** JT9D_Dyn example ready to execute **')
+disp('** JT9D_SS example ready to execute **')
+disp('** This JT9D-like model was created using publically available data only **')
+disp('** The model is meant for educational purposes only, as such the developers make no specific claims of model accuracy. **')
+disp('** See NASA/TM-2014-218409 for more information on model development **')
 
 
 

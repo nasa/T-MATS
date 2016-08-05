@@ -52,6 +52,9 @@ open_system('GasTurbine_Dyn_Template.slx');
 
 % loading complete
 disp('** GasTurbine_Dyn example ready to execute **')
+disp('** See NASA/TM-2014-218410 for more information on model development **')
+
+
 
 
 

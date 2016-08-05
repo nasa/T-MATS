@@ -46,6 +46,8 @@ open_system('GasTurbine_SS_Template.slx');
 
 % loading complete
 disp('** GasTurbine_SS example ready to execute **')
+disp('** See NASA/TM-2014-218410 for more information on model development **')
+
 
 
 

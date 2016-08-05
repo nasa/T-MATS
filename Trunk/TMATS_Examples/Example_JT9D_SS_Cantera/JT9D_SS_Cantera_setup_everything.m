@@ -42,6 +42,8 @@ open_system('JT9D_SS_Cantera_Template.slx');
 
 % loading complete
 disp('** GasTurbine_SS example ready to execute **')
+disp('** This JT9D-like model was created using publically available data only **')
+disp('** The model is meant for educational purposes only, as such the developers make no specific claims of model accuracy. **')
 
 
 
