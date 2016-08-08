@@ -3,8 +3,8 @@ function Install_TMATS()
 
 % TMATSver and date must remain in the listed form for the ver command to work
 % properly.
-TMATSver = '1.1.3.7';
-TMATSdate = '05Aug-2016';
+TMATSver = '1.1.3.8';
+TMATSdate = '08Aug-2016';
 
 error = 0;
 TMATSInstallmsg = 'Install T-MATS matlab toolbox? Note: Installation will add MATLAB paths and generate MEX files.';

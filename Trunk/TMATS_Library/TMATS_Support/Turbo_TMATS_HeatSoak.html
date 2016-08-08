@@ -1,0 +1,68 @@
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<font size="6" color="Magenta">T-MATS: Heat Soak Library Block</font>
+<p>This block is meant to add mass to components to simulate the effects of component heat soak.
+    Inputs are the component input flow and metal temperature state. The block will utilize a current lump mass temperature
+    to calculate an updated temperature and generate a change in metal temperature based on
+energy passing between the lump material and the flow.</p>
+
+<p>The convective heat transfer coefficient is derived from current and design point mass flow and termpature, and heat transfer coefficent at the design point.</p>
+$$
+h = h_{coeff} \left(\frac{T}{T_{des}}\right)^{0.23} \left(\frac{W}{W_{des}}\right)^{0.8}
+$$
+<p>The rate of heat transfer by convection is then calculated based on Newton's law of cooling.</p>
+$$
+\dot{Q} = hA(T_m - T_{ideal})
+$$
+<p>This heat transfer rate is then used to augment the entalpy of the ideal flow using the following relation.</p>
+$$
+\dot{Q} = Ht_{ideal} - Ht_{actual}\\
+Ht = W * ht
+$$
+<p>And, the metal energy is adjusted by the same heat transfer rate and the rate of change in temperature is determined.</p>
+$$
+\dot{Q} = \rho  C_p V \left(\frac{\partial T}{\partial t}\right)
+$$
+
+<br>
+<br>
+<font size="5" color="Blue">Heat Soak Inputs:</font>
+<table border="1"> <tr><td>Heat Soak Input</td><td>Description</td></tr>
+    <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 bus/vector consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>Tmetal</td><td> Current metal Temperature [degR] </td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Heat Soak Outputs:</font>
+<table border="1"><tr><td>Heat Soak Output</td><td>Description</td></tr>
+    <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>Tmdot</td><td> First derivative of the metal temperature [degR/sec]
+            <br> This output is meant to be fed into an integrator block and fed back into the Tmetal input.</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Heat Soak Mask Variables: </font>
+<table border="1"> <tr><td>Heat Soak Mask Variablet</td><td>Description</td></tr>
+    <tr><td>Wdes_M</td><td>Design point mass flow [pps]</td></tr>
+    <tr><td>Tdes_M</td><td>Design point temperature [degR]</td></tr>
+    <tr><td>A_M</td><td>Surface Area [ft2]</td></tr>
+    <tr><td>hcoeff_M</td><td>Design point convective heat transfer coefficient [BTU/(sec*ft2*degR]</td></tr>
+    <tr><td>Vol_M</td><td>Volume of lump structure [ft3]</td></tr>
+    <tr><td>TVec_M</td><td>Vector of temperatures (mx1) [degR]</td></tr>
+    <tr><td>rho_M</td><td>Material Density f(TVec)(mx1) [lbm/ft3]</td></tr>
+    <tr><td>Cp_M</td><td>Material Specific Heat f(TVec)(mx1) [BTU/lbm/degR]</td></tr>
+</table>
+<br>
+
+
+
