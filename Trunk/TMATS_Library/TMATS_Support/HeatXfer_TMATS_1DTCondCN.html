@@ -1,8 +1,8 @@
 <script type="text/javascript"
         src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
-<font size="6" color="Magenta">T-MATS: 1-D Trans Cond Model(FDI) Block</font>
-<p>This function models the transient conduction of a plate with fluid or additional plates on either side via the finite difference method (Crank-Nicolson).</p>
+<font size="6" color="Magenta">T-MATS: 1-D Trans Cond Model(CN) Block</font>
+<p>This function models the transient conduction of a plate with fluid or additional plates on either side via the finite difference method (Crank-Nicolson). This block is obsolete and will not be supported in the future. For another option see 1-D Trans Conduction Model - Variable Propts + Generic BCs. </p>
 <p>Setup requires the use of an external solver for determining Next temperature states.</p>
 <p>This block is setup to be a general use material that is devided into 3 regions, A,B,C.</p>
 <p> Region A can be defined as a fluid or a solid material at the inner boundary. If it is a fluid, a TinnerNext is set to a constant.
@@ -14,7 +14,7 @@
 Units must be specified consistantly. (i.e. If temperature is in Celsius all temperature units must in Celsius)</p>
 <font size="5" color="Blue"> 1-D Trans Conduction Inputs:</font>
 <table border="1"> <tr><td> 1-D Trans Conduction Inputs</td><td>Description</td></tr>
-    <tr><td>Tinner</td><td>Initial temperature adjacent to the inner most node</td></tr>    
+    <tr><td>Tinner</td><td>Initial temperature adjacent to the inner most node</td></tr>
     <tr><td>TinnerNext</td><td>Next temperature adjacent to the inner most node</td></tr>
     <tr><td>Touter</td><td>Initial temperature adjacent to the outer most node</td></tr>
     <tr><td>TouterNext</td><td>Next temperature adjacent to the outer most node</td></tr>

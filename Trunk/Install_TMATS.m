@@ -3,7 +3,7 @@ function Install_TMATS()
 
 % TMATSver and date must remain in the listed form for the ver command to work
 % properly.
-TMATSver = '1.1.3.11';
+TMATSver = '1.1.3.12';
 TMATSdate = '11Aug-2016';
 
 error = 0;

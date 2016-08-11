@@ -1,0 +1,120 @@
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<font size="6" color="Magenta">T-MATS: 1-D Trans Conduction Model - Variable Props + Generic BCs Library Block</font>
+<br>
+<p>This function models the transient conduction of a 1-D structure which can either be of a planar or cylindrical geometry. This block solves the general 1-D heat equation shown below using a finite difference method. <p>
+$$
+\frac {\partial T}{\partial t} = \frac {1}{\rho c_{p}} \left[ \left( \frac {\partial k}{\partial x} + \frac {ak}{x} \right) \frac {\partial T}{\partial x} + k \frac {\partial ^{2} T}{\partial x^{2}} \right]
+$$      
+<p>It is able to handle variable thermal properties such as density, heat capacity, and thermal conductivity. It has the capability to address dynamic convection, conduction, and radiation boundary conditions. A generic non-uniform spatial discretization may be used with some restrictions but a constant time-step is encouraged for accuracy in time. Integration is done through the Crank-Nicolson Method and the system of discrete equations is solved with Thomas's Algorithm. The boundary nodes are assumed to be half the size of its interior neighbor in the formulation of boundary node equations. To assure this is the case, consider checking that the following conditions are met.<p>
+$$
+x(2) - x(1) = x(3) - x(2) & x(n) - x(n-1) = x(n-1) - x(n-2)
+$$
+<p>For planar geometries, the first node may be any real numeric value as it is the relative position of the nodes that matters, not the global position. For cylindrical geometries the first node must be the inner radius of the cylindrical wall. In the case of a rod with no inner radius the first node may be set to a number close to zero but not equal to zero (to prevent dividing by zero) and the corresponding boundary condition will be a reflective one (i.e. conduction to the temperature of the surface node (its own temperature)). General formulations of the boundary node equations are shown below where the first equation is used for planar geometries and the second is used for cylindrical geometries.<p>
+$$
+\rho c_{p} \frac {\Delta x}{2} \frac {dT}{dt} = \frac {k}{\Delta x} \left( T_{interior \: node} - T \right) + h \left( T_{fluid} - T \right) + u \left( T_{external \: source/sink} - T \right) + \frac {k}{\Delta x} \left( T_{surface \: or \: interface} - T \right)
+$$
+$$
+\rho c_{p} \left( x_{out3}^{2} - x_{in3}^{2} \right) \frac {dT}{dt} = \frac {2k}{x_{surface \: node}ln \left( x_{out1}/x_{in1} \right) } \left( T_{interior \: node} - T \right) + 2h \left( T_{fluid} - T \right) + 2u \left( T_{external \: source/sink} - T \right) +  \frac {2k}{x_{surface \: node} ln \left( x_{out2}/x_{in2} \right)} \left( T_{surface \: or \: interface} - T \right)
+$$
+<p> where <p>
+$$
+x_{out1} = x_{surface \: node} \: and \: x_{in1} = x_{interior \: node} \: if \: x_{surface \: node} > x_{interior \: node}
+$$
+$$
+x_{in1} = x_{surface \: node} \: and \: x_{out1} = x_{interior \: node} \: if \: x_{surface \: node} < x_{interior \: node}
+$$
+$$
+x_{out2} = x_{surface \: node} \: and \: x_{in2} = \left( x_{surface \: node} - \Delta x \right) \: if \: x_{surface \: node} > x_{external \: node}
+$$
+$$
+x_{in2} = x_{surface \: node} \: and \: x_{out2} = \left( x_{interior \: node} + \Delta x \right) \: if \: x_{surface \: node} < x_{external \: node}
+$$
+$$
+x_{out3} = x_{surface \: node} \: and \: x_{in3} = \left( x_{interior \: node} + \Delta x/2 \right) \: if \: x_{surface \: node} > x_{interior \: node}
+$$
+$$
+x_{in3} = x_{surface \: node} \: and \: x_{out3} = \left( x_{interior \: node} - \Delta x/2 \right) \: if \: x_{surface \: node} < x_{interior \: node}
+$$
+<p>The boundary conditions use linear heat transfer coefficients. The convective heat transfer coefficient h, and radiation heat transfer coefficient u may be approximated in a variety of ways. A number of empirical correlations exist for approximating the convective heat transfer coefficient h. They usually approximate the Nusselt number (Nu = hL/k, where L is the characteristic length) to get the heat transfer coefficient. For forced convection most empirical correlations are functions of the Reynolds number and Prandtl number of the fluid. For free convection the empirical relations are typically functions of the Rayleigh number and Prandtl number. Correlations exist for mixed convection scenarios where forced and free convection both play significant roles. It is common practice for the relation<p>
+$$
+Nu = \left( Nu_{forced}^N \pm Nu_{free}^N \right) ^{(1/N)}
+$$
+<p>to be used for such cases where N is typically a value between 3 and 4 which is dependent on the geometry and orientation of the physical problem. The linear radiation heat transfer coefficient u is typically written as shown below for radiation to a non-reflective sink, radiation between reflective planar surfaces, and radiation between reflective concentric cylinder surfaces respectively.<p>
+$$
+u = \epsilon \sigma \left( T_{external} + T_{surface} \right) \left( T_{external}^2 + T_{surface}^2 \right)
+$$
+$$
+u = \frac {\sigma}{\frac{1}{\epsilon_{surface}}+\frac{1}{\epsilon_{external}}-1} \left( T_{external} + T_{surface} \right) \left( T_{external}^2 + T_{surface}^2 \right)
+$$
+$$
+u = \frac {\sigma}{\frac{1}{\epsilon_{external}} + \frac{1-\epsilon_{surface}}{\epsilon_{surface}} \left( \frac{x_{external}}{x_{surface}} \right)} \left( T_{external} + T_{surface} \right) \left( T_{external}^2 + T_{surface}^2 \right)
+$$
+<p>These heat transfer coefficients could be assumed constant or could be generated based off of data using methods such as interpolation/extrapolation. If a conduction boundary condition is applicable then there are 2 general scenarios to consider. The first is that the surface temperature is known in which case the inner or outer surface temperature (Tsin or Tsout) is known and is directly input into the block. In the second case, the structure is in contact with another structure which may also be changing in temperature dynamically. This contacting structure could be modeled using another instance of this block. In this case the boundary node should be embedded in the structure you are modeling (i.e. the node is short of the interface by half the thickness of its neighboring interior node). The interface temperature should be estimated and used as the value of Tsin or Tsout as appropriate. This is done by taking the weighted average of the temperatures of the nodes on all sides of the interface based on the thermal conductivity to node thickness ratio of the 2 or more contacting nodes. For example:<p>
+$$
+T_{interface} = \frac{ \left( k_{A}/\Delta x_{A} \right) T_{A} + \left( k_{B}/\Delta x_{B} \right) T_{B}}{ \left( k_{A}/\Delta x_{A} \right) + \left( k_{B}/\Delta x_{B} \right)}
+$$
+<p>where A refers to the boundary node of the first block and B refers to the boundary node of the second block.<p>
+<p>If a particular boundary condition is not applicable then verify that the corresponding boundary condition check box is unchecked. Similarly if a particular boundary condition is relevant to your problem then make sure that the corresponding check box is checked. For example, if your problem has a convection boundary condition on the inner wall with a fluid temperature of 100C and convective heat transfer coefficient of 1.2W/(m^2-C) and has a conduction boundary condition on the outer surface with a known temperature of 250C then: the convection check box under "Inner Boundary Conditions" and conduction check box under "Outer Boundary Conditions" should be checked. Also, the 'Inner Surface Convection BC [Tfin, hin]' and 'Outer Surface Conduction BC [Tsout]' inports should be visible. There inputs should be [100, 1.2] and [250] respectively. All other boundary condition check boxes should be unchecked. This should make the inner surface convection and outer surface conduction inports the only visible inports on the block mask.<p>
+<p>At each time step of the simulation, the thermal conductivity, heat capacity, and density of the structure at each node can be evaluated based on the current temperature (and perhaps pressure) and fed back into the block for the next iteration to account for variations in these properties. A memory block may be necessary to avoid an invalid algebraic loop. Given data relating the properties to temperature and or pressure, simple interpolation could be used to determine these values or empirical relations could be developed. Boundary conditions can be adjusted dynamically (i.e. changing the temperature of each boundary condition and its respective heat transfer coefficient). <p>
+<p>Note that the spatial discretization array, x, should be monotonically increasing and have at least 4 elements. Also, all units must be specified consistently. For example, if temperature is in Celsius all temperature units must in Celsius. Below is a table that lists the proper units for each input and parameter in standard English and SI units. For definitions of each of the inputs and parameters (masked variables) refer to the tables near the bottom of the page.<p>
+<font size="5" color="Blue"> Input and Parameter Unit Examples:</font>
+<table border="1"> <tr><td> Input/Parameter </td><td> English </td><td> SI </td></tr>
+    <tr><td>x_M</td><td>ft</td><td>m</td></tr>
+    <tr><td>T0_M</td><td>R</td><td>K</td></tr>
+    <tr><td>dt_M</td><td>sec</td><td>sec</td></tr>
+    <tr><td>k</td><td>Btu/(sec-ft-R)</td><td>W/(m-K)</td></tr>
+    <tr><td>Cp</td><td>Btu/(slug-R)</td><td>W/(kg-K)</td></tr>
+    <tr><td>rho</td><td>slug/ft3</td><td>kg/m3</td></tr>
+    <tr><td>Tfin</td><td>R</td><td>K</td></tr>
+    <tr><td>hin</td><td>Btu/(sec-ft2-R)</td><td>W/(m2-K)</td></tr>
+    <tr><td>Tsin</td><td>R</td><td>K</td></tr>
+    <tr><td>Textin</td><td>R</td><td>K</td></tr>
+    <tr><td>uin</td><td>Btu/(sec-ft2-R)</td><td>W/(m2-K)</td></tr>
+    <tr><td>Tfout</td><td>R</td><td>K</td></tr>
+    <tr><td>hout</td><td>Btu/(sec-ft2-R)</td><td>W/(m2-K)</td></tr>
+    <tr><td>Tsout</td><td>R</td><td>K</td></tr>
+    <tr><td>Textout</td><td>R</td><td>K</td></tr>
+    <tr><td>uout</td><td>Btu/(sec-ft2-R)</td><td>W/(m2-K)</td></tr>
+</table>
+<br>
+<p>The output temperature will be in whatever temperature units were used in the inputs and parameters. Using temperature units of degrees Fahrenheit (F) or Celsius (C) is possible, however using units on the absolute scale (degrees Rankine (R) and Kelvin (K)) is encouraged. This is because temperatures less than 0 will prompt a warning message. Keep in mind that this block employs numerical methods and the accuracy and stability of the results produced by the block may be dependent on the discretization of the spatial domain and the time step of the block. To achieve time accurate results with respect to the simulation time, it is important to either use the same time step as the simulation or to properly utilize rate transitions blocks on the inputs and outputs of the block.<p>
+<br>
+<font size="5" color="Blue"> 1-D Trans Conduction Model - Variable Props + Generic BCs Inputs:</font>
+<table border="1"> <tr><td> 1-D Trans Conduction Model - variable Props + Generic BCs Inputs</td><td>Description</td></tr>
+    <tr><td>k</td><td>Thermal conductivity array for the structure (nx1)</td></tr>
+    <tr><td>Cp</td><td>Heat capacity array for the structure (nx1)</td></tr>
+    <tr><td>rho</td><td>Density array for the structure (nx1)</td></tr>
+    <tr><td>Tfin</td><td>Temperature of the fluid on the inner surface (convection boundary condition)</td></tr>
+    <tr><td>hin</td><td>Convective heat transfer coefficient of the fluid on the inner surface (convection boundary condition)</td></tr>
+    <tr><td>Tsin</td><td>Temperature at the surface or interface of with a contacting solid on the inner side (conduction boundary condition)</td></tr>
+    <tr><td>Textin</td><td>Temperature of the external source/sink radiating heat to/from the inner surface (radiation boundary condition)</td></tr>
+    <tr><td>uin</td><td>Radiative heat transfer coefficient between the external source/sink and the inner surface (radiation boundary condition)</td></tr>
+    <tr><td>Tfout</td><td>Temperature of the fluid on the outer surface (convection boundary condition)</td></tr>
+    <tr><td>hout</td><td>Convective heat transfer coefficient of the fluid on the outer surface(convection boundary condition)</td></tr>
+    <tr><td>Tsout</td><td>Temperature at the surface or interface of with a contacting solid on the outer side (conduction boudnary condition)</td></tr>
+    <tr><td>Textout</td><td>Temperature of the external source/sink radiating heat to/from the outer surface (radiation boundary condition)</td></tr>
+    <tr><td>uout</td><td>Radiative heat transfer coefficient between the external source/sink and the outer surface (radiation boundary condition)</td></tr>
+</table>
+<br>
+<font size="5" color="Blue"> 1-D Trans Conduction Model - Variable Props + Generic BCs Outputs:</font>
+<table border="1"> <tr><td>1-D Trans Conduction Model - Variable Props + Generic BCs Outputs</td><td>Description</td></tr>
+    <tr><td>T</td><td>The current temperature of each node in the structure (nx1)</td></tr>
+</table>
+<br>
+<font size="5" color="Blue"> 1-D Trans Conduction Model - Variable Props + Generic BCs Mask Variables: </font>
+<table border="1"> <tr><td> 1-D Trans Conduction Model - Variable Props + Generic BCs Mask Variables</td><td>Description</td></tr>
+    <tr><td>x_M</td><td>Spatial discretization (node locations) (nx1)</td></tr>
+    <tr><td>T0_M</td><td>Initial temperature of the structure at each node (nx1)</td></tr>
+    <tr><td>dt_M</td><td>Time Step</td></tr>
+    <tr><td>a_M</td><td>Shape (unchecked - planar (a_M=0), checked - cylindrical (a_M=1))</td></tr>
+    <tr><td>convin_M</td><td>Checked if there is a convection boundary condition on the inner surface</td></tr>
+    <tr><td>radin_M</td><td>Checked if there is a radiation boundary condition on the inner surface</td></tr>
+    <tr><td>condin_M</td><td>Checked if there is a conduction boundary condition on the inner surface</td></tr>
+    <tr><td>convout_M</td><td>Checked if there is a convection boundary condition on the outer surface</td></tr>
+    <tr><td>radout_M</td><td>Checked if there is a radiation boundary condition on the outer surface</td></tr>
+    <tr><td>condout_M</td><td>Checked if there is a conduction boundary condition on the outer surface</td></tr>
+    
+</table>
