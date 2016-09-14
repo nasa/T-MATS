@@ -1,0 +1,68 @@
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<font size="6" color="Magenta">T-MATS: Thermal Expansion Library Block</font>
+<br>
+<p>This function calculates the length or radius of a structure that has expanded or contracted due to thermal expansion. The block accepts the previous/reference length (Lref), previous/reference temperature (Tref), and current temperature (Tf) as its inputs. The user has the option to specify a constant thermal expansion coefficient or to incorporate temperature dependence by providing data that correlates the thermal expansion coefficient with temperature. The bond length of a specimen has the following relation when considering temperature dependence. <p>
+$$
+L = L_{ref} \left[ 1 + \int_{T_{ref}}^{T_f} \alpha (T) dT \right]
+$$   
+<p>where
+$$
+T = temperature
+$$
+$$
+T_{ref} = previous/reference \: temperature
+$$
+$$
+L_{ref} = previous/reference \: length \: at \: temperature \: T_{ref}
+$$
+$$
+T_f = current/final \: temperature
+$$
+$$
+L = current/final \: length \: at \: temperature \: T_f
+$$
+$$
+\alpha = thermal \: expansion \: coefficient
+$$
+<p>In the case that the thermal expansion coefficient is constant the final length can simply be expressed as:<p>
+$$
+L = L_{ref} \left[ 1 + \alpha \left( T_f - T_{ref} \right) \right]
+$$
+<p>This block provides the option to evaluate the first expression in the case where the thermal expansion coefficient is dependent on the temperature. This is done given a temperature and corresponding thermal expansion array which are used to integrate over the appropriate temperature range. The other option is to specify a constant thermal expansion coefficient which is used to evaluate the second expression.<p>
+<p>This function could be used for steady-state calculations. Theoretically it can also be used in dynamic simulations where Tref and Lref are the temperature and length from the previous time-step, Tf is the current temperature, and L is the current length. <p>
+<p>Note that if the temperature dependent option is being utilized then the temperature array, T_data_M, should be monotonically increasing and have at least 2 elements. The thermal expansion coefficient array, alpha_data_M, should be the same size as T_data_M. Generally all units must be specified consistently. For example, if temperature is in Celsius all temperature units must in Celsius. Below is a table that lists the proper units for each input and parameter in standard English and SI units. For definitions of each of the inputs and parameters (masked variables) refer to the tables near the bottom of the page.<p>
+<font size="5" color="Blue"> Input and Parameter Unit Examples:</font>
+<table border="1"> <tr><td> Input/Parameter </td><td> English </td><td> SI </td></tr>
+    <tr><td>alpha_M</td><td>1/R</td><td>1/K</td></tr>
+    <tr><td>T_data_M</td><td>R</td><td>K</td></tr>
+    <tr><td>alpha_data_M</td><td>1/R</td><td>1/K</td></tr>
+    <tr><td>Lref</td><td>ft</td><td>m</td></tr>
+    <tr><td>Tref</td><td>R</td><td>K</td></tr>
+    <tr><td>Tf</td><td>R</td><td>K</td></tr>
+</table>
+<br>
+<p>The output temperature will be in whatever temperature units were used in the inputs and parameters. Using temperature units of degrees Fahrenheit (F) or Celsius (C) is possible.<p>
+<br>
+<font size="5" color="Blue"> Thermal Expansion Inputs:</font>
+<table border="1"> <tr><td> Thermal Expansion Inputs</td><td>Description</td></tr>
+    <tr><td>Lref</td><td>Length at the previous temperature or reference temperature (1x1)</td></tr>
+    <tr><td>Tref</td><td>Previous temperature or reference temperature (1x1)</td></tr>
+    <tr><td>Tf</td><td>Current temperature or final temperature (1x1)</td></tr>
+</table>
+<br>
+<font size="5" color="Blue"> Thermal Expansion Outputs:</font>
+<table border="1"> <tr><td>Thermal Expansion Outputs</td><td>Description</td></tr>
+    <tr><td>L</td><td>Length at the current temperature or final temperature (1x1)</td></tr>
+</table>
+<br>
+<font size="5" color="Blue"> Thermal Expansion Mask Variables: </font>
+<table border="1"> <tr><td> Thermal Expansion Mask Variables</td><td>Description</td></tr>
+    <tr><td>alpha_M</td><td>Constant thermal expansion coefficient used when the thermal expansion coefficient is assumed to be constant (1x1)</td></tr>
+    <tr><td>TVec_M</td><td>Temperature array used to integrate the thermal expansion coefficient integral when temperature dependence is considered (nx1)</td></tr>
+    <tr><td>alphaVec_M</td><td>Thermal expansion coefficient array corresponding to TVec_M that is used to integrate the thermal expansion coefficient integral when temperature dependence is considered (nx1)</td></tr>
+    <tr><td>TD_M</td><td>Variable distiguishing whether to consider a constant thermal expansion coefficient or temperature dependent one. When the box corresponding to this variable is unchecked a constant thermal expansion coefficient is assumed and when the box is checked temperature dependence is considered.</td></tr>  
+	<tr><td>BN_M</td><td>Block name (hidden parameter)</td></tr> 
+</table>
