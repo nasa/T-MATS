@@ -1,0 +1,68 @@
+<script type="text/javascript"
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<font size="6" color="Magenta">T-MATS: Bleed Library Block</font>
+<br>
+This block extracts bleed flows from the main stream or combines flows into the main stream. 
+It should be noted that this block is meant for small bleed flows. Inflows are introduced 
+to the main flow as to preserve total mass flow and total enthalpy, however momentum calculations 
+are not performed. Outflows are defined fractionally based on the main input flow.
+<br><br> Input bleed is added to the main flow at station 1 of the block:
+$$ W_{s1} = W_{In} + \sum W_{bleed} $$
+Station 1 total enthalpy is a summation of all input flow enthlapies
+$$ Ht_{s1} = ht_{In}*W_{In} + \sum Ht_{bleed} $$
+Because bleed flows are assumed to be relatively small, station 1 pressure is assumed to be equal to the input main flow pressure
+    $$P_{s1} = P_{In} $$
+    Each output bleed flow is a fraction of the main flow
+    $$W_{bleedout} = C_{Wfrac} * W_{In} $$
+    $$W_{out} = W_{s1} - W_{bleedout} $$
+    All other output flow parameters are condered the same as for station 1.
+<br>
+<br>
+<font size="5" color="Blue">Bleed Inputs:</font>
+<table border="1"> <tr><td>Bleed Input</td><td>Description</td></tr>
+    <tr><td>BleedIn</td><td>Bleed flow Gas Characteristics Input, 
+            <br> 5x1 bus/vector (for each cooling flow) consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 bus/vector consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Bleed Outputs:</font>
+<table border="1"> <tr><td>Bleed Output</td><td>Description</td></tr>
+    <tr><td>BleedOut</td><td>Bleeds Characteristics Output,
+    <br>[5 x 1] bus/vector for each customer bleed (total #cbleeds *5 x 1)
+    <br> consisting of the following repeating format:
+    <br>- W - Gas path flow [pps]
+    <br>- ht - Enthalpy [BTU/lbm]
+    <br>- Tt - Total temperature [degR]
+    <br>- Pt - Total pressure [psia]
+    <br>- FAR - Combusted fuel to air ratio [frac]
+    <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
+            <br>- W - gas path flow [pps]
+            <br>- ht - enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>B_Data</td><td>Bleed internal calculation data
+    <br>- Test - Turbine interal calculation Data</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">Bleed Mask Variables: </font>
+<table border="1"> <tr><td>Bleed Mask Variable</td><td>Description</td></tr>
+    <tr><td>Wfrac_M</td><td>Fraction of main input flow that will be diverted to a bleed flow for the output. 
+    <br> n flows can be defined with a vector input [frac](1xn)</td></tr>
+    
+    
+    
+</table>
+
