@@ -162,6 +162,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /*--------Define Constants-------*/
     double WOut, htOut, TtOut, PtOut, FARcOut, TorqueOut, NErrorOut;
     double WcCalcin, WcMap, theta,delta, Pwrout, PRin, htin, Wcin, Wcs1in;
+    double ptheta, pdelta;
     double TtIdealout, Test, htIdealout, Sout, NcMap, Nc, EffMap, Eff;
     double dHcools1, dHcoolout, Wfcools1, Wfcoolout, Ws1in,hts1in, Tts1in, Pts1in, FARs1in;
     double Ss1in, dHout, Wcoolout, Wcools1, PRmapRead;
@@ -188,7 +189,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /* Verify input bleed vector is a multiple of 5 */
     Vtest = cfWidth/5;
     if(5*Vtest != cfWidth && CoolFlwEn > 0.5 && ssGetIWork(S)[Er1]==0){
-        printf("Error in %s, one or more of the cooling flow input vector eleements is missing(Vector form; 5x1: W,ht,Tt,Pt,FAR)\n",BlkNm);
+        printf("Error in %s, one or more of the cooling flow input vector elements is missing(Vector form; 5x1: W,ht,Tt,Pt,FAR)\n",BlkNm);
         ssSetIWorkValue(S,Er1,1);
     }
     else if(BldPosLeng != cfWidth/5 && CoolFlwEn > 0.5 && ssGetIWork(S)[Er2]==0){
@@ -272,11 +273,13 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     /*---- calculate misc. fluid condition related variables --------*/
     delta = PtIn / C_PSTD;
+    pdelta = PtIn;
     theta = TtIn / C_TSTD;
+    ptheta = TtIn;
     
     /*------ Calculate corrected speed ---------*/
-    if (ConfigNPSS > 0.5)
-        Nc = Nmech*divby(sqrtT(theta*C_TSTD));
+    if (ConfigNPSS > 0.5) /* In NPSS, turbine corrected values do not include standard day temp or pres. */
+        Nc = Nmech*divby(sqrtT(ptheta));
     else
         Nc = Nmech*divby(sqrtT(theta));
     
@@ -311,18 +314,24 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         ssSetIWorkValue(S,Er4,1);
     }
     if(IDes < 0.5) {
-        if (ConfigNPSS > 0.5)
-            C_Wc = WIn*sqrtT(theta)*divby(delta)*divby(WcMap);
+        if (ConfigNPSS > 0.5) /* In NPSS, turbine corrected values do not include standard day temp or pres. */
+            C_Wc = WIn  *sqrtT(ptheta)*divby(pdelta)*divby(WcMap);
         else
-            C_Wc = Ws1in*sqrtT(theta)*divby(delta)*divby(WcMap);
+            C_Wc = Ws1in*sqrtT( theta)*divby( delta)*divby(WcMap);
     }
     else {
         C_Wc = s_T_Wc;
     }
     
     WcCalcin = WcMap * C_Wc;
-    Wcin = WIn*sqrtT(theta)*divby(delta);
-    Wcs1in =  Ws1in*sqrtT(theta)*divby(delta);
+    if (ConfigNPSS > 0.5) {/* In NPSS, turbine corrected values do not include standard day temp or pres. */
+        Wcin  =  WIn*sqrtT(ptheta)*divby(pdelta);
+        Wcs1in=  Ws1in*sqrtT(ptheta)*divby(pdelta);
+    }
+    else {
+       Wcin   =  WIn*sqrtT( theta)*divby( delta);
+       Wcs1in =  Ws1in*sqrtT( theta)*divby( delta);
+    }
     
     /*-- Compute Turbine Efficiency (from Turbine map)  --------*/
     
