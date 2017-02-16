@@ -1,0 +1,91 @@
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<font size="6" color="Magenta">T-MATS: Piecewise Linear Model Generator Library Block</font>
+<br>
+<p>
+This block operates the inputs of a system to automatically create a piecewise linear model of that system.
+<br>
+The linear model generated is in the form:
+</p>
+$$
+(\dot{X} - \dot{X}_0) = A*(X - X_0) + B*(U - U_0)$$
+$$(Y - Y_0) = C*(X - X_0) + D*(U - U_0)$$
+<br>
+<p>
+    Where X is the system state, U is the system input, and Y is the plant output.
+    0 values are the trim point values. This block assumes U is dimension 1x1. Other plant effectors will be taken into account with the Env variables.
+</p>
+<p>    
+    This block attempts to characterize a system by creating many linear models at different operating points. To do this, system inputs (Env and U) or operating points
+    will be generated and fed to the system dynamically. Transitions between the operating points will be governed by quasi-steady state slewing. Once slewing to a new operating point is complete
+    the block will wait until the system has reached steady-state then freeze the state integrator and perform a linearization. Once complete the block will re-engage the state integrator and begin
+    slewing to the next operating point. As the linear models are generated they will be stored in a file called "LinPW_TMATS.mat".
+
+</p>
+<p>
+    Block operation is governed by two main functions, dynamic slewing and linearization.
+    Linearization is handled by the T-MATS linearization block with documentation located <a href="Solver_TMATS_Linearize.html">here</a>. <br>
+    Dynamic slewing is performed to operate the system model to the operating points defined by the Env and U inputs. The U input
+    can be managed directly by checking DCntrlEn and changing TVec or it can be updated to a control signal by unchecking DCntrlEn and changing TVec to become target control values.
+    When DCntrlEn is unchecked the Cntrlsen block input appears. Cntrlsen should be assigned an appropriate system output that is effected by U. A proportunal integral (PI) controller is then used to
+    drive the system to the target control value by updating U.
+</p>
+
+<br>
+<br>
+<font size="5" color="Blue">PWLinearize Inputs:</font>
+<table border="1"> <tr><td>PWLin. Input</td><td>Description</td></tr>
+    <tr><td>Cntrlsen</td><td>Sensed control value. When DCntrlEn_M is unchecked an internal proportinal integral (PI) controller will be used to adjust the system input U to meet this desired value. </td></tr>
+    <tr><td>SysGood</td><td>System Good. Similar to an enable bit, if set to 1 the system being linearized is producing good values, if set to 0 it is not and linearization will not occur.</td></tr>
+    <tr><td>dX</td><td>Change in state value to be integrated.</td></tr>
+    <tr><td>Y</td><td>System outputs(px1)</td></tr>
+</table>
+<br>
+    <font size="5" color="Blue">PWLinearize Outputs:</font>
+<table border="1"> <tr><td>PWLin. Output</td><td>Description</td></tr>
+    <tr><td>"LinPW_TMATS"</td><td>Output to File. This file contains all piecewise linear model information.</td></tr>
+    <tr><td>Env</td><td>Environmental values. Items that have an effect on the plant, but are not U.</td></tr>
+    <tr><td>X</td><td>Current value of X, or system states(mx1)</td></tr>
+    <tr><td>u</td><td>Current value of u, or system inputs(nx1)</td></tr>
+    <tr><td>Active</td><td>Block is active</td></tr>
+    <tr><td>PW_Data</td><td>Internal data bus:
+<br> -StNm - Internal state machine number 0 - start, 1 - system is slewing, 2 - system is being linearized with integration frozen, 3 - block has completed
+<br> -SlewRun - Current run number. Each run is a separate combination of Env and U or Cntrl target.
+<br> -SlewEnv - Current Env values from the slew controller
+<br> -SlewCntrlreq - Current control value request from the slew controller. U will be attempting to drive the Cntrlsen to this value if DCntrlEn_M is unchecked.
+<br> -SlewX - X value diectly from the integrator.
+<br> -SlewUact - U value from slew controller.
+<br> -SlewActive - Slew controller is active, system is being moved dynamically.
+<br> -SlewFail - Active slew has failed and is aborted.
+<br> -LinX - X value from linearization routine.
+<br> -LinU - U value from linearization routine.
+<br> -LinActive - Linearization routine is active.
+<br> -SysGood - System being linearized is providing good data.
+<br> -MaxSlews - maximum number of slews that will be performed.
+<br> -InputSlewDone - Slewing is completed for a given run.
+<br> -SystemSteady - System being linearized has reached steady-state.
+<br> -FailCount - Slew fail counter value.
+</td></tr>
+</table>
+<br>
+<font size="5" color="Blue">PWLinearize Mask Variables: </font>
+<table border="1"> <tr><td>PWLinearize Mask Variable</td><td>Description</td></tr>
+    <tr><td>Env_M</td><td>Environmental parameter matrix, row values are differnt outputs and column values are Env values.(qxz)</td></tr>
+    <tr><td>DCntrlEn_M</td><td>Enable Direct U control, checked use TVec_M contains U values, unchecked TVec_M contains control input target values.</td></tr>
+    <tr><td>TVec_M</td><td>Target control vector or direct U vector.(cx1)</td></tr>
+    <tr><td>XIC_M</td><td>Initial conditions for system states (X),(mx1).</td></tr>
+    <tr><td>UIC_M</td><td>Initial condition for system input(U),(1x1). System is SISO, so U must be a single value.</td></tr>
+    <tr><td>Ts_M</td><td>Model sampling rate or sample time. [sec]</td></tr>
+    <tr><td>Kp_M</td><td>Proportional gain for internal controller, used if DCntrlEn_M is unchecked.</td></tr>
+    <tr><td>Ki_M</td><td>Integral gain for internal controller, used if DCntrlEn_M is unchecked.</td></tr>
+    <tr><td>ER_M</td><td>Slew rates for each environmental parameter,(qx1).</td></tr>
+    <tr><td>UR_M</td><td>Slew rates for the system input, U,(1x1).</td></tr>
+    <tr><td>dXC_M</td><td>condition on dX for determining when system is steady-state.</td></tr>
+    <tr><td>Fail_M</td><td>Time required to fail a slew run.[sec]</td></tr>
+    <tr><td>XPer_M</td><td>X perturbation values. (rxm) [frac], these are fed directly to the Linearization block as noted above</td></tr>
+    <tr><td>UPer_M</td><td>U perturbation values. (rx1) [frac], these are fed directly to the Linearization block as noted above</td></tr>
+    <tr><td>NY_M</td><td>Number of system output Y variables</td></tr>
+</table>
+<br>
