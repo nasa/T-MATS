@@ -1,7 +1,7 @@
-% 
+%
 % This file was designed to preprocess compressor mask inputs for insertion
-% into the compressor S-function and produce warnings for improper Mask 
-% input sizes. This file is called from the Initialization tab of the 
+% into the compressor S-function and produce warnings for improper Mask
+% input sizes. This file is called from the Initialization tab of the
 % Mask (edit Mask).
 
 % if iDesign is set to 1, get scalars from file.
@@ -47,8 +47,8 @@ if length(Z_C_AlphaVec_M) ~= size(T_C_Map_PRArray_M,3)
     end
 end
 if length(Z_C_AlphaVec_M) ~= size(T_C_Map_EffArray_M,3)
-    if length(Z_C_AlphaVec_M) > 1    
-        warning('number of layers in T_C_Map_EffArray_M does not match length of Z_C_AlphaVec_M'); 
+    if length(Z_C_AlphaVec_M) > 1
+        warning('number of layers in T_C_Map_EffArray_M does not match length of Z_C_AlphaVec_M');
     else
         warning('T_C_Map_EffArray_M should be a 2-D matrix');
     end
@@ -74,24 +74,24 @@ if (DefSMEn_M > 0.5)
     LayPR = size(T_C_Map_PRArray_M,3);
     
     if (LenNc == RowPR && LenNc == RowWc && LenRline == ColWc && LenRline == ColPR && LenAlpha == LayWc && LenAlpha == LayPR)
-    % if sizes match  initialize stall line/plane vectors
-    SMPR = ones(length(LenNc), length(LenAlpha));
-    SMWc = ones(length(LenNc), length(LenAlpha));
-    % populate stall margin lookup vectors
-    for (i = 1:LenNc)
-        if LenAlpha > 1
-            for ii = 1:LenAlpha
-                % if there is an alpha dimension make stall plane
-                SMPR(i,ii) = interp3(X_C_RlineVec_M,Y_C_Map_NcVec_M,Z_C_AlphaVec_M, T_C_Map_PRArray_M, SRline_M,Y_C_Map_NcVec_M(i),Z_C_AlphaVec_M(ii));
-                SMWc(i,ii) = interp3(X_C_RlineVec_M,Y_C_Map_NcVec_M,Z_C_AlphaVec_M, T_C_Map_WcArray_M, SRline_M,Y_C_Map_NcVec_M(i),Z_C_AlphaVec_M(ii));
+        % if sizes match  initialize stall line/plane vectors
+        SMPR = ones(length(LenNc), length(LenAlpha));
+        SMWc = ones(length(LenNc), length(LenAlpha));
+        % populate stall margin lookup vectors
+        for (i = 1:LenNc)
+            if LenAlpha > 1
+                for ii = 1:LenAlpha
+                    % if there is an alpha dimension make stall plane
+                    SMPR(i,ii) = interp3(X_C_RlineVec_M,Y_C_Map_NcVec_M,Z_C_AlphaVec_M, T_C_Map_PRArray_M, SRline_M,Y_C_Map_NcVec_M(i),Z_C_AlphaVec_M(ii));
+                    SMWc(i,ii) = interp3(X_C_RlineVec_M,Y_C_Map_NcVec_M,Z_C_AlphaVec_M, T_C_Map_WcArray_M, SRline_M,Y_C_Map_NcVec_M(i),Z_C_AlphaVec_M(ii));
+                end
+            else
+                SMPR(i) = interp2(X_C_RlineVec_M,Y_C_Map_NcVec_M, T_C_Map_PRArray_M,SRline_M,Y_C_Map_NcVec_M(i));
+                SMWc(i) = interp2(X_C_RlineVec_M,Y_C_Map_NcVec_M, T_C_Map_WcArray_M,SRline_M,Y_C_Map_NcVec_M(i));
             end
-        else
-            SMPR(i) = interp2(X_C_RlineVec_M,Y_C_Map_NcVec_M, T_C_Map_PRArray_M,SRline_M,Y_C_Map_NcVec_M(i));
-            SMWc(i) = interp2(X_C_RlineVec_M,Y_C_Map_NcVec_M, T_C_Map_WcArray_M,SRline_M,Y_C_Map_NcVec_M(i));
         end
-    end
-    X_C_Map_WcSurgeVec_M = SMWc';
-    T_C_Map_PRSurgeVec_M = SMPR';
+        X_C_Map_WcSurgeVec_M = SMWc';
+        T_C_Map_PRSurgeVec_M = SMPR';
     end
 end
 
@@ -105,7 +105,15 @@ if length(Z_C_AlphaVec_M) > 1
     if length(Z_C_AlphaVec_M) ~= size(X_C_Map_WcSurgeVec_M,1)
         warning('number of columns in X_C_Map_WcSurgeVec_M does not match length of Z_C_AlphaVec_M');
     end
-    if length(Z_C_AlphaVec_M) ~= size(T_C_Map_PRSurgeVec_M,1)  
-        warning('number of columns in T_C_Map_PRSurgeVec_M does not match length of Z_C_AlphaVec_M'); 
+    if length(Z_C_AlphaVec_M) ~= size(T_C_Map_PRSurgeVec_M,1)
+        warning('number of columns in T_C_Map_PRSurgeVec_M does not match length of Z_C_AlphaVec_M');
     end
+end
+
+% if Bleed type is disabled set input bleed size to 1 for outport sizing
+if ~CBLDEN_M
+    C_CBD_M = 1;
+end
+if ~FBLDEN_M
+    C_FBD_M = 1;
 end
