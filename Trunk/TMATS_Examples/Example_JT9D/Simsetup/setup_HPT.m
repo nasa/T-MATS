@@ -60,11 +60,8 @@ function MWS = setup_HPT(MWS)
 
 
 %------ scalar for corrected flow -------------
-% Determined by equation taken from NPSS data
 % Perf_Wc/ WcMap 
-% Note, NPSS s_Wc = 1.4085 and 
-% TMATS s_Wc = 1.4085 *(sqrt(1/Tstd)/(1/Pstd))
-MWS.HPT.s_Wc = 0.908789;
+MWS.HPT.s_Wc = 1.4085;
 
 %--------- scalar for pressure ratio ----------
 % MWS.HPT.s_PR = 2.362402; 

@@ -66,7 +66,7 @@ function MWS = setup_LPT(MWS)
 
 
 %------ scalar for corrected flow -------------
-MWS.LPT.s_Wc = 0.481254;
+MWS.LPT.s_Wc = 0.746331082;
 
 %--------- scalar for pressure ratio ----------
 MWS.LPT.s_PR = 1/1.394931; 
