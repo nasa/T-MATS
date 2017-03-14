@@ -20,7 +20,8 @@ InpMsg{5} = '4) Steady State Dual Spool High Bypass Engine JT9D';
 InpMsg{6} = '5) Dynamic Dual Spool High Bypass Engine JT9D';
 InpMsg{7} = '6) Steady State JT9D, Cantera';
 InpMsg{8} = '7) Cycle Model';
-InpMsg{9} = '8) Cancel Setup';
+InpMsg{9} = '8) Linearization Examples';
+InpMsg{10} = '9) Cancel Setup';
 InpMsgFinal = '';
 
 for i = 1: length(InpMsg)
@@ -36,6 +37,20 @@ InpMsgFinal2 = '';
 for i = 1: length(InpMsg2)
     InpMsgFinal2 = strcat(InpMsgFinal2,InpMsg2{i},'\n');
 end
+
+%Messages for Cycle Model Selection
+InpMsg3{1} = 'Select Linearization Example';
+InpMsg3{2} = '1) Known State Space';
+InpMsg3{3} = '2) JT9D Linearization (under construction)';
+InpMsg3{4} = '3) JT9D Piece Wise Linearization (under construction)';
+InpMsg3{5} = '4) Cancel';
+InpMsgFinal3 = '';
+
+for i = 1: length(InpMsg3)
+    InpMsgFinal3 = strcat(InpMsgFinal3,InpMsg3{i},'\n');
+end
+
+
 
 %Start Menu
 TMATS.S = input(InpMsgFinal,'s');
@@ -102,8 +117,33 @@ switch TMATS.S
                 disp('Selection Invalid')
         end
         
-        
     case '8'
+        
+        TMATS.S3 = input(InpMsgFinal3,'s');
+        switch TMATS.S3
+            case '1'
+                disp(strcat('Loading Simulation from: ', TMATS.P ,TMATS.POp,'Example_Linearization'))
+                cd Example_Linearization
+                open_system('LinStSpace.slx');
+                cd ..
+            case '2'
+                disp(strcat('Loading Simulation from: ', TMATS.P ,TMATS.POp,'Example_JT9D'))
+                cd Example_JT9D
+                %open_system('BraytonCycle.slx');
+                cd ..
+            case '3'
+                disp(strcat('Loading Simulation from: ', TMATS.P ,TMATS.POp,'Example_JT9D'))
+                cd Example_JT9D
+                %open_system('BraytonCycle.slx');
+                cd ..
+                
+            case '4'
+                disp('Example Setup Canceled')
+            otherwise,
+                disp('Selection Invalid')
+        end
+        
+    case '9'
         disp('Example Setup Canceled');
     otherwise,
         disp('Selection Invalid')
