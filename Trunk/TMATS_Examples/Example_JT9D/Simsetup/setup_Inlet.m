@@ -10,6 +10,6 @@ function MWS = setup_Inlet(MWS)
             
   
  MWS.Inlet.eRamBase = 0.9920;
- MWS.Inlet.eRamVec = [.99 1 1.007 1.028 1.1 2];
+ MWS.Inlet.eRamVec = [0.99 1 1.007 1.028 1.1 10];
  MWS.Inlet.eRamtbl = [1 1 1.001 1.002 1.003 1.003];
  

@@ -41,8 +41,8 @@ end
 %Messages for Cycle Model Selection
 InpMsg3{1} = 'Select Linearization Example';
 InpMsg3{2} = '1) Known State Space';
-InpMsg3{3} = '2) JT9D Linearization (under construction)';
-InpMsg3{4} = '3) JT9D Piece Wise Linearization (under construction)';
+InpMsg3{3} = '2) JT9D single point Linearization';
+InpMsg3{4} = '3) JT9D Piece Wise Linearization';
 InpMsg3{5} = '4) Cancel';
 InpMsgFinal3 = '';
 
@@ -129,12 +129,12 @@ switch TMATS.S
             case '2'
                 disp(strcat('Loading Simulation from: ', TMATS.P ,TMATS.POp,'Example_JT9D'))
                 cd Example_JT9D
-                %open_system('BraytonCycle.slx');
+                open_system('JT9D_Model_Lin.slx');
                 cd ..
             case '3'
                 disp(strcat('Loading Simulation from: ', TMATS.P ,TMATS.POp,'Example_JT9D'))
                 cd Example_JT9D
-                %open_system('BraytonCycle.slx');
+                open_system('JT9D_Model_PWLin.slx');
                 cd ..
                 
             case '4'
