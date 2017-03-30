@@ -97,14 +97,12 @@ static void mdlSetInputPortWidth(SimStruct *S, int_T port,
         int_T inputPortWidth)
 {
     ssSetInputPortWidth(S,port,inputPortWidth);
-    ssSetOutputPortWidth(S,port,5*inputPortWidth);
 }
 
 # define MDL_SET_OUTPUT_PORT_WIDTH
 static void mdlSetOutputPortWidth(SimStruct *S, int_T port,
         int_T outputPortWidth)
 {
-    ssSetInputPortWidth(S,port,outputPortWidth/5);
     ssSetOutputPortWidth(S,port,outputPortWidth);
 }
 #endif
