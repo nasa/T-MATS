@@ -31,7 +31,8 @@ should both be located in the same subsystem as the plant that is to be solved f
     <tr><td>do_while Condition</td><td>Input to the do... while loop.
     <br> The current subystem should repeat until the Solver's conditions are met.</td></tr>
     <tr><td>S_Data</td><td>Solver internal calculation Data, including:
-    <br>- J - Calculated Jacobian Matrix </td></tr>
+    <br>- J - Calculated Jacobian Matrix
+    <br>- JacFailed - Jacobian inversion fault (0 - no fault, 1 - fault)</td></tr>
 </table>
 <br>
 <font size="5" color="Blue">Iter_NRSwJC Mask Variables: </font>
