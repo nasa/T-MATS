@@ -4,13 +4,13 @@ error = 0;
 TMATSRemovemsg = 'Remove T-MATS matlab toolbox? Note: Un-Installation will remove MATLAB paths.';
 POp = filesep;
 
-switch questdlg(TMATSRemovemsg, 'T-MATS Library', 'Yes', 'No', 'No');
+switch questdlg(TMATSRemovemsg, 'T-MATS Library', 'Yes', 'No', 'No')
     
     % check if T-MATS_Library is in the path
     
-    case 'Yes',
+    case 'Yes'
         p = path;                               % current path
-        CurrDir = pwd;                          % current directory
+        [CurrDir,temp1,temp2] = fileparts(mfilename('fullpath')); % Base install directory
         % define new paths
         Pth{1} = strcat(pwd,POp,'TMATS_Library ');
         Pth{2} = strcat(pwd,POp,'TMATS_Library',POp,'MEX');
@@ -52,7 +52,7 @@ switch questdlg(TMATSRemovemsg, 'T-MATS Library', 'Yes', 'No', 'No');
             end
         end
         
-        if error ==0;
+        if error ==0
             FileExist = exist(strcat(pwd,POp,'TMATS_Library ',POp,'Contents.m'), 'file');
             if FileExist == 2
                 cd( 'TMATS_Library')
@@ -66,6 +66,6 @@ switch questdlg(TMATSRemovemsg, 'T-MATS Library', 'Yes', 'No', 'No');
             disp('T-MATS path removal complete.');
             disp('Note: changes made to the startup.m file will need to be removed manually.. see User Manual for details');
         end
-    case 'No',
+    case 'No'
         disp('T-MATS removal aborted.');
 end

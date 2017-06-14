@@ -3,8 +3,8 @@ function Install_TMATS()
 
 % TMATSver and date must remain in the listed form for the ver command to work
 % properly.
-TMATSver = '1.1.3.31';
-TMATSdate = 'MayThe4thBeWithYou-2017';
+TMATSver = '1.1.3.32';
+TMATSdate = 'Jun-14-2017';
 
 error = 0;
 TMATSInstallmsg = 'Install T-MATS matlab toolbox? Note: Installation will add MATLAB paths and generate MEX files.';
@@ -25,7 +25,7 @@ end
 switch InstallType
     case 'Install',
         p = path;                               % current path
-        CurrDir = pwd;                          % current directory
+        [CurrDir,temp1,temp2] = fileparts(mfilename('fullpath')); % Base install directory
         % define new paths
         Pth{1} = strcat(pwd,POp,'TMATS_Library');
         Pth{2} = strcat(pwd,POp,'TMATS_Library',POp,'MEX');
