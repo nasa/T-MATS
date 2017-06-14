@@ -109,11 +109,28 @@ if length(Z_C_AlphaVec_M) > 1
         warning('number of columns in T_C_Map_PRSurgeVec_M does not match length of Z_C_AlphaVec_M');
     end
 end
-
+% produce warning if Health Parameters are enabled and IDesign is set to 0
+if HP_M && iDesign_M == 0
+    warning('iDesign is set to 0 (model on design) and health parameters are enabled. HP values will be ignored.');
+end
 % if Bleed type is disabled set input bleed size to 1 for outport sizing
 if ~CBLDEN_M
     C_CBD_M = 1;
 end
 if ~FBLDEN_M
     C_FBD_M = 1;
+end
+
+%Manage Health Parameter inputs
+n=4;
+if HP_M == 1
+    if strcmp(get_param([BlkNm_M '/HP_Mods'],'BlockType'),'Constant')
+        MSK_ReplaceBlock_TMATS([BlkNm_M '/HP_Mods'],'built-in/Inport');
+    end
+    set_param([BlkNm_M '/HP_Mods'],'Port',num2str(n));
+elseif HP_M == 0
+    if strcmp(get_param([BlkNm_M '/HP_Mods'],'BlockType'),'Inport')
+        MSK_ReplaceBlock_TMATS([BlkNm_M '/HP_Mods'],'built-in/Constant');
+        set_param([BlkNm_M '/HP_Mods'],'Value','[0, 0, 0]');
+    end
 end

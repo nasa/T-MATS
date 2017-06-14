@@ -20,9 +20,14 @@ for simulation of variable geometries.
             <br>Determines pressure ratio, efficiency, and gas path flow. 
             <br>The value for this variable will need be solved for by driving 
     <br>flow error across the engine to zero.</td></tr>
-        <tr><td>Alpha</td><td>Alpha, positionin for dynamically alternate 
+    <tr><td>Alpha</td><td>Alpha, positionin for dynamically alternate 
             <br>compressor maps. typically alpha is used to define alternate
-            <br>variable geometry configurations.</td></tr>
+    <br>variable geometry configurations.</td></tr>
+    <tr><td>HP_Mods</td><td>Health parameter modifiers (3x1), enabled with HP_M in mask
+            <br>- WMod - Flow modifier [frac]
+            <br>- PRMod - Pressure ratio modifier [frac]
+            <br>- EffMod - Efficiency modifier [frac]
+    <br> Modifiers are defined fractionally, example: -0.05 is a 5% loss</td></tr>
     <tr><td>Nmech</td><td>shaft speed [rpm]</td></tr>
 </table>
 <br>
@@ -119,6 +124,7 @@ for simulation of variable geometries.
     <tr><td>PRDes_M</td><td>Design Pressure Ratio [frac], actual design point compressor PR</td></tr>
     <tr><td>RlineDes_M</td><td>map Design Rline, design point Rline used in map</td></tr>
     <tr><td>FVar_M</td><td>File name for iDes Variables</td></tr>
+    <tr><td>HP_M</td><td>Enable health parameter input. This input is required to be a 3x1 vector.</td></tr>
 </table>
 <br>
 Notes: Vectors are the x and/or y axis to a table made of an array.
