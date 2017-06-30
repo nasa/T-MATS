@@ -1,4 +1,3 @@
-#include "simstruc.h"
 #include "constants_TMATS.h"
 #include "functions_TMATS.h"
 #include "types_TMATS.h"

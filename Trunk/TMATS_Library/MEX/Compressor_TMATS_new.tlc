@@ -39,55 +39,63 @@
 %%
 %function Outputs(block, system) Output
   %%
-    compPrms.NcDes              = *mxGetPr(NcDes_p(S));
-    compPrms.PRDes              = *mxGetPr(PRDes_p(S));
-    compPrms.EffDes             = *mxGetPr(EffDes_p(S));
-    compPrms.RlineDes           = *mxGetPr(RlineDes_p(S));
-    compPrms.IDes               = *mxGetPr(IDesign_p(S));
-    compPrms.CustBldEn          = *mxGetPr(CustBldEn_p(S));
-    compPrms.FBldEn             = *mxGetPr(FBldEn_p(S));
-    compPrms.CustBldNm          = *mxGetPr(CustBldNm_p(S));
-    compPrms.FracBldNm          = *mxGetPr(FracBldNm_p(S));
-    compPrms.Y_C_Map_NcVec        = mxGetPr(Y_C_Map_NcVec_p(S));
-    compPrms.X_C_RlineVec         = mxGetPr(X_C_RlineVec_p(S));
-    compPrms.Z_C_AlphaVec         = mxGetPr(Z_C_AlphaVec_p(S));
-    compPrms.T_C_Map_WcArray      = mxGetPr(T_C_Map_WcArray_p(S));
-    compPrms.T_C_Map_PRArray      = mxGetPr(T_C_Map_PRArray_p(S));
-    compPrms.T_C_Map_EffArray     = mxGetPr(T_C_Map_EffArray_p(S));
-    compPrms.FracCusBldht         = mxGetPr(FracCusBldht_p(S));
-    compPrms.FracCusBldPt         = mxGetPr(FracCusBldPt_p(S));
-    compPrms.FracBldht            = mxGetPr(FracBldht_p(S));
-    compPrms.FracBldPt            = mxGetPr(FracBldPt_p(S));
-    compPrms.X_C_Map_WcSurgeVec   = mxGetPr(X_C_Map_WcSurgeVec_p(S));
-    compPrms.T_C_Map_PRSurgeVec   = mxGetPr(T_C_Map_PRSurgeVec_p(S));
-    compPrms.A   = mxGetNumberOfElements(Y_C_Map_NcVec_p(S));
-    compPrms.B   = mxGetNumberOfElements(X_C_RlineVec_p(S));
-    compPrms.C   = mxGetNumberOfElements(Z_C_AlphaVec_p(S));
-    compPrms.D   = mxGetNumberOfElements(X_C_Map_WcSurgeVec_p(S));
-    compPrms.WcMapCol  = *mxGetPr(WcMapCol_p(S));
-    compPrms.PRMapCol  = *mxGetPr(PRMapCol_p(S));
-    compPrms.EffMapCol = *mxGetPr(EffMapCol_p(S));
-    compPrms.WcMapRw   = *mxGetPr(WcMapRw_p(S));
-    compPrms.PRMapRw   = *mxGetPr(PRMapRw_p(S));
-    compPrms.EffMapRw  = *mxGetPr(EffMapRw_p(S));
-    compPrms.WcMapLay   = *mxGetPr(WcMapLay_p(S));
-    compPrms.PRMapLay   = *mxGetPr(PRMapLay_p(S));
-    compPrms.EffMapLay  = *mxGetPr(EffMapLay_p(S));
+    compPrms.NcDes              = %<LibBlockParameter(NcDes,"","",0)>;
+    compPrms.PRDes              = %<LibBlockParameter(PRDes,"","",0)>;
+    compPrms.EffDes             = %<LibBlockParameter(EffDes,"","",0)>;
+    compPrms.RlineDes           = %<LibBlockParameter(RlineDes,"","",0)>;
+    compPrms.IDes               = %<LibBlockParameter(IDes,"","",0)>;
+    compPrms.CustBldEn          = %<LibBlockParameter(CustBldEn,"","",0)>;
+    compPrms.FBldEn             = %<LibBlockParameter(FBldEn,"","",0)>;
+    compPrms.CustBldNm          = %<LibBlockParameter(CustBldNm,"","",0)>;
+    compPrms.FracBldNm          = %<LibBlockParameter(FracBldNm,"","",0)>;
+    compPrms.Y_C_Map_NcVec        = (double*)(%<LibBlockParameterBaseAddr(Y_C_Map_NcVec)>);
+    compPrms.X_C_RlineVec         = (double*)(%<LibBlockParameterBaseAddr(X_C_RlineVec)>);
+    compPrms.Z_C_AlphaVec         = (double*)(%<LibBlockParameterBaseAddr(Z_C_AlphaVec)>);
+    compPrms.T_C_Map_WcArray      = (double*)(%<LibBlockParameterBaseAddr(T_C_Map_WcArray)>);
+    compPrms.T_C_Map_PRArray      = (double*)(%<LibBlockParameterBaseAddr(T_C_Map_PRArray)>);
+    compPrms.T_C_Map_EffArray     = (double*)(%<LibBlockParameterBaseAddr(T_C_Map_EffArray)>);
+    compPrms.FracCusBldht         = (double*)(%<LibBlockParameterBaseAddr(FracCusBldht)>);
+    compPrms.FracCusBldPt         = (double*)(%<LibBlockParameterBaseAddr(FracCusBldPt)>);
+    compPrms.FracBldht            = (double*)(%<LibBlockParameterBaseAddr(FracBldht)>);
+    compPrms.FracBldPt            = (double*)(%<LibBlockParameterBaseAddr(FracBldPt)>);
+    compPrms.X_C_Map_WcSurgeVec   = (double*)(%<LibBlockParameterBaseAddr(X_C_Map_WcSurgeVec)>);
+    compPrms.T_C_Map_PRSurgeVec   = (double*)(%<LibBlockParameterBaseAddr(T_C_Map_PRSurgeVec)>);
+    compPrms.A   = %<LibBlockParameterSize(Y_C_Map_NcVec)[1]>;
+    compPrms.B   = %<LibBlockParameterSize(X_C_RlineVec)[1]>;
+    compPrms.C   = %<LibBlockParameterSize(Z_C_AlphaVec)[1]>;
+    compPrms.D   = %<LibBlockParameterSize(X_C_Map_WcSurgeVec)[1]>;
+    compPrms.WcMapCol  = %<LibBlockParameter(WcMapCol,"","",0)>;
+    compPrms.PRMapCol  = %<LibBlockParameter(PRMapCol,"","",0)>;
+    compPrms.EffMapCol = %<LibBlockParameter(EffMapCol,"","",0)>;
+    compPrms.WcMapRw   = %<LibBlockParameter(WcMapRw,"","",0)>;
+    compPrms.PRMapRw   = %<LibBlockParameter(PRMapRw,"","",0)>;
+    compPrms.EffMapRw  = %<LibBlockParameter(EffMapRw,"","",0)>;
+    compPrms.WcMapLay   = %<LibBlockParameter(WcMapLay,"","",0)>;
+    compPrms.PRMapLay   = %<LibBlockParameter(PRMapLay,"","",0)>;
+    compPrms.EffMapLay  = %<LibBlockParameter(EffMapLay,"","",0)>;
     
-    /*---------Define Inputs for input port 1--------*/
-    const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
+	%assign u_ptr             = LibBlockInputSignalAddr(0, "", "", 0)
+    %assign u_dataType        = LibBlockInputSignalDataTypeName(0,"")
+    %assign wc_ptr            = LibBlockInputSignalAddr(1, "", "", 0)
+    %assign wc_dataType       = LibBlockInputSignalDataTypeName(1,"")
+	%assign fwb_ptr           = LibBlockInputSignalAddr(2, "", "", 0)
+    %assign fwb_dataType      = LibBlockInputSignalDataTypeName(2,"")
+    %assign y_ptr             = LibBlockOutputSignalAddr(0, "", "", 0)
+    %assign y_dataType        = LibBlockOutputSignalDataTypeName(0,"")
+	%assign y1_ptr            = LibBlockOutputSignalAddr(1, "", "", 0)
+    %assign y1_dataType       = LibBlockOutputSignalDataTypeName(1,"")
+	%assign y2_ptr            = LibBlockOutputSignalAddr(2, "", "", 0)
+    %assign y2_dataType       = LibBlockOutputSignalDataTypeName(2,"")
+
+    %<LibBlockInputSignalAddr(0, "", "", 2)>;
     
-    /*---------Define Inputs for input port 2--------*/
-    const real_T *Wcust = ssGetInputPortRealSignal(S, 1);
-    
-    /*---------Define Inputs for input port 3--------*/
-    const real_T *FracWbld  = ssGetInputPortSignal(S,2);
-    
-    real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);   /* Output Array port 1 */
-    real_T *y1  = (real_T *)ssGetOutputPortRealSignal(S,1);   /* Output Array port 2 */
-    real_T *y2  = (real_T *)ssGetOutputPortRealSignal(S,2);   /* Output Array port 3 */
-	
-	Compressor_TMATS_body(y, y1, y2, u, Wcust, FracWbld, &compPrms);
+	Compressor_TMATS_body((%<y_dataType>*)%<y_ptr>,\ 
+	                      (%<y1_dataType>*)%<y1_ptr>,\
+	                      (%<y2_dataType>*)%<y2_ptr>,\ 						  
+                          (%<u_dataType>*) %<u_ptr>,\
+                          (%<wc_dataType>*)%<wc_ptr>,\
+						  (%<fwb_dataType>*)%<fwb_ptr>,\
+                          &compPrms);
 %endfunction
 
 %% [EOF]

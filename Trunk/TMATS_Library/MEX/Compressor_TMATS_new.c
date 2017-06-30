@@ -59,7 +59,11 @@ static void mdlInitializeSizes(SimStruct *S)
     }
     
     for (i = 0; i < NPARAMS; i++)
-        ssSetSFcnParamTunable(S, i, 0);
+        if (i != 19) {
+            ssSetSFcnParamTunable(S, i, 1);
+        } else {
+            ssSetSFcnParamTunable(S, i, 0);
+        }
     
     ssSetNumContStates(S, 0);
     ssSetNumDiscStates(S, 0);
@@ -191,6 +195,90 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 static void mdlTerminate(SimStruct *S)
 {
 }
+
+#define MDL_RTW                        /* Change to #undef to remove function */
+#if defined(MDL_RTW) && (defined(MATLAB_MEX_FILE) || defined(NRT))
+/* Function: mdlRTW ============================================================
+ * Abstract:
+ *    This function is called when Real-Time Workshop is generating the
+ *    model.rtw file. In this routine, you can call the following functions
+ *    which add fields to the model.rtw file.
+ *
+ *    Important! Since this s-function has this mdlRTW method, it is required
+ *    to have a corresponding .tlc file so as to work with RTW. You will find
+ *    the sfun_directlook.tlc in <matlaroot>/toolbox/simulink/blocks/tlc_c/.
+ */
+static void mdlRTW(SimStruct *S)
+{
+	real_T* NcDes              = mxGetPr(NcDes_p(S));
+    real_T* PRDes              = mxGetPr(PRDes_p(S));
+    real_T* EffDes             = mxGetPr(EffDes_p(S));
+    real_T* RlineDes           = mxGetPr(RlineDes_p(S));
+    real_T* IDes               = mxGetPr(IDesign_p(S));
+    real_T* CustBldEn          = mxGetPr(CustBldEn_p(S));
+    real_T* FBldEn             = mxGetPr(FBldEn_p(S));
+    real_T* CustBldNm          = mxGetPr(CustBldNm_p(S));
+    real_T* FracBldNm          = mxGetPr(FracBldNm_p(S));
+    real_T* Y_C_Map_NcVec      = mxGetPr(Y_C_Map_NcVec_p(S));
+    real_T* X_C_RlineVec       = mxGetPr(X_C_RlineVec_p(S));
+    real_T* Z_C_AlphaVec       = mxGetPr(Z_C_AlphaVec_p(S));
+    real_T* T_C_Map_WcArray    = mxGetPr(T_C_Map_WcArray_p(S));
+    real_T* T_C_Map_PRArray    = mxGetPr(T_C_Map_PRArray_p(S));
+    real_T* T_C_Map_EffArray   = mxGetPr(T_C_Map_EffArray_p(S));
+    real_T* FracCusBldht       = mxGetPr(FracCusBldht_p(S));
+    real_T* FracCusBldPt       = mxGetPr(FracCusBldPt_p(S));
+    real_T* FracBldht          = mxGetPr(FracBldht_p(S));
+    real_T* FracBldPt          = mxGetPr(FracBldPt_p(S));
+    real_T* X_C_Map_WcSurgeVec = mxGetPr(X_C_Map_WcSurgeVec_p(S));
+    real_T* T_C_Map_PRSurgeVec = mxGetPr(T_C_Map_PRSurgeVec_p(S));
+    real_T* WcMapCol           = mxGetPr(WcMapCol_p(S));
+    real_T* PRMapCol           = mxGetPr(PRMapCol_p(S));
+    real_T* EffMapCol          = mxGetPr(EffMapCol_p(S));
+    real_T* WcMapRw            = mxGetPr(WcMapRw_p(S));
+    real_T* PRMapRw            = mxGetPr(PRMapRw_p(S));
+    real_T* EffMapRw           = mxGetPr(EffMapRw_p(S));
+    real_T* WcMapLay           = mxGetPr(WcMapLay_p(S));
+    real_T* PRMapLay           = mxGetPr(PRMapLay_p(S));
+    real_T* EffMapLay          = mxGetPr(EffMapLay_p(S));
+    
+    if (!ssWriteRTWParameters(S, 30,
+        SSWRITE_VALUE_VECT, "Y_C_Map_NcVec",      "",  Y_C_Map_NcVec,      mxGetNumberOfElements(Y_C_Map_NcVec_p(S)),
+        SSWRITE_VALUE_VECT, "X_C_RlineVec",       "",  X_C_RlineVec,       mxGetNumberOfElements(X_C_RlineVec_p(S)),
+        SSWRITE_VALUE_VECT, "Z_C_AlphaVec",       "",  Z_C_AlphaVec,       mxGetNumberOfElements(Z_C_AlphaVec_p(S)),
+        SSWRITE_VALUE_VECT, "T_C_Map_WcArray",    "",  T_C_Map_WcArray,    mxGetNumberOfElements(T_C_Map_WcArray_p(S)),
+        SSWRITE_VALUE_VECT, "T_C_Map_PRArray",    "",  T_C_Map_PRArray,    mxGetNumberOfElements(T_C_Map_PRArray_p(S)),
+        SSWRITE_VALUE_VECT, "T_C_Map_EffArray",   "",  T_C_Map_EffArray,   mxGetNumberOfElements(T_C_Map_EffArray_p(S)),
+        SSWRITE_VALUE_VECT, "FracCusBldht",       "",  FracCusBldht,       mxGetNumberOfElements(FracCusBldht_p(S)),
+        SSWRITE_VALUE_VECT, "FracCusBldPt",       "",  FracCusBldPt,       mxGetNumberOfElements(FracCusBldPt_p(S)),
+        SSWRITE_VALUE_VECT, "FracBldht",          "",  FracBldht,          mxGetNumberOfElements(FracBldht_p(S)),
+        SSWRITE_VALUE_VECT, "FracBldPt",          "",  FracBldPt,          mxGetNumberOfElements(FracBldPt_p(S)),
+        SSWRITE_VALUE_VECT, "X_C_Map_WcSurgeVec", "",  X_C_Map_WcSurgeVec, mxGetNumberOfElements(X_C_Map_WcSurgeVec_p(S)),
+        SSWRITE_VALUE_VECT, "T_C_Map_PRSurgeVec", "",  T_C_Map_PRSurgeVec, mxGetNumberOfElements(T_C_Map_PRSurgeVec_p(S)),
+		SSWRITE_VALUE_VECT, "IDes",               "",  IDes,               1,
+        SSWRITE_VALUE_VECT, "NcDes",              "",  NcDes,              1,
+        SSWRITE_VALUE_VECT, "EffDes",             "",  EffDes,             1,
+        SSWRITE_VALUE_VECT, "PRDes",              "",  PRDes,              1,
+        SSWRITE_VALUE_VECT, "RlineDes",           "",  RlineDes,           1,
+        SSWRITE_VALUE_VECT, "CustBldEn",          "",  CustBldEn,          1,
+        SSWRITE_VALUE_VECT, "FBldEn",             "",  FBldEn,             1,
+        SSWRITE_VALUE_VECT, "CustBldNm",          "",  CustBldNm,          1,
+        SSWRITE_VALUE_VECT, "FracBldNm",          "",  FracBldNm,          1,
+        SSWRITE_VALUE_VECT, "WcMapCol",           "",  WcMapCol,           1,
+        SSWRITE_VALUE_VECT, "PRMapCol",           "",  PRMapCol,           1,
+        SSWRITE_VALUE_VECT, "EffMapCol",          "",  EffMapCol,          1,
+        SSWRITE_VALUE_VECT, "WcMapRw",            "",  WcMapRw,            1,
+        SSWRITE_VALUE_VECT, "PRMapRw",            "",  PRMapRw,            1,
+        SSWRITE_VALUE_VECT, "EffMapRw",           "",  EffMapRw,           1,
+        SSWRITE_VALUE_VECT, "WcMapLay",           "",  WcMapLay,           1,
+        SSWRITE_VALUE_VECT, "PRMapLay",           "",  PRMapLay,           1,
+        SSWRITE_VALUE_VECT, "EffMapLay",          "",  EffMapLay,          1
+        ))
+    {
+        return;/* An error occurred which will be reported by Simulink */
+    }
+}
+
+#endif /* MDL_RTW */
 
 #ifdef  MATLAB_MEX_FILE    /* Is this file being compiled as a MEX-file? */
 #include "simulink.c"      /* MEX-file interface mechanism */
