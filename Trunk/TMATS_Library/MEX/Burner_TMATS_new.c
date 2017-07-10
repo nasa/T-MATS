@@ -10,7 +10,6 @@
 #define S_FUNCTION_LEVEL 2
 #include "simstruc.h"
 #include "types_TMATS.h"
-#include <math.h>
 
 #define LHV_p(S)			    ssGetSFcnParam(S,0)
 #define dPnormBurner_p(S)		ssGetSFcnParam(S,1)
@@ -21,8 +20,6 @@
 
 // Forward declaration for Burner body of calcs
 extern void Burner_TMATS_body(double*, double*, BurnStruct*);
-
-BurnStruct burnPrms;
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -80,15 +77,16 @@ static void mdlStart(SimStruct *S)
 
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
-    real_T *u  = (real_T*) ssGetInputPortSignal(S,0);      // Inputs
-    real_T *y  = (real_T*) ssGetOutputPortRealSignal(S,0); // Outputs
-	
 	// Grab block parameters and place into parameter struct to pass into Burner_TMATS_body()
+    BurnStruct burnPrms;
     burnPrms.LHV			 = *mxGetPr(LHV_p(S));
     burnPrms.dPnormBurner   = *mxGetPr(dPnormBurner_p(S));
     burnPrms.Eff            = *mxGetPr(Efficiency_p(S));
     burnPrms.LHVEn          = *mxGetPr(LHVEn_p(S));
     burnPrms.hFuel          = *mxGetPr(hFuel_p(S));
+    
+    real_T *u  = (real_T*) ssGetInputPortSignal(S,0);      // Inputs
+    real_T *y  = (real_T*) ssGetOutputPortRealSignal(S,0); // Outputs
     
     // Call the "body" of the Burner_TMATS code
     Burner_TMATS_body(y, u, &burnPrms);

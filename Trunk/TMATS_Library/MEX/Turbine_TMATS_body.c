@@ -6,7 +6,7 @@
 #include "functions_TMATS.h"
 #include "types_TMATS.h"
 #ifdef MATLAB_MEX_FILE
-    #include "simstruc.h"
+#include "simstruc.h"
 #endif
 
 void Turbine_TMATS_body(double* y, const double* u, const double* cf, const TurbStruct* prm)
@@ -46,13 +46,13 @@ void Turbine_TMATS_body(double* y, const double* u, const double* cf, const Turb
     Vtest = cfWidth/5;
     if(5*Vtest != cfWidth && prm->CoolFlwEn > 0.5 && prm->IWork[Er1]==0){
         #ifdef MATLAB_MEX_FILE
-            printf("Error in %s, one or more of the cooling flow input vector elements is missing(Vector form; 5x1: W,ht,Tt,Pt,FAR)\n",prm->BlkNm);
+        printf("Error in %s, one or more of the cooling flow input vector elements is missing(Vector form; 5x1: W,ht,Tt,Pt,FAR)\n",prm->BlkNm);
         #endif
         prm->IWork[Er1] = 1;
     }
     else if(prm->BldPosLeng != cfWidth/5 && prm->CoolFlwEn > 0.5 && prm->IWork[Er2]==0){
         #ifdef MATLAB_MEX_FILE
-            printf("Error in %s, number of cooling flow inputs does not match the length of the Cooling flow postion vector in the mask\n",prm->BlkNm);
+        printf("Error in %s, number of cooling flow inputs does not match the length of the Cooling flow postion vector in the mask\n",prm->BlkNm);
         #endif
         prm->IWork[Er2] = 1;
     }
@@ -90,7 +90,7 @@ void Turbine_TMATS_body(double* y, const double* u, const double* cf, const Turb
     {
         if ((prm->T_BldPos[i] > 1 || prm->T_BldPos[i] < 0) && prm->CoolFlwEn > 0.5 && prm->IWork[Er3]==0){
             #ifdef MATLAB_MEX_FILE
-                printf(" Error in %s, cooling flow postion element %i needs to be defined as prm->A 0 or 1\n",prm->BlkNm,i+1);
+            printf(" Error in %s, cooling flow postion element %i needs to be defined as prm->A 0 or 1\n",prm->BlkNm,i+1);
             #endif
             prm->IWork[Er3] = 1;
         }
@@ -169,13 +169,13 @@ void Turbine_TMATS_body(double* y, const double* u, const double* cf, const Turb
     WcMap = interp2Ac(prm->X_T_PRVec,prm->Y_T_NcVec,prm->T_T_Map_WcArray,PRmapRead,NcMap,prm->B,prm->A,&interpErr);
     if ((prm->WcMapCol != prm->B || prm->WcMapRw != prm->A) && prm->IWork[Er4]==0){
         #ifdef MATLAB_MEX_FILE
-            printf("Warning in %s, Error calculating WcMap. Table size does not match axis vector lengths.\n", prm->BlkNm);
+        printf("Warning in %s, Error calculating WcMap. Table size does not match axis vector lengths.\n", prm->BlkNm);
         #endif
         prm->IWork[Er4] = 1;
     }
     else if (interpErr == 1 && prm->IWork[Er4]==0){
         #ifdef MATLAB_MEX_FILE
-            printf("Warning in %s, Error calculating WcMap. Vector definitions may need to be expanded.\n", prm->BlkNm);
+        printf("Warning in %s, Error calculating WcMap. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
         prm->IWork[Er4] = 1;
     }
@@ -204,13 +204,13 @@ void Turbine_TMATS_body(double* y, const double* u, const double* cf, const Turb
     EffMap = interp2Ac(prm->X_T_PRVec,prm->Y_T_NcVec,prm->T_T_Map_EffArray,PRmapRead,NcMap,prm->B,prm->A,&interpErr);
     if ((prm->EffMapCol != prm->B || prm->EffMapRw != prm->A) && prm->IWork[Er5]==0){
         #ifdef MATLAB_MEX_FILE
-            printf("Warning in %s, Error calculating EffMap. Table size does not match axis vector lengths.\n", prm->BlkNm);
+        printf("Warning in %s, Error calculating EffMap. Table size does not match axis vector lengths.\n", prm->BlkNm);
         #endif
         prm->IWork[Er5] = 1;
     }
     else if (interpErr == 1 && prm->IWork[Er5]==0){
         #ifdef MATLAB_MEX_FILE
-            printf("Warning in %s, Error calculating EffMap. Vector definitions may need to be expanded.\n", prm->BlkNm);
+        printf("Warning in %s, Error calculating EffMap. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
         prm->IWork[Er5] = 1;
     }

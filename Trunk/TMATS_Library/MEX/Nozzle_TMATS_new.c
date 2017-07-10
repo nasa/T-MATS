@@ -9,10 +9,7 @@
 #define S_FUNCTION_NAME  Nozzle_TMATS_new
 #define S_FUNCTION_LEVEL 2
 #include "simstruc.h"
-#include "constants_TMATS.h"
-#include "functions_TMATS.h"
 #include "types_TMATS.h"
-#include <math.h>
 
 #define SwitchType_p(S)             ssGetSFcnParam(S,0)
 #define flowLoss_p(S)               ssGetSFcnParam(S,1)
@@ -31,16 +28,9 @@
 #define CfgEn_p(S)                  ssGetSFcnParam(S,14)
 #define BN_p(S)                     ssGetSFcnParam(S,15)
 #define NPARAMS 16
-
-// extern double pt2sc(double c, double d, double e);
-// extern double sp2tc(double f, double g, double h);
-// extern double t2hc(double i, double j);
-// extern double interp1Ac(double a[], double b[], double c, int d, int *error);
-// extern double interp2Ac(double aa[], double bb[], double cc[], double aaa, double bbb,int ccc, int ddd, int *error);
-// extern void PcalcStat(double dd,double ee,double ff,double gg,double hh,double mm,double *nn,double *oo,double *pp,double *qq,double *rr);
+#define NERRORS 16
 
 extern void Nozzle_TMATS_body(double*, const double*, NozzleStruct*);
-NozzleStruct nozPrms;
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -71,7 +61,7 @@ static void mdlInitializeSizes(SimStruct *S)
     
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
-    ssSetNumIWork(S, NUM_IWORK);
+    ssSetNumIWork(S, NERRORS);
     ssSetNumPWork(S, 0);
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
@@ -90,7 +80,7 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 static void mdlStart(SimStruct *S)
 {
     /* initialize print error variables */
-    /*ssSetIWorkValue(S,Er1,0);
+    ssSetIWorkValue(S,Er1,0);
     ssSetIWorkValue(S,Er2,0);
     ssSetIWorkValue(S,Er3,0);
     ssSetIWorkValue(S,Er4,0);
@@ -105,12 +95,13 @@ static void mdlStart(SimStruct *S)
     ssSetIWorkValue(S,Er13,0);
     ssSetIWorkValue(S,Er14,0);
     ssSetIWorkValue(S,Er15,0);
-    ssSetIWorkValue(S,Er16,0);*/
+    ssSetIWorkValue(S,Er16,0);
 }
 #endif
 
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
+    NozzleStruct nozPrms;
     /*--------parameters defined in S-function block--------*/
     nozPrms.SwitchType             = *mxGetPr(SwitchType_p(S)); /* Nozzle type */
     nozPrms.flowLoss               = *mxGetPr(flowLoss_p(S));
@@ -141,104 +132,6 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
     
     real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);   /* Output Array */
-    
-    /* ------- get strings -------------- */
-    //char * BlkNm;
-    //int_T buflen;
-    //int_T status;
-    
-    /* Get name of block from dialog parameter (string) */
-    //buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
-    //BlkNm = mxMalloc(buflen);
-    //status = mxGetString(BN_p(S), BlkNm, buflen);
-    
-    /*if (interpErr == 1 && ssGetIWork(S)[Er1]==0){
-        printf("Warning in %s, Error calculating Rt1. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,Er1,1);
-    }
-
-        if (ssGetIWork(S)[Er2]==0){
-            printf("Warning in %s, Backflow warning PtIn <= Pamb\n", BlkNm);
-            ssSetIWorkValue(S,Er2,1);
-        }
-
-	if (interpErr == 1 && ssGetIWork(S)[Er3]==0){
-        printf("Warning in %s, Error calculating gammas. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,Er3,1);
-    }
-    
-    if (interpErr == 1 && ssGetIWork(S)[Er4]==0){
-        printf("Warning in %s, Error calculating gammatg. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,Er4,1);
-    }
-	
-	if (interpErr == 1 && ssGetIWork(S)[Er4]==0){
-        printf("Warning in %s, Error calculating gammasg. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,Er4,1);
-    }
-    
-		if (interpErr == 1 && ssGetIWork(S)[Er5]==0){
-            printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,Er5,1);
-        }
-	
-    if (iter == maxiter && ssGetIWork(S)[Er6]==0 ){
-        printf("Warning in %s, Error calculating Ps at MN = 1.\n", BlkNm);
-        ssSetIWorkValue(S,Er6,1);
-    }
-	
-		if (interpErr == 1 && ssGetIWork(S)[Er7]==0){
-            printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,Er7,1);
-        }
-    
-    /* error('Nozzle Error: Negative Mach number!!')
-    if (MNth<0 && ssGetIWork(S)[Er8]==0){
-        printf("Error in %s: negative throat mach number,  MN = %f.\n", BlkNm, MNth);
-        ssSetIWorkValue(S,Er8,1);
-    }
-    
-    if (interpErr == 1 && ssGetIWork(S)[Er9]==0){
-        printf("Warning in %s, Error calculating CdTh. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,Er9,1);
-    }
-    
-	if (interpErr == 1 && ssGetIWork(S)[Er10]==0){
-        printf("Warning in %s, Error calculating Therm_growth. Vector definitions may need to be expanded.\n", BlkNm);
-        ssSetIWorkValue(S,Er10,1);
-    }
-    
-		if (choked == 0 && ssGetIWork(S)[Er11]==0){
-            printf("Warning in %s, Calculating IDes Area with un-choked nozzle.\n", BlkNm);
-            ssSetIWorkValue(S,Er11,1);
-        }
-    
-        if (iterx == maxiterx && ssGetIWork(S)[Er12]==0 ){
-            printf("Warning in %s, Error calculating Ps at exit.\n", BlkNm);
-            ssSetIWorkValue(S,Er12,1);
-        }
-
-        if (interpErr == 1 && ssGetIWork(S)[Er13]==0){
-            printf("Warning in %s, Error calculating gammas. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,Er13,1);
-        }
-    
-    /* error('Nozzle Error: Negative Mach number!!')
-    if (MNx<0 && ssGetIWork(S)[Er14]==0){
-        printf("Error in %s: negative exit mach number,  MN = %f.\n", BlkNm, MNx);
-        ssSetIWorkValue(S,Er14,1);
-    }
-    
-        if (interpErr == 1 && ssGetIWork(S)[Er15]==0){
-            printf("Warning in %s, Error calculating Cv. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,Er15,1);
-        }
-
-        if (interpErr == 1 && ssGetIWork(S)[Er16]==0){
-            printf("Warning in %s, Error calculating Cfg. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,Er16,1);
-        }
-    */
 	
 	Nozzle_TMATS_body(y, u, &nozPrms);
 }
