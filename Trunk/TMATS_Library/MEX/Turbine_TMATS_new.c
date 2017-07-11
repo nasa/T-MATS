@@ -125,8 +125,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     turbPrms.T_BldPos             = mxGetPr(T_BldPos_p(S));
     
     /*------get dimensions of parameter arrays-------*/
-    turbPrms.A   = mxGetNumberOfElements(Y_T_NcVec_p(S));
-    turbPrms.B   = mxGetNumberOfElements(X_T_PRVec_p(S));
+    turbPrms.Y_T_NcVecLen   = mxGetNumberOfElements(Y_T_NcVec_p(S));
+    turbPrms.X_T_PRVecLen   = mxGetNumberOfElements(X_T_PRVec_p(S));
     
     turbPrms.WcMapCol   = *mxGetPr(WcMapCol_p(S));
     turbPrms.EffMapCol  = *mxGetPr(EffMapCol_p(S));

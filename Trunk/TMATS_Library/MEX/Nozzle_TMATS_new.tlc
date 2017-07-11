@@ -58,10 +58,10 @@
     nozPrms.X_N_TtVecTG           = (double*)(%<LibBlockParameterBaseAddr(X_N_TtVecTG)>);
 
     /*------get dimensions of parameter arrays-------*/
-    nozPrms.A   = %<LibBlockParameterSize(Y_N_FARVec)[1]>;
-    nozPrms.B   = %<LibBlockParameterSize(X_N_TtVec)[1]>;
-    nozPrms.B1  = %<LibBlockParameterSize(X_N_PEQPaVec)[1]>;
-    nozPrms.C   = %<LibBlockParameterSize(X_N_TtVecTG)[1]>;
+    nozPrms.Y_N_FARVecLen    = %<LibBlockParameterSize(Y_N_FARVec)[1]>;
+    nozPrms.X_N_TtVecLen     = %<LibBlockParameterSize(X_N_TtVec)[1]>;
+    nozPrms.X_N_PEQPaVecLen  = %<LibBlockParameterSize(X_N_PEQPaVec)[1]>;
+    nozPrms.X_N_TtVecTGLen   = %<LibBlockParameterSize(X_N_TtVecTG)[1]>;
 
     /*---------Define Inputs--------*/
     %assign u_ptr             = LibBlockInputSignalAddr(0, "", "", 0)

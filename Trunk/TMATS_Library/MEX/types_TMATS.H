@@ -30,8 +30,8 @@ struct TurbStruct {
     int    *IWork;
 
     /* dimensions of parameter arrays */
-    int A;
-    int B;
+    int Y_T_NcVecLen;
+    int X_T_PRVecLen;
     int WcMapCol;
     int EffMapCol;
     int WcMapRw;
@@ -72,10 +72,10 @@ struct NozzleStruct {
     int    *IWork;
 
 	/* dimensions of parameter arrays */
-	int A;
-	int B;
-	int B1;
-	int C;
+	int Y_N_FARVecLen;
+	int X_N_TtVecLen;
+	int X_N_PEQPaVecLen;
+	int X_N_TtVecTGLen;
 };
 typedef struct NozzleStruct NozzleStruct;
 
@@ -108,10 +108,10 @@ struct CompStruct {
     int    *IWork;
     
     /* get dimensions of parameter arrays-------*/
-    int A;
-    int B;
-    int C;
-    int D;
+    int Y_C_Map_NcVecLen;
+    int X_C_RlineVecLen;
+    int Z_C_AlphaVecLen;
+    int X_C_Map_WcSurgeVecLen;
     int WcMapCol;
     int PRMapCol;
     int EffMapCol;

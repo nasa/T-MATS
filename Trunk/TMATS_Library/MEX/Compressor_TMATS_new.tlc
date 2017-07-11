@@ -59,10 +59,10 @@
     compPrms.FracBldPt            = (double*)(%<LibBlockParameterBaseAddr(FracBldPt)>);
     compPrms.X_C_Map_WcSurgeVec   = (double*)(%<LibBlockParameterBaseAddr(X_C_Map_WcSurgeVec)>);
     compPrms.T_C_Map_PRSurgeVec   = (double*)(%<LibBlockParameterBaseAddr(T_C_Map_PRSurgeVec)>);
-    compPrms.A   = %<LibBlockParameterSize(Y_C_Map_NcVec)[1]>;
-    compPrms.B   = %<LibBlockParameterSize(X_C_RlineVec)[1]>;
-    compPrms.C   = %<LibBlockParameterSize(Z_C_AlphaVec)[1]>;
-    compPrms.D   = %<LibBlockParameterSize(X_C_Map_WcSurgeVec)[1]>;
+    compPrms.Y_C_Map_NcVecLen       = %<LibBlockParameterSize(Y_C_Map_NcVec)[1]>;
+    compPrms.X_C_RlineVecLen        = %<LibBlockParameterSize(X_C_RlineVec)[1]>;
+    compPrms.Z_C_AlphaVecLen        = %<LibBlockParameterSize(Z_C_AlphaVec)[1]>;
+    compPrms.X_C_Map_WcSurgeVecLen  = %<LibBlockParameterSize(X_C_Map_WcSurgeVec)[1]>;
     compPrms.WcMapCol  = %<LibBlockParameter(WcMapCol,"","",0)>;
     compPrms.PRMapCol  = %<LibBlockParameter(PRMapCol,"","",0)>;
     compPrms.EffMapCol = %<LibBlockParameter(EffMapCol,"","",0)>;

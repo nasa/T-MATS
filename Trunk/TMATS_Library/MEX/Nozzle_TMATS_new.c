@@ -122,10 +122,10 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     nozPrms.X_N_TtVecTG           = mxGetPr(X_N_TtVecTG_p(S));
     
     /*------get dimensions of parameter arrays-------*/
-    nozPrms.A   = mxGetNumberOfElements(Y_N_FARVec_p(S));
-    nozPrms.B   = mxGetNumberOfElements(X_N_TtVec_p(S));
-    nozPrms.B1  = mxGetNumberOfElements(X_N_PEQPaVec_p(S));
-    nozPrms.C   = mxGetNumberOfElements(X_N_TtVecTG_p(S));
+    nozPrms.Y_N_FARVecLen    = mxGetNumberOfElements(Y_N_FARVec_p(S));
+    nozPrms.X_N_TtVecLen     = mxGetNumberOfElements(X_N_TtVec_p(S));
+    nozPrms.X_N_PEQPaVecLen  = mxGetNumberOfElements(X_N_PEQPaVec_p(S));
+    nozPrms.X_N_TtVecTGLen   = mxGetNumberOfElements(X_N_TtVecTG_p(S));
     
     
     /*---------Define Inputs--------*/

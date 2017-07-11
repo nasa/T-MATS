@@ -61,8 +61,8 @@
     turbPrms.T_BldPos             = (double*)(%<LibBlockParameterBaseAddr(T_BldPos)>);
 
     /*------get dimensions of parameter arrays-------*/
-    turbPrms.A   = %<LibBlockParameterSize(Y_T_NcVec)[1]>;
-    turbPrms.B   = %<LibBlockParameterSize(X_T_PRVec)[1]>;
+    turbPrms.Y_T_NcVecLen   = %<LibBlockParameterSize(Y_T_NcVec)[1]>;
+    turbPrms.X_T_PRVecLen   = %<LibBlockParameterSize(X_T_PRVec)[1]>;
 
     turbPrms.WcMapCol   = %<LibBlockParameter(WcMapCol,"","",0)>;
     turbPrms.EffMapCol  = %<LibBlockParameter(EffMapCol,"","",0)>;

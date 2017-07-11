@@ -161,10 +161,10 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     compPrms.T_C_Map_PRSurgeVec   = mxGetPr(T_C_Map_PRSurgeVec_p(S));
     
     /*------get dimensions of parameter arrays-------*/
-    compPrms.A   = mxGetNumberOfElements(Y_C_Map_NcVec_p(S));
-    compPrms.B   = mxGetNumberOfElements(X_C_RlineVec_p(S));
-    compPrms.C   = mxGetNumberOfElements(Z_C_AlphaVec_p(S));
-    compPrms.D   = mxGetNumberOfElements(X_C_Map_WcSurgeVec_p(S));
+    compPrms.Y_C_Map_NcVecLen       = mxGetNumberOfElements(Y_C_Map_NcVec_p(S));
+    compPrms.X_C_RlineVecLen        = mxGetNumberOfElements(X_C_RlineVec_p(S));
+    compPrms.Z_C_AlphaVecLen        = mxGetNumberOfElements(Z_C_AlphaVec_p(S));
+    compPrms.X_C_Map_WcSurgeVecLen  = mxGetNumberOfElements(X_C_Map_WcSurgeVec_p(S));
     
     compPrms.WcMapCol  = *mxGetPr(WcMapCol_p(S));
     compPrms.PRMapCol  = *mxGetPr(PRMapCol_p(S));
