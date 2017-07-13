@@ -262,7 +262,10 @@ if(TurbNum > 0)
         end
     end
 end
-bdclose('all')
+try
+    bdclose('all')
+catch
+end
 
 %return settings
 set(0,'DefaultFigureWindowStyle',set_old);

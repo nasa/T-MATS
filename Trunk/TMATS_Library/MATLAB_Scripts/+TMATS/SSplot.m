@@ -118,7 +118,7 @@ for i = 1: length(StationVarVec)
     else
         TtE = 0;
         PtE = 0;
-
+        
     end
     
     % If flow, temperature, and pressure exist in the variable, Get and
@@ -135,42 +135,42 @@ end
 
 % plot Station Data
 if StnNum > 0
-        %create new figure
-        f = figure;
-        set(f,'name','Station','numbertitle','off');
-        
-        %plot the data in a tab
-        subplot(2,1,1)
-        plot(Tt,'-o')
-        ylabel('Temperatures [R]')
-        ax = gca;
-        set(ax,'xtick',[]);
-        subplot(2,1,2)
-        plot(Pt,'-o')
-        ylabel('Pressures [psia]')
-        ax = gca;
-        set(ax,'xtick',1:length(Nm));
-        set(ax,'xticklabel',Nm);
-        ax.XTickLabelRotation=45;
+    %create new figure
+    f = figure;
+    set(f,'name','Station','numbertitle','off');
+    
+    %plot the data in a tab
+    subplot(2,1,1)
+    plot(Tt,'-o')
+    ylabel('Temperatures [R]')
+    ax = gca;
+    set(ax,'xtick',[]);
+    subplot(2,1,2)
+    plot(Pt,'-o')
+    ylabel('Pressures [psia]')
+    ax = gca;
+    set(ax,'xtick',1:length(Nm));
+    set(ax,'xticklabel',Nm);
+    ax.XTickLabelRotation=45;
 end
 
 % plot Station Data
 if StnNum > 0 && PlotTS == 1
-        %create new figure
-        f = figure;
-        set(f,'name','T-s diagram','numbertitle','off');
-        
-        %Generate entropy values
-        for i = 1:length(Tt)
+    %create new figure
+    f = figure;
+    set(f,'name','T-s diagram','numbertitle','off');
+    
+    %Generate entropy values
+    for i = 1:length(Tt)
         s(i) = TMATS.pt2s(Pt(i),Tt(i), FAR(i));
-        end
-        %plot the data in a tab
-        plot(s,Tt,'-bo')
-        hold on
-        plot([s(1),s(end)],[Tt(1),Tt(end)],'b')
-        ylabel('Temperatures [R]');
-        xlabel('Enthalpy [BTU/(lbm*R)]');
-
+    end
+    %plot the data in a tab
+    plot(s,Tt,'-bo')
+    hold on
+    plot([s(1),s(end)],[Tt(1),Tt(end)],'b')
+    ylabel('Temperatures [R]');
+    xlabel('Enthalpy [BTU/(lbm*R)]');
+    
 end
 
 
@@ -231,16 +231,16 @@ if ShftSpdNum > 0
         f = figure;
         set(f,'name','Speeds','numbertitle','off');
         % plot remainder of shaft speeds
-            bar(Nplt);
-            ylabel('Speed [rpm]');
-            ax = gca;
-            set(ax,'xtick',1:length(NpltNm));
-            set(ax,'xticklabel',NpltNm);
-            ax.XTickLabelRotation=45;
-            axis([0.5,length(Nplt)+0.5,0,max(N)*1.1])
-            for ii = 1: length(Nplt)
-                text(ii,Nplt(ii)*1.05,[num2str(Nplt(ii)), ' [rpm]'],'HorizontalAlignment','left','fontsize',13)
-            end
+        bar(Nplt);
+        ylabel('Speed [rpm]');
+        ax = gca;
+        set(ax,'xtick',1:length(NpltNm));
+        set(ax,'xticklabel',NpltNm);
+        ax.XTickLabelRotation=45;
+        axis([0.5,length(Nplt)+0.5,0,max(N)*1.1])
+        for ii = 1: length(Nplt)
+            text(ii,Nplt(ii)*1.05,[num2str(Nplt(ii)), ' [rpm]'],'HorizontalAlignment','left','fontsize',13)
+        end
     end
 end
 
@@ -304,7 +304,10 @@ if(TurbNum > 0)
         end
     end
 end
-bdclose('all')
+try
+    bdclose('all')
+catch
+end
 
 %return settings
 set(0,'DefaultFigureWindowStyle',set_old);
