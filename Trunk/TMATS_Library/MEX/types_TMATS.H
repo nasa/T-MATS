@@ -20,7 +20,7 @@ struct TurbStruct {
     int    CoolFlwEn;
     int    ConfigNPSS;
 
-    /* vector & array data */
+    /* Vector & array data */
     double *Y_T_NcVec;
     double *X_T_PRVec;
     double *T_T_Map_WcArray;
@@ -29,7 +29,7 @@ struct TurbStruct {
     char   *BlkNm;
     int    *IWork;
 
-    /* dimensions of parameter arrays */
+    /* Dimensions of parameter arrays */
     int Y_T_NcVecLen;
     int X_T_PRVecLen;
     int WcMapCol;
@@ -57,7 +57,7 @@ struct NozzleStruct {
 	double WDes;
 	double CfgEn;
 
-	/* vector & array data */
+	/* Vector & array data */
 	double *Y_N_FARVec;
 	double *T_N_RtArray;
 	double *X_N_TtVec;
@@ -71,7 +71,7 @@ struct NozzleStruct {
     char   *BlkNm;
     int    *IWork;
 
-	/* dimensions of parameter arrays */
+	/* Dimensions of parameter arrays */
 	int Y_N_FARVecLen;
 	int X_N_TtVecLen;
 	int X_N_PEQPaVecLen;
@@ -91,7 +91,7 @@ struct CompStruct {
     double CustBldNm;
     double FracBldNm;
     
-    /* vector & array data */
+    /* Vector & array data */
     double *Y_C_Map_NcVec;
     double *X_C_RlineVec;
     double *Z_C_AlphaVec;
@@ -107,7 +107,7 @@ struct CompStruct {
     char   *BlkNm;
     int    *IWork;
     
-    /* get dimensions of parameter arrays-------*/
+    /* Dimensions of parameter arrays */
     int Y_C_Map_NcVecLen;
     int X_C_RlineVecLen;
     int Z_C_AlphaVecLen;

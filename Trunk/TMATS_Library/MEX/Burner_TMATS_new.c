@@ -9,6 +9,7 @@
 #define S_FUNCTION_NAME  Burner_TMATS_new
 #define S_FUNCTION_LEVEL 2
 #include "simstruc.h"
+#include "functions_TMATS.h"
 #include "types_TMATS.h"
 
 #define LHV_p(S)			    ssGetSFcnParam(S,0)
@@ -18,8 +19,8 @@
 #define hFuel_p(S)              ssGetSFcnParam(S,4)
 #define NPARAMS 5
 
-// Forward declaration for Burner body of calcs
-extern void Burner_TMATS_body(double*, double*, BurnStruct*);
+/* Forward declaration for Burner body of calcs */
+extern void Burner_TMATS_body(real_T*, const real_T*, const BurnStruct*);
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -30,8 +31,8 @@ static void mdlInitializeSizes(SimStruct *S)
         return;
     }
     
-    // Set Block parameters tunable
-    // Note: Original version had all parameters set to non-tunable(?)
+    /* Set Block parameters tunable
+       Note: Original version had all parameters set to non-tunable(?) */
     for (i = 0; i < NPARAMS; i++)
         ssSetSFcnParamTunable(S, i, 1);  
     
@@ -53,9 +54,9 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
     
-    // Register reserved identifiers to avoid name conflict
+    /* Register reserved identifiers to avoid name conflict */
     if (ssRTWGenIsCodeGen(S) || ssGetSimMode(S)==SS_SIMMODE_EXTERNAL) {
-        // Register reserved identifier for OutputFcnSpec
+        /* Register reserved identifier for OutputFcnSpec */
         ssRegMdlInfo(S, "Burner_TMATS_body", MDL_INFO_ID_RESERVED, 0, 0, ssGetPath(S));
     }
 }
@@ -77,18 +78,20 @@ static void mdlStart(SimStruct *S)
 
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
-	// Grab block parameters and place into parameter struct to pass into Burner_TMATS_body()
+    /* Input vector */
+    const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
+    /* Output vector */
+    real_T *y  = (real_T *) ssGetOutputPortRealSignal(S,0);
+    
+	/* Block mask parameter struct */
     BurnStruct burnPrms;
-    burnPrms.LHV			 = *mxGetPr(LHV_p(S));
+    burnPrms.LHV			= *mxGetPr(LHV_p(S));
     burnPrms.dPnormBurner   = *mxGetPr(dPnormBurner_p(S));
     burnPrms.Eff            = *mxGetPr(Efficiency_p(S));
     burnPrms.LHVEn          = *mxGetPr(LHVEn_p(S));
     burnPrms.hFuel          = *mxGetPr(hFuel_p(S));
     
-    real_T *u  = (real_T*) ssGetInputPortSignal(S,0);      // Inputs
-    real_T *y  = (real_T*) ssGetOutputPortRealSignal(S,0); // Outputs
-    
-    // Call the "body" of the Burner_TMATS code
+    /* Perform core block calculations */
     Burner_TMATS_body(y, u, &burnPrms);
 }
 

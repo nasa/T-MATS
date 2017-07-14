@@ -45,8 +45,8 @@
 #define NPARAMS 31
 #define NERRORS 5
 
-// Forward declaration for Compressor body of calcs
-extern void Compressor_TMATS_body(double*, double*, double*, const double*, const double*, const double*, const CompStruct*);
+/* Forward declaration for Compressor body of calcs */
+extern void Compressor_TMATS_body(real_T*, real_T*, real_T*, const real_T*, const real_T*, const real_T*, const CompStruct*);
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -92,6 +92,11 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
     
+    /* Register reserved identifiers to avoid name conflict */
+    if (ssRTWGenIsCodeGen(S) || ssGetSimMode(S)==SS_SIMMODE_EXTERNAL) {
+        /* Register reserved identifier for OutputFcnSpec */
+        ssRegMdlInfo(S, "Compressor_TMATS_body", MDL_INFO_ID_RESERVED, 0, 0, ssGetPath(S));
+    }
 }
 
 #if defined(MATLAB_MEX_FILE)
@@ -132,8 +137,26 @@ static void mdlStart(SimStruct *S)
 
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
+    /* Input vector port 1 */
+    const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
+    /* Input vector port 2 */
+    const real_T *Wcust = ssGetInputPortRealSignal(S, 1);
+    /* Input vector port 3 */
+    const real_T *FracWbld  = ssGetInputPortSignal(S,2);
+    
+    /* Output vector port 1 */
+    real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);
+    /* Output vector port 2 */
+    real_T *y1  = (real_T *)ssGetOutputPortRealSignal(S,1);
+    /* Output vector port 3 */
+    real_T *y2  = (real_T *)ssGetOutputPortRealSignal(S,2);
+    
+    /* Block name buffer length and string read status */
+    int_T buflen;
+    int_T status;
+    
+    /* Block mask parameter struct */
     CompStruct compPrms;
-    /*--------Define Parameters-------*/
     compPrms.NcDes              = *mxGetPr(NcDes_p(S));
     compPrms.PRDes              = *mxGetPr(PRDes_p(S));
     compPrms.EffDes             = *mxGetPr(EffDes_p(S));
@@ -143,29 +166,24 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     compPrms.FBldEn             = *mxGetPr(FBldEn_p(S));
     compPrms.CustBldNm          = *mxGetPr(CustBldNm_p(S));
     compPrms.FracBldNm          = *mxGetPr(FracBldNm_p(S));
-    
-    /* vector & array data */
+    /* Vector & array data */
     compPrms.Y_C_Map_NcVec        = mxGetPr(Y_C_Map_NcVec_p(S));
     compPrms.X_C_RlineVec         = mxGetPr(X_C_RlineVec_p(S));
     compPrms.Z_C_AlphaVec         = mxGetPr(Z_C_AlphaVec_p(S));
     compPrms.T_C_Map_WcArray      = mxGetPr(T_C_Map_WcArray_p(S));
     compPrms.T_C_Map_PRArray      = mxGetPr(T_C_Map_PRArray_p(S));
     compPrms.T_C_Map_EffArray     = mxGetPr(T_C_Map_EffArray_p(S));
-    
     compPrms.FracCusBldht         = mxGetPr(FracCusBldht_p(S));
     compPrms.FracCusBldPt         = mxGetPr(FracCusBldPt_p(S));
     compPrms.FracBldht            = mxGetPr(FracBldht_p(S));
     compPrms.FracBldPt            = mxGetPr(FracBldPt_p(S));
-    
     compPrms.X_C_Map_WcSurgeVec   = mxGetPr(X_C_Map_WcSurgeVec_p(S));
     compPrms.T_C_Map_PRSurgeVec   = mxGetPr(T_C_Map_PRSurgeVec_p(S));
-    
-    /*------get dimensions of parameter arrays-------*/
+    /* Dimensions of parameter arrays */
     compPrms.Y_C_Map_NcVecLen       = mxGetNumberOfElements(Y_C_Map_NcVec_p(S));
     compPrms.X_C_RlineVecLen        = mxGetNumberOfElements(X_C_RlineVec_p(S));
     compPrms.Z_C_AlphaVecLen        = mxGetNumberOfElements(Z_C_AlphaVec_p(S));
     compPrms.X_C_Map_WcSurgeVecLen  = mxGetNumberOfElements(X_C_Map_WcSurgeVec_p(S));
-    
     compPrms.WcMapCol  = *mxGetPr(WcMapCol_p(S));
     compPrms.PRMapCol  = *mxGetPr(PRMapCol_p(S));
     compPrms.EffMapCol = *mxGetPr(EffMapCol_p(S));
@@ -175,20 +193,16 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     compPrms.WcMapLay   = *mxGetPr(WcMapLay_p(S));
     compPrms.PRMapLay   = *mxGetPr(PRMapLay_p(S));
     compPrms.EffMapLay  = *mxGetPr(EffMapLay_p(S));
-    
-    /*---------Define Inputs for input port 1--------*/
-    const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
-    
-    /*---------Define Inputs for input port 2--------*/
-    const real_T *Wcust = ssGetInputPortRealSignal(S, 1);
-    
-    /*---------Define Inputs for input port 3--------*/
-    const real_T *FracWbld  = ssGetInputPortSignal(S,2);
-    
-    real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);   /* Output Array port 1 */
-    real_T *y1  = (real_T *)ssGetOutputPortRealSignal(S,1);   /* Output Array port 2 */
-    real_T *y2  = (real_T *)ssGetOutputPortRealSignal(S,2);   /* Output Array port 3 */
 	
+    /* Get name of block from dialog parameter (string) */
+    buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
+    compPrms.BlkNm = mxMalloc(buflen);
+    status = mxGetString(BN_p(S), compPrms.BlkNm, buflen);
+    
+    /* Integer work vector for error codes */
+    compPrms.IWork = ssGetIWork(S);
+    
+    /* Perform core block calculations */
 	Compressor_TMATS_body(y, y1, y2, u, Wcust, FracWbld, &compPrms);
 }
 

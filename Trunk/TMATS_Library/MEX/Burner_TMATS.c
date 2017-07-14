@@ -85,9 +85,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     double TtIn	= u[3];     /* Temperature Input [degR] 	*/
     double PtIn	= u[4];     /* Pressure Input [psia] 	*/
     double FARcIn = u[5];   /* Combusted Fuel to Air Ratio [frac] 	*/
-    
-    
-    
+
     real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);  /* Output Array */
     
     /*--------Define Constants-------*/

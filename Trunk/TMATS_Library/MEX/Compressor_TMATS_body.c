@@ -27,7 +27,7 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
     /*--------Define Constants-------*/
     double WOut, htOut, TtOut, PtOut, FARcOut, TorqueOut, NErrorOut;
     double C_Nc, C_Wc, C_PR, C_Eff;
-    double htin, Sin, Wcin, WcCalcin, WcMap, theta,delta, Pwrout, Wbleeds, Wsumbleed;
+    double htin, Sin, Wcin, WcCalcin, WcMap, theta,delta, Pwrout, Wbleeds;
     double TtIdealout, htIdealout, Test, Sout, NcMap, Nc, PRMap, PR, EffMap, Eff;
     double Wb4bleed, Pwrb4bleed, PwrBld;
     double SPR, SPRMap, SMavail, SMMap;

@@ -16,7 +16,7 @@
 extern double t2hc(double a, double b);
 extern double h2tc(double c, double d);
 
-void Burner_TMATS_body(double* y, double* u, BurnStruct* prm)
+void Burner_TMATS_body(double* y, const double* u, const BurnStruct* prm)
 {
     /* Define constants */
     double htin;

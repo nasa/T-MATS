@@ -32,8 +32,8 @@
 #define NPARAMS 18
 #define NERRORS 5
 
-// Forward declaration for Turbine body of calcs
-extern void Turbine_TMATS_body(double*, const double*, const double*, const TurbStruct*);
+/* Forward declaration for Turbine body of calcs */
+extern void Turbine_TMATS_body(real_T*, const real_T*, const real_T*, const TurbStruct*);
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -73,6 +73,11 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
     
+    /* Register reserved identifiers to avoid name conflict */
+    if (ssRTWGenIsCodeGen(S) || ssGetSimMode(S)==SS_SIMMODE_EXTERNAL) {
+        /* Register reserved identifier for OutputFcnSpec */
+        ssRegMdlInfo(S, "Turbine_TMATS_body", MDL_INFO_ID_RESERVED, 0, 0, ssGetPath(S));
+    }
 }
 
 #if defined(MATLAB_MEX_FILE)
@@ -106,8 +111,21 @@ static void mdlStart(SimStruct *S)
 
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
+    /* Input vector port 1 */
+    const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
+    /* Input vector port 2
+       N 5x1 vectors consisting of W, ht, Tt, Pt and FAR, where N is the number of cooling flows */
+    const real_T *CoolFlow = ssGetInputPortRealSignal(S, 1);  
+
+    /* Output vector */
+    real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);   
+
+    /* Block name buffer length and string read status */
+    int_T buflen;
+    int_T status;
+    
+    /* Block mask parameter struct */
     TurbStruct turbPrms;
-    /*--------Define Parameters-------*/
     turbPrms.NcDes              = *mxGetPr(NcDes_p(S));
     turbPrms.PRmapDes           = *mxGetPr(PRmapDes_p(S));
     turbPrms.EffDes             = *mxGetPr(EffDes_p(S));
@@ -116,48 +134,29 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     turbPrms.BldPosLeng         = *mxGetPr(BldPosLeng_p(S));
     turbPrms.CoolFlwEn          = *mxGetPr(CoolFlwEn_p(S));
     turbPrms.ConfigNPSS         = *mxGetPr(ConfigNPSS_p(S));
-    
-    /* vector & array data */
+    /* Vector & array data */
     turbPrms.Y_T_NcVec            = mxGetPr(Y_T_NcVec_p(S));
     turbPrms.X_T_PRVec            = mxGetPr(X_T_PRVec_p(S));
     turbPrms.T_T_Map_WcArray      = mxGetPr(T_T_Map_WcArray_p(S));
     turbPrms.T_T_Map_EffArray     = mxGetPr(T_T_Map_EffArray_p(S));
     turbPrms.T_BldPos             = mxGetPr(T_BldPos_p(S));
-    
-    /*------get dimensions of parameter arrays-------*/
+    /* Dimensions of parameter arrays */
     turbPrms.Y_T_NcVecLen   = mxGetNumberOfElements(Y_T_NcVec_p(S));
     turbPrms.X_T_PRVecLen   = mxGetNumberOfElements(X_T_PRVec_p(S));
-    
     turbPrms.WcMapCol   = *mxGetPr(WcMapCol_p(S));
     turbPrms.EffMapCol  = *mxGetPr(EffMapCol_p(S));
     turbPrms.WcMapRw    = *mxGetPr(WcMapRw_p(S));
     turbPrms.EffMapRw   = *mxGetPr(EffMapRw_p(S));
-    
-    /* ------- get strings -------------- */
-    int_T buflen;
-    int_T status;
     
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
     turbPrms.BlkNm = mxMalloc(buflen);
     status = mxGetString(BN_p(S), turbPrms.BlkNm, buflen);
     
+    /* Integer work vector for error codes */
     turbPrms.IWork = ssGetIWork(S);
     
-    /*---------Define Inputs--------*/
-    const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
-    
-    /*---------Define Inputs for input port 2--------*/
-    /* N 5x1 vectors consisting of W, ht, Tt, Pt and FAR, where N is the number of cooling flows */
-    const real_T *CoolFlow = ssGetInputPortRealSignal(S, 1);
-    
-    real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);   /* Output Array */
-    
-    /* Verify input bleed vector is a multiple of 5 */
-    int cfWidth, Vtest, i;
-    cfWidth = u[11];
-    Vtest = cfWidth/5;
-    
+    /* Perform core block calculations */
     Turbine_TMATS_body(y,u, CoolFlow, &turbPrms);
 }
 

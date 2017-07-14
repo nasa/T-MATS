@@ -18,12 +18,13 @@
 
     %<SLibAddToStaticSources("Nozzle_TMATS_body.c")>
 
-    %openfile pStructDef
+    %openfile forwardDecls
+        extern void Nozzle_TMATS_body(double*, const double*, NozzleStruct*);
         NozzleStruct nozPrms;
-    %closefile pStructDef
+    %closefile forwardDecls
 
     %assign srcFile = LibGetModelDotCFile()
-    %<LibSetSourceFileSection(srcFile, "Definitions", pStructDef)>
+    %<LibSetSourceFileSection(srcFile, "Definitions", forwardDecls)>
 
 %endfunction
 
@@ -38,14 +39,11 @@
 %%
 %function Outputs(block, system) Output
     %%
-    /*--------parameters defined in S-function block--------*/
     nozPrms.SwitchType             = %<LibBlockParameter(SwitchType,"","",0)>;
     nozPrms.flowLoss               = %<LibBlockParameter(flowLoss,"","",0)>;
     nozPrms.IDes                   = %<LibBlockParameter(IDes,"","",0)>;
     nozPrms.WDes                   = %<LibBlockParameter(WDes,"","",0)>;
     nozPrms.CfgEn                  = %<LibBlockParameter(CfgEn,"","",0)>;
-
-    /* vector & array data */
     nozPrms.Y_N_FARVec            = (double*)(%<LibBlockParameterBaseAddr(Y_N_FARVec)>);
     nozPrms.T_N_RtArray           = (double*)(%<LibBlockParameterBaseAddr(T_N_RtArray)>);
     nozPrms.X_N_TtVec             = (double*)(%<LibBlockParameterBaseAddr(X_N_TtVec)>);
@@ -56,14 +54,11 @@
     nozPrms.T_N_CfgArray          = (double*)(%<LibBlockParameterBaseAddr(T_N_CfgArray)>);
     nozPrms.T_N_TGArray           = (double*)(%<LibBlockParameterBaseAddr(T_N_TGArray)>);
     nozPrms.X_N_TtVecTG           = (double*)(%<LibBlockParameterBaseAddr(X_N_TtVecTG)>);
-
-    /*------get dimensions of parameter arrays-------*/
     nozPrms.Y_N_FARVecLen    = %<LibBlockParameterSize(Y_N_FARVec)[1]>;
     nozPrms.X_N_TtVecLen     = %<LibBlockParameterSize(X_N_TtVec)[1]>;
     nozPrms.X_N_PEQPaVecLen  = %<LibBlockParameterSize(X_N_PEQPaVec)[1]>;
     nozPrms.X_N_TtVecTGLen   = %<LibBlockParameterSize(X_N_TtVecTG)[1]>;
 
-    /*---------Define Inputs--------*/
     %assign u_ptr             = LibBlockInputSignalAddr(0, "", "", 0)
     %assign u_dataType        = LibBlockInputSignalDataTypeName(0,"")
     %assign y_ptr             = LibBlockOutputSignalAddr(0, "", "", 0)
