@@ -30,7 +30,8 @@
 #define NPARAMS 16
 #define NERRORS 16
 
-extern void Nozzle_TMATS_body(double*, const double*, NozzleStruct*);
+/* Forward declaration for Nozzle body of calcs */
+extern void Nozzle_TMATS_body(real_T*, const real_T*, NozzleStruct*);
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -66,6 +67,11 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
     
+    /* Register reserved identifiers to avoid name conflict */
+    if (ssRTWGenIsCodeGen(S) || ssGetSimMode(S)==SS_SIMMODE_EXTERNAL) {
+        /* Register reserved identifier for OutputFcnSpec */
+        ssRegMdlInfo(S, "Nozzle_TMATS_body", MDL_INFO_ID_RESERVED, 0, 0, ssGetPath(S));
+    }
 }
 
 static void mdlInitializeSampleTimes(SimStruct *S)
@@ -101,15 +107,23 @@ static void mdlStart(SimStruct *S)
 
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
+    /* Input vector */
+    const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
+    /* Output vector */
+    real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);
+    
+    /* Block name buffer length and string read status */
+    int_T buflen;
+    int_T status;
+    
+    /* Block mask parameter struct */
     NozzleStruct nozPrms;
-    /*--------parameters defined in S-function block--------*/
-    nozPrms.SwitchType             = *mxGetPr(SwitchType_p(S)); /* Nozzle type */
+    nozPrms.SwitchType             = *mxGetPr(SwitchType_p(S));
     nozPrms.flowLoss               = *mxGetPr(flowLoss_p(S));
     nozPrms.IDes                   = *mxGetPr(iDesign_p(S));
     nozPrms.WDes                   = *mxGetPr(WDes_p(S));
     nozPrms.CfgEn                  = *mxGetPr(CfgEn_p(S));
-    
-    /* vector & array data */
+    /* Vector & array data */
     nozPrms.Y_N_FARVec            = mxGetPr(Y_N_FARVec_p(S));
     nozPrms.T_N_RtArray           = mxGetPr(T_N_RtArray_p(S));
     nozPrms.X_N_TtVec             = mxGetPr(X_N_TtVec_p(S));
@@ -120,19 +134,21 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     nozPrms.T_N_CfgArray          = mxGetPr(T_N_CfgArray_p(S));
     nozPrms.T_N_TGArray           = mxGetPr(T_N_TGArray_p(S));
     nozPrms.X_N_TtVecTG           = mxGetPr(X_N_TtVecTG_p(S));
-    
-    /*------get dimensions of parameter arrays-------*/
+    /* Dimensions of parameter arrays */
     nozPrms.Y_N_FARVecLen    = mxGetNumberOfElements(Y_N_FARVec_p(S));
     nozPrms.X_N_TtVecLen     = mxGetNumberOfElements(X_N_TtVec_p(S));
     nozPrms.X_N_PEQPaVecLen  = mxGetNumberOfElements(X_N_PEQPaVec_p(S));
     nozPrms.X_N_TtVecTGLen   = mxGetNumberOfElements(X_N_TtVecTG_p(S));
+
+    /* Get name of block from dialog parameter (string) */
+    buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
+    nozPrms.BlkNm = mxMalloc(buflen);
+    status = mxGetString(BN_p(S), nozPrms.BlkNm, buflen);
     
+    /* Integer work vector for error codes */
+    nozPrms.IWork = ssGetIWork(S);
     
-    /*---------Define Inputs--------*/
-    const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
-    
-    real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);   /* Output Array */
-	
+    /* Perform core block calculations */
 	Nozzle_TMATS_body(y, u, &nozPrms);
 }
 

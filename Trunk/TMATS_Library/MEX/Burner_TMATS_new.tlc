@@ -18,12 +18,13 @@
 
     %<SLibAddToStaticSources("Burner_TMATS_body.c")>
 
-    %openfile pStructDef
+    %openfile forwardDecls
+        extern void Burner_TMATS_body(double*, const double*, const BurnStruct*);
         BurnStruct burnPrms;
-    %closefile pStructDef
+    %closefile forwardDecls
 
     %assign srcFile = LibGetModelDotCFile()
-    %<LibSetSourceFileSection(srcFile, "Definitions", pStructDef)>
+    %<LibSetSourceFileSection(srcFile, "Definitions", forwardDecls)>
 
 %endfunction
 

@@ -18,12 +18,13 @@
 
     %<SLibAddToStaticSources("Compressor_TMATS_body.c")>
 
-    %openfile pStructDef
+    %openfile forwardDecls
+        extern void Compressor_TMATS_body(double*, double*, double*, const double*, const double*, const double*, const CompStruct*);
         CompStruct compPrms;
-    %closefile pStructDef
+    %closefile forwardDecls
 
     %assign srcFile = LibGetModelDotCFile()
-    %<LibSetSourceFileSection(srcFile, "Definitions", pStructDef)>
+    %<LibSetSourceFileSection(srcFile, "Definitions", forwardDecls)>
 
 %endfunction
 

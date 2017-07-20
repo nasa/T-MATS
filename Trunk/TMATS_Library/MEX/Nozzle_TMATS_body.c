@@ -19,14 +19,13 @@ void Nozzle_TMATS_body(double* y, const double* u, NozzleStruct* prm)
     double AexitIn   = u[7];     /* Exit area [in2] 	*/
     
     /*--------Define Constants-------*/
-    double choked, Ts, rhos, V, Test, MN1, Ptin;
+    double choked, Ts, rhos, V, Test, Ptin;
     double CdTh, Cv, Cfg, Therm_growth, PQPa, PQPaMap, AthroatHot;
     double Rt, TsMN1, PsMN1, Woutcalc;
     double WOut, FgOut, NErrorOut, Ath, Vth, Psth, Ax, Vx, Psx, Tsx, gammasx, MNx;
     double gammatg, gammasth,gammasMN1, gammasg, MNg, TsMNg, PsMNg, PsMNg_new, PsMNg_old, VMN1;
     double MNth, Tsth, rhosth, rhosMN1, rhosx;
     double Axcalc, Psxg, Psxg_new, Psxg_old, Exthr;
-    double Athcalc, Psthg, Psthg_new, Psthg_old;
     double Sin, hsg, hs, htin, rhosg, Rs, Vg;
     double gammas_s, MN_s, V_s, rhos_s, Ts_s;
     double Ex, Ex_old;

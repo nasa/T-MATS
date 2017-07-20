@@ -23,13 +23,13 @@
     %<SLibAddToStaticSources("sp2tc_TMATS.c")>
     %<SLibAddToStaticSources("interp2Ac_TMATS.c")>
 
-    %openfile pStructDef
-      /* Parameter struct for Turbine_TMATS_body */
+    %openfile forwardDecls
+      extern void Turbine_TMATS_body(double*, const double*, const double*, const TurbStruct*);
       TurbStruct turbPrms;
-    %closefile pStructDef
+    %closefile forwardDecls
 
     %assign srcFile = LibGetModelDotCFile()
-    %<LibSetSourceFileSection(srcFile, "Definitions", pStructDef)>
+    %<LibSetSourceFileSection(srcFile, "Definitions", forwardDecls)>
 
 %endfunction
 
@@ -52,18 +52,13 @@
     turbPrms.BldPosLeng         = %<LibBlockParameter(BldPosLeng,"","",0)>;
     turbPrms.CoolFlwEn          = %<LibBlockParameter(CoolFlwEn,"","",0)>;
     turbPrms.ConfigNPSS         = %<LibBlockParameter(ConfigNPSS,"","",0)>;
-
-    /* vector & array data */
     turbPrms.Y_T_NcVec            = (double*)(%<LibBlockParameterBaseAddr(Y_T_NcVec)>);
     turbPrms.X_T_PRVec            = (double*)(%<LibBlockParameterBaseAddr(X_T_PRVec)>);
     turbPrms.T_T_Map_WcArray      = (double*)(%<LibBlockParameterBaseAddr(T_T_Map_WcArray)>);
     turbPrms.T_T_Map_EffArray     = (double*)(%<LibBlockParameterBaseAddr(T_T_Map_EffArray)>);
     turbPrms.T_BldPos             = (double*)(%<LibBlockParameterBaseAddr(T_BldPos)>);
-
-    /*------get dimensions of parameter arrays-------*/
     turbPrms.Y_T_NcVecLen   = %<LibBlockParameterSize(Y_T_NcVec)[1]>;
     turbPrms.X_T_PRVecLen   = %<LibBlockParameterSize(X_T_PRVec)[1]>;
-
     turbPrms.WcMapCol   = %<LibBlockParameter(WcMapCol,"","",0)>;
     turbPrms.EffMapCol  = %<LibBlockParameter(EffMapCol,"","",0)>;
     turbPrms.WcMapRw    = %<LibBlockParameter(WcMapRw,"","",0)>;
