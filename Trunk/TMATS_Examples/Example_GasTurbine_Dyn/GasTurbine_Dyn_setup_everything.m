@@ -25,9 +25,6 @@ POp = filesep;
 
 %--------- add necessary subdirectories to current MATLAB path
 eval(['addpath ',MWS.top_level,POp,'SimSetup'])
-eval(['addpath ',MWS.top_level,POp,'External_Effectors'])
-eval(['addpath ',MWS.top_level,POp,'Plants'])
-eval(['addpath ',MWS.top_level,POp,'Bus']) 
 
 %------ run various setup files to get tables & constants ---------
 MWS = setup_Solve_temp(MWS);	% develops variables for the iterative solver
@@ -38,14 +35,12 @@ MWS = setup_Noz(MWS);           % develops variables for Noz
 MWS = setup_HPT(MWS);           % develops variables for HPT
 MWS = setup_Burner(MWS);        % develops variables for Burner
 MWS = setup_Duct(MWS);          % develops variables for Duct
+MWS = setup_Inlet(MWS);         % develops variables for Inlet
 
 % if no output is specified, then just assign MWS to the workspace
 if(nargout == 0)
     assignin('base','MWS',MWS);
 end
-
-%------ run setup files to define the bus ---------
-evalin('base','setup_Bus');
 
 % open template
 open_system('GasTurbine_Dyn_Template.slx');
