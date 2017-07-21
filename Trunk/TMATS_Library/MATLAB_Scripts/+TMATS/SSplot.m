@@ -142,12 +142,12 @@ if StnNum > 0
     %plot the data in a tab
     subplot(2,1,1)
     plot(Tt,'-o')
-    ylabel('Temperatures [R]')
+    ylabel(sprintf('Temperatures, %cR',char(176)))
     ax = gca;
     set(ax,'xtick',[]);
     subplot(2,1,2)
     plot(Pt,'-o')
-    ylabel('Pressures [psia]')
+    ylabel('Pressures, psia')
     ax = gca;
     set(ax,'xtick',1:length(Nm));
     set(ax,'xticklabel',Nm);
@@ -168,8 +168,8 @@ if StnNum > 0 && PlotTS == 1
     plot(s,Tt,'-bo')
     hold on
     plot([s(1),s(end)],[Tt(1),Tt(end)],'b')
-    ylabel('Temperatures [R]');
-    xlabel('Enthalpy [BTU/(lbm*R)]');
+    ylabel(sprintf('Temperatures, %cR',char(176)));
+    xlabel(sprintf('Enthalpy, BTU/(%cR*lbm)',char(176)));
     
 end
 
@@ -232,7 +232,7 @@ if ShftSpdNum > 0
         set(f,'name','Speeds','numbertitle','off');
         % plot remainder of shaft speeds
         bar(Nplt);
-        ylabel('Speed [rpm]');
+        ylabel('Speed, rpm');
         ax = gca;
         set(ax,'xtick',1:length(NpltNm));
         set(ax,'xticklabel',NpltNm);
