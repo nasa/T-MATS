@@ -54,6 +54,8 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
     
+    ssSetOptions(S, SS_OPTION_WORKS_WITH_CODE_REUSE);
+    
     /* Register reserved identifiers to avoid name conflict */
     if (ssRTWGenIsCodeGen(S) || ssGetSimMode(S)==SS_SIMMODE_EXTERNAL) {
         /* Register reserved identifier for OutputFcnSpec */
@@ -67,6 +69,19 @@ static void mdlInitializeSampleTimes(SimStruct *S)
     ssSetOffsetTime(S, 0, 0.0);
     ssSetModelReferenceSampleTimeDefaultInheritance(S);
 }
+
+#define MDL_SET_WORK_WIDTHS   /* Change to #undef to remove function */
+#if defined(MDL_SET_WORK_WIDTHS) && defined(MATLAB_MEX_FILE)
+/* Function: mdlSetWorkWidths ===============================================
+ * Abstract:
+ *      Set up run-time parameters.
+ */
+static void mdlSetWorkWidths(SimStruct *S)
+{
+    const char_T *rtParamNames[] = {"LHV", "DPnormBurner", "Eff", "LHVEn", "hFuel"};
+    ssRegAllTunableParamsAsRunTimeParams(S, rtParamNames);
+}
+#endif /* MDL_SET_WORK_WIDTHS */
 
 #define MDL_START
 #if defined(MDL_START)
@@ -98,40 +113,6 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 static void mdlTerminate(SimStruct *S)
 {
 }
-
-#define MDL_RTW                        /* Change to #undef to remove function */
-#if defined(MDL_RTW) && (defined(MATLAB_MEX_FILE) || defined(NRT))
-/* Function: mdlRTW ============================================================
- * Abstract:
- *    This function is called when Real-Time Workshop is generating the
- *    model.rtw file. In this routine, you can call the following functions
- *    which add fields to the model.rtw file.
- *
- *    Important! Since this s-function has this mdlRTW method, it is required
- *    to have a corresponding .tlc file so as to work with RTW. You will find
- *    the sfun_directlook.tlc in <matlaroot>/toolbox/simulink/blocks/tlc_c/.
- */
-static void mdlRTW(SimStruct *S)
-{
-    real_T LHV          = *mxGetPr(LHV_p(S));
-    real_T DPnormBurner = *mxGetPr(dPnormBurner_p(S));
-    real_T Eff          = *mxGetPr(Efficiency_p(S));
-    real_T LHVEn        = *mxGetPr(LHVEn_p(S));
-    real_T hFuel        = *mxGetPr(hFuel_p(S));
-    
-    if (!ssWriteRTWParameters(S, 5, 
-       SSWRITE_VALUE_VECT, "LHV",          "",  LHV,          1,
-       SSWRITE_VALUE_VECT, "DPnormBurner", "",  DPnormBurner, 1,
-       SSWRITE_VALUE_VECT, "Eff",          "",  Eff,          1,
-       SSWRITE_VALUE_VECT, "LHVEn",        "",  LHVEn,        1,
-       SSWRITE_VALUE_VECT, "hFuel",        "",  hFuel,        1
-       ))
-    {
-        return;/* An error occurred which will be reported by Simulink */
-    }
-}
-
-#endif /* MDL_RTW */
 
 #ifdef  MATLAB_MEX_FILE    /* Is this file being compiled as a MEX-file? */
 #include "simulink.c"      /* MEX-file interface mechanism */

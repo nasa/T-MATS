@@ -6,7 +6,7 @@
 #include "simstruc.h"
 #endif
 
-void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, const double* cbd, const double* fbd, CompStruct* prm)
+void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, const double* cbd, const double* fbd, const CompStruct* prm)
 {
     double WIn      = u[0];     /* Input Flow [pps] 	*/
     double htIn     = u[1];     /* Input Enthalpy [BTU/lbm] */

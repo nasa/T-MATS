@@ -31,7 +31,19 @@ mex Turbine_TMATS.c h2tc_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp
 mex Turbine_PSI_TMATS.c h2tc_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp2Ac_TMATS.c functions_TMATS.c
 mex Valve_TMATS.c interp1Ac_TMATS.c functions_TMATS.c
 mex ValvePHY_TMATS.c interp2Ac_TMATS.c interp1Ac_TMATS.c calc_Pstatic_TMATS.c calc_WvsMN_TMATS.c calc_PsvsMN_TMATS.c functions_TMATS.c
+mex Ambient_TMATS_new.c Ambient_TMATS_body.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp1Ac_TMATS.c interp2Ac_TMATS.c functions_TMATS.c
+mex Bleed_TMATS_new.c Bleed_TMATS_body.c t2hc_TMATS.c h2tc_TMATS.c functions_TMATS.c
 mex Burner_TMATS_new.c Burner_TMATS_body.c t2hc_TMATS.c h2tc_TMATS.c functions_TMATS.c
-mex Nozzle_TMATS_new.c Nozzle_TMATS_body.c PcalcStat_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp1Ac_TMATS.c interp2Ac_TMATS.c functions_TMATS.c
-mex Turbine_TMATS_new.c Turbine_TMATS_body.c h2tc_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp2Ac_TMATS.c functions_TMATS.c
 mex Compressor_TMATS_new.c Compressor_TMATS_body.c h2tc_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp1Ac_TMATS.c interp2Ac_TMATS.c interp3Ac_TMATS.c functions_TMATS.c
+mex DO_TMATS_new.c
+mex Enth2Temp_TMATS_new.c h2tc_TMATS.c
+mex Mixer_TMATS_new.c Mixer_TMATS_body.c h2tc_TMATS.c PcalcStat_TMATS.c t2hc_TMATS.c interp1Ac_TMATS.c interp2Ac_TMATS.c sp2tc_TMATS.c pt2sc_TMATS.c functions_TMATS.c
+mex Nozzle_TMATS_new.c Nozzle_TMATS_body.c PcalcStat_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp1Ac_TMATS.c interp2Ac_TMATS.c functions_TMATS.c
+mex PT2S_TMATS_new.c pt2sc_TMATS.c
+mex SP2T_TMATS_new.c sp2tc_TMATS.c
+mex StaticCalc_TMATS_new.c StaticCalc_TMATS_body.c PcalcStat_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp1Ac_TMATS.c interp2Ac_TMATS.c functions_TMATS.c
+mex Temp2Enth_TMATS_new.c t2hc_TMATS.c
+mex Turbine_TMATS_new.c Turbine_TMATS_body.c h2tc_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp2Ac_TMATS.c functions_TMATS.c
+mex Turbine_PSI_TMATS_new.c Turbine_PSI_TMATS_body.c h2tc_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp2Ac_TMATS.c functions_TMATS.c
+mex Valve_TMATS_new.c Valve_TMATS_body.c interp1Ac_TMATS.c functions_TMATS.c
+mex ValvePHY_TMATS_new.c ValvePHY_TMATS_body.c interp2Ac_TMATS.c interp1Ac_TMATS.c calc_Pstatic_TMATS.c calc_WvsMN_TMATS.c calc_PsvsMN_TMATS.c functions_TMATS.c
