@@ -68,6 +68,7 @@
 #include "simstruc.h"
 #include "types_TMATS.h"
 
+
 #define Aphy1In_p(S)                    ssGetSFcnParam(S,0)
 #define Aphy2In_p(S)                    ssGetSFcnParam(S,1)
 #define Y_M_FARVec_p(S)                 ssGetSFcnParam(S,2)
@@ -86,8 +87,16 @@
 #define NPARAMS 15
 #define NERRORS 17
 
-/* Forward declaration for Mixer body of calcs */
-extern void Mixer_TMATS_body(real_T*, const real_T*, const MixStruct*);
+extern void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm);
+
+#define MDL_SET_WORK_WIDTHS
+#if defined(MDL_SET_WORK_WIDTHS) && defined(MATLAB_MEX_FILE)
+static void mdlSetWorkWidths(SimStruct *S)
+{
+    const char_T *rtParamNames[] = {"Aphy1In", "Aphy2In", "Y_M_FARVec", "X_M_TVec", "T_M_RtArray", "T_M_gammaArray", "s_M_Imp1", "s_M_Imp2", "s_M_V1", "s_M_V2", "IDes", "SWPS", "BPRdes", "MNp"};
+    ssRegAllTunableParamsAsRunTimeParams(S, rtParamNames);
+}
+#endif
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -98,8 +107,14 @@ static void mdlInitializeSizes(SimStruct *S)
         return;
     }
     
-    for (i = 0; i < NPARAMS; i++)
-        ssSetSFcnParamTunable(S, i, 0);
+    for (i = 0; i < NPARAMS; i++) {
+        if (i != 14)
+            ssSetSFcnParamTunable(S, i, 1);
+        else
+            ssSetSFcnParamTunable(S, i, 0);
+    }
+
+    ssSetOptions(S, SS_OPTION_WORKS_WITH_CODE_REUSE);
     
     ssSetNumContStates(S, 0);
     ssSetNumDiscStates(S, 0);
@@ -155,48 +170,43 @@ static void mdlStart(SimStruct *S)
 
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
-    /* Input vector */
+    /* Input and output vectors */
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
-    
-    /* Output vector */
+
     real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);
     
     /* Block name buffer length and string read status */
-    char * BlkNm;
     int_T buflen;
     int_T status;
-    
+
     /* Block mask parameter struct */
-    MixStruct mixPrms;
-    mixPrms.Aphy1In                   = *mxGetPr(Aphy1In_p(S));
-    mixPrms.Aphy2In                   = *mxGetPr(Aphy2In_p(S));
-    mixPrms.s_M_Imp1                  = *mxGetPr(s_M_Imp1_p(S));
-    mixPrms.s_M_Imp2                  = *mxGetPr(s_M_Imp2_p(S));
-    mixPrms.s_M_V1                    = *mxGetPr(s_M_V1_p(S));
-    mixPrms.s_M_V2                    = *mxGetPr(s_M_V2_p(S));
-    mixPrms.BPRdes                    = *mxGetPr(BPRdes_p(S));
-    mixPrms.IDes                      = *mxGetPr(IDes_p(S));
-    mixPrms.SWPS                      = *mxGetPr(SWPS_p(S));
-    mixPrms.MNp                       = *mxGetPr(MNp_p(S));
+    MixerStruct mixerStruct;
+    mixerStruct.Aphy1In                   = *mxGetPr(Aphy1In_p(S));
+    mixerStruct.Aphy2In                   = *mxGetPr(Aphy2In_p(S));
+    mixerStruct.s_M_Imp1                  = *mxGetPr(s_M_Imp1_p(S));
+    mixerStruct.s_M_Imp2                  = *mxGetPr(s_M_Imp2_p(S));
+    mixerStruct.s_M_V1                    = *mxGetPr(s_M_V1_p(S));
+    mixerStruct.s_M_V2                    = *mxGetPr(s_M_V2_p(S));
+    mixerStruct.BPRdes                    = *mxGetPr(BPRdes_p(S));
+    mixerStruct.IDes                      = *mxGetPr(IDes_p(S));
+    mixerStruct.SWPS                      = *mxGetPr(SWPS_p(S));
+    mixerStruct.MNp                       = *mxGetPr(MNp_p(S));
     /* Vector & array data */
-    mixPrms.Y_M_FARVec		  = mxGetPr(Y_M_FARVec_p(S));
-    mixPrms.X_M_TVec          = mxGetPr(X_M_TVec_p(S));
-    mixPrms.T_M_RtArray       = mxGetPr(T_M_RtArray_p(S));
-    mixPrms.T_M_gammaArray    = mxGetPr(T_M_gammaArray_p(S));
+    mixerStruct.Y_M_FARVec		= mxGetPr(Y_M_FARVec_p(S));
+    mixerStruct.X_M_TVec          = mxGetPr(X_M_TVec_p(S));
+    mixerStruct.T_M_RtArray       = mxGetPr(T_M_RtArray_p(S));
+    mixerStruct.T_M_gammaArray    = mxGetPr(T_M_gammaArray_p(S));
     /* Dimensions of parameter arrays */
-    mixPrms.Y_M_FARVecLen  = mxGetNumberOfElements(Y_M_FARVec_p(S));
-    mixPrms.X_M_TVecLen    = mxGetNumberOfElements(X_M_TVec_p(S));
+    mixerStruct.A   = mxGetNumberOfElements(Y_M_FARVec_p(S));
+    mixerStruct.B   = mxGetNumberOfElements(X_M_TVec_p(S));
 
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
-    mixPrms.BlkNm = mxMalloc(buflen);
-    status = mxGetString(BN_p(S), mixPrms.BlkNm, buflen);
-    
-    /* Integer work vector for error codes */
-    mixPrms.IWork = ssGetIWork(S);
-    
+    mixerStruct.BlkNm = mxMalloc(buflen);
+    status = mxGetString(BN_p(S), mixerStruct.BlkNm, buflen);
+
     /* Perform core block calculations */
-    Mixer_TMATS_body(y, u, &mixPrms);
+    Mixer_TMATS_body(y, u, &mixerStruct);
 }
 
 static void mdlTerminate(SimStruct *S)

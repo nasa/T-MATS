@@ -30,10 +30,18 @@
 #define EffMapRw_p(S)           ssGetSFcnParam(S,16)
 #define ConfigNPSS_p(S)         ssGetSFcnParam(S,17)
 #define NPARAMS 18
-#define NERRORS 5
+#define NERRORS 5 
 
-/* Forward declaration for Turbine body of calcs */
-extern void Turbine_TMATS_body(real_T*, const real_T*, const real_T*, const TurbStruct*);
+extern void Turbine_TMATS_body(double* y, const double* u, const double* CoolFlow, const TurbineStruct* prm);
+
+#define MDL_SET_WORK_WIDTHS
+#if defined(MDL_SET_WORK_WIDTHS) && defined(MATLAB_MEX_FILE)
+static void mdlSetWorkWidths(SimStruct *S)
+{
+    const char_T *rtParamNames[] = {"Y_T_NcVec", "X_T_PRVec", "T_T_Map_WcArray", "T_T_Map_EffArray", "T_BldPos", "BldPosLeng", "CoolFlwEn", "IDesign", "NcDes", "EffDes", "PRmapDes", "NDes", "WcMapCol", "EffMapCol", "WcMapRw", "EffMapRw", "ConfigNPSS"};
+    ssRegAllTunableParamsAsRunTimeParams(S, rtParamNames);
+}
+#endif
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -50,6 +58,8 @@ static void mdlInitializeSizes(SimStruct *S)
         else
             ssSetSFcnParamTunable(S, i, 0);
     }
+
+    ssSetOptions(S, SS_OPTION_WORKS_WITH_CODE_REUSE);
     
     ssSetNumContStates(S, 0);
     ssSetNumDiscStates(S, 0);
@@ -73,11 +83,6 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
     
-    /* Register reserved identifiers to avoid name conflict */
-    if (ssRTWGenIsCodeGen(S) || ssGetSimMode(S)==SS_SIMMODE_EXTERNAL) {
-        /* Register reserved identifier for OutputFcnSpec */
-        ssRegMdlInfo(S, "Turbine_TMATS_body", MDL_INFO_ID_RESERVED, 0, 0, ssGetPath(S));
-    }
 }
 
 #if defined(MATLAB_MEX_FILE)
@@ -106,121 +111,63 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 #if defined(MDL_START)
 static void mdlStart(SimStruct *S)
 {
+    /* initialize print error variables */
+    ssSetIWorkValue(S,Er1,0);
+    ssSetIWorkValue(S,Er2,0);
+    ssSetIWorkValue(S,Er3,0);
+    ssSetIWorkValue(S,Er4,0);
+    ssSetIWorkValue(S,Er5,0);
 }
 #endif
 
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
-    /* Input vector port 1 */
+    /* Input and output vectors */
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
-    /* Input vector port 2
-       N 5x1 vectors consisting of W, ht, Tt, Pt and FAR, where N is the number of cooling flows */
-    const real_T *CoolFlow = ssGetInputPortRealSignal(S, 1);  
+    const real_T *CoolFlow = ssGetInputPortRealSignal(S, 1); /* N 5x1 vectors consisting of W, ht, Tt, Pt and FAR, where N is the number of cooling flows */
 
-    /* Output vector */
-    real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);   
-
+    real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);
+    
     /* Block name buffer length and string read status */
     int_T buflen;
     int_T status;
-    
+
     /* Block mask parameter struct */
-    TurbStruct turbPrms;
-    turbPrms.NcDes              = *mxGetPr(NcDes_p(S));
-    turbPrms.PRmapDes           = *mxGetPr(PRmapDes_p(S));
-    turbPrms.EffDes             = *mxGetPr(EffDes_p(S));
-    turbPrms.NDes               = *mxGetPr(NDes_p(S));
-    turbPrms.IDes               = *mxGetPr(IDesign_p(S));
-    turbPrms.BldPosLeng         = *mxGetPr(BldPosLeng_p(S));
-    turbPrms.CoolFlwEn          = *mxGetPr(CoolFlwEn_p(S));
-    turbPrms.ConfigNPSS         = *mxGetPr(ConfigNPSS_p(S));
-    /* Vector & array data */
-    turbPrms.Y_T_NcVec            = mxGetPr(Y_T_NcVec_p(S));
-    turbPrms.X_T_PRVec            = mxGetPr(X_T_PRVec_p(S));
-    turbPrms.T_T_Map_WcArray      = mxGetPr(T_T_Map_WcArray_p(S));
-    turbPrms.T_T_Map_EffArray     = mxGetPr(T_T_Map_EffArray_p(S));
-    turbPrms.T_BldPos             = mxGetPr(T_BldPos_p(S));
+    TurbineStruct turbineStruct;
+    turbineStruct.NcDes              = *mxGetPr(NcDes_p(S));
+    turbineStruct.PRmapDes           = *mxGetPr(PRmapDes_p(S));
+    turbineStruct.EffDes             = *mxGetPr(EffDes_p(S));
+    turbineStruct.NDes               = *mxGetPr(NDes_p(S));
+    turbineStruct.IDes               = *mxGetPr(IDesign_p(S));
+    turbineStruct. BldPosLeng         = *mxGetPr(BldPosLeng_p(S));
+    turbineStruct. CoolFlwEn          = *mxGetPr(CoolFlwEn_p(S));
+    turbineStruct. ConfigNPSS         = *mxGetPr(ConfigNPSS_p(S));
+    /* vector & array data */
+    turbineStruct.Y_T_NcVec            = mxGetPr(Y_T_NcVec_p(S));
+    turbineStruct.X_T_PRVec            = mxGetPr(X_T_PRVec_p(S));
+    turbineStruct.T_T_Map_WcArray      = mxGetPr(T_T_Map_WcArray_p(S));
+    turbineStruct.T_T_Map_EffArray     = mxGetPr(T_T_Map_EffArray_p(S));
+    turbineStruct.T_BldPos             = mxGetPr(T_BldPos_p(S));
     /* Dimensions of parameter arrays */
-    turbPrms.Y_T_NcVecLen   = mxGetNumberOfElements(Y_T_NcVec_p(S));
-    turbPrms.X_T_PRVecLen   = mxGetNumberOfElements(X_T_PRVec_p(S));
-    turbPrms.WcMapCol   = *mxGetPr(WcMapCol_p(S));
-    turbPrms.EffMapCol  = *mxGetPr(EffMapCol_p(S));
-    turbPrms.WcMapRw    = *mxGetPr(WcMapRw_p(S));
-    turbPrms.EffMapRw   = *mxGetPr(EffMapRw_p(S));
-    
+    turbineStruct.A   = mxGetNumberOfElements(Y_T_NcVec_p(S));
+    turbineStruct.B   = mxGetNumberOfElements(X_T_PRVec_p(S));
+    turbineStruct.WcMapCol   = *mxGetPr(WcMapCol_p(S));
+    turbineStruct.EffMapCol  = *mxGetPr(EffMapCol_p(S));
+    turbineStruct.WcMapRw    = *mxGetPr(WcMapRw_p(S));
+    turbineStruct.EffMapRw   = *mxGetPr(EffMapRw_p(S));
+        
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
-    turbPrms.BlkNm = mxMalloc(buflen);
-    status = mxGetString(BN_p(S), turbPrms.BlkNm, buflen);
-    
-    /* Integer work vector for error codes */
-    turbPrms.IWork = ssGetIWork(S);
-    
+    turbineStruct.BlkNm = mxMalloc(buflen);
+    status = mxGetString(BN_p(S), turbineStruct.BlkNm, buflen);
+
     /* Perform core block calculations */
-    Turbine_TMATS_body(y,u, CoolFlow, &turbPrms);
+    Turbine_TMATS_body(y, u, CoolFlow, &turbineStruct);
 }
 
 static void mdlTerminate(SimStruct *S)
 {
 }
-
-#define MDL_RTW                        /* Change to #undef to remove function */
-#if defined(MDL_RTW) && (defined(MATLAB_MEX_FILE) || defined(NRT))
-/* Function: mdlRTW ============================================================
- * Abstract:
- *    This function is called when Real-Time Workshop is generating the
- *    model.rtw file. In this routine, you can call the following functions
- *    which add fields to the model.rtw file.
- *
- *    Important! Since this s-function has this mdlRTW method, it is required
- *    to have a corresponding .tlc file so as to work with RTW. You will find
- *    the sfun_directlook.tlc in <matlaroot>/toolbox/simulink/blocks/tlc_c/.
- */
-static void mdlRTW(SimStruct *S)
-{
-    real_T* NcDes              = mxGetPr(NcDes_p(S));
-    real_T* PRmapDes           = mxGetPr(PRmapDes_p(S));
-    real_T* EffDes             = mxGetPr(EffDes_p(S));
-    real_T* NDes               = mxGetPr(NDes_p(S));
-    real_T* IDes               = mxGetPr(IDesign_p(S));
-    real_T* BldPosLeng         = mxGetPr(BldPosLeng_p(S));
-    real_T* CoolFlwEn          = mxGetPr(CoolFlwEn_p(S));
-    real_T* ConfigNPSS         = mxGetPr(ConfigNPSS_p(S));
-    real_T* Y_T_NcVec          = mxGetPr(Y_T_NcVec_p(S));
-    real_T* X_T_PRVec          = mxGetPr(X_T_PRVec_p(S));
-    real_T* T_T_Map_WcArray    = mxGetPr(T_T_Map_WcArray_p(S));
-    real_T* T_T_Map_EffArray   = mxGetPr(T_T_Map_EffArray_p(S));
-    real_T* T_BldPos           = mxGetPr(T_BldPos_p(S));
-    real_T* WcMapCol           = mxGetPr(WcMapCol_p(S));
-    real_T* EffMapCol          = mxGetPr(EffMapCol_p(S));
-    real_T* WcMapRw            = mxGetPr(WcMapRw_p(S));
-    real_T* EffMapRw           = mxGetPr(EffMapRw_p(S));
-    
-    if (!ssWriteRTWParameters(S, 17,
-        SSWRITE_VALUE_VECT, "Y_T_NcVec",        "",  Y_T_NcVec,        mxGetNumberOfElements(Y_T_NcVec_p(S)),
-        SSWRITE_VALUE_VECT, "X_T_PRVec",        "",  X_T_PRVec,        mxGetNumberOfElements(X_T_PRVec_p(S)),
-        SSWRITE_VALUE_VECT, "T_T_Map_WcArray",  "",  T_T_Map_WcArray,  mxGetNumberOfElements(T_T_Map_WcArray_p(S)),
-        SSWRITE_VALUE_VECT, "T_T_Map_EffArray", "",  T_T_Map_EffArray, mxGetNumberOfElements(T_T_Map_EffArray_p(S)),
-        SSWRITE_VALUE_VECT, "T_BldPos",         "",  T_BldPos,         mxGetNumberOfElements(T_BldPos_p(S)),
-        SSWRITE_VALUE_VECT, "BldPosLeng",       "",  BldPosLeng,       1,
-        SSWRITE_VALUE_VECT, "CoolFlwEn",        "",  CoolFlwEn,        1,
-        SSWRITE_VALUE_VECT, "IDes",             "",  IDes,             1,
-        SSWRITE_VALUE_VECT, "NcDes",            "",  NcDes,            1,
-        SSWRITE_VALUE_VECT, "EffDes",           "",  EffDes,           1,
-        SSWRITE_VALUE_VECT, "PRmapDes",         "",  PRmapDes,         1,
-        SSWRITE_VALUE_VECT, "NDes",             "",  NDes,             1,
-        SSWRITE_VALUE_VECT, "WcMapCol",         "",  WcMapCol,         1,
-        SSWRITE_VALUE_VECT, "EffMapCol",        "",  EffMapCol,        1,
-        SSWRITE_VALUE_VECT, "WcMapRw",          "",  WcMapRw,          1,
-        SSWRITE_VALUE_VECT, "EffMapRw",         "",  EffMapRw,         1,
-        SSWRITE_VALUE_VECT, "ConfigNPSS",       "",  ConfigNPSS,       1
-        ))
-    {
-        return;/* An error occurred which will be reported by Simulink */
-    }
-}
-
-#endif /* MDL_RTW */
 
 #ifdef  MATLAB_MEX_FILE    /* Is this file being compiled as a MEX-file? */
 #include "simulink.c"      /* MEX-file interface mechanism */

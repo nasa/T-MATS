@@ -6,7 +6,7 @@ typedef enum {Er1, Er2, Er3, Er4, Er5, Er6, Er7, Er8, Er9,
               Er10, Er11, Er12, Er13, Er14, Er15, Er16, Er17} IWorkIdx;
 
 /* Turbine block parameters structure */
-struct TurbStruct {
+struct TurbineStruct {
     double s_T_Nc;
     double s_T_PR;
     double s_T_Wc;
@@ -30,14 +30,14 @@ struct TurbStruct {
     int    *IWork;
 
     /* Dimensions of parameter arrays */
-    int Y_T_NcVecLen;
-    int X_T_PRVecLen;
+    int A;
+    int B;
     int WcMapCol;
     int EffMapCol;
     int WcMapRw;
     int EffMapRw;
 };
-typedef struct TurbStruct TurbStruct;
+typedef struct TurbineStruct TurbineStruct;
 
 /* Burner block parameters structure */
 struct BurnStruct {
@@ -72,15 +72,15 @@ struct NozzleStruct {
     int    *IWork;
 
 	/* Dimensions of parameter arrays */
-	int Y_N_FARVecLen;
-	int X_N_TtVecLen;
-	int X_N_PEQPaVecLen;
-	int X_N_TtVecTGLen;
+    int A;
+    int B;
+    int B1;
+    int C;
 };
 typedef struct NozzleStruct NozzleStruct;
 
 /* Compressor block parameters structure */
-struct CompStruct {
+struct CompressorStruct {
     double NcDes;
     double PRDes;
     double EffDes;
@@ -108,10 +108,10 @@ struct CompStruct {
     int    *IWork;
     
     /* Dimensions of parameter arrays */
-    int Y_C_Map_NcVecLen;
-    int X_C_RlineVecLen;
-    int Z_C_AlphaVecLen;
-    int X_C_Map_WcSurgeVecLen;
+    int A;
+    int B;
+    int C;
+    int D;
     int WcMapCol;
     int PRMapCol;
     int EffMapCol;
@@ -122,10 +122,10 @@ struct CompStruct {
     int PRMapLay;
     int EffMapLay;
 };
-typedef struct CompStruct CompStruct;
+typedef struct CompressorStruct CompressorStruct;
 
 /* Mixer block parameters structure */
-struct MixStruct {
+struct MixerStruct {
     double Aphy1In;
     double Aphy2In;
     double s_M_Imp1;
@@ -146,10 +146,10 @@ struct MixStruct {
     int    *IWork;
 
     /* Dimensions of parameter arrays */
-    int Y_M_FARVecLen;
-    int X_M_TVecLen;
+    int A;
+    int B;
 };
-typedef struct MixStruct MixStruct;
+typedef struct MixerStruct MixerStruct;
 
 struct ValveStruct {
     double VlvfullyOpen;

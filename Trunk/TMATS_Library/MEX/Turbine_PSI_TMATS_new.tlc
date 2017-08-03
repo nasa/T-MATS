@@ -19,7 +19,7 @@
     %<SLibAddToStaticSources("Turbine_PSI_TMATS_body.c")>
 
     %openfile forwardDecls
-      extern void Turbine_PSI_TMATS_body(real_T *y, const real_T *u, const real_T *CoolFlow, const Turbine_PSIStruct* prm);
+      extern void Turbine_PSI_TMATS_body(double *y, const double *u, const double *CoolFlow, const Turbine_PSIStruct* prm);
       Turbine_PSIStruct turbine_PSIStruct;
     %closefile forwardDecls
 
@@ -43,7 +43,7 @@
     turbine_PSIStruct.PRmapDes            = %<LibBlockParameter(PRmapDes,"","",0)>;
     turbine_PSIStruct.EffDes              = %<LibBlockParameter(EffDes,"","",0)>;
     turbine_PSIStruct.NDes                = %<LibBlockParameter(NDes,"","",0)>;
-    turbine_PSIStruct.IDes                = %<LibBlockParameterSize(IDesign)[1]>;
+    turbine_PSIStruct.IDes                = %<LibBlockParameter(IDesign,"","",0)>;
     turbine_PSIStruct.s_T_hi              = %<LibBlockParameter(s_T_hi,"","",0)>;
     turbine_PSIStruct.gamma_T             = %<LibBlockParameter(gamma_T,"","",0)>;
     turbine_PSIStruct.Rt_T                = %<LibBlockParameter(Rt_T,"","",0)>;

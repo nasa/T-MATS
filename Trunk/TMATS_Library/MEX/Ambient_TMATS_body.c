@@ -7,14 +7,11 @@
 #include "simstruc.h"
 #endif
 
-void Ambient_TMATS_body(real_T *y, const real_T *u, const AmbientStruct* prm)
+void Ambient_TMATS_body(double *y, const double *u, const AmbientStruct* prm)
 {
-    /*---------Define Inputs--------*/
-    
     double AltIn     = u[0];     /* Altitude(ft) 	*/
     double dTempIn   = u[1];     /* delta Temperature [degF] 	*/
     double MNIn      = u[2];     /* Mach Number (frac) 	*/
-    
     
     /*--------Define Constants-------*/
     double PsOut, TsOut, TtOut, PtOut, VengOut, TsStDayOut, Vsound;
@@ -25,9 +22,6 @@ void Ambient_TMATS_body(real_T *y, const real_T *u, const AmbientStruct* prm)
     
     int interpErr = 0;
     
-
-    
-        
     FAR = prm->AFARc;
     
     Rt = interp1Ac(prm->X_A_FARVec,prm->T_A_RtArray,FAR,prm->B,&interpErr);
@@ -146,4 +140,3 @@ void Ambient_TMATS_body(real_T *y, const real_T *u, const AmbientStruct* prm)
     y[7] = Test;       /* Test signal */
     
 }
-

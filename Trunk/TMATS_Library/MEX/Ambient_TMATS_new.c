@@ -29,7 +29,7 @@ extern void Ambient_TMATS_body(real_T *y, const real_T *u, const AmbientStruct* 
 #if defined(MDL_SET_WORK_WIDTHS) && defined(MATLAB_MEX_FILE)
 static void mdlSetWorkWidths(SimStruct *S)
 {
-    const char_T *rtParamNames[] = {"AFARc", "X_A_AltVec", "T_A_TsVec", "T_A_PsVec", "X_A_FARVec", "T_A_RtArray", "Y_A_TVec", "T_A_gammaArray"};
+    const char_T *rtParamNames[] = {"X_A_AltVec", "T_A_TsVec", "T_A_PsVec", "X_A_FARVec", "Y_A_TVec", "T_A_RtArray", "T_A_gammaArray", "AFARc"};
     ssRegAllTunableParamsAsRunTimeParams(S, rtParamNames);
 }
 #endif

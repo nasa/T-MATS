@@ -3,17 +3,11 @@
 #include "functions_TMATS.h"
 #include <math.h>
 
-
-// extern double h2tc(double a, double b);
-// extern double pt2sc(double c, double d, double e);
-// extern double sp2tc(double f, double g, double h);
-// extern double t2hc(double i, double j);
-// extern double interp2Ac(double kk[], double ll[], double mm[], double nn, double oo,int pp, int qq, int *error);
 #ifdef MATLAB_MEX_FILE
 #include "simstruc.h"
 #endif
 
-void Turbine_PSI_TMATS_body(real_T *y, const real_T *u, const real_T *CoolFlow, const Turbine_PSIStruct* prm)
+void Turbine_PSI_TMATS_body(double *y, const double *u, const double *CoolFlow, const Turbine_PSIStruct* prm)
 {
     double WIn      = u[0];     /* Input Flow [pps]	*/
     double htIn     = u[1];     /* input enthalpy [BTU/lbm]*/
@@ -284,4 +278,3 @@ void Turbine_PSI_TMATS_body(real_T *y, const real_T *u, const real_T *CoolFlow, 
     y[11] = Test;
 
 }
-

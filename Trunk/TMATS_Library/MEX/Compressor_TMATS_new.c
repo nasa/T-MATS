@@ -45,8 +45,16 @@
 #define NPARAMS 31
 #define NERRORS 5
 
-/* Forward declaration for Compressor body of calcs */
-extern void Compressor_TMATS_body(real_T*, real_T*, real_T*, const real_T*, const real_T*, const real_T*, const CompStruct*);
+extern void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, const double* Wcust, const double* FracWbld, const CompressorStruct* prm);
+
+#define MDL_SET_WORK_WIDTHS
+#if defined(MDL_SET_WORK_WIDTHS) && defined(MATLAB_MEX_FILE)
+static void mdlSetWorkWidths(SimStruct *S)
+{
+    const char_T *rtParamNames[] = {"Y_C_Map_NcVec", "X_C_RlineVec", "Z_C_AlphaVec", "T_C_Map_WcArray", "T_C_Map_PRArray", "T_C_Map_EffArray", "FracCusBldht", "FracCusBldPt", "FracBldht", "FracBldPt", "X_C_Map_WcSurgeVec", "T_C_Map_PRSurgeVec", "IDesign", "NcDes", "EffDes", "PRDes", "RlineDes", "CustBldEn", "FBldEn", "CustBldNm", "FracBldNm", "WcMapCol", "PRMapCol", "EffMapCol", "WcMapRw", "PRMapRw", "EffMapRw", "WcMapLay", "PRMapLay", "EffMapLay"};
+    ssRegAllTunableParamsAsRunTimeParams(S, rtParamNames);
+}
+#endif
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -57,12 +65,14 @@ static void mdlInitializeSizes(SimStruct *S)
         return;
     }
     
-    for (i = 0; i < NPARAMS; i++)
-        if (i != 19) {
+    for (i = 0; i < NPARAMS; i++) {
+        if (i != 19)
             ssSetSFcnParamTunable(S, i, 1);
-        } else {
+        else
             ssSetSFcnParamTunable(S, i, 0);
-        }
+    }
+
+    ssSetOptions(S, SS_OPTION_WORKS_WITH_CODE_REUSE);
     
     ssSetNumContStates(S, 0);
     ssSetNumDiscStates(S, 0);
@@ -92,11 +102,6 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
     
-    /* Register reserved identifiers to avoid name conflict */
-    if (ssRTWGenIsCodeGen(S) || ssGetSimMode(S)==SS_SIMMODE_EXTERNAL) {
-        /* Register reserved identifier for OutputFcnSpec */
-        ssRegMdlInfo(S, "Compressor_TMATS_body", MDL_INFO_ID_RESERVED, 0, 0, ssGetPath(S));
-    }
 }
 
 #if defined(MATLAB_MEX_FILE)
@@ -137,18 +142,13 @@ static void mdlStart(SimStruct *S)
 
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
-    /* Input vector port 1 */
+    /* Input and output vectors */
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
-    /* Input vector port 2 */
     const real_T *Wcust = ssGetInputPortRealSignal(S, 1);
-    /* Input vector port 3 */
     const real_T *FracWbld  = ssGetInputPortSignal(S,2);
-    
-    /* Output vector port 1 */
+
     real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);
-    /* Output vector port 2 */
     real_T *y1  = (real_T *)ssGetOutputPortRealSignal(S,1);
-    /* Output vector port 3 */
     real_T *y2  = (real_T *)ssGetOutputPortRealSignal(S,2);
     
     /* Block name buffer length and string read status */
@@ -156,143 +156,56 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     int_T status;
     
     /* Block mask parameter struct */
-    CompStruct compPrms;
-    compPrms.NcDes              = *mxGetPr(NcDes_p(S));
-    compPrms.PRDes              = *mxGetPr(PRDes_p(S));
-    compPrms.EffDes             = *mxGetPr(EffDes_p(S));
-    compPrms.RlineDes           = *mxGetPr(RlineDes_p(S));
-    compPrms.IDes               = *mxGetPr(IDesign_p(S));
-    compPrms.CustBldEn          = *mxGetPr(CustBldEn_p(S));
-    compPrms.FBldEn             = *mxGetPr(FBldEn_p(S));
-    compPrms.CustBldNm          = *mxGetPr(CustBldNm_p(S));
-    compPrms.FracBldNm          = *mxGetPr(FracBldNm_p(S));
-    /* Vector & array data */
-    compPrms.Y_C_Map_NcVec        = mxGetPr(Y_C_Map_NcVec_p(S));
-    compPrms.X_C_RlineVec         = mxGetPr(X_C_RlineVec_p(S));
-    compPrms.Z_C_AlphaVec         = mxGetPr(Z_C_AlphaVec_p(S));
-    compPrms.T_C_Map_WcArray      = mxGetPr(T_C_Map_WcArray_p(S));
-    compPrms.T_C_Map_PRArray      = mxGetPr(T_C_Map_PRArray_p(S));
-    compPrms.T_C_Map_EffArray     = mxGetPr(T_C_Map_EffArray_p(S));
-    compPrms.FracCusBldht         = mxGetPr(FracCusBldht_p(S));
-    compPrms.FracCusBldPt         = mxGetPr(FracCusBldPt_p(S));
-    compPrms.FracBldht            = mxGetPr(FracBldht_p(S));
-    compPrms.FracBldPt            = mxGetPr(FracBldPt_p(S));
-    compPrms.X_C_Map_WcSurgeVec   = mxGetPr(X_C_Map_WcSurgeVec_p(S));
-    compPrms.T_C_Map_PRSurgeVec   = mxGetPr(T_C_Map_PRSurgeVec_p(S));
+    CompressorStruct compressorStruct;
+    compressorStruct.NcDes              = *mxGetPr(NcDes_p(S));
+    compressorStruct.PRDes              = *mxGetPr(PRDes_p(S));
+    compressorStruct.EffDes             = *mxGetPr(EffDes_p(S));
+    compressorStruct.RlineDes           = *mxGetPr(RlineDes_p(S));
+    compressorStruct.IDes               = *mxGetPr(IDesign_p(S));
+    compressorStruct.CustBldEn          = *mxGetPr(CustBldEn_p(S));
+    compressorStruct.FBldEn             = *mxGetPr(FBldEn_p(S));
+    compressorStruct.CustBldNm          = *mxGetPr(CustBldNm_p(S));
+    compressorStruct.FracBldNm          = *mxGetPr(FracBldNm_p(S));
+    /* vector & array data */
+    compressorStruct.Y_C_Map_NcVec        = mxGetPr(Y_C_Map_NcVec_p(S));
+    compressorStruct.X_C_RlineVec         = mxGetPr(X_C_RlineVec_p(S));
+    compressorStruct.Z_C_AlphaVec         = mxGetPr(Z_C_AlphaVec_p(S));
+    compressorStruct.T_C_Map_WcArray      = mxGetPr(T_C_Map_WcArray_p(S));
+    compressorStruct.T_C_Map_PRArray      = mxGetPr(T_C_Map_PRArray_p(S));
+    compressorStruct.T_C_Map_EffArray     = mxGetPr(T_C_Map_EffArray_p(S));
+    compressorStruct.FracCusBldht         = mxGetPr(FracCusBldht_p(S));
+    compressorStruct.FracCusBldPt         = mxGetPr(FracCusBldPt_p(S));
+    compressorStruct.FracBldht            = mxGetPr(FracBldht_p(S));
+    compressorStruct.FracBldPt            = mxGetPr(FracBldPt_p(S));
+    compressorStruct.X_C_Map_WcSurgeVec   = mxGetPr(X_C_Map_WcSurgeVec_p(S));
+    compressorStruct.T_C_Map_PRSurgeVec   = mxGetPr(T_C_Map_PRSurgeVec_p(S));
     /* Dimensions of parameter arrays */
-    compPrms.Y_C_Map_NcVecLen       = mxGetNumberOfElements(Y_C_Map_NcVec_p(S));
-    compPrms.X_C_RlineVecLen        = mxGetNumberOfElements(X_C_RlineVec_p(S));
-    compPrms.Z_C_AlphaVecLen        = mxGetNumberOfElements(Z_C_AlphaVec_p(S));
-    compPrms.X_C_Map_WcSurgeVecLen  = mxGetNumberOfElements(X_C_Map_WcSurgeVec_p(S));
-    compPrms.WcMapCol  = *mxGetPr(WcMapCol_p(S));
-    compPrms.PRMapCol  = *mxGetPr(PRMapCol_p(S));
-    compPrms.EffMapCol = *mxGetPr(EffMapCol_p(S));
-    compPrms.WcMapRw   = *mxGetPr(WcMapRw_p(S));
-    compPrms.PRMapRw   = *mxGetPr(PRMapRw_p(S));
-    compPrms.EffMapRw  = *mxGetPr(EffMapRw_p(S));
-    compPrms.WcMapLay   = *mxGetPr(WcMapLay_p(S));
-    compPrms.PRMapLay   = *mxGetPr(PRMapLay_p(S));
-    compPrms.EffMapLay  = *mxGetPr(EffMapLay_p(S));
-	
+    compressorStruct.A   = mxGetNumberOfElements(Y_C_Map_NcVec_p(S));
+    compressorStruct.B   = mxGetNumberOfElements(X_C_RlineVec_p(S));
+    compressorStruct.C   = mxGetNumberOfElements(Z_C_AlphaVec_p(S));
+    compressorStruct.D   = mxGetNumberOfElements(X_C_Map_WcSurgeVec_p(S));
+    compressorStruct.WcMapCol  = *mxGetPr(WcMapCol_p(S));
+    compressorStruct.PRMapCol  = *mxGetPr(PRMapCol_p(S));
+    compressorStruct.EffMapCol = *mxGetPr(EffMapCol_p(S));
+    compressorStruct.WcMapRw   = *mxGetPr(WcMapRw_p(S));
+    compressorStruct.PRMapRw   = *mxGetPr(PRMapRw_p(S));
+    compressorStruct.EffMapRw  = *mxGetPr(EffMapRw_p(S));
+    compressorStruct.WcMapLay   = *mxGetPr(WcMapLay_p(S));
+    compressorStruct.PRMapLay   = *mxGetPr(PRMapLay_p(S));
+    compressorStruct.EffMapLay  = *mxGetPr(EffMapLay_p(S));
+    
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
-    compPrms.BlkNm = mxMalloc(buflen);
-    status = mxGetString(BN_p(S), compPrms.BlkNm, buflen);
-    
-    /* Integer work vector for error codes */
-    compPrms.IWork = ssGetIWork(S);
-    
+    compressorStruct.BlkNm = mxMalloc(buflen);
+    status = mxGetString(BN_p(S), compressorStruct.BlkNm, buflen);
+
     /* Perform core block calculations */
-	Compressor_TMATS_body(y, y1, y2, u, Wcust, FracWbld, &compPrms);
+    Compressor_TMATS_body(y, y1, y2, u, Wcust, FracWbld, &compressorStruct);
 }
 
 static void mdlTerminate(SimStruct *S)
 {
 }
-
-#define MDL_RTW                        /* Change to #undef to remove function */
-#if defined(MDL_RTW) && (defined(MATLAB_MEX_FILE) || defined(NRT))
-/* Function: mdlRTW ============================================================
- * Abstract:
- *    This function is called when Real-Time Workshop is generating the
- *    model.rtw file. In this routine, you can call the following functions
- *    which add fields to the model.rtw file.
- *
- *    Important! Since this s-function has this mdlRTW method, it is required
- *    to have a corresponding .tlc file so as to work with RTW. You will find
- *    the sfun_directlook.tlc in <matlaroot>/toolbox/simulink/blocks/tlc_c/.
- */
-static void mdlRTW(SimStruct *S)
-{
-	real_T* NcDes              = mxGetPr(NcDes_p(S));
-    real_T* PRDes              = mxGetPr(PRDes_p(S));
-    real_T* EffDes             = mxGetPr(EffDes_p(S));
-    real_T* RlineDes           = mxGetPr(RlineDes_p(S));
-    real_T* IDes               = mxGetPr(IDesign_p(S));
-    real_T* CustBldEn          = mxGetPr(CustBldEn_p(S));
-    real_T* FBldEn             = mxGetPr(FBldEn_p(S));
-    real_T* CustBldNm          = mxGetPr(CustBldNm_p(S));
-    real_T* FracBldNm          = mxGetPr(FracBldNm_p(S));
-    real_T* Y_C_Map_NcVec      = mxGetPr(Y_C_Map_NcVec_p(S));
-    real_T* X_C_RlineVec       = mxGetPr(X_C_RlineVec_p(S));
-    real_T* Z_C_AlphaVec       = mxGetPr(Z_C_AlphaVec_p(S));
-    real_T* T_C_Map_WcArray    = mxGetPr(T_C_Map_WcArray_p(S));
-    real_T* T_C_Map_PRArray    = mxGetPr(T_C_Map_PRArray_p(S));
-    real_T* T_C_Map_EffArray   = mxGetPr(T_C_Map_EffArray_p(S));
-    real_T* FracCusBldht       = mxGetPr(FracCusBldht_p(S));
-    real_T* FracCusBldPt       = mxGetPr(FracCusBldPt_p(S));
-    real_T* FracBldht          = mxGetPr(FracBldht_p(S));
-    real_T* FracBldPt          = mxGetPr(FracBldPt_p(S));
-    real_T* X_C_Map_WcSurgeVec = mxGetPr(X_C_Map_WcSurgeVec_p(S));
-    real_T* T_C_Map_PRSurgeVec = mxGetPr(T_C_Map_PRSurgeVec_p(S));
-    real_T* WcMapCol           = mxGetPr(WcMapCol_p(S));
-    real_T* PRMapCol           = mxGetPr(PRMapCol_p(S));
-    real_T* EffMapCol          = mxGetPr(EffMapCol_p(S));
-    real_T* WcMapRw            = mxGetPr(WcMapRw_p(S));
-    real_T* PRMapRw            = mxGetPr(PRMapRw_p(S));
-    real_T* EffMapRw           = mxGetPr(EffMapRw_p(S));
-    real_T* WcMapLay           = mxGetPr(WcMapLay_p(S));
-    real_T* PRMapLay           = mxGetPr(PRMapLay_p(S));
-    real_T* EffMapLay          = mxGetPr(EffMapLay_p(S));
-    
-    if (!ssWriteRTWParameters(S, 30,
-        SSWRITE_VALUE_VECT, "Y_C_Map_NcVec",      "",  Y_C_Map_NcVec,      mxGetNumberOfElements(Y_C_Map_NcVec_p(S)),
-        SSWRITE_VALUE_VECT, "X_C_RlineVec",       "",  X_C_RlineVec,       mxGetNumberOfElements(X_C_RlineVec_p(S)),
-        SSWRITE_VALUE_VECT, "Z_C_AlphaVec",       "",  Z_C_AlphaVec,       mxGetNumberOfElements(Z_C_AlphaVec_p(S)),
-        SSWRITE_VALUE_VECT, "T_C_Map_WcArray",    "",  T_C_Map_WcArray,    mxGetNumberOfElements(T_C_Map_WcArray_p(S)),
-        SSWRITE_VALUE_VECT, "T_C_Map_PRArray",    "",  T_C_Map_PRArray,    mxGetNumberOfElements(T_C_Map_PRArray_p(S)),
-        SSWRITE_VALUE_VECT, "T_C_Map_EffArray",   "",  T_C_Map_EffArray,   mxGetNumberOfElements(T_C_Map_EffArray_p(S)),
-        SSWRITE_VALUE_VECT, "FracCusBldht",       "",  FracCusBldht,       mxGetNumberOfElements(FracCusBldht_p(S)),
-        SSWRITE_VALUE_VECT, "FracCusBldPt",       "",  FracCusBldPt,       mxGetNumberOfElements(FracCusBldPt_p(S)),
-        SSWRITE_VALUE_VECT, "FracBldht",          "",  FracBldht,          mxGetNumberOfElements(FracBldht_p(S)),
-        SSWRITE_VALUE_VECT, "FracBldPt",          "",  FracBldPt,          mxGetNumberOfElements(FracBldPt_p(S)),
-        SSWRITE_VALUE_VECT, "X_C_Map_WcSurgeVec", "",  X_C_Map_WcSurgeVec, mxGetNumberOfElements(X_C_Map_WcSurgeVec_p(S)),
-        SSWRITE_VALUE_VECT, "T_C_Map_PRSurgeVec", "",  T_C_Map_PRSurgeVec, mxGetNumberOfElements(T_C_Map_PRSurgeVec_p(S)),
-		SSWRITE_VALUE_VECT, "IDes",               "",  IDes,               1,
-        SSWRITE_VALUE_VECT, "NcDes",              "",  NcDes,              1,
-        SSWRITE_VALUE_VECT, "EffDes",             "",  EffDes,             1,
-        SSWRITE_VALUE_VECT, "PRDes",              "",  PRDes,              1,
-        SSWRITE_VALUE_VECT, "RlineDes",           "",  RlineDes,           1,
-        SSWRITE_VALUE_VECT, "CustBldEn",          "",  CustBldEn,          1,
-        SSWRITE_VALUE_VECT, "FBldEn",             "",  FBldEn,             1,
-        SSWRITE_VALUE_VECT, "CustBldNm",          "",  CustBldNm,          1,
-        SSWRITE_VALUE_VECT, "FracBldNm",          "",  FracBldNm,          1,
-        SSWRITE_VALUE_VECT, "WcMapCol",           "",  WcMapCol,           1,
-        SSWRITE_VALUE_VECT, "PRMapCol",           "",  PRMapCol,           1,
-        SSWRITE_VALUE_VECT, "EffMapCol",          "",  EffMapCol,          1,
-        SSWRITE_VALUE_VECT, "WcMapRw",            "",  WcMapRw,            1,
-        SSWRITE_VALUE_VECT, "PRMapRw",            "",  PRMapRw,            1,
-        SSWRITE_VALUE_VECT, "EffMapRw",           "",  EffMapRw,           1,
-        SSWRITE_VALUE_VECT, "WcMapLay",           "",  WcMapLay,           1,
-        SSWRITE_VALUE_VECT, "PRMapLay",           "",  PRMapLay,           1,
-        SSWRITE_VALUE_VECT, "EffMapLay",          "",  EffMapLay,          1
-        ))
-    {
-        return;/* An error occurred which will be reported by Simulink */
-    }
-}
-
-#endif /* MDL_RTW */
 
 #ifdef  MATLAB_MEX_FILE    /* Is this file being compiled as a MEX-file? */
 #include "simulink.c"      /* MEX-file interface mechanism */

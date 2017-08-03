@@ -1,17 +1,14 @@
-/*
- * Body of calculations for Turbine_TMATS S-function
- */
-
+#include "types_TMATS.h"
 #include "constants_TMATS.h"
 #include "functions_TMATS.h"
-#include "types_TMATS.h"
+#include <math.h>
+
 #ifdef MATLAB_MEX_FILE
 #include "simstruc.h"
 #endif
 
-void Turbine_TMATS_body(double* y, const double* u, const double* cf, const TurbStruct* prm)
+void Turbine_TMATS_body(double* y, const double* u, const double* CoolFlow, const TurbineStruct* prm)
 {
-    /*---------Define Inputs--------*/
     double WIn      = u[0];     /* Input Flow [pps]	*/
     double htIn     = u[1];     /* input enthalpy [BTU/lbm]*/
     double TtIn     = u[2];     /* Temperature Input [degR]  */
@@ -41,8 +38,9 @@ void Turbine_TMATS_body(double* y, const double* u, const double* cf, const Turb
     double Ptcool[100];
     double FARcool[100];
     int Vtest, i;
-
-    /* Verify input bleed vector is prm->Y_T_NcVecLen multiple of 5 */
+    
+        
+    /* Verify input bleed vector is a multiple of 5 */
     Vtest = cfWidth/5;
     if(5*Vtest != cfWidth && prm->CoolFlwEn > 0.5 && prm->IWork[Er1]==0){
         #ifdef MATLAB_MEX_FILE
@@ -57,7 +55,7 @@ void Turbine_TMATS_body(double* y, const double* u, const double* cf, const Turb
         prm->IWork[Er2] = 1;
     }
     
-    /* unpack cf vector */
+    /* unpack CoolFlow vector */
     for (i = 0; i < cfWidth/5; i++)
     {
         if (prm->CoolFlwEn < 0.5){
@@ -68,10 +66,10 @@ void Turbine_TMATS_body(double* y, const double* u, const double* cf, const Turb
             FARcool[i] = 0;
         }
         else {
-            Wcool[i] = cf[5*i];
-            Ttcool[i] = cf[5*i+2];
-            Ptcool[i] = cf[5*i+3];
-            FARcool[i] = cf[5*i+4];
+            Wcool[i] = CoolFlow[5*i];
+            Ttcool[i] = CoolFlow[5*i+2];
+            Ptcool[i] = CoolFlow[5*i+3];
+            FARcool[i] = CoolFlow[5*i+4];
             htcool[i] = t2hc(Ttcool[i],FARcool[i]);
         }
     }
@@ -90,7 +88,7 @@ void Turbine_TMATS_body(double* y, const double* u, const double* cf, const Turb
     {
         if ((prm->T_BldPos[i] > 1 || prm->T_BldPos[i] < 0) && prm->CoolFlwEn > 0.5 && prm->IWork[Er3]==0){
             #ifdef MATLAB_MEX_FILE
-            printf(" Error in %s, cooling flow postion element %i needs to be defined as prm->Y_T_NcVecLen 0 or 1\n",prm->BlkNm,i+1);
+            printf(" Error in %s, cooling flow postion element %i needs to be defined as a 0 or 1\n",prm->BlkNm,i+1);
             #endif
             prm->IWork[Er3] = 1;
         }
@@ -166,8 +164,8 @@ void Turbine_TMATS_body(double* y, const double* u, const double* cf, const Turb
     
     /*-- Compute Total Flow input (from Turbine map)  --------*/
     
-    WcMap = interp2Ac(prm->X_T_PRVec,prm->Y_T_NcVec,prm->T_T_Map_WcArray,PRmapRead,NcMap,prm->X_T_PRVecLen,prm->Y_T_NcVecLen,&interpErr);
-    if ((prm->WcMapCol != prm->X_T_PRVecLen || prm->WcMapRw != prm->Y_T_NcVecLen) && prm->IWork[Er4]==0){
+    WcMap = interp2Ac(prm->X_T_PRVec,prm->Y_T_NcVec,prm->T_T_Map_WcArray,PRmapRead,NcMap,prm->B,prm->A,&interpErr);
+    if ((prm->WcMapCol != prm->B || prm->WcMapRw != prm->A) && prm->IWork[Er4]==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating WcMap. Table size does not match axis vector lengths.\n", prm->BlkNm);
         #endif
@@ -201,8 +199,8 @@ void Turbine_TMATS_body(double* y, const double* u, const double* cf, const Turb
     
     /*-- Compute Turbine Efficiency (from Turbine map)  --------*/
     
-    EffMap = interp2Ac(prm->X_T_PRVec,prm->Y_T_NcVec,prm->T_T_Map_EffArray,PRmapRead,NcMap,prm->X_T_PRVecLen,prm->Y_T_NcVecLen,&interpErr);
-    if ((prm->EffMapCol != prm->X_T_PRVecLen || prm->EffMapRw != prm->Y_T_NcVecLen) && prm->IWork[Er5]==0){
+    EffMap = interp2Ac(prm->X_T_PRVec,prm->Y_T_NcVec,prm->T_T_Map_EffArray,PRmapRead,NcMap,prm->B,prm->A,&interpErr);
+    if ((prm->EffMapCol != prm->B || prm->EffMapRw != prm->A) && prm->IWork[Er5]==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating EffMap. Table size does not match axis vector lengths.\n", prm->BlkNm);
         #endif

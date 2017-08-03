@@ -1,5 +1,5 @@
-#include "functions_TMATS.h"
 #include "types_TMATS.h"
+#include "functions_TMATS.h"
 #include <math.h>
 
 #ifdef MATLAB_MEX_FILE
@@ -19,7 +19,7 @@ void Valve_TMATS_body(double* y, const double* u, const ValveStruct* prm)
     double bleedFlxCr, Test;
 
     int interpErr = 0;
-
+    
     /* Compute Valve open fraction */
     ValveFrac = (VlvPosIn-prm->VlvdeadZone)*divby(prm->VlvfullyOpen-prm->VlvdeadZone);
 

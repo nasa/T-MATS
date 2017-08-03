@@ -1,12 +1,13 @@
 #include "types_TMATS.h"
-#include "functions_TMATS.h"
 #include "constants_TMATS.h"
+#include "functions_TMATS.h"
+#include <math.h>
 
 #ifdef MATLAB_MEX_FILE
 #include "simstruc.h"
 #endif
 
-void Mixer_TMATS_body(double* y, const double* u, const MixStruct* prm)
+void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
 {
     double W1In     = u[0];     /* Input 1 Flow [pps]                     */
     double ht1In    = u[1];     /* Input 1 enthalpy [BTU/lbm]             */
@@ -35,7 +36,7 @@ void Mixer_TMATS_body(double* y, const double* u, const MixStruct* prm)
     double rhosg, Vg, hsg;
     int iter, iter1, iter2, iter3a, iter3b, maxiter;
     int interpErr = 0;
-
+    
     /* calculate output flow */
     WOut = W1In + W2In;
     /* calculate output fuel to air ratio */
@@ -43,21 +44,21 @@ void Mixer_TMATS_body(double* y, const double* u, const MixStruct* prm)
     
     /* determine gas characteristics */
     /*  Where gas constant is R = f(FAR), but NOT P & T */
-    Rt1 = interp1Ac(prm->Y_M_FARVec,prm->T_M_RtArray,FARc1In,prm->Y_M_FARVecLen,&interpErr);
+    Rt1 = interp1Ac(prm->Y_M_FARVec,prm->T_M_RtArray,FARc1In,prm->A,&interpErr);
     if (interpErr == 1 && prm->IWork[Er1]==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating Rt1. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
         prm->IWork[Er1] = 1;
     }
-    Rt2 = interp1Ac(prm->Y_M_FARVec,prm->T_M_RtArray,FARc2In,prm->Y_M_FARVecLen,&interpErr);
+    Rt2 = interp1Ac(prm->Y_M_FARVec,prm->T_M_RtArray,FARc2In,prm->A,&interpErr);
     if (interpErr == 1 && prm->IWork[Er2]==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating Rt2. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
         prm->IWork[Er2] = 1;
     }
-    Rtout = interp1Ac(prm->Y_M_FARVec,prm->T_M_RtArray,FARcOut,prm->Y_M_FARVecLen,&interpErr);
+    Rtout = interp1Ac(prm->Y_M_FARVec,prm->T_M_RtArray,FARcOut,prm->A,&interpErr);
     if (interpErr == 1 && prm->IWork[Er3]==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating Rtout. Vector definitions may need to be expanded.\n", prm->BlkNm);
@@ -113,7 +114,7 @@ void Mixer_TMATS_body(double* y, const double* u, const MixStruct* prm)
         
         /* Determine primary flow Area and Ps */
         MNg = prm->MNp;
-        gammatg = interp2Ac(prm->Y_M_FARVec,prm->X_M_TVec,prm->T_M_gammaArray,FARp,Ttp,prm->Y_M_FARVecLen,prm->X_M_TVecLen,&interpErr);
+        gammatg = interp2Ac(prm->Y_M_FARVec,prm->X_M_TVec,prm->T_M_gammaArray,FARp,Ttp,prm->A,prm->B,&interpErr);
         if (interpErr == 1 && prm->IWork[Er4]==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating gammatg. Vector definitions may need to be expanded.\n", prm->BlkNm);
@@ -124,7 +125,7 @@ void Mixer_TMATS_body(double* y, const double* u, const MixStruct* prm)
         PsMNg = Ptp*powT((TsMNg*divby(Ttp)),(gammatg*divby(gammatg-1)));
         
         PcalcStat(Ptp, PsMNg, Ttp, htp, FARp, Rtp, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
-        gammasg = interp2Ac(prm->Y_M_FARVec,prm->X_M_TVec,prm->T_M_gammaArray,FARp,TsMNg,prm->Y_M_FARVecLen,prm->X_M_TVecLen,&interpErr);
+        gammasg = interp2Ac(prm->Y_M_FARVec,prm->X_M_TVec,prm->T_M_gammaArray,FARp,TsMNg,prm->A,prm->B,&interpErr);
         if (interpErr == 1 && prm->IWork[Er4]==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating gammasg. Vector definitions may need to be expanded.\n", prm->BlkNm);
@@ -147,7 +148,7 @@ void Mixer_TMATS_body(double* y, const double* u, const MixStruct* prm)
                 PsMNg = PsMNg_new;
 
             PcalcStat(Ptp, PsMNg, Ttp, htp, FARp, Rtp, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
-            gammasg = interp2Ac(prm->Y_M_FARVec,prm->X_M_TVec,prm->T_M_gammaArray,FARp,TsMNg,prm->Y_M_FARVecLen,prm->X_M_TVecLen,&interpErr);
+            gammasg = interp2Ac(prm->Y_M_FARVec,prm->X_M_TVec,prm->T_M_gammaArray,FARp,TsMNg,prm->A,prm->B,&interpErr);
             if (interpErr == 1 && prm->IWork[Er5]==0){
                 #ifdef MATLAB_MEX_FILE
                 printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", prm->BlkNm);
@@ -502,4 +503,5 @@ void Mixer_TMATS_body(double* y, const double* u, const MixStruct* prm)
     y[5] = NErr;      /* Normalized Static Pressure Error           */
     y[6] = Aphy1;     /* Area of input 1 [in^2]                     */
     y[7] = Aphy2;     /* Area of input 2 [in^2]                     */
+    
 }

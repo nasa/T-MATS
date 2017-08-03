@@ -22,6 +22,19 @@
 /* Forward declaration for Burner body of calcs */
 extern void Burner_TMATS_body(real_T*, const real_T*, const BurnStruct*);
 
+#define MDL_SET_WORK_WIDTHS   /* Change to #undef to remove function */
+#if defined(MDL_SET_WORK_WIDTHS) && defined(MATLAB_MEX_FILE)
+/* Function: mdlSetWorkWidths ===============================================
+ * Abstract:
+ *      Set up run-time parameters.
+ */
+static void mdlSetWorkWidths(SimStruct *S)
+{
+    const char_T *rtParamNames[] = {"LHV", "DPnormBurner", "Eff", "LHVEn", "hFuel"};
+    ssRegAllTunableParamsAsRunTimeParams(S, rtParamNames);
+}
+#endif /* MDL_SET_WORK_WIDTHS */
+
 static void mdlInitializeSizes(SimStruct *S)
 {
     int i;
@@ -70,19 +83,6 @@ static void mdlInitializeSampleTimes(SimStruct *S)
     ssSetModelReferenceSampleTimeDefaultInheritance(S);
 }
 
-#define MDL_SET_WORK_WIDTHS   /* Change to #undef to remove function */
-#if defined(MDL_SET_WORK_WIDTHS) && defined(MATLAB_MEX_FILE)
-/* Function: mdlSetWorkWidths ===============================================
- * Abstract:
- *      Set up run-time parameters.
- */
-static void mdlSetWorkWidths(SimStruct *S)
-{
-    const char_T *rtParamNames[] = {"LHV", "DPnormBurner", "Eff", "LHVEn", "hFuel"};
-    ssRegAllTunableParamsAsRunTimeParams(S, rtParamNames);
-}
-#endif /* MDL_SET_WORK_WIDTHS */
-
 #define MDL_START
 #if defined(MDL_START)
 static void mdlStart(SimStruct *S)
@@ -93,9 +93,9 @@ static void mdlStart(SimStruct *S)
 
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
-    /* Input vector */
+    /* Input and output vectors */
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
-    /* Output vector */
+
     real_T *y  = (real_T *) ssGetOutputPortRealSignal(S,0);
     
 	/* Block mask parameter struct */

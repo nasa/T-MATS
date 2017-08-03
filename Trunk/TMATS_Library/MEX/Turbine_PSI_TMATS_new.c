@@ -30,13 +30,13 @@
 #define Rt_T_p(S)				ssGetSFcnParam(S,16)
 #define BN_p(S)                 ssGetSFcnParam(S,17)
 #define NPARAMS 18
+#define NERRORS 5 
 
 // extern double h2tc(double a, double b);
 // extern double pt2sc(double c, double d, double e);
 // extern double sp2tc(double f, double g, double h);
 // extern double t2hc(double i, double j);
 // extern double interp2Ac(double kk[], double ll[], double mm[], double nn, double oo,int pp, int qq, int *error);
-#define NERRORS 5 
 
 extern void Turbine_PSI_TMATS_body(real_T *y, const real_T *u, const real_T *CoolFlow, const Turbine_PSIStruct* prm);
 
@@ -44,7 +44,7 @@ extern void Turbine_PSI_TMATS_body(real_T *y, const real_T *u, const real_T *Coo
 #if defined(MDL_SET_WORK_WIDTHS) && defined(MATLAB_MEX_FILE)
 static void mdlSetWorkWidths(SimStruct *S)
 {
-    const char_T *rtParamNames[] = {"NcDes", "PRmapDes", "EffDes", "NDes", "s_T_hi", "gamma_T", "Rt_T", "BldPosLeng", "CoolFlwEn", "Y_T_NcpsiVec", "X_T_PRpsiVec", "Y_T_NcwowVec", "X_T_PRwowVec", "T_T_Map_WoWArray", "T_T_Map_psiArray", "T_BldPos"};
+    const char_T *rtParamNames[] = {"Y_T_NcpsiVec", "X_T_PRpsiVec", "Y_T_NcwowVec", "X_T_PRwowVec", "T_T_Map_WoWArray", "T_T_Map_psiArray", "T_BldPos", "BldPosLeng", "CoolFlwEn", "IDesign", "NcDes", "EffDes", "PRmapDes", "NDes", "s_T_hi", "gamma_T", "Rt_T"};
     ssRegAllTunableParamsAsRunTimeParams(S, rtParamNames);
 }
 #endif
@@ -129,8 +129,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 {
     /* Input and output vectors */
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
-    /* N 5x1 vectors consisting of W, ht, Tt, Pt and FAR, where N is the number of cooling flows */
-    const real_T *CoolFlow = ssGetInputPortRealSignal(S, 1);
+    const real_T *CoolFlow = ssGetInputPortRealSignal(S, 1); /* N 5x1 vectors consisting of W, ht, Tt, Pt and FAR, where N is the number of cooling flows */
 
     real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);
 

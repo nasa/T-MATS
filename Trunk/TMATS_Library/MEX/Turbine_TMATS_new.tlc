@@ -17,15 +17,10 @@
     %<LibAddToCommonIncludes("types_TMATS.h")>
 
     %<SLibAddToStaticSources("Turbine_TMATS_body.c")>
-    %<SLibAddToStaticSources("h2tc_TMATS.c")>
-    %<SLibAddToStaticSources("t2hc_TMATS.c")>
-    %<SLibAddToStaticSources("pt2sc_TMATS.c")>
-    %<SLibAddToStaticSources("sp2tc_TMATS.c")>
-    %<SLibAddToStaticSources("interp2Ac_TMATS.c")>
 
     %openfile forwardDecls
-      extern void Turbine_TMATS_body(double*, const double*, const double*, const TurbStruct*);
-      TurbStruct turbPrms;
+      extern void Turbine_TMATS_body(double* y, const double* u, const double* CoolFlow, const TurbineStruct* prm);
+      TurbineStruct turbineStruct;
     %closefile forwardDecls
 
     %assign srcFile = LibGetModelDotCFile()
@@ -44,37 +39,39 @@
 %%
 %function Outputs(block, system) Output
     %%
-    turbPrms.NcDes              = %<LibBlockParameter(NcDes,"","",0)>;
-    turbPrms.PRmapDes           = %<LibBlockParameter(PRmapDes,"","",0)>;
-    turbPrms.EffDes             = %<LibBlockParameter(EffDes,"","",0)>;
-    turbPrms.NDes               = %<LibBlockParameter(NDes,"","",0)>;
-    turbPrms.IDes               = %<LibBlockParameter(IDes,"","",0)>;
-    turbPrms.BldPosLeng         = %<LibBlockParameter(BldPosLeng,"","",0)>;
-    turbPrms.CoolFlwEn          = %<LibBlockParameter(CoolFlwEn,"","",0)>;
-    turbPrms.ConfigNPSS         = %<LibBlockParameter(ConfigNPSS,"","",0)>;
-    turbPrms.Y_T_NcVec            = (double*)(%<LibBlockParameterBaseAddr(Y_T_NcVec)>);
-    turbPrms.X_T_PRVec            = (double*)(%<LibBlockParameterBaseAddr(X_T_PRVec)>);
-    turbPrms.T_T_Map_WcArray      = (double*)(%<LibBlockParameterBaseAddr(T_T_Map_WcArray)>);
-    turbPrms.T_T_Map_EffArray     = (double*)(%<LibBlockParameterBaseAddr(T_T_Map_EffArray)>);
-    turbPrms.T_BldPos             = (double*)(%<LibBlockParameterBaseAddr(T_BldPos)>);
-    turbPrms.Y_T_NcVecLen   = %<LibBlockParameterSize(Y_T_NcVec)[1]>;
-    turbPrms.X_T_PRVecLen   = %<LibBlockParameterSize(X_T_PRVec)[1]>;
-    turbPrms.WcMapCol   = %<LibBlockParameter(WcMapCol,"","",0)>;
-    turbPrms.EffMapCol  = %<LibBlockParameter(EffMapCol,"","",0)>;
-    turbPrms.WcMapRw    = %<LibBlockParameter(WcMapRw,"","",0)>;
-    turbPrms.EffMapRw   = %<LibBlockParameter(EffMapRw,"","",0)>;
-    
-    %assign u_ptr             = LibBlockInputSignalAddr(0, "", "", 0)
-    %assign u_dataType        = LibBlockInputSignalDataTypeName(0,"")
-    %assign cf_ptr            = LibBlockInputSignalAddr(1, "", "", 0)
-    %assign cf_dataType       = LibBlockInputSignalDataTypeName(1,"")
-    %assign y_ptr             = LibBlockOutputSignalAddr(0, "", "", 0)
-    %assign y_dataType        = LibBlockOutputSignalDataTypeName(0,"")
+    turbineStruct.NcDes               = %<LibBlockParameter(NcDes,"","",0)>;
+    turbineStruct.PRmapDes            = %<LibBlockParameter(PRmapDes,"","",0)>;
+    turbineStruct.EffDes              = %<LibBlockParameter(EffDes,"","",0)>;
+    turbineStruct.NDes                = %<LibBlockParameter(NDes,"","",0)>;
+    turbineStruct.IDes                = %<LibBlockParameter(IDesign,"","",0)>;
+    turbineStruct.BldPosLeng          = %<LibBlockParameter(BldPosLeng,"","",0)>;
+    turbineStruct.CoolFlwEn           = %<LibBlockParameter(CoolFlwEn,"","",0)>;
+    turbineStruct.ConfigNPSS          = %<LibBlockParameter(ConfigNPSS,"","",0)>;
+    turbineStruct.Y_T_NcVec           = (double*)(%<LibBlockParameterBaseAddr(Y_T_NcVec)>);
+    turbineStruct.X_T_PRVec           = (double*)(%<LibBlockParameterBaseAddr(X_T_PRVec)>);
+    turbineStruct.T_T_Map_WcArray     = (double*)(%<LibBlockParameterBaseAddr(T_T_Map_WcArray)>);
+    turbineStruct.T_T_Map_EffArray    = (double*)(%<LibBlockParameterBaseAddr(T_T_Map_EffArray)>);
+    turbineStruct.T_BldPos            = (double*)(%<LibBlockParameterBaseAddr(T_BldPos)>);
+    turbineStruct.A                   = %<LibBlockParameterSize(Y_T_NcVec)[1]>;
+    turbineStruct.B                   = %<LibBlockParameterSize(X_T_PRVec)[1]>;
+    turbineStruct.WcMapCol            = %<LibBlockParameter(WcMapCol,"","",0)>;
+    turbineStruct.EffMapCol           = %<LibBlockParameter(EffMapCol,"","",0)>;
+    turbineStruct.WcMapRw             = %<LibBlockParameter(WcMapRw,"","",0)>;
+    turbineStruct.EffMapRw            = %<LibBlockParameter(EffMapRw,"","",0)>;
+
+    %assign y_ptr = LibBlockOutputSignalAddr(0, "", "", 0)
+    %assign y_dataType = LibBlockOutputSignalDataTypeName(0,"")
+
+    %assign u_ptr = LibBlockInputSignalAddr(0, "", "", 0)
+    %assign u_dataType = LibBlockInputSignalDataTypeName(0,"")
+    %assign CoolFlow_ptr = LibBlockInputSignalAddr(1, "", "", 0)
+    %assign CoolFlow_dataType = LibBlockInputSignalDataTypeName(1,"")
+
     %%
     Turbine_TMATS_body((%<y_dataType>*)%<y_ptr>,\ 
-                      (%<u_dataType>*) %<u_ptr>,\
-                      (%<cf_dataType>*)%<cf_ptr>,\
-                      &turbPrms);
+                       (%<u_dataType>*)%<u_ptr>,\ 
+                       (%<CoolFlow_dataType>*)%<CoolFlow_ptr>,\ 
+                        &turbineStruct);
     %%
 %endfunction
 

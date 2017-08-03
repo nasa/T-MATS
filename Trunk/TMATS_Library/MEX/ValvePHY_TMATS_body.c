@@ -136,4 +136,3 @@ void ValvePHY_TMATS_body(real_T *y, const real_T *u, const ValvePHYStruct* prm)
     y[2] = Test;        /* Output Test Point */
 
 }
-

@@ -19,7 +19,7 @@
     %<SLibAddToStaticSources("Ambient_TMATS_body.c")>
 
     %openfile forwardDecls
-      extern void Ambient_TMATS_body(real_T *y, const real_T *u, const AmbientStruct* prm);
+      extern void Ambient_TMATS_body(double *y, const double *u, const AmbientStruct* prm);
       AmbientStruct ambientStruct;
     %closefile forwardDecls
 

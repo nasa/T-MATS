@@ -23,10 +23,11 @@ extern void Bleed_TMATS_body(real_T *y, real_T *y1, const real_T *u, const real_
 #if defined(MDL_SET_WORK_WIDTHS) && defined(MATLAB_MEX_FILE)
 static void mdlSetWorkWidths(SimStruct *S)
 {
-    const char_T *rtParamNames[] = {"WfracLen", "Wfrac"};
+    const char_T *rtParamNames[] = {"Wfrac", "WfracLen"};
     ssRegAllTunableParamsAsRunTimeParams(S, rtParamNames);
 }
 #endif
+
 static void mdlInitializeSizes(SimStruct *S)
 {
     int i;
@@ -97,11 +98,10 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 {
     /* Input and output vectors */
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
-    
     const real_T *BldInFlow = ssGetInputPortRealSignal(S, 1);
     
-    real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);    /* Output Array port 1 */
-    real_T *y1  = (real_T *)ssGetOutputPortRealSignal(S,1);   /* Output Array port 2 */
+    real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);
+    real_T *y1  = (real_T *)ssGetOutputPortRealSignal(S,1);
     
     /* Block name buffer length and string read status */
     int_T buflen;
@@ -110,9 +110,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /* Block mask parameter struct */
     BleedStruct bleedStruct;
     bleedStruct.WfracLen           = *mxGetPr(WfracLen_p(S));
-    
-    bleedStruct.Wfrac             = mxGetPr(Wfrac_p(S));
-        
+    bleedStruct.Wfrac              = mxGetPr(Wfrac_p(S));
+
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
     bleedStruct.BlkNm = mxMalloc(buflen);

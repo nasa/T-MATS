@@ -7,17 +7,13 @@
 #include "simstruc.h"
 #endif
 
-void StaticCalc_TMATS_body(real_T *y, const real_T *u, const StaticCalcStruct* prm)
+void StaticCalc_TMATS_body(double *y, const double *u, const StaticCalcStruct* prm)
 {
-    
-    /*---------Define Inputs--------*/
-    
     double WIn      = u[0];     /* Input Flow [pps] 	*/
     double htIn     = u[1];     /* enthaply [BTU/lbm] 	*/
     double TtIn     = u[2];     /* Temperature Input [degR] 	*/
     double PtIn     = u[3];     /* Pressure Input [psia] 	*/
     double FARcIn   = u[4];     /* Combusted Fuel to Air Ratio [frac] 	*/
-    
     
     /*--------Define Constants-------*/
     double PsOut, TsOut, rhosOut, MNOut, AthOut;

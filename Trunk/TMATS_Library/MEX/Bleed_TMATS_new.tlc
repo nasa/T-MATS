@@ -19,7 +19,7 @@
     %<SLibAddToStaticSources("Bleed_TMATS_body.c")>
 
     %openfile forwardDecls
-      extern void Bleed_TMATS_body(real_T *y, real_T *y1, const real_T *u, const real_T *BldInFlow, const BleedStruct* prm);
+      extern void Bleed_TMATS_body(double *y, double *y1, const double *u, const double *BldInFlow, const BleedStruct* prm);
       BleedStruct bleedStruct;
     %closefile forwardDecls
 

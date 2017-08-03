@@ -7,21 +7,14 @@
 #include "simstruc.h"
 #endif
 
-void Bleed_TMATS_body(real_T *y, real_T *y1, const real_T *u, const real_T *BldInFlow, const BleedStruct* prm)
+void Bleed_TMATS_body(double *y, double *y1, const double *u, const double *BldInFlow, const BleedStruct* prm)
 {
-    /*--------Define Parameters-------*/
-    
-    
-    /*---------Define Inputs--------*/
-    
     double WIn      = u[0];     /* Input Flow [pps] 	*/
     double htIn     = u[1];     /* Input Enthalpy [BTU/lbm] */
     double TtIn     = u[2];     /* Temperature Input [degR] 	*/
     double PtIn     = u[3];     /* Pressure [psia] 	*/
     double FARIn    = u[4];     /* combusted Fuel to Air Ratio [frac] 	*/
     double BldInLen = u[5];     /* Length of Bleed Vector input */
-    
-    
     
     /*--------Define Constants-------*/
     double Wfin, htin, Test;
@@ -125,4 +118,3 @@ void Bleed_TMATS_body(real_T *y, real_T *y1, const real_T *u, const real_T *BldI
     }
     
 }
-

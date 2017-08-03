@@ -19,7 +19,7 @@
     %<SLibAddToStaticSources("StaticCalc_TMATS_body.c")>
 
     %openfile forwardDecls
-      extern void StaticCalc_TMATS_body(real_T *y, const real_T *u, const StaticCalcStruct* prm);
+      extern void StaticCalc_TMATS_body(double *y, const double *u, const StaticCalcStruct* prm);
       StaticCalcStruct staticCalcStruct;
     %closefile forwardDecls
 

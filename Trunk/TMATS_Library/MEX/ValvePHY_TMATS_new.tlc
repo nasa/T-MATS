@@ -19,7 +19,7 @@
     %<SLibAddToStaticSources("ValvePHY_TMATS_body.c")>
 
     %openfile forwardDecls
-      extern void ValvePHY_TMATS_body(real_T *y, const real_T *u, const ValvePHYStruct* prm);
+      extern void ValvePHY_TMATS_body(double *y, const double *u, const ValvePHYStruct* prm);
       ValvePHYStruct valvePHYStruct;
     %closefile forwardDecls
 

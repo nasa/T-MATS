@@ -1,12 +1,13 @@
+#include "types_TMATS.h"
 #include "constants_TMATS.h"
 #include "functions_TMATS.h"
-#include "types_TMATS.h"
+#include <math.h>
 
 #ifdef MATLAB_MEX_FILE
 #include "simstruc.h"
 #endif
 
-void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, const double* cbd, const double* fbd, const CompStruct* prm)
+void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, const double* Wcust, const double* FracWbld, const CompressorStruct* prm)
 {
     double WIn      = u[0];     /* Input Flow [pps] 	*/
     double htIn     = u[1];     /* Input Enthalpy [BTU/lbm] */
@@ -18,7 +19,7 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
     double Alpha    = u[7];     /* Alpha [NA]  */
     double s_C_Nc   = u[8];     /* Nc map scalar [NA]  */
     double s_C_Wc   = u[9];     /* Wc map scalar [NA] */
-    double s_C_PR   = u[10];    /* PR map scalar [NA]  */
+    double s_C_PR   = u[10];     /* PR map scalar [NA]  */
     double s_C_Eff  = u[11];    /* Eff map scalar [NA]  */
     
     int uWidth1 = prm->CustBldNm;
@@ -77,12 +78,12 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
     NcMap = Nc *divby(C_Nc);
     
     /*-- Compute Total Flow input (from Compressor map)  --------*/
-    if(prm->Z_C_AlphaVecLen > 1)
-        WcMap = interp3Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->Z_C_AlphaVec,prm->T_C_Map_WcArray,Rline,NcMap,Alpha,prm->X_C_RlineVecLen,prm->Y_C_Map_NcVecLen,prm->Z_C_AlphaVecLen,&interpErr);
+    if(prm->C > 1)
+        WcMap = interp3Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->Z_C_AlphaVec,prm->T_C_Map_WcArray,Rline,NcMap,Alpha,prm->B,prm->A,prm->C,&interpErr);
     else
-        WcMap = interp2Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->T_C_Map_WcArray,Rline,NcMap,prm->X_C_RlineVecLen,prm->Y_C_Map_NcVecLen,&interpErr);
-    
-    if ((prm->WcMapCol != prm->X_C_RlineVecLen || prm->WcMapRw != prm->Y_C_Map_NcVecLen || prm->WcMapLay !=prm->Z_C_AlphaVecLen) && prm->IWork[Er1]==0){
+        WcMap = interp2Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->T_C_Map_WcArray,Rline,NcMap,prm->B,prm->A,&interpErr);
+        
+    if ((prm->WcMapCol != prm->B || prm->WcMapRw != prm->A || prm->WcMapLay !=prm->C) && prm->IWork[Er1]==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating WcMap. Table size does not match axis vector lengths.\n", prm->BlkNm);
         #endif
@@ -103,12 +104,12 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
     WcCalcin = WcMap * C_Wc;
     
     /*-- Compute Pressure Ratio (from Compressor map)  --------*/
-    if(prm->Z_C_AlphaVecLen > 1)
-        PRMap = interp3Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->Z_C_AlphaVec,prm->T_C_Map_PRArray,Rline,NcMap,Alpha,prm->X_C_RlineVecLen,prm->Y_C_Map_NcVecLen,prm->Z_C_AlphaVecLen,&interpErr);
+    if(prm->C > 1)
+        PRMap = interp3Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->Z_C_AlphaVec,prm->T_C_Map_PRArray,Rline,NcMap,Alpha,prm->B,prm->A,prm->C,&interpErr);
     else
-        PRMap = interp2Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->T_C_Map_PRArray,Rline,NcMap,prm->X_C_RlineVecLen,prm->Y_C_Map_NcVecLen,&interpErr);
+        PRMap = interp2Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->T_C_Map_PRArray,Rline,NcMap,prm->B,prm->A,&interpErr);
     
-    if ((prm->PRMapCol != prm->X_C_RlineVecLen || prm->PRMapRw != prm->Y_C_Map_NcVecLen || prm->PRMapLay !=prm->Z_C_AlphaVecLen) && prm->IWork[Er2]==0){
+    if ((prm->PRMapCol != prm->B || prm->PRMapRw != prm->A || prm->PRMapLay !=prm->C) && prm->IWork[Er2]==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating PRMap. Table size does not match axis vector lengths.\n", prm->BlkNm);
         #endif
@@ -129,12 +130,12 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
     PR = C_PR*(PRMap - 1) + 1 ;
     
     /*-- Compute Efficiency (from Compressor map) ---*/
-    if(prm->Z_C_AlphaVecLen > 1)
-        EffMap = interp3Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->Z_C_AlphaVec,prm->T_C_Map_EffArray,Rline,NcMap,Alpha,prm->X_C_RlineVecLen,prm->Y_C_Map_NcVecLen,prm->Z_C_AlphaVecLen,&interpErr);
+    if(prm->C > 1)
+        EffMap = interp3Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->Z_C_AlphaVec,prm->T_C_Map_EffArray,Rline,NcMap,Alpha,prm->B,prm->A,prm->C,&interpErr);
     else
-        EffMap = interp2Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->T_C_Map_EffArray,Rline,NcMap,prm->X_C_RlineVecLen,prm->Y_C_Map_NcVecLen,&interpErr);
+        EffMap = interp2Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->T_C_Map_EffArray,Rline,NcMap,prm->B,prm->A,&interpErr);
     
-        if ((prm->EffMapCol != prm->X_C_RlineVecLen || prm->EffMapRw != prm->Y_C_Map_NcVecLen || prm->EffMapLay !=prm->Z_C_AlphaVecLen) && prm->IWork[Er3]==0){
+    if ((prm->EffMapCol != prm->B || prm->EffMapRw != prm->A || prm->EffMapLay !=prm->C) && prm->IWork[Er3]==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating EffMap. Table size does not match axis vector lengths.\n", prm->BlkNm);
         #endif
@@ -184,7 +185,7 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
     for (i = 0; i < uWidth1; i++)
     {
         /* if customer bleed = 0 or Cust bld is not enabled set outputs to zero */
-        if (cbd[i] == 0 || prm->CustBldEn < 0.5){
+        if (Wcust[i] == 0 || prm->CustBldEn < 0.5){
             WcustOut[i] = 0;
             htcustOut[i] = 0;
             TtcustOut[i] = 0;
@@ -193,8 +194,8 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
         }
         else {
             /*-- Compute sum of customer Bleed Flow output  --------*/
-            Wbleeds = Wbleeds + cbd[i]; /* add to total bleed value */
-            WcustOut[i] = cbd[i];
+            Wbleeds = Wbleeds + Wcust[i]; /* add to total bleed value */
+            WcustOut[i] = Wcust[i];
             FARcustOut[i] = FARcIn;
             htcustOut[i] = htin + prm->FracCusBldht[i]*(htOut - htin); /* calculate customer bleed enthalpy */
             PtcustOut[i] = PtIn + prm->FracCusBldPt[i]*(PtOut -PtIn); /* calculate customer bleed Total Pressure */
@@ -213,7 +214,7 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
     
     for (i = 0; i < uWidth2; i++)
     {
-        if (fbd[i] <= 0 || prm->FBldEn < 0.5 ){
+        if (FracWbld[i] <= 0 || prm->FBldEn < 0.5 ){
             WbldOut[i] = 0;
             htbldOut[i] = 0;
             FARbldOut[i] = 0;
@@ -223,8 +224,8 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
         
         else {
             /*-- Compute sum of Fractional Bleed Flow output  --------*/
-            Wbleeds = Wbleeds + fbd[i]*WIn; /* add to total bleed value */
-            WbldOut[i] = fbd[i]*WIn;
+            Wbleeds = Wbleeds + FracWbld[i]*WIn; /* add to total bleed value */
+            WbldOut[i] = FracWbld[i]*WIn;
             FARbldOut[i] = FARcIn;
             PtbldOut[i] = PtIn + prm->FracBldPt[i]*(PtOut -PtIn); /* calculate  bleed Total Pressure */
             htbldOut[i] = htin + prm->FracBldht[i]*(htOut - htin); /* calculate  bleed enthalpy */
@@ -262,17 +263,17 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
         NErrorOut = (Wcin - WcCalcin)*divby(Wcin);
     
     /* Compute Stall Margin */
-    if (prm->Z_C_AlphaVecLen > 1){
-        /* Define 1-prm->X_C_Map_WcSurgeVecLen surge margin vectors based on alpha */
-        for (i = 0; i < prm->X_C_Map_WcSurgeVecLen/prm->Z_C_AlphaVecLen; i++){
-            SMWcVec[i] = interp1Ac(prm->Z_C_AlphaVec, prm->X_C_Map_WcSurgeVec + prm->Z_C_AlphaVecLen*i, Alpha,prm->Z_C_AlphaVecLen, &interpErr);
+    if (prm->C > 1){
+        /* Define 1-prm->D surge margin vectors based on alpha */
+        for (i = 0; i < prm->D/prm->C; i++){
+            SMWcVec[i] = interp1Ac(prm->Z_C_AlphaVec, prm->X_C_Map_WcSurgeVec + prm->C*i, Alpha,prm->C, &interpErr);
             if (interpErr == 1 && prm->IWork[Er5]==0){
                 #ifdef MATLAB_MEX_FILE
                 printf("Warning in %s, Error calculating 1D SMWcVec. Vector definitions may need to be adjusted.\n", prm->BlkNm);
                 #endif
                 prm->IWork[Er5] = 1;
             }
-            SMPRVec[i] = interp1Ac(prm->Z_C_AlphaVec, prm->T_C_Map_PRSurgeVec + prm->Z_C_AlphaVecLen*i, Alpha,prm->Z_C_AlphaVecLen, &interpErr);
+            SMPRVec[i] = interp1Ac(prm->Z_C_AlphaVec, prm->T_C_Map_PRSurgeVec + prm->C*i, Alpha,prm->C, &interpErr);
             if (interpErr == 1 && prm->IWork[Er5]==0){
                 #ifdef MATLAB_MEX_FILE
                 printf("Warning in %s, Error calculating 1D SMPRVec. Vector definitions may need to be adjusted.\n", prm->BlkNm);
@@ -280,7 +281,7 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
                 prm->IWork[Er5] = 1;
             }
         }
-        SPRMap = interp1Ac(SMWcVec, SMPRVec,WcMap,prm->Y_C_Map_NcVecLen,&interpErr);
+        SPRMap = interp1Ac(SMWcVec, SMPRVec,WcMap,prm->A,&interpErr);
         if (interpErr == 1 && prm->IWork[Er5]==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating 2D SPR. Vector definitions may need to be adjusted.\n", prm->BlkNm);
@@ -289,8 +290,8 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
         }
     }
     else
-        SPRMap = interp1Ac(prm->X_C_Map_WcSurgeVec,prm->T_C_Map_PRSurgeVec,WcMap,prm->X_C_Map_WcSurgeVecLen,&interpErr);
-
+        SPRMap = interp1Ac(prm->X_C_Map_WcSurgeVec,prm->T_C_Map_PRSurgeVec,WcMap,prm->D,&interpErr);
+    
     if (interpErr == 1 && prm->IWork[Er5]==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating SPR. Vector definitions may need to be expanded.\n", prm->BlkNm);
