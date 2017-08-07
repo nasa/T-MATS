@@ -45,25 +45,25 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
     /* determine gas characteristics */
     /*  Where gas constant is R = f(FAR), but NOT P & T */
     Rt1 = interp1Ac(prm->Y_M_FARVec,prm->T_M_RtArray,FARc1In,prm->A,&interpErr);
-    if (interpErr == 1 && prm->IWork[Er1]==0){
+    if (interpErr == 1 && *(prm->IWork+Er1)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating Rt1. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er1] = 1;
+        *(prm->IWork+Er1) = 1;
     }
     Rt2 = interp1Ac(prm->Y_M_FARVec,prm->T_M_RtArray,FARc2In,prm->A,&interpErr);
-    if (interpErr == 1 && prm->IWork[Er2]==0){
+    if (interpErr == 1 && *(prm->IWork+Er2)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating Rt2. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er2] = 1;
+        *(prm->IWork+Er2) = 1;
     }
     Rtout = interp1Ac(prm->Y_M_FARVec,prm->T_M_RtArray,FARcOut,prm->A,&interpErr);
-    if (interpErr == 1 && prm->IWork[Er3]==0){
+    if (interpErr == 1 && *(prm->IWork+Er3)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating Rtout. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er3] = 1;
+        *(prm->IWork+Er3) = 1;
     }
     
     /* determine calculated enthalpy for input flows */
@@ -115,22 +115,22 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
         /* Determine primary flow Area and Ps */
         MNg = prm->MNp;
         gammatg = interp2Ac(prm->Y_M_FARVec,prm->X_M_TVec,prm->T_M_gammaArray,FARp,Ttp,prm->A,prm->B,&interpErr);
-        if (interpErr == 1 && prm->IWork[Er4]==0){
+        if (interpErr == 1 && *(prm->IWork+Er4)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating gammatg. Vector definitions may need to be expanded.\n", prm->BlkNm);
             #endif
-            prm->IWork[Er4] = 1;
+            *(prm->IWork+Er4) = 1;
         }
         TsMNg = Ttp*divby(1+MNg*MNg*(gammatg-1)/2);
         PsMNg = Ptp*powT((TsMNg*divby(Ttp)),(gammatg*divby(gammatg-1)));
         
         PcalcStat(Ptp, PsMNg, Ttp, htp, FARp, Rtp, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
         gammasg = interp2Ac(prm->Y_M_FARVec,prm->X_M_TVec,prm->T_M_gammaArray,FARp,TsMNg,prm->A,prm->B,&interpErr);
-        if (interpErr == 1 && prm->IWork[Er4]==0){
+        if (interpErr == 1 && *(prm->IWork+Er4)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating gammasg. Vector definitions may need to be expanded.\n", prm->BlkNm);
             #endif
-            prm->IWork[Er4] = 1;
+            *(prm->IWork+Er4) = 1;
         }
         MNg = Vg*divby(sqrtT(gammasg*Rsp*TsMNg*C_GRAVITY*JOULES_CONST));
         
@@ -149,19 +149,19 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
 
             PcalcStat(Ptp, PsMNg, Ttp, htp, FARp, Rtp, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
             gammasg = interp2Ac(prm->Y_M_FARVec,prm->X_M_TVec,prm->T_M_gammaArray,FARp,TsMNg,prm->A,prm->B,&interpErr);
-            if (interpErr == 1 && prm->IWork[Er5]==0){
+            if (interpErr == 1 && *(prm->IWork+Er5)==0){
                 #ifdef MATLAB_MEX_FILE
                 printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", prm->BlkNm);
                 #endif
-                prm->IWork[Er5] = 1;
+                *(prm->IWork+Er5) = 1;
             }
             if (Vg <= 0) {
                 Vg = 0.00001;
-                if(iter >= maxiter && prm->IWork[Er6]==0 ){
+                if(iter >= maxiter && *(prm->IWork+Er6)==0 ){
                     #ifdef MATLAB_MEX_FILE
                     printf("Warning in %s, Primary flow velocity is zero\n", prm->BlkNm);
                     #endif
-                    prm->IWork[Er6] = 1;
+                    *(prm->IWork+Er6) = 1;
                 }
             }
             MNg = Vg*divby(sqrtT(gammasg*Rsp*TsMNg*C_GRAVITY*JOULES_CONST));
@@ -172,11 +172,11 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
             }
             iter = iter + 1;
         }
-        if (iter >= maxiter && prm->IWork[Er7]==0 ){
+        if (iter >= maxiter && *(prm->IWork+Er7)==0 ){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating Ps at MN = prm->MNp. There may be error in output pressure\n", prm->BlkNm);
             #endif
-            prm->IWork[Er7] = 1;
+            *(prm->IWork+Er7) = 1;
         }
         Ap = Wp*divby(Vg * rhosg/C_SINtoSFT);
         Vp = Vg;
@@ -189,11 +189,11 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
         PcalcStat(Pts, Pss, Tts, hts, FARs, Rts, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
         if (Vg <= 0) {
             Vg = 0.00001;
-            if(iter >= maxiter && prm->IWork[Er8]==0 ){
+            if(iter >= maxiter && *(prm->IWork+Er8)==0 ){
                 #ifdef MATLAB_MEX_FILE
                 printf("Warning in %s, Secondary flow velocity is zero\n", prm->BlkNm);
                 #endif
-                prm->IWork[Er8] = 1;
+                *(prm->IWork+Er8) = 1;
             }
         }
         
@@ -255,11 +255,11 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
             
             if (V1 <= 0) {
                 V1 = 0.00001;
-                if(iter >= maxiter && prm->IWork[Er9]==0 ){
+                if(iter >= maxiter && *(prm->IWork+Er9)==0 ){
                     #ifdef MATLAB_MEX_FILE
                     printf("Warning in %s, Input 1 flow velocity is zero\n", prm->BlkNm);
                     #endif
-                    prm->IWork[Er9] = 1;
+                    *(prm->IWork+Er9) = 1;
                 }
             }
             
@@ -281,11 +281,11 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
             iter1 = iter1 + 1;
         }
         Ps1 = Ps1g;
-        if (iter1 >= maxiter && prm->IWork[Er10]==0){
+        if (iter1 >= maxiter && *(prm->IWork+Er10)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, unable to caluclate Ps1 within allowed iterations, PtOut may contain high error\n", prm->BlkNm);
             #endif
-            prm->IWork[Er10] = 1;
+            *(prm->IWork+Er10) = 1;
         }
         /* end Ps1in iteration */
         
@@ -316,11 +316,11 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
             PcalcStat(Pt2In, Ps2g, Tt2In, ht2in, FARc2In, Rt2, &S2in, &Ts2, &hs2, &rhos2, &V2);
             if (V2 <= 0) {
                 V2 = 0.00001;
-                if(iter >= maxiter && prm->IWork[Er11]==0 ){
+                if(iter >= maxiter && *(prm->IWork+Er11)==0 ){
                     #ifdef MATLAB_MEX_FILE
                     printf("Warning in %s, Input 2 flow velocity is zero\n", prm->BlkNm);
                     #endif
-                    prm->IWork[Er11] = 1;
+                    *(prm->IWork+Er11) = 1;
                 }
             }
             /* calculated Area */
@@ -342,11 +342,11 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
             iter2 = iter2 + 1;
         }
         Ps2 = Ps2g;
-        if (iter1 >= maxiter && prm->IWork[Er12]==0){
+        if (iter1 >= maxiter && *(prm->IWork+Er12)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, unable to caluclate Ps2 within allowed iterations, PtOut may contain high error\n", prm->BlkNm);
             #endif
-            prm->IWork[Er12] = 1;
+            *(prm->IWork+Er12) = 1;
         }
         /* end Ps2 iteration */
         
@@ -354,11 +354,11 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
     } /* end off-Design caulcation of Ps1, Ps2, Aphy1, Aphy2 ,V1, and V2 */
     
     
-    if ((Ps1 > Pt1In || Ps2 > Pt2In) && prm->IWork[Er13]==0 ){
+    if ((Ps1 > Pt1In || Ps2 > Pt2In) && *(prm->IWork+Er13)==0 ){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating input static pressures\n", prm->BlkNm);
         #endif
-        prm->IWork[Er13] = 1;
+        *(prm->IWork+Er13) = 1;
     }
     
     /* determine area */
@@ -415,11 +415,11 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
             PcalcStat(Ptoutg, Psoutg, TtOut, htOut, FARcOut, Rtout, &Sout, &Tsout, &hsout, &rhosout, &Vout);
             if (Vout <= 0) {
                 Vout = 0.00001;
-                if(iter >= maxiter && prm->IWork[Er14]==0 ){
+                if(iter >= maxiter && *(prm->IWork+Er14)==0 ){
                     #ifdef MATLAB_MEX_FILE
                     printf("Warning in %s, Output flow velocity is zero\n", prm->BlkNm);
                     #endif
-                    prm->IWork[Er14] = 1;
+                    *(prm->IWork+Er14) = 1;
                 }
             }
             /* calculated Area */
@@ -443,11 +443,11 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
         /* verify Ps is <= Pt */
         if (Psoutg > Ptoutg){
             Psoutg = Ptoutg;
-            if (prm->IWork[Er15]==0){
+            if (*(prm->IWork+Er15)==0){
                 #ifdef MATLAB_MEX_FILE
                 printf ("Warning in %s, Error calculating Psout\n", prm->BlkNm);
                 #endif
-                prm->IWork[Er15] = 1;
+                *(prm->IWork+Er15) = 1;
             }
         }
         /* end Psout iteration for current Ptout guess */
@@ -474,18 +474,18 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
     Psout = Psoutg;
     PtOut = Ptoutg;
     
-    if (iter3a >= maxiter && prm->IWork[Er16]==0){
+    if (iter3a >= maxiter && *(prm->IWork+Er16)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Error in %s, unable to calculate PtOut\n", prm->BlkNm);
         #endif
-        prm->IWork[Er16] = 1;
+        *(prm->IWork+Er16) = 1;
     }
     
-    if (iter3b >= maxiter && prm->IWork[Er17]==0){
+    if (iter3b >= maxiter && *(prm->IWork+Er17)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, unable to caluclate PsOut, PtOut may contain high error\n", prm->BlkNm);
         #endif
-        prm->IWork[Er17] = 1;
+        *(prm->IWork+Er17) = 1;
     }
     
     /* Compute normalized error */

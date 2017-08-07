@@ -41,6 +41,7 @@
     %%
     bleedStruct.WfracLen            = %<LibBlockParameter(WfracLen,"","",0)>;
     bleedStruct.Wfrac               = (double*)(%<LibBlockParameterBaseAddr(Wfrac)>);
+    bleedStruct.IWork               = &%<LibBlockIWork(Errors,"","",0)>;
 
     %assign y_ptr = LibBlockOutputSignalAddr(0, "", "", 0)
     %assign y_dataType = LibBlockOutputSignalDataTypeName(0,"")
@@ -51,7 +52,6 @@
     %assign u_dataType = LibBlockInputSignalDataTypeName(0,"")
     %assign BldInFlow_ptr = LibBlockInputSignalAddr(1, "", "", 0)
     %assign BldInFlow_dataType = LibBlockInputSignalDataTypeName(1,"")
-
     %%
     Bleed_TMATS_body((%<y_dataType>*)%<y_ptr>,\ 
                          (%<y1_dataType>*)%<y1_ptr>,\ 

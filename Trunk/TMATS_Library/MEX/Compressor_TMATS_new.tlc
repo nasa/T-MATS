@@ -74,6 +74,8 @@
     compressorStruct.PRMapLay            = %<LibBlockParameter(PRMapLay,"","",0)>;
     compressorStruct.EffMapLay           = %<LibBlockParameter(EffMapLay,"","",0)>;
 
+    compressorStruct.IWork               = &%<LibBlockIWork(Errors,"","",0)>;
+
     %assign y_ptr = LibBlockOutputSignalAddr(0, "", "", 0)
     %assign y_dataType = LibBlockOutputSignalDataTypeName(0,"")
     %assign y1_ptr = LibBlockOutputSignalAddr(1, "", "", 0)

@@ -25,32 +25,32 @@ void Ambient_TMATS_body(double *y, const double *u, const AmbientStruct* prm)
     FAR = prm->AFARc;
     
     Rt = interp1Ac(prm->X_A_FARVec,prm->T_A_RtArray,FAR,prm->B,&interpErr);
-    if (interpErr == 1 && prm->IWork[Er1] == 0){
+    if (interpErr == 1 && *(prm->IWork+Er1) == 0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating Rt. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er1] = 1;
+        *(prm->IWork+Er1) = 1;
     }
     
     Rs = Rt;
     
     /*  Static Temperature */
     TsStDayOut = interp1Ac(prm->X_A_AltVec,prm->T_A_TsVec,AltIn,prm->A,&interpErr);
-    if (interpErr == 1 && prm->IWork[Er2] == 0){
+    if (interpErr == 1 && *(prm->IWork+Er2) == 0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating TsStDayOut. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er2] = 1;
+        *(prm->IWork+Er2) = 1;
     }
     TsOut = TsStDayOut + dTempIn;
     
     /* Static Pressure*/
     PsOut = interp1Ac(prm->X_A_AltVec,prm->T_A_PsVec,AltIn,prm->A,&interpErr);
-    if (interpErr == 1 && prm->IWork[Er3] == 0){
+    if (interpErr == 1 && *(prm->IWork+Er3) == 0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating PsOut. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er3] = 1;
+        *(prm->IWork+Er3) = 1;
     }
     
     /* Calc output entropy */
@@ -72,11 +72,11 @@ void Ambient_TMATS_body(double *y, const double *u, const AmbientStruct* prm)
     Vg = sqrtT(2 * (htg - hs)*C_GRAVITY*JOULES_CONST);
     
     gammasg = interp2Ac(prm->X_A_FARVec,prm->Y_A_TVec,prm->T_A_gammaArray,FAR,TsOut,prm->B,prm->C,&interpErr);
-    if (interpErr == 1 && prm->IWork[Er4] == 0){
+    if (interpErr == 1 && *(prm->IWork+Er4) == 0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er4] = 1;
+        *(prm->IWork+Er4) = 1;
     }
     Vsg = sqrtT(gammasg*Rs*TsOut*C_GRAVITY*JOULES_CONST);
     MNg = Vg*divby(Vsg);
@@ -110,11 +110,11 @@ void Ambient_TMATS_body(double *y, const double *u, const AmbientStruct* prm)
         }
         iter = iter + 1;
     }
-    if (iter == maxiter && prm->IWork[Er5]==0 ){
+    if (iter == maxiter && *(prm->IWork+Er5)==0 ){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating Pt at input MN. There may be error in output pressure\n", prm->BlkNm);
         #endif
-        prm->IWork[Er5] = 1;
+        *(prm->IWork+Er5) = 1;
     }
     
     htOut = htg;

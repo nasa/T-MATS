@@ -39,11 +39,11 @@ void Valve_TMATS_body(double* y, const double* u, const ValveStruct* prm)
 
         /* compute corrected flow based on pressure ratio */
         bleedFlxCr = interp1Ac(prm->X_V_PRVec,prm->T_V_WcVec,ValvePR,prm->A,&interpErr);
-        if (interpErr == 1 && prm->IWork[Er1]==0){
+        if (interpErr == 1 && *(prm->IWork+Er1)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating bleedFlxCr. Vector definitions may need to be expanded.\n", prm->BlkNm);
             #endif
-            prm->IWork[Er1] = 1;
+            *(prm->IWork+Er1) = 1;
         }
         /*------ Compute Air flow through valve ---------*/
         WthOut = bleedFlxCr*PtmfpIn*divby(sqrtT(TtmfpIn))*Valve_active_Ae;  /* Valve throat flow [pps] */

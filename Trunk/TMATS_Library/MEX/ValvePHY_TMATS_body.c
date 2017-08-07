@@ -31,11 +31,11 @@ void ValvePHY_TMATS_body(real_T *y, const real_T *u, const ValvePHYStruct* prm)
 
     
     /* Input validation */
-    if ((WbyIn <= 0 || WmfpIn <= 0) && prm->IWork[Er1]==0){
+    if ((WbyIn <= 0 || WmfpIn <= 0) && *(prm->IWork+Er1)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Flow rates must be nonzero !!");
         #endif
-        prm->IWork[Er1] = 1;
+        *(prm->IWork+Er1) = 1;
     }
 
     if (VlvPosIn > 0){
@@ -45,18 +45,18 @@ void ValvePHY_TMATS_body(real_T *y, const real_T *u, const ValvePHYStruct* prm)
 
         /* define gas constants for booster discharge air */
         Rb = interp1Ac(prm->X_V_FAR_vec,prm->T_V_Rt_vec,FARcmfpIn,prm->A1,&interpErr);
-        if (interpErr == 1 && prm->IWork[Er2]==0){
+        if (interpErr == 1 && *(prm->IWork+Er2)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating Rb. Vector definitions may need to be expanded.\n", prm->BlkNm);
             #endif
-            prm->IWork[Er2] = 1;
+            *(prm->IWork+Er2) = 1;
         }
         gamb = interp2Ac(prm->X_V_FAR_vec,prm->Y_V_Tt_vec,prm->T_V_gamma_array,FARcmfpIn,TtmfpIn,prm->A1,prm->B1,&interpErr);
-        if (interpErr == 1 && prm->IWork[Er3]==0){
+        if (interpErr == 1 && *(prm->IWork+Er3)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating gamb. Vector definitions may need to be expanded.\n", prm->BlkNm);
             #endif
-            prm->IWork[Er3] = 1;
+            *(prm->IWork+Er3) = 1;
         }
         Cpb = Rb*gamb*divby(gamb-1);
 

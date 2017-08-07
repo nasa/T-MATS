@@ -163,6 +163,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     turbine_PSIStruct.C   = mxGetNumberOfElements(Y_T_NcwowVec_p(S));
     turbine_PSIStruct.D   = mxGetNumberOfElements(X_T_PRwowVec_p(S));
 
+    turbine_PSIStruct.IWork      = ssGetIWork(S);
+
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
     turbine_PSIStruct.BlkNm = mxMalloc(buflen);
@@ -176,6 +178,21 @@ static void mdlTerminate(SimStruct *S)
 {
 }
 
+#define MDL_RTW
+static void mdlRTW(SimStruct *S)
+{
+    if (!ssWriteRTWWorkVect(S, "IWork", 1 /* nNames */,
+                            "Errors", 
+                            ssGetNumIWork(S))) {
+        return;
+    }
+    /*
+      This registration of the error code symbols "Er1, etc." 
+			allows tlc to call 
+			LibBlockIWork(Er1,[...])
+     */
+
+}
 #ifdef  MATLAB_MEX_FILE    /* Is this file being compiled as a MEX-file? */
 #include "simulink.c"      /* MEX-file interface mechanism */
 #else

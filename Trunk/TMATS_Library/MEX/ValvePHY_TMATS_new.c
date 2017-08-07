@@ -114,6 +114,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     valvePHYStruct.A1  = mxGetNumberOfElements(X_V_FAR_vec_p(S));
     valvePHYStruct.B1  = mxGetNumberOfElements(Y_V_Tt_vec_p(S));
 
+    valvePHYStruct.IWork      = ssGetIWork(S);
+
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
     valvePHYStruct.BlkNm = mxMalloc(buflen);
@@ -127,6 +129,21 @@ static void mdlTerminate(SimStruct *S)
 {
 }
 
+#define MDL_RTW
+static void mdlRTW(SimStruct *S)
+{
+    if (!ssWriteRTWWorkVect(S, "IWork", 1 /* nNames */,
+                            "Errors", 
+                            ssGetNumIWork(S))) {
+        return;
+    }
+    /*
+      This registration of the error code symbols "Er1, etc." 
+			allows tlc to call 
+			LibBlockIWork(Er1,[...])
+     */
+
+}
 #ifdef  MATLAB_MEX_FILE    /* Is this file being compiled as a MEX-file? */
 #include "simulink.c"      /* MEX-file interface mechanism */
 #else

@@ -37,11 +37,11 @@ void StaticCalc_TMATS_body(double *y, const double *u, const StaticCalcStruct* p
     
     /*  Where gas constant is R = f(FAR), but NOT P & T */
     Rt = interp1Ac(prm->X_FARVec,prm->T_RtArray,FARcIn,prm->A,&interpErr);
-    if (interpErr == 1 && prm->IWork[Er1]==0){
+    if (interpErr == 1 && *(prm->IWork+Er1)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating Rt. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er1] = 1;
+        *(prm->IWork+Er1) = 1;
     }
     Rs = Rt;
     
@@ -50,22 +50,22 @@ void StaticCalc_TMATS_body(double *y, const double *u, const StaticCalcStruct* p
         /*---- set MN = prm->MNIn and calc SS Ps for iteration IC --------*/
         MNg = prm->MNIn;
         gammatg = interp2Ac(prm->X_FARVec,prm->Y_TtVec,prm->T_gammaArray,FARcIn,TtIn,prm->A,prm->B,&interpErr);
-        if (interpErr == 1 && prm->IWork[Er2]==0){
+        if (interpErr == 1 && *(prm->IWork+Er2)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating gammatg. Vector definitions may need to be expanded.\n", prm->BlkNm);
             #endif
-            prm->IWork[Er2] = 1;
+            *(prm->IWork+Er2) = 1;
         }
         TsMNg = TtIn*divby(1+MNg*MNg*(gammatg-1)/2);
         PsMNg = PtIn*powT((TsMNg*divby(TtIn)),(gammatg*divby(gammatg-1)));
         
         PcalcStat(PtIn, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
         gammasg = interp2Ac(prm->X_FARVec,prm->Y_TtVec,prm->T_gammaArray,FARcIn,TsMNg,prm->A,prm->B,&interpErr);
-        if (interpErr == 1 && prm->IWork[Er2]==0){
+        if (interpErr == 1 && *(prm->IWork+Er2)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating gammasg. Vector definitions may need to be expanded.\n", prm->BlkNm);
             #endif
-            prm->IWork[Er2] = 1;
+            *(prm->IWork+Er2) = 1;
         }
         MNg = Vg*divby(sqrtT(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST));
         
@@ -90,11 +90,11 @@ void StaticCalc_TMATS_body(double *y, const double *u, const StaticCalcStruct* p
                 PsMNg = PsMNg_new;
             PcalcStat(PtIn, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
             gammasg = interp2Ac(prm->X_FARVec,prm->Y_TtVec,prm->T_gammaArray,FARcIn,TsMNg,prm->A,prm->B,&interpErr);
-            if (interpErr == 1 && prm->IWork[Er2]==0){
+            if (interpErr == 1 && *(prm->IWork+Er2)==0){
                 #ifdef MATLAB_MEX_FILE
                 printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", prm->BlkNm);
                 #endif
-                prm->IWork[Er2] = 1;
+                *(prm->IWork+Er2) = 1;
             }
             MNg = Vg*divby(sqrtT(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST));
             /* calculated Area */
@@ -110,11 +110,11 @@ void StaticCalc_TMATS_body(double *y, const double *u, const StaticCalcStruct* p
             }
             iter = iter + 1;
         }
-        if (iter == maxiter && prm->IWork[Er3]==0 ){
+        if (iter == maxiter && *(prm->IWork+Er3)==0 ){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating Ps at MN = prm->MNIn. There may be error in block outputs\n", prm->BlkNm);
             #endif
-            prm->IWork[Er3] = 1;
+            *(prm->IWork+Er3) = 1;
         }
         TsOut = TsMNg;
         PsOut = PsMNg;
@@ -133,11 +133,11 @@ void StaticCalc_TMATS_body(double *y, const double *u, const StaticCalcStruct* p
         PcalcStat(PtIn, Psg, TtIn, htin, FARcIn, Rt, &Sin, &Tsg, &hsg, &rhosg, &Vg);
         Acalc = WIn*divby(Vg * rhosg/C_SINtoSFT);
         gammasg = interp2Ac(prm->X_FARVec,prm->Y_TtVec,prm->T_gammaArray,FARcIn,Tsg,prm->A,prm->B,&interpErr);
-        if (interpErr == 1 && prm->IWork[Er4]==0){
+        if (interpErr == 1 && *(prm->IWork+Er4)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", prm->BlkNm);
             #endif
-            prm->IWork[Er4] = 1;
+            *(prm->IWork+Er4) = 1;
         }
         MNg = Vg*divby(sqrtT(gammasg*Rs*Tsg*C_GRAVITY*JOULES_CONST));
         
@@ -163,11 +163,11 @@ void StaticCalc_TMATS_body(double *y, const double *u, const StaticCalcStruct* p
             PcalcStat(PtIn, Psg, TtIn, htin, FARcIn, Rt, &Sin, &Tsg, &hsg, &rhosg, &Vg);
             
             gammasg = interp2Ac(prm->X_FARVec,prm->Y_TtVec,prm->T_gammaArray,FARcIn,Tsg,prm->A,prm->B,&interpErr);
-            if (interpErr == 1 && prm->IWork[Er4]==0){
+            if (interpErr == 1 && *(prm->IWork+Er4)==0){
                 #ifdef MATLAB_MEX_FILE
                 printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", prm->BlkNm);
                 #endif
-                prm->IWork[Er4] = 1;
+                *(prm->IWork+Er4) = 1;
             }
             
             MNg = Vg*divby(sqrtT(gammasg*Rs*Tsg*C_GRAVITY*JOULES_CONST));
@@ -204,11 +204,11 @@ void StaticCalc_TMATS_body(double *y, const double *u, const StaticCalcStruct* p
         AthOut = Acalc;
     }
     else {
-        if (prm->IWork[Er5]==0 ){
+        if (*(prm->IWork+Er5)==0 ){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, SolveType_M is not valid. There may be error in block outputs\n", prm->BlkNm);
             #endif
-            prm->IWork[Er5] = 1;
+            *(prm->IWork+Er5) = 1;
         }
         TsOut = TtIn;
         PsOut = PtIn;

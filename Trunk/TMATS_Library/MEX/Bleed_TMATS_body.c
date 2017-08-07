@@ -41,11 +41,11 @@ void Bleed_TMATS_body(double *y, double *y1, const double *u, const double *BldI
         
     /* Verify input bleed vector is a multiple of 5 */
     Vtest = BldInLen/5;
-    if(5*Vtest != BldInLen && prm->IWork[Er1]==0){
+    if(5*Vtest != BldInLen && *(prm->IWork+Er1)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Error in %s, one or more of the cooling flow input vector elements is missing(Vector form; 5x1: W,ht,Tt,Pt,FAR)\n",prm->BlkNm);
         #endif
-        prm->IWork[Er1] = 1;
+        *(prm->IWork+Er1) = 1;
     }
     
     /* unpack BleedFlow vector */

@@ -43,17 +43,17 @@ void Turbine_PSI_TMATS_body(double *y, const double *u, const double *CoolFlow, 
     
     /* Verify input bleed vector is a multiple of 5 */
     Vtest = cfWidth/5;
-    if(5*Vtest != cfWidth && prm->CoolFlwEn > 0.5 && prm->IWork[Er1]==0){
+    if(5*Vtest != cfWidth && prm->CoolFlwEn > 0.5 && *(prm->IWork+Er1)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Error in %s, one or more of the cooling flow input vector eleements is missing(Vector form; 5x1: W,ht,Tt,Pt,FAR)\n",prm->BlkNm);
         #endif
-        prm->IWork[Er1] = 1;
+        *(prm->IWork+Er1) = 1;
     }
-    else if(prm->BldPosLeng != cfWidth/5 && prm->CoolFlwEn > 0.5 && prm->IWork[Er2]==0){
+    else if(prm->BldPosLeng != cfWidth/5 && prm->CoolFlwEn > 0.5 && *(prm->IWork+Er2)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Errorin %s, number of cooling flow inputs does not match the length of the Cooling flow postion vector in the mask\n",prm->BlkNm);
         #endif
-        prm->IWork[Er2] = 1;
+        *(prm->IWork+Er2) = 1;
     }
 
     /* unpack CoolFlow vector */
@@ -87,11 +87,11 @@ void Turbine_PSI_TMATS_body(double *y, const double *u, const double *CoolFlow, 
     /* calc cooling flow constants for stage 1 and output of the turbine */
     for (i = 0; i < cfWidth/5; i++)
     {
-        if ((prm->T_BldPos[i] > 1 || prm->T_BldPos[i] < 0) && prm->CoolFlwEn > 0.5 && prm->IWork[Er3]==0){
+        if ((prm->T_BldPos[i] > 1 || prm->T_BldPos[i] < 0) && prm->CoolFlwEn > 0.5 && *(prm->IWork+Er3)==0){
             #ifdef MATLAB_MEX_FILE
             printf(" Error in %s, cooling flow postion element %i needs to be defined as a 0 or 1\n",prm->BlkNm,i+1);
             #endif
-            prm->IWork[Er3] = 1;
+            *(prm->IWork+Er3) = 1;
         }
 
         /* calc mass flow for cooling flows */
@@ -153,11 +153,11 @@ void Turbine_PSI_TMATS_body(double *y, const double *u, const double *CoolFlow, 
     /*-- Compute Turbine Efficiency (from Turbine map)  --------*/
 
     psiMapI = interp2Ac(prm->X_T_PRpsiVec,prm->Y_T_NcpsiVec,prm->T_T_Map_psiArray,psiMapIn,NcMap,prm->B,prm->A,&interpErr);
-    if (interpErr == 1 && prm->IWork[Er4]==0){
+    if (interpErr == 1 && *(prm->IWork+Er4)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating psiMapI. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er4] = 1;
+        *(prm->IWork+Er4) = 1;
     }
     EffMap = psiMapIn*divby(psiMapI);
     if(prm->IDes < 0.5)
@@ -220,11 +220,11 @@ void Turbine_PSI_TMATS_body(double *y, const double *u, const double *CoolFlow, 
     /*-- Compute Total Flow input (from Turbine map)  --------*/
 
     WoWMap = interp2Ac(prm->X_T_PRwowVec,prm->Y_T_NcwowVec,prm->T_T_Map_WoWArray,PRmapRead,NcMap,prm->D,prm->C,&interpErr);
-    if (interpErr == 1 && prm->IWork[Er5]==0){
+    if (interpErr == 1 && *(prm->IWork+Er5)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating WoWMap. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er5] = 1;
+        *(prm->IWork+Er5) = 1;
     }
     WpqAcrit = sqrtT((prm->gamma_T*C_GRAVITY)*divby(prm->Rt_T*JOULES_CONST))*divby(powT((1+(prm->gamma_T-1)/2),((prm->gamma_T+1)*divby(2*(prm->gamma_T-1)))));
     WMap = WoWMap * WpqAcrit * (PtIn*divby(sqrtT(Tts1in)));
