@@ -75,6 +75,7 @@
     compressorStruct.EffMapLay           = %<LibBlockParameter(EffMapLay,"","",0)>;
 
     compressorStruct.IWork               = &%<LibBlockIWork(Errors,"","",0)>;
+    compressorStruct.BlkNm               = "%<LibGetFormattedBlockPath(block)>";
 
     %assign y_ptr = LibBlockOutputSignalAddr(0, "", "", 0)
     %assign y_dataType = LibBlockOutputSignalDataTypeName(0,"")

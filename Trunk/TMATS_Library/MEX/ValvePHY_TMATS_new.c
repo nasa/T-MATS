@@ -49,7 +49,8 @@ static void mdlInitializeSizes(SimStruct *S)
             ssSetSFcnParamTunable(S, i, 0);
     }
 
-    ssSetOptions(S, SS_OPTION_WORKS_WITH_CODE_REUSE);
+    ssSetOptions(S, SS_OPTION_WORKS_WITH_CODE_REUSE | 
+                    SS_OPTION_USE_TLC_WITH_ACCELERATOR);
 
     ssSetNumContStates(S, 0);
     ssSetNumDiscStates(S, 0);

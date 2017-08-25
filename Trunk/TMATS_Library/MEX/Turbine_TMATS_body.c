@@ -38,7 +38,6 @@ void Turbine_TMATS_body(double* y, const double* u, const double* CoolFlow, cons
     double Ptcool[100];
     double FARcool[100];
     int Vtest, i;
-    int *errFlags;
         
     /* Verify input bleed vector is a multiple of 5 */
     Vtest = cfWidth/5;

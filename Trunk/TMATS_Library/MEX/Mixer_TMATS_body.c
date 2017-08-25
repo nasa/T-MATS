@@ -22,7 +22,6 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
     
     /*--------Define Constants-------*/
     double WOut, FARcOut, TtOut, Aphyout, PtOut;
-    double Test;
     double E1, E2, Eout1, Eout2, A1calc, A2calc, Aoutcalc, Ps1g, Ps2g, Psoutg;
     double Rt1, ht1in, Ps1, S1in, Ts1, hs1, rhos1, V1, Ps1g_new, Ps1g_old, E1_old, MN1g, gammat1g, Ts1g;
     double Rt2, ht2in, Ps2, S2in, Ts2, hs2, rhos2, V2, Ps2g_new, Ps2g_old, E2_old, MN2g, gammat2g, Ts2g;
@@ -32,7 +31,7 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
     double Aphy1, Aphy2;
     double Psp, Pss, Ttp, Tts, Ptp, Pts, Tsp, Tss, rhosp, rhoss, Vp, Vs, Ap, As, hsp, hss, htp, hts;
     double Ws, Wp, MNg, Sin;
-    double FARp, FARs, Rtp, Rts, Rsp, Rss;
+    double FARp, FARs, Rtp, Rts, Rsp;
     double rhosg, Vg, hsg;
     int iter, iter1, iter2, iter3a, iter3b, maxiter;
     int interpErr = 0;
@@ -255,7 +254,7 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
             
             if (V1 <= 0) {
                 V1 = 0.00001;
-                if(iter >= maxiter && *(prm->IWork+Er9)==0 ){
+                if(iter1 >= maxiter && *(prm->IWork+Er9)==0 ){
                     #ifdef MATLAB_MEX_FILE
                     printf("Warning in %s, Input 1 flow velocity is zero\n", prm->BlkNm);
                     #endif
@@ -316,7 +315,7 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
             PcalcStat(Pt2In, Ps2g, Tt2In, ht2in, FARc2In, Rt2, &S2in, &Ts2, &hs2, &rhos2, &V2);
             if (V2 <= 0) {
                 V2 = 0.00001;
-                if(iter >= maxiter && *(prm->IWork+Er11)==0 ){
+                if(iter2 >= maxiter && *(prm->IWork+Er11)==0 ){
                     #ifdef MATLAB_MEX_FILE
                     printf("Warning in %s, Input 2 flow velocity is zero\n", prm->BlkNm);
                     #endif
