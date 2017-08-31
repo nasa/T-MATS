@@ -12,6 +12,6 @@ function MWS = setup_Inputs(MWS)
 
 MWS.in.SimTime = 700 * MWS.Solve.T; % MWS.Solve.T set to 0.015sec
 MWS.in.t_vec = [0 5 10 100];
-MWS.in.Ndmd = [10000 10000 12000 12000];
+MWS.in.Ndmd = [10000 10000 9000 9000];
 MWS.in.Alt = [0 0 0 0];
 

@@ -147,28 +147,6 @@ switch temp.block
             Output.Input = [Output.Input {AddMakeLinkerInportGoTo(SystemName, temp.a, temp.pos, 1/4,1,strcat(temp.a,'_Wf'),'orange')}];
         end
         
-    case{'Lib_Turbo_TurbineNPSS_TMATS/Turbine_NPSS', 'Lib_Turbo_Turbine_TMATS/Turbine'}
-        if BldInNum > 0
-            AddInPortFromTag(SystemName, temp.a, temp.pos, 1/8, 1, strcat(temp.a,'_bldIn'),'blue');                        % Bleed Input From tag
-        else
-            AddOutportConstant(SystemName, temp.a, temp.pos, 1/8, 1)
-        end
-        
-        AddInPortFromTag(SystemName, temp.a, temp.pos, 5/8, 3, strcat(temp.a,'_PRin'),'darkGreen');                        % PRin Input From tag
-        
-        AddOutportGoTo(SystemName, temp.a, temp.pos, 3/8, 2, strcat(temp.a,'_NErr'),'green');                              % TrqOut GoTo tag
-        AddOutportGoTo(SystemName, temp.a, temp.pos, 5/8, 3, strcat(temp.a,'_TrqOut'),'[1.000000, 0.333333, 0.498039]');   % TrqOut GoTo tag
-        AddOutportTerminator(SystemName, temp.a, temp.pos, 7/8, 4);                                                        % T_Data terminator block
-        
-        if MakeLinkerTags
-            if BldInNum > 0
-                Output.BleedIn = [Output.BleedIn {AddMakeLinkerInportGoTo(SystemName, temp.a, temp.pos, 1/8, 1, strcat(temp.a,'_bldIn'),'blue')}]; % PRin Input From tag
-            end
-            Output.Ind = [Output.Ind {AddMakeLinkerInportGoTo(SystemName, temp.a, temp.pos, 5/8,3,strcat(temp.a,'_PRin'),'darkGreen')}];
-            
-            Output.Dep = [Output.Dep {AddMakeLinkerOutportFromTag(SystemName, temp.a, temp.pos, 3/8,2,strcat(temp.a,'_NErr'),'green')}];
-            Output.Shaft = [Output.Shaft {AddMakeLinkerOutportFromTag(SystemName, temp.a, temp.pos, 5/8,3,strcat(temp.a,'_TrqOut'),'[1.000000, 0.333333, 0.498039]')}];
-        end
         
     case('Lib_Turbo_Compressor_TMATS/Compressor')
         AddInPortFromTag(SystemName, temp.a, temp.pos, 3/6, 2, strcat(temp.a,'_Rline'),'darkGreen');               % Rline Input From tag
@@ -199,10 +177,25 @@ switch temp.block
             Output.Dep = [Output.Dep {AddMakeLinkerOutportFromTag(SystemName, temp.a, temp.pos, 7/12,4,strcat(temp.a,'_NErr'),'green')}];
             Output.Shaft = [Output.Shaft {AddMakeLinkerOutportFromTag(SystemName, temp.a, temp.pos, 9/12,5,strcat(temp.a,'_TrqOut'),'[1.000000, 0.333333, 0.498039]')}];
         end
+    
+    case('Lib_Turbo_FlowPathChar_TMATS/FlowPathChar')
+        AddInPortFromTag(SystemName, temp.a, temp.pos, 1/8, 1,strcat(temp.a,'_W'),'darkGreen');     % W Input From tag
+        
+        if MakeLinkerTags
+            Output.Ind = [Output.Ind {AddMakeLinkerInportGoTo(SystemName, temp.a, temp.pos, 1/8,1,strcat(temp.a,'_W'),'darkGreen')}];
+        end
         
     case('Lib_Turbo_Inlet_TMATS/Inlet')
         AddInPortFromTag(SystemName, temp.a, temp.pos, 3/4, 2, 'Pamb','black');                 % Pamb Input From tag
         
+    case('Lib_Turbo_Mixer_TMATS/Mixer')
+        AddOutportGoTo(SystemName, temp.a, temp.pos, 3/6, 2, strcat(temp.a,'_NErr'),'green');   %  NErr Output GoTo tag
+        AddOutportTerminator(SystemName, temp.a, temp.pos, 5/6, 3);                             % M_Data terminator block
+        
+        if MakeLinkerTags
+            Output.Dep = [Output.Dep {AddMakeLinkerOutportFromTag(SystemName, temp.a, temp.pos, 3/6,2,strcat(temp.a,'_NErr'),'green')}];
+        end
+           
     case('Lib_Turbo_Nozzle_TMATS/Nozzle')
         AddInPortFromTag(SystemName, temp.a, temp.pos, 3/4, 2, 'Pamb','black');                 % Pamb Input From tag
         
@@ -228,6 +221,36 @@ switch temp.block
             Output.Output = [Output.Output {AddMakeLinkerOutportFromTag(SystemName, temp.a, temp.pos, 3/4,2,strcat(temp.a,'_Ndot'),'magenta')}];
         end
         
+    case('Lib_Turbo_Splitter_TMATS/Splitter')
+        AddInPortFromTag(SystemName, temp.a, temp.pos, 3/4, 2,strcat(temp.a,'_BPR'),'darkGreen');     % BPR Input From tag
+        
+        if MakeLinkerTags
+            Output.Ind = [Output.Ind {AddMakeLinkerInportGoTo(SystemName, temp.a, temp.pos, 3/4,2,strcat(temp.a,'_BPR'),'darkGreen')}];
+        end
+        
+    case{'Lib_Turbo_TurbineNPSS_TMATS/Turbine_NPSS', 'Lib_Turbo_Turbine_TMATS/Turbine'}
+        if BldInNum > 0
+            AddInPortFromTag(SystemName, temp.a, temp.pos, 1/8, 1, strcat(temp.a,'_bldIn'),'blue');                        % Bleed Input From tag
+        else
+            AddOutportConstant(SystemName, temp.a, temp.pos, 1/8, 1)
+        end
+        
+        AddInPortFromTag(SystemName, temp.a, temp.pos, 5/8, 3, strcat(temp.a,'_PRin'),'darkGreen');                        % PRin Input From tag
+        
+        AddOutportGoTo(SystemName, temp.a, temp.pos, 3/8, 2, strcat(temp.a,'_NErr'),'green');                              % TrqOut GoTo tag
+        AddOutportGoTo(SystemName, temp.a, temp.pos, 5/8, 3, strcat(temp.a,'_TrqOut'),'[1.000000, 0.333333, 0.498039]');   % TrqOut GoTo tag
+        AddOutportTerminator(SystemName, temp.a, temp.pos, 7/8, 4);                                                        % T_Data terminator block
+        
+        if MakeLinkerTags
+            if BldInNum > 0
+                Output.BleedIn = [Output.BleedIn {AddMakeLinkerInportGoTo(SystemName, temp.a, temp.pos, 1/8, 1, strcat(temp.a,'_bldIn'),'blue')}]; % PRin Input From tag
+            end
+            Output.Ind = [Output.Ind {AddMakeLinkerInportGoTo(SystemName, temp.a, temp.pos, 5/8,3,strcat(temp.a,'_PRin'),'darkGreen')}];
+            
+            Output.Dep = [Output.Dep {AddMakeLinkerOutportFromTag(SystemName, temp.a, temp.pos, 3/8,2,strcat(temp.a,'_NErr'),'green')}];
+            Output.Shaft = [Output.Shaft {AddMakeLinkerOutportFromTag(SystemName, temp.a, temp.pos, 5/8,3,strcat(temp.a,'_TrqOut'),'[1.000000, 0.333333, 0.498039]')}];
+        end
+            
     case('Lib_Turbo_Valve_TMATS/Valve')
         AddInPortFromTag(SystemName, temp.a, temp.pos, 3/6, 2,strcat(temp.a,'_ValvePos'),'orange');     % ValvePos Input From tag
         
@@ -235,20 +258,6 @@ switch temp.block
         
         if MakeLinkerTags
             Output.Input = [Output.Input {AddMakeLinkerInportGoTo(SystemName, temp.a, temp.pos, 3/6,2,strcat(temp.a,'_ValvePos'),'orange')}];
-        end
-        
-    case('Lib_Turbo_FlowPathChar_TMATS/FlowPathChar')
-        AddInPortFromTag(SystemName, temp.a, temp.pos, 1/8, 1,strcat(temp.a,'_W'),'darkGreen');     % W Input From tag
-        
-        if MakeLinkerTags
-            Output.Ind = [Output.Ind {AddMakeLinkerInportGoTo(SystemName, temp.a, temp.pos, 1/8,1,strcat(temp.a,'_W'),'darkGreen')}];
-        end
-        
-    case('Lib_Turbo_Splitter_TMATS/Splitter')
-        AddInPortFromTag(SystemName, temp.a, temp.pos, 3/4, 2,strcat(temp.a,'_BPR'),'darkGreen');     % BPR Input From tag
-        
-        if MakeLinkerTags
-            Output.Ind = [Output.Ind {AddMakeLinkerInportGoTo(SystemName, temp.a, temp.pos, 3/4,2,strcat(temp.a,'_BPR'),'darkGreen')}];
         end
         
     otherwise

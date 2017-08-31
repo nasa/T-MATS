@@ -138,15 +138,15 @@ for i = 1:length(gb)
         %plot the data in a tab
         subplot(3,1,1)
         plot(Time,W)
-        ylabel('W [pps]')
+        ylabel('W, pps')
         title([Vnm,' Data'])
         subplot(3,1,2)
         plot(Time,Pt)
-        ylabel('Pt [psia]')
+        ylabel('Pt, psia')
         subplot(3,1,3)
         plot(Time,Tt)
-        ylabel('Tt [degR]')
-        xlabel('Time [sec]');
+        ylabel(sprintf('Tt, %cR',char(176)))
+        xlabel('Time, s');
     end
     
     
@@ -193,10 +193,10 @@ if ShftSpdNum > 0
         for i = 1:tempsize
             subplot(tempsize,1,i)
             plot(Tplt(i,:), Nplt(i,:));
-            ylabel('Speed [rpm]');
+            ylabel('Speed, rpm');
             title(Ntitle{i});
         end
-        xlabel('Time [sec]');
+        xlabel('Time, s');
     end
 end
 
@@ -262,7 +262,10 @@ if(TurbNum > 0)
         end
     end
 end
-bdclose('all')
+try
+    bdclose('all')
+catch
+end
 
 %return settings
 set(0,'DefaultFigureWindowStyle',set_old);

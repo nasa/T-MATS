@@ -8,7 +8,7 @@ function MWS = setup_Noz(MWS)
 % This function creates the properties of the Nozzle Module
 % *************************************************************************
 
-MWS.Noz.ATh = 110.7;   % nozzle throat area (in^2)
+MWS.Noz.ATh = 110.868590;   % nozzle throat area (in^2)
 
 MWS.Noz.LossPerc = 0.00;  %percent flow loss through the nozzle
 

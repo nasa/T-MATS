@@ -35,6 +35,7 @@ MWS = setup_Noz(MWS);           % develops variables for Noz
 MWS = setup_HPT(MWS);           % develops variables for HPT
 MWS = setup_Burner(MWS);        % develops variables for Burner
 MWS = setup_Duct(MWS);          % develops variables for Duct
+MWS = setup_Inlet(MWS);         % develops variables for Inlet
 
 % if no output is specified, then just assign MWS to the workspace
 if(nargout == 0)

@@ -25,26 +25,11 @@ try
     
     % remove all of the directories that were added to the path
     Pth1 = strcat(top_level,pathOperator,'SimSetup');
-    Pth2 = strcat(top_level,pathOperator,'External_Effectors');
-    Pth3 = strcat(top_level,pathOperator,'Plants');
-    Pth4 = strcat(top_level,pathOperator,'Bus');
+
     perm1 = ~isempty(strfind(path,Pth1));  % determine if path is already defined
-    perm2 = ~isempty(strfind(path,Pth2));  % determine if path is already defined
-    perm3 = ~isempty(strfind(path,Pth3));  % determine if path is already defined
-    perm4 = ~isempty(strfind(path,Pth4));  % determine if path is already defined
     if perm1
     eval(['rmpath ',Pth1])
     end
-    if perm2
-    eval(['rmpath ',Pth2])
-    end
-    if perm3
-    eval(['rmpath ',Pth3])
-    end
-    if perm4
-    eval(['rmpath ',Pth4])
-    end
-    
     % end
 catch
     disp('Unable to remove T-MATS Dynamic Gas Turbine example directories from the path.')
