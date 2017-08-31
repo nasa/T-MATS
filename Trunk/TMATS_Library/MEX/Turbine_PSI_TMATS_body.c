@@ -25,9 +25,9 @@ void Turbine_PSI_TMATS_body(double *y, const double *u, const double *CoolFlow, 
     /*--------Define Constants-------*/
     double WOut, htOut, TtOut, PtOut, FARcOut, TorqueOut, NErrorOut;
     double WcCalcin, WcMap, theta,delta, Pwrout, PRin, htin;
-    double TtIdealout, Test, htIdealout, Sout, NcMap, Nc, EffMap, Eff;
-    double dHcools1, dHcoolout, Wfcools1, Wfcoolout, Ws1in,hts1in, Tts1in, Pts1in, FARs1in;
-    double Ss1in, dHout, Wcoolout, Wcools1, PRmapRead;
+    double Test, htIdealout, Sout, NcMap, Nc, EffMap, Eff;
+    double dHcools1, dHcoolout, Wfcools1, Wfcoolout, Ws1in,hts1in, Tts1in, FARs1in;
+    double Ss1in, Wcoolout, Wcools1, PRmapRead;
     double C_Eff, C_PR, C_Nc, C_Wc, TtOutIdeal;
     double WMap, psiMapI, delHtIdealMap, erT, erT_old, Ptoutg, Ptoutg_old;
     double TtOutIdealg, WpqAcrit, WoWMap, Ptoutg_new;
