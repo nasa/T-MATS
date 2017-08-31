@@ -1,9 +1,9 @@
-%% File : Bleed_TMATS_new.tlc
+%% File : Bleed_TMATS.tlc
 %%
 %% Description: 
-%%   Simulink Coder TLC Code Generation file for Bleed_TMATS_new
+%%   Simulink Coder TLC Code Generation file for Bleed_TMATS
 %%
-%implements Bleed_TMATS_new "C"
+%implements Bleed_TMATS "C"
 
 %% Function: BlockTypeSetup ===============================================
 %%

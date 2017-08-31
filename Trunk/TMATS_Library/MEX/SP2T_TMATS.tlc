@@ -1,9 +1,9 @@
-%% File : SP2T_TMATS_new.tlc
+%% File : SP2T_TMATS.tlc
 %%
 %% Description: 
-%%   Simulink Coder TLC Code Generation file for SP2T_TMATS_new
+%%   Simulink Coder TLC Code Generation file for SP2T_TMATS
 %%
-%implements SP2T_TMATS_new "C"
+%implements SP2T_TMATS "C"
 
 %% Function: BlockTypeSetup ===============================================
 %%

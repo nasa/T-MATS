@@ -1,9 +1,9 @@
-%% File : Turbine_PSI_TMATS_new.tlc
+%% File : Turbine_PSI_TMATS.tlc
 %%
 %% Description: 
-%%   Simulink Coder TLC Code Generation file for Turbine_PSI_TMATS_new
+%%   Simulink Coder TLC Code Generation file for Turbine_PSI_TMATS
 %%
-%implements Turbine_PSI_TMATS_new "C"
+%implements Turbine_PSI_TMATS "C"
 
 %% Function: BlockTypeSetup ===============================================
 %%

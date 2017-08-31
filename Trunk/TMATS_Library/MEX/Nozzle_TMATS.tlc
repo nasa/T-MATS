@@ -1,9 +1,9 @@
-%% File : Nozzle_TMATS_new.tlc
+%% File : Nozzle_TMATS.tlc
 %%
 %% Description: 
-%%   Simulink Coder TLC Code Generation file for Nozzle_TMATS_new
+%%   Simulink Coder TLC Code Generation file for Nozzle_TMATS
 %%
-%implements Nozzle_TMATS_new "C"
+%implements Nozzle_TMATS "C"
 
 %% Function: BlockTypeSetup ===============================================
 %%

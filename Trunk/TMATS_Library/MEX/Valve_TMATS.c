@@ -9,8 +9,7 @@
 #define S_FUNCTION_NAME  Valve_TMATS
 #define S_FUNCTION_LEVEL 2
 #include "simstruc.h"
-#include "functions_TMATS.h"
-#include <math.h>
+#include "types_TMATS.h"
 
 #define VlvfullyOpen_p(S)			ssGetSFcnParam(S,0)
 #define VlvdeadZone_p(S)			ssGetSFcnParam(S,1)
@@ -19,9 +18,18 @@
 #define T_V_WcVec_p(S)              ssGetSFcnParam(S,4)
 #define BN_p(S)                     ssGetSFcnParam(S,5)
 #define NPARAMS 6
+#define NERRORS 5
 
-/* create enumeration for Iwork */
-typedef enum {Er1=0, NUM_IWORK}IWorkIdx;
+extern void Valve_TMATS_body(double* y, const double* u, const ValveStruct* prm);
+
+#define MDL_SET_WORK_WIDTHS
+#if defined(MDL_SET_WORK_WIDTHS) && defined(MATLAB_MEX_FILE)
+static void mdlSetWorkWidths(SimStruct *S)
+{
+    const char_T *rtParamNames[] = {"VlvfullyOpen", "VlvdeadZone", "Valve_Ae", "X_V_PRVec", "T_V_WcVec"};
+    ssRegAllTunableParamsAsRunTimeParams(S, rtParamNames);
+}
+#endif
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -32,8 +40,15 @@ static void mdlInitializeSizes(SimStruct *S)
         return;
     }
 
-    for (i = 0; i < NPARAMS; i++)
-        ssSetSFcnParamTunable(S, i, 0);
+    for (i = 0; i < NPARAMS; i++) {
+        if (i != 5)
+            ssSetSFcnParamTunable(S, i, 1);
+        else
+            ssSetSFcnParamTunable(S, i, 0);
+    }
+
+    ssSetOptions(S, SS_OPTION_WORKS_WITH_CODE_REUSE | 
+                    SS_OPTION_USE_TLC_WITH_ACCELERATOR);
 
     ssSetNumContStates(S, 0);
     ssSetNumDiscStates(S, 0);
@@ -48,7 +63,7 @@ static void mdlInitializeSizes(SimStruct *S)
 
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
-    ssSetNumIWork(S, NUM_IWORK);
+    ssSetNumIWork(S, NERRORS);
     ssSetNumPWork(S, 0);
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
@@ -73,89 +88,56 @@ static void mdlStart(SimStruct *S)
 
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
-    /*--------Define Parameters-------*/
-    const real_T VlvfullyOpen			= *mxGetPr(VlvfullyOpen_p(S));
-    const real_T VlvdeadZone			= *mxGetPr(VlvdeadZone_p(S));
-    const real_T Valve_Ae               = *mxGetPr(Valve_Ae_p(S));
-
-    /*-------- vector & array data -------*/
-    const real_T *X_V_PRVec			= mxGetPr(X_V_PRVec_p(S));
-    const real_T *T_V_WcVec          = mxGetPr(T_V_WcVec_p(S));
-
-    /*------get dimensions of parameter arrays-------*/
-    const int_T A   = mxGetNumberOfElements(X_V_PRVec_p(S));
-
-    /*---------Define Inputs--------*/
+    /* Input and output vectors */
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
 
-    double PtbyIn   = u[0];     /* Bypass disch. pressure [psia] 	*/
-    double VlvPosIn	= u[1];     /* Valve Position [frac, 0-1] 	*/
-    double WmfpIn	= u[2];     /* Main flow path flow rate [pps] 	*/
-    double TtmfpIn	= u[3];     /* Main flow path Temprature [degR] 	*/
-    double PtmfpIn	= u[4];     /* Main flow path Pressure Input [psia] 	*/
+    real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);
 
-
-    real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);  /* Output Array */
-
-    /*--------Define Constants-------*/
-    double ValveFrac, ValvePR, WthOut, Valve_active_Ae;
-    double bleedFlxCr, Test;
-
-    int interpErr = 0;
-
-    /* ------- get strings -------------- */
-    char * BlkNm;
+    /* Block name buffer length and string read status */
     int_T buflen;
     int_T status;
 
+    /* Block mask parameter struct */
+    ValveStruct valveStruct;
+    valveStruct.VlvfullyOpen			= *mxGetPr(VlvfullyOpen_p(S));
+    valveStruct.VlvdeadZone			= *mxGetPr(VlvdeadZone_p(S));
+    valveStruct.Valve_Ae               = *mxGetPr(Valve_Ae_p(S));
+    /* Vector & array data */
+    valveStruct.X_V_PRVec			= mxGetPr(X_V_PRVec_p(S));
+    valveStruct.T_V_WcVec          = mxGetPr(T_V_WcVec_p(S));
+    /* Dimensions of parameter arrays */
+    valveStruct.A   = mxGetNumberOfElements(X_V_PRVec_p(S));
+
+    valveStruct.IWork      = ssGetIWork(S);
+
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
-    BlkNm = mxMalloc(buflen);
-    status = mxGetString(BN_p(S), BlkNm, buflen);
+    valveStruct.BlkNm = mxMalloc(buflen);
+    status = mxGetString(BN_p(S), valveStruct.BlkNm, buflen);
 
-    /* Compute Valve open fraction */
-    ValveFrac = (VlvPosIn-VlvdeadZone)*divby(VlvfullyOpen-VlvdeadZone);
-
-    /* ratio of total pressures at inlet and exit of bleed line */
-    ValvePR = PtmfpIn*divby(PtbyIn);
-
-    /* Determine flow properties of the valve */
-    if ((ValveFrac <= 0) || (ValvePR <= 1.0))	/* dead zone or one-way valve */
-    {
-
-        WthOut = 0;                 /* Valve throat flow [pps] */
-    }
-    else	/* the valve is open and flow is moving */
-    {
-        /*------ Compute Active Area ---------*/
-        Valve_active_Ae = ValveFrac*Valve_Ae;
-
-        /* compute corrected flow based on pressure ratio */
-        bleedFlxCr = interp1Ac(X_V_PRVec,T_V_WcVec,ValvePR,A,&interpErr);
-        if (interpErr == 1 && ssGetIWork(S)[Er1]==0){
-            printf("Warning in %s, Error calculating bleedFlxCr. Vector definitions may need to be expanded.\n", BlkNm);
-            ssSetIWorkValue(S,Er1,1);
-        }
-        /*------ Compute Air flow through valve ---------*/
-        WthOut = bleedFlxCr*PtmfpIn*divby(sqrtT(TtmfpIn))*Valve_active_Ae;  /* Valve throat flow [pps] */
-        if (WthOut > WmfpIn) /* Flow check */
-        {
-            WthOut = WmfpIn;
-        }
-    }
-
-    Test = WthOut;
-
-    /*------Assign output values------------*/
-    y[0] = WthOut;      /* Valve throat flow [pps] */
-    y[1] = Test;        /* Output Test Point */
-
+    /* Perform core block calculations */
+    Valve_TMATS_body(y, u, &valveStruct);
 }
 
 static void mdlTerminate(SimStruct *S)
 {
 }
 
+#define MDL_RTW
+static void mdlRTW(SimStruct *S)
+{
+    if (!ssWriteRTWWorkVect(S, "IWork", 1 /* nNames */,
+                            "Errors", 
+                            ssGetNumIWork(S))) {
+        return;
+    }
+    /*
+      This registration of the error code symbols "Er1, etc." 
+			allows tlc to call 
+			LibBlockIWork(Er1,[...])
+     */
+
+}
 #ifdef  MATLAB_MEX_FILE    /* Is this file being compiled as a MEX-file? */
 #include "simulink.c"      /* MEX-file interface mechanism */
 #else

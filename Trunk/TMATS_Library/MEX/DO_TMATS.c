@@ -43,7 +43,8 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
     
-    
+    ssSetOptions(S, SS_OPTION_WORKS_WITH_CODE_REUSE |
+                    SS_OPTION_USE_TLC_WITH_ACCELERATOR);
 }
 
 static void mdlInitializeSampleTimes(SimStruct *S)
@@ -99,6 +100,34 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 static void mdlTerminate(SimStruct *S)
 {
 }
+
+#if defined(MATLAB_MEX_FILE)
+#define MDL_RTW
+/* Function: mdlRTW ===========================================================
+ * Abstract:
+ *      Write out the single "gain" parameter for this block.
+ *      Write out the signs parameter setting for this block.
+ */
+static void mdlRTW(SimStruct *S)
+{
+    
+    char_T * FileNm;
+    int_T Width, i;
+    int_T buflen;
+    int_T status;
+    
+    /* Get File Name from dialog parameter (string) */
+    buflen = mxGetN(ssGetSFcnParam(S,0))*sizeof(mxChar)+1;
+    FileNm = mxMalloc(buflen);
+    if (!FileNm) {
+        ssSetErrorStatus(S,"Memory allocation error in mdlRTW");
+        return;
+    }
+    
+    status = mxGetString(FN_p(S), FileNm, buflen);
+    ssWriteRTWParamSettings(S, 1, SSWRITE_VALUE_STR, "FileNm", FileNm, buflen);
+}
+#endif /* MDL_RTW */
 
 #ifdef  MATLAB_MEX_FILE    /* Is this file being compiled as a MEX-file? */
 #include "simulink.c"      /* MEX-file interface mechanism */

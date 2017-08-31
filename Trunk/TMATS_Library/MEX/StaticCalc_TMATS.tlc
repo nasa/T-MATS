@@ -1,9 +1,9 @@
-%% File : StaticCalc_TMATS_new.tlc
+%% File : StaticCalc_TMATS.tlc
 %%
 %% Description: 
-%%   Simulink Coder TLC Code Generation file for StaticCalc_TMATS_new
+%%   Simulink Coder TLC Code Generation file for StaticCalc_TMATS
 %%
-%implements StaticCalc_TMATS_new "C"
+%implements StaticCalc_TMATS "C"
 
 %% Function: BlockTypeSetup ===============================================
 %%

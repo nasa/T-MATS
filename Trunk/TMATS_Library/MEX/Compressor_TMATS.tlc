@@ -1,9 +1,9 @@
-%% File : Compressor_TMATS_new.tlc
+%% File : Compressor_TMATS.tlc
 %%
 %% Description: 
-%%   Simulink Coder TLC Code Generation file for Compressor_TMATS_new
+%%   Simulink Coder TLC Code Generation file for Compressor_TMATS
 %%
-%implements Compressor_TMATS_new "C"
+%implements Compressor_TMATS "C"
 
 %% Function: BlockTypeSetup ===============================================
 %%

@@ -1,9 +1,9 @@
-%% File : Valve_TMATS_new.tlc
+%% File : Valve_TMATS.tlc
 %%
 %% Description: 
-%%   Simulink Coder TLC Code Generation file for Valve_TMATS_new
+%%   Simulink Coder TLC Code Generation file for Valve_TMATS
 %%
-%implements Valve_TMATS_new "C"
+%implements Valve_TMATS "C"
 
 %% Function: BlockTypeSetup ===============================================
 %%

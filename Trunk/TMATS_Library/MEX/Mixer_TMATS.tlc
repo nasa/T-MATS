@@ -1,9 +1,9 @@
-%% File : Mixer_TMATS_new.tlc
+%% File : Mixer_TMATS.tlc
 %%
 %% Description: 
-%%   Simulink Coder TLC Code Generation file for Mixer_TMATS_new
+%%   Simulink Coder TLC Code Generation file for Mixer_TMATS
 %%
-%implements Mixer_TMATS_new "C"
+%implements Mixer_TMATS "C"
 
 %% Function: BlockTypeSetup ===============================================
 %%

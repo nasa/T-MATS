@@ -1,9 +1,9 @@
-%% File : Ambient_TMATS_new.tlc
+%% File : Ambient_TMATS.tlc
 %%
 %% Description: 
-%%   Simulink Coder TLC Code Generation file for Ambient_TMATS_new
+%%   Simulink Coder TLC Code Generation file for Ambient_TMATS
 %%
-%implements Ambient_TMATS_new "C"
+%implements Ambient_TMATS "C"
 
 %% Function: BlockTypeSetup ===============================================
 %%
