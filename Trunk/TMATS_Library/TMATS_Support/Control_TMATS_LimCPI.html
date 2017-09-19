@@ -1,25 +1,120 @@
-<font size="6" color="Magenta">T-MATS: Limtit Controller (PI)</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Limit Controller (PI) Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Limit Controller (PI) Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the effects of a proportional-integral (PI)
+    limit controller with windup protection. Additionally, this block can be used
+    to specify the minimum or maximum limits of certain values in the simulation in order to
+    keep a different value within an acceptable range. One example would be
+    adjusting the fuel flow based on the limits of a maximum temperature and minimum pressure.
+</p>
+
 <br>
-This block contains a PI controller with anti-windup protection. Gains, Kp and Ki, are defined as gains inside the block.<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    The Effector Limit value is determined by using a simple PI controller,
+    in which the difference between the Limit Value and the Sensed Input(<i>E</i>) is
+    multiplied by the Integral Gain (<i>K<sub>i</sub></i>), integrated, and then added
+    to the Proportional Gain (<i>K<sub>p</sub></i>) multiplied by the difference that was initially determined.
+    The resulting sum is then added to the initial condition to determine the Effector Limit <i>U</i>.
+$$ U = K_p*E+K_i*\int\! E$$
+<p>
+    Windup occurs when the integrator in a PI controller accumlates an error
+    and continues to increase this error through cycles of integration.
+    To protect against windup, this block checks if the sensed value is active or passive during the cycle.
+    If active, the signal has the integrator gain applied to it before being used in the main loop.
+    If passive, the effects of the integrator are canceled out so as to avoid windup.
+</p>
+
 <br>
-<font size="5" color="Blue">LC Inputs:</font>
-<table border="1"> <tr><td>LC Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the inputs of Limit Value, Sensed Input, and Effector Demand to the corresponding places on the block.
+        <li> Connect the outputs to the next blocks in your simulation.
+        <li> Double click the block and specify the Proportional Gain, Integral Gain, Initial Condition, Windup Protection Gain, and the Sample Time.
+    </ul></p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Limit Controller (PI) Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th >Description</th></tr>
     <tr><td>Limit Value</td><td> Limit value</td></tr>
     <tr><td>Input_sensed</td><td> Sensed input (to be limited via the effector) </td></tr>
     <tr><td>Eff_dmd</td><td> Effector actual demand</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">LC Outputs:</font>
-<table border="1"> <tr><td>LC Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Limit Controller (PI) Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>Eff_Limit</td><td> Effector Limit value</td></tr>
     <tr><td>Active</td><td> Limiter is: 1 - active, 0 - not active</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">LC  Mask Variables: </font>
-<table border="1"> <tr><td>LC Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Limit Controller (PI) Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>Kp_M</td><td>Proportional gain</td></tr>
     <tr><td>Ki_M</td><td>Integral gain</td></tr>
     <tr><td>PI_IC_M</td><td>Initial effector value</td></tr>
     <tr><td>WGain_M</td><td>Integrator windup gain</td></tr>
     <tr><td>Ts_M</td><td>Sampling time (sec)</td></tr>
 </table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

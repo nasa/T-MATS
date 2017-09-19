@@ -1,25 +1,115 @@
-<font size="6" color="Magenta">T-MATS: Gain Scheduler double 2-D Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Gain Scheduler Double 2-D Library Block
+</title>    
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Gain Scheduler Double 2-D Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block is a double two-dimensional gain scheduler that can be used
+    to determine the gain value using a table-lookup method.
+</p>
+
 <br>
-This block a double 2 dimensional gain scheduler.  Input are two critera and a common critera that are used for two 2-D lookups.  Output contains the result of the table lookups.  In general these two results will be multiplied together and can be entered into either the Ki or Kp input of the T-MATS setpoint controller block. Additionally the outputs could be separated and used as inputs to both Kp and Ki.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>    
+
+<p>
+    To compute the gain, this block utilizes two input criteria (such as Mach number and altitude)
+    and a common criteria (such as the speed) to complete two 2-D table-lookups.
+    The results of both table-lookups are contained in the output. 
+</p>
+<p>
+    In general, the two results will be multiplied together and can be entered into 
+    either the <i>Ki</i> or <i>Kp</i> input of the T-MATS Setpoint Controller block. 
+    Alternatively, the outputs could be separated and used as inputs to both <i>Kp</i> and <i>Ki</i>.
+
 <br>
-<br>
-<font size="5" color="Blue">GS Inputs:</font>
-<table border="1"> <tr><td>GS Input</td><td>Description</td></tr>
-    <tr><td>CriteraK1</td><td> Critera for gain K1 </td></tr>
-    <tr><td>CriteraK2</td><td> Critera for gain K2 </td></tr>
-    <tr><td>CriteraCommon</td><td> Critera common for K1 and K2 </td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the two independent criteria to the inputs "CriteriaK1" and "CriteriaK2"
+        <li> Connect the common criterion to the input "CriteriaCommon"
+        <li> Utilize the output gain by...
+        <ul>
+            <li>Multiplying the values contained in K and use in either Kp or Ki of the Setpoint Controller block
+            <li>Separating the values contained in K and connect them to Kp and Ki.
+        </ul>
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Gain Scheduler Double 2-D Inputs     
+</div>
+
+<table> 
+    <tr><th> Input </th><th >Description</th></tr>
+    <tr><td>CriteriaK1</td><td> Criteria for gain K1 </td></tr>
+    <tr><td>CriteriaK2</td><td> Criteria for gain K2 </td></tr>
+    <tr><td>CriteriaCommon</td><td> Criteria common for K1 and K2 </td></tr>
 </table>
-<br>
-<font size="5" color="Blue">GS Outputs:</font>
-<table border="1"> <tr><td>GS Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Gain Scheduler Double 2-D Outputs  
+</div>
+
+<table> 
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>K</td><td> Gain K from lookups, size 2 vector [K1 K2]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">GS  Mask Variables: </font>
-<table border="1"> <tr><td>GS Mask Variable</td><td>Description</td></tr>
-    <tr><td>CCVec_M</td><td>Common critera vector (1xn)</td></tr>
-    <tr><td>CK1Vec_M</td><td>Gain 1 critera vector(1xm)</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Gain Scheduler Double 2-D Mask Variables 
+</div>
+ 
+<table> 
+    <tr><td>CCVec_M</td><td>Common criteria vector (1xn)</td></tr>
+    <tr><td>CK1Vec_M</td><td>Gain 1 criteria vector(1xm)</td></tr>
     <tr><td>K1Array_M</td><td>Gain 1 array (mxn)</td></tr>
-    <tr><td>CK2Vec_M</td><td>Gain 2 critera vector(1xp)</td></tr>
+    <tr><td>CK2Vec_M</td><td>Gain 2 criteria vector(1xp)</td></tr>
     <tr><td>K2Array_M</td><td>Gain 2 array (pxn)</td></tr>
 </table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

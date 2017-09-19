@@ -1,39 +1,159 @@
 <script type="text/javascript"
-        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
-<font size="6" color="Magenta">T-MATS: 1st order sensor Library Block</font>
-<p>This block models a generic sensor with a first order lag.</p>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for 1st Order Sensor Library Block
+</title>    
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: 1st Order Sensor Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to model a generic sensor with first order lag. 
+</p>
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>    
+
+<p>
+     A standard form of the first order differential equation used is as follows:
+    
+    $$ \tau * \frac{dy}{dt} + y = k*x(t) $$
+    
+    in which <i>k</i> is the gain and \( \tau \) is the time constant for the system.
+    The laplace transform of the above equation is more commonly used and is as follows:
+    
+    $$ \frac{Y(s)}{X(s)} = \frac{k}{\tau*s+1}$$
+
+<p> 
+    This block operates using three different subsystems. The first is the Sensor Fault Injection
+    which allows the user to add gain faults or drift faults. If utilizing the faults,
+    it is important to note that they are generated before sensor dynamics are 
+    taken into account.
+</p>
+
+<p>
+    When calculating the result of the Sensor Fault Injection subsystem, the input signal
+    is multiplied by the gain fault and then added to the drift fault, according to the following equation:
+
+    $$
+    X_{fault} = X*C_{Gain} + C_{Drift}
+    $$
+
+    where <i> X<sub>fault</sub></i> is the output of the Sensor Fault Injection subsystem,
+    <i>X</i> is the original input signal, <i> C<sub>gain</sub></i> is the gain fault, and 
+    <i> C<sub>drift</sub></i> is the drift fault.
+</p>
+<p>
+    The second subsystem is the Noise Generator, which can be used to simulate sensor
+    white noise. With noise enabled:
+    
 $$
-\frac {Y(s)}{X(s)} = \frac {Gain}{\tau s+1}
+Y_{noise} = Y + C_{noise} * \textit{ Noise(Rand,T_s) }
 $$
-<p>Additionally, it may be used to simulate sensor white
-noise, a sensor gain fault, and sensor drift fault.</p>
-<p>With noise enabled:</p>
-$$
-Y_{noise} = Y + C_{noise} * Noise(Rand,T_s)
-$$
-<p>Noise is generated with the MATLAB Random Number block then is scaled
-    based on the current sensor value and sensor range(with higher noise at higher relative sensed values). 
-    This scaled value is then sent through a filter to remove sampling time effects and tuned
-to maintain a typical noise form. A gain is then applied to the final noise value to adjust magnitude.</p>
-<p>Utilizing faults</p>
-$$
-X_{fault} = X*C_{GainFault} + C_{Drift}
-$$
-<p> Gain and drift faults are generated before sensor dynamics are taken
-into account</p>
-<font size="5" color="Blue">1-O Sensor Inputs:</font>
-<table border="1"> <tr><td>1-O Sensor Input</td><td>Description</td></tr>
+
+<p>
+    Noise is generated using the MATLAB Random Number block and is then 
+    scaled based on the current sensor value and sensor range, with higher noise
+    occurring at higher relative sensed values. The scaled noise is then sent through a filter
+    to remove sampling time effects and then tuned to maintain a typical noise form.
+    A gain is then applied to the final noise value to adjust the magnitude.
+</p>
+<p>
+    The third subsystem is the 1st Order Lag, which is calculated by multiplying the output of the Sensor Fault Injection
+    by the gain, dividing it by the time constant, and then integrating the result with respect to time to solve the 
+    differential equation near the top of this page. Feedback is also
+    utilized, as the result of the integration is divided by the time constant
+    and then passed back to the start of this loop. 
+    <br>
+    During the second iteration (and those afterwards), the input value is again multiplied by the 
+    gain and divided by the time constant, but before being integrated, the previously determined result
+    is subtracted from the new value, and the result is integrated. This process repeats as many times as necessary.
+</p>
+<p>   
+    Before being output, the result from the Sensor Fault Injection and 1st Order Lag is added with 
+    the result of the Noise Generator to determine the total output signal. 
+</p>
+    
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input signal to the place marked "Actual" on the block.
+        <li> Connect the output signal to the next block in your simulation.
+        <li> Double click the block and input the initial condition, saturation values (sensor max/min),
+        the gain, and the time constant. 
+        <li> To add noise, gain faults, or drift faults:
+    <ul>
+        <li>Double click the block.
+        <li>Select the corresponding tab for noise or faults.
+        <li>Input the necessary values for noise or faults.
+    </ul>
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        1st Order Sensor Inputs     
+</div>
+
+<table> 
+    <tr><th> Input </th><th >Description</th></tr>
     <tr><td>Actual</td><td>Actual value to be sensed (X)</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">1-O Sensor Outputs:</font>
-<table border="1"> <tr><td>1-O Sensor Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        1st Order Sensor Outputs  
+</div>
+
+<table> 
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>Sens</td><td>Value of input with simulated input delay, noise, and/or fault (Y)</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">1-O Sensor Mask Variables: </font>
-<table border="1"> <tr><td>1-O Sensor Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        1st Order Sensor Mask Variables 
+</div>
+ 
+<table> 
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>IC_M</td><td>Sensor Initial condition</td></tr>
     <tr><td>Sen_Max_M</td><td>Max readable sensor value</td></tr>
     <tr><td>Sen_Min_M</td><td>Min readable sensor value</td></tr>
@@ -47,3 +167,7 @@ into account</p>
     <tr><td>F_Gain_M</td><td>Sensor fault gain</td></tr>
     <tr><td>F_Drift_M</td><td>Sensor drift fault adder</td></tr>
 </table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

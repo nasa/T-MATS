@@ -1,60 +1,255 @@
-<font size="6" color="Magenta">T-MATS: Nozzle Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Nozzle (Cantera) Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Nozzle (Cantera) Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block is used to simulate the performance of a nozzle using basic
+    thermodynamic equations, properties,
+    <a href="FunM_TMATSC.html">T-MATS Cantera functions</a>, and table
+    lookups.
+</p>
+
 <br>
-This block simulates the performance of a nozzle using
-thermodynamic equations, properties, table lookups, and Cantera functions.
-To utilize this block a Cantera object must exist in the workspace as a
-global variable named fs, which may be created with the Cantera importPhase command.
-The fs variable must include all Species defined in the file canteraload.m.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To calculate the output parameter, this block begins by importing the
+    input parameters and setting the intial throat conditions based on the
+    Mach number, using <a href="FunM_TMATSC.html">T-MATS Cantera functions</a> (set_Ps) and the input ambient
+    static pressure.
+</p>
+<p>
+    If the input pressure results in a Mach number greater than 1, the flow
+    is deemed choked and the throat Mach number is set to 1. If the pressure
+    results in a Mach number less than 1, the flow is not choked.
+</p>
+<h2>
+Operational Modes
+</h2>
+<p>
+    Depending on the iDesign option selected by the user, the block will calculate
+    the outputs in different ways. The iDes option can be accessed by double
+    clicking the block, navigating to the iDesign tab, and entering 0, 1, or
+    2 for the option of <i>iDesign_M</i>.
+    <ul>
+        <li>If 0 is input, iDes will be enabled and the throat area
+        will be calculated.
+        <li>If 1 is input, the throat area will be determined by variables in
+        the workspace (no values from the General tab or iDesign tab will
+        be used).
+        <li>If 2 is input, the throat area will be determined by the scalars
+        specified in the General tab; no values from the iDesign tab will be used.
+    </ul>
+    For more information on how to enable iDes and the different
+    options for how to use it, see the Mask Variables table at the bottom
+    of this page.
+</p>
+<p>
+    Whether or not the flow is choked, the output parameters are calculated
+    using the same equations. Which equations are used depends on the
+    setting of iDesign that was chosen, though the values used within these
+    equations would be based on if the flow was choked or not.
+</p>
+<h2>
+Area, Flow, and Error Output
+</h2>
+<p>
+    If iDesign is set to 0, the throat area is determined by the following
+    equation, in which the constant 144 is a unit conversion and <i>V<sub>flow</sub></i>
+    is the velocity of the flow through the throat.
+
+    $$ Ath = \frac{W_{th}*144}{\rho_s * V_{flow}}$$
+
+    To determine the error in this calculation, the actual flow is compared
+    to the design flow rate, using the following equation. It is important
+    to note that the error should be driven to zero using an iterative
+    solver.
+
+    $$ err = W_{th} - W_{Des} $$
+
+    If iDesign is set to 1, the throat area is determined by the variables
+    in the workspace. The weight flow through this area is determined by
+    the following equation:
+
+    $$W_{noz} = \frac{A_{th}*\rho_s*V_{flow}}{144}$$
+
+    The error for this calculation is determined by the following equation:
+
+    $$ err = W_{In} - W_{noz}$$
+</p>
+<p>
+    If iDesign is set to 2, the throat area is set to the value specified
+    by the user and the weight flow and error are determined by using the
+    same equations as when iDesign is set to 1.
+</p>
+<h2>
+Thrust
+</h2>
+<p>
+    The gross thrust is then determined by the following equation, in which
+    the constant 32.174 is the acceleration due to gravity and is used to
+    obtain the correct units.
+
+    $$F_g = \left(\frac{W_{th}}{32.174}*V_{flow} + (Ps_{th} - Ps_{Out})*A_{th}\right)*C_{fg}$$
+</p>
+
 <br>
-<br>
-<font size="5" color="Blue">Nozzle Inputs:</font>
-<table border="1"> <tr><td>Nozzle Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Ensure that a Cantera object exists in the workspace as a global
+        variable named 'fs' and contains all of the species defined in the
+        file 'canteraload.m'.
+        <br>
+        &nbsp;&nbsp;<em>Note:</em>This can be created with the Cantera 'importPhase'
+        command.
+        <li> Connect the input flow and ambient pressure
+        variables to the corresponding places on the block.
+        <li> Connect the outputs to the next blocks in your simulation.
+        <li> Double click the block and...
+        <ul>
+            <li> Navigate to the iDesign tab and select the value of iDesign_M.
+            Options include:
+            <ul>
+                <li> 0: iDes will be enabled and the throat area will be calculated.
+                The throat area from the General tab will not be used.
+                <li> 1: Throat area variables will be taken from the workspace.
+                No values from the General tab or iDesign tab will be used.
+                <li> 2: Throat area will be determined by the value
+                specified in the General tab; no values from the iDesign tab
+                will be used.
+            </ul>
+            <li>Input the corresponding values for the parameters you have
+            chosen to use.
+        </ul>
+    </ul>
+</p>
+
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Nozzle (Cantera) Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>Flow In</td><td>Flow Data Input, 25x1 vector consisting of:
-            <br>-1- W      - gas path flow [pps]
-            <br>-2- s     - entropy [BTU/(lbm*degR)]
-            <br>-3- Tt     - total temperature [degR]
-            <br>-4- Pt     - total pressure [psia]
-            <br>-5- ht     - total enthlapy [BTU/lbm]
-            <br>-6- rhot  - total density [lbm/ft3]
-            <br>-7- gamt  - total specific heat ratio
-            <br>-8- Ts    - static temperature [degR]
-            <br>-9- Ps    - static pressure [psia]
-            <br>-10- hs    - static enthalpy [BTU/lbm]
-            <br>-11- rhos  - static density [lbm/ft3]
-            <br>-12- gams  - static specific heat ratio
-            <br>-13- Vflow - flow velocity [ft/sec]
-            <br>-14- MN  - Mach number
-            <br>-15- A     - flow area [in2]
-            <br>-16to21- species array values, defined in canteraload.m
-            <br>-22to25- future use
+            <br>-1- &nbsp;&nbsp;  W    &nbsp;&nbsp;    - Gas path flow [pps]
+            <br>-2-  &nbsp;&nbsp; s    &nbsp;&nbsp;   - Entropy [BTU/(lbm*degR)]
+            <br>-3-  &nbsp;&nbsp; Tt   &nbsp;&nbsp;    - Total temperature [degR]
+            <br>-4-  &nbsp;&nbsp; Pt   &nbsp;&nbsp;    - Total pressure [psia]
+            <br>-5- &nbsp;&nbsp;  ht   &nbsp;&nbsp;    - Total enthlapy [BTU/lbm]
+            <br>-6- &nbsp;&nbsp;  rhot &nbsp;&nbsp;   - Total density [lbm/ft3]
+            <br>-7-  &nbsp;&nbsp; gamt &nbsp;&nbsp;   - Total specific heat ratio
+            <br>-8-  &nbsp;&nbsp; Ts   &nbsp;&nbsp;   - Static temperature [degR]
+            <br>-9-  &nbsp;&nbsp; Ps    &nbsp;&nbsp;  - Static pressure [psia]
+            <br>-10- &nbsp;&nbsp;  hs   &nbsp;&nbsp;   - Static enthalpy [BTU/lbm]
+            <br>-11-  &nbsp;&nbsp; rhos  &nbsp;&nbsp;  - Static density [lbm/ft3]
+            <br>-12-  &nbsp;&nbsp; gams  &nbsp;&nbsp;  - Static specific heat ratio
+            <br>-13-  &nbsp;&nbsp; Vflow  &nbsp;&nbsp; - Flow velocity [ft/sec]
+            <br>-14- &nbsp;&nbsp;  MN  &nbsp;&nbsp;  - Mach number
+            <br>-15-  &nbsp;&nbsp; A    &nbsp;&nbsp;   - Flow area [in2]
+            <br>-16to21- &nbsp;&nbsp;  Species array values, defined in canteraload.m
+            <br>-22to25- &nbsp;&nbsp; Future use
     </td></tr>
-    <tr><td>Pamb</td><td>Ambient static Pressure [psia]</td></tr>
+    <tr><td>Pamb</td><td>Ambient static pressure [psia]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Nozzle Outputs:</font>
-<table border="1"> <tr><td>Nozzle Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Nozzle (Cantera) Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>Flow Error</td><td>Flow Error [frac], in a typical system this will
-    <br>be driven to zero by an iterative solver</td></tr>
+                                be driven to zero by an iterative solver</td></tr>
     <tr><td>Fg</td><td>Gross thrust [lbf]</td></tr>
-    <tr><td>N_Data</td><td>Nozzle internal calculation Data</td></tr>
+    <tr><td>N_Data</td><td>Nozzle internal calculation data</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Nozzle Mask Variables: </font>
-<table border="1"> <tr><td>Nozzle Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Nozzle (Cantera) Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>Ath_in_M</td><td>Nozzle Throat Area [in^2]</td></tr>
-    <tr><td>Cfg_M</td><td>Nozzle thrust Coefficient</td></tr>
+    <tr><td>Cfg_M</td><td>Nozzle Thrust Coefficient</td></tr>
     <tr><td>iDes_M</td><td> Design fork (0, 1, 2)
-            <br>0 - Calculate nozzle throat area based on design variables
+            <br>
+            <br>0 - Calculate nozzle throat area based on design variables.
             <br>    When iDesign is set to 0, Ath_in_M from the General tab will not be used.
-            <br>    Throat area calculated will be saved to the workspace.
+            	    Throat area calculated will be saved to the workspace.
+            <br>
             <br>1 - Nozzle throat area variables are taken from the workspace.
             <br>    When iDesign is set to 1, Ath_in_M from the General tab and the Design values
-            <br>    from the iDesign tab will not be used.
+            	    from the iDesign tab will not be used.
+            <br>
             <br>2 - Nozzle throat area from the General tab will be used in the nozzle module.
             <br>    When iDesign is set to 2, Ath_in_M from the General tab will be used; Design values
-    <br>            from the iDesign tab will not be used. </td></tr>
+                    from the iDesign tab will not be used. </td></tr>
     <tr><td>Wdes_M</td><td>Design flow[pps]</td></tr>
 </table>
-<br>
 
 
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+    When using this block, an error will occur if a Cantera object does not exist
+    in the workspace as a global variable named 'fs'. An error will also occur
+    if this variable does not contain all of the species defined in 'canteraload.m'.
+</p>
+
+
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

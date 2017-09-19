@@ -1,67 +1,286 @@
-<font size="6" color="Magenta">T-MATS: HeatExchanger_Eff Library Block</font>
-<br>
-This block simulates the performance of a heat exchanger using 
-effectiveness-NTU method based on heat transfer efffectiveness, E.
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Heat Exchanger Effectiveness Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Heat Exchanger Effectiveness Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the performance of a heat exchanger
+    based on the heat transfer effectiveness (<i>E</i>), using the effectiveness-NTU
+    method.
+
 
 <br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the output characteristics, this block utilizes several equations.
+</p>
+<p>
+    To determine the output total pressure, the following equation was used
+    for both gas path flows:
+
+    $$Pt_{Out} = Pt_{In} * (1-\Delta P)$$
+
+    in which &Delta;<i>P</i> is the fraction of pressure lost, as specified
+    by the user by double clicking the block and editing the value of <i>dP1_M</i>
+    or <i>dP2_M</i>, depending on which flow you are updating.
+</p>
+<p>
+    The enthalpy for each flow was determined using a table lookup
+    method and the corresponding values for total temperature and fuel
+    to air ratio, such that the enthalpy for the first flow was based
+    on the total temperature and fuel to air ratio of the first flow. It is
+    important to note that these enthalpy values are <em>not</em> the output
+    enthalpy values; these values will be used later to determine the output
+    values.
+
+    <br><br>
+
+    Additional values for enthalpy were determined for each flow
+    using the corresponding fuel to air ratio for that flow, but the total
+    temperature of the other flow. For example, <i>h1<sub>2</sub></i> is
+    the enthalpy of the first flow, using its own fuel to air ratio
+    but the total temperature of the second flow in the table-lookup.
+</p>
+<p>
+    The maximum change in heat (&Delta;<i>Q</i>) was determined using parameters
+    from both flows, according to the following equation:
+
+    $$\Delta Q1 = W1 * (h1 - h1_2)$$
+
+    As previously described, <i>h1</i> is the enthalpy of the first flow determined
+    via a table-lookup using <i>Tt1</i> and <i>FAR1</i>, whereas <i>h1<sub>2</sub></i>
+    is the enthalpy of the first flow determined via a table-lookup using <i>Tt2</i>
+    and <i>FAR1</i>. The maximum change in heat for the second flow (&Delta;<i>Q2</i>)
+    was determined using the same basic equation, but replaced <i>W1, h1,</i> and
+    <i>h1<sub>2</sub></i> with <i>W2, h2, </i> and <i>h2<sub>1</sub></i>, respectively.
+    The maximum possible heat transfer rate is then determined by comparing the absolute
+    values of &Delta;<i>Q1</i> and &Delta;<i>Q2</i> and selecting the smaller.
+</p>
 <br>
-<font size="5" color="Blue">Heat Exchanger Inputs:</font>
-<table border="1"> <tr><td>Heat Exchanger Input</td><td>Description</td></tr>
-    <tr><td>GasPthCharIn1</td><td>Gas Path Characteristics Input 1, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+<p>
+    Before explaining how the other parameters are calculated, it is important
+    to first explain what design options are available to the user, as these
+    design choices impact how various parameters are calculated.
+</p>
+<p>
+    When iDesign(iDes) is enabled(by double clicking the block,
+    navigating to the iDesign tab, and entering 0 for the value of <i>iDesign_M</i>),
+    the design point heat transfer rate specified by the user in the parameter <i>dQDes_M</i>
+    will be used instead of the actual heat transfer rate.
+</p>
+<p>
+    If the user chooses to set the input for <i>iDesign_M</i> to 1, the heat exchanger
+    effectiveness will be overwritten with values from a user-specified file (<i>FVar_M</i>)
+    and the design values in the iDesign tab will not be used.
+</p>
+<p>
+    If the user chooses to set the input for <i>iDesign_M</i> to 2, the heat exchanger effectiveness
+    specified in the General tab will be used in the simulation and the iDesign
+    values will not be used.
+</p>
+<p>
+    With this explanation of the effects of iDesign in mind, the other flow
+    parameters are calculated based on the maximum heat change (or change in energy,
+    depending on the iDesign options you are using).
+</p>
+<br>
+<p>
+    When using the heat exchanger effectiveness, the maximum change in heat
+    will be multiplied by the input heat exchanger effectiveness (<i>E_M</i>)
+    before being used in the remainder of the simulation. If using the change
+    in energy, this input value will be used the remainder of the simulation.
+</p>
+<p>
+    The heat exchanger effectiveness(<i>E_M</i>) is determined by the following
+    equations:
+
+    $$ \textit{E_M} = \frac{\Delta Q}{\Delta Q_{max}}$$
+
+    The output enthalpy for the first flow is then calculated using the
+    following equations:
+
+    $$  h1_{Out} = \frac{W1*h1-\textit{E_M}*\Delta Q_{max}}{W1}$$
+
+    Similarly, the output enthalpy for the second flow is determined by the
+    following equations:
+
+    $$  h2_{Out} = \frac{W2*h2+\textit{E_M}*\Delta Q_{max}}{W2}$$
+
+</p>
+<p>
+    The results of these equations for total enthalpy outputs are then used
+    in a table-lookup with the corresponding fuel to air ratio to determine
+    the total temperature outputs for each flow.
+</p>
+<p>
+    The output change in heat (<i>dQ_out</i>) is equal to the previously determined heat transfer rate
+     (&Delta;<i>Q</i>).
+</p>
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the two gas path flow inputs to the corresponding places
+        on the block.
+        <li> Connect the outputs to the next block(s) in your simulation.
+        <li> Double click the block and...
+        <ul>
+            <li>Navigate to the iDesign tab.
+            <li>Select which value of iDesign_M you will use.
+            <br> Options include:
+                <ul>
+                    <li> 0: iDes will be enabled and the value of E_M in the
+                    General tab will not be used. Instead, the user-specified
+                    change in energy will be used in place of the maximum
+                    change in heat.
+                    <li> 1: The heat exchanger effectiveness will be determined
+                    by values from a specified file (<i>FVar_M</i>) that is uploaded by
+                    the user and specified in the iDesign tab.
+                    <li> 2: The heat exchanger effectiveness will be determined
+                    by the value of E_M in the General tab. No values from the
+                    iDesign tab will be used.
+                </ul>
+            <li>Input the corresponding values for the parameters you have chosen
+            to use.
+        </ul>
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Heat Exchanger Effectiveness Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
+   <tr><td>GasPthCharIn1</td><td>Gas Path Characteristics Input 1, 5x1 bus/vector consisting of:
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>GasPthCharIn2</td><td>Gas Path Characteristics Input 2, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Heat Exchanger Outputs:</font>
-<table border="1"><tr><td>Heat Exchanger Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Heat Exchanger Effectiveness Outputs
+</div>
+
+<table>
     <tr><td>GasPthCharOut1</td><td>Gas Path Characteristics Output 1, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>GasPthCharOut2</td><td>Gas Path Characteristics Output 2, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>E_data</td><td>Heat Exchanger Data, 2x1 vector consisting of:
             <br>- dQ - Delta Energy [BTU/sec]
-            <br>- E - heat exchanger effectiveness </td></tr>
+            <br>- E - Heat exchanger effectiveness </td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Heat Exchanger Mask Variables: </font>
-<table border="1"> <tr><td>Heat Exchanger Mask Variablet</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Heat Exchanger Effectiveness Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>dP1_M</td><td>Delta Pressure of input 1 (frac loss)</td></tr>
     <tr><td>dP2_M</td><td>Delta Pressure of input 2 (frac loss)</td></tr>
     <tr><td>E_M</td><td>Heat Exchanger Effectiveness</td></tr>
     <tr><td>iDesign_M</td><td> Design fork (0, 1, 2)
-            <br>0 - iDes Enabled, Calculate heat exchanger input effectiveness based on design variable
+            <br>
+            <br>0 - iDes Enabled. Calculate heat exchanger input effectiveness based on design variable.
             <br>    When iDesign is set to 0, E_M from the General tab will not be used.
-            <br>    Delta energy calculated will be saved in the specified file (FVar_M).
-            <br>1 - Heat Exchanger effectiveness will be overwritten (mask Initialization) with 
-            <br>    values from a specified file (FVar_M).
-            <br>    When iDesign is set to 1, E_M from the General tab and the Design values 
-            <br>    from the iDesign tab will not be used. 
+            <br>    Delta energy calculated will be saved in the specified file (<i>FVar_M</i>).
+            <br>
+            <br>1 - Heat exchanger effectiveness will be overwritten (Mask Initialization) with
+                    values from a specified file (<i>FVar_M</i>).
+            <br>    When iDesign is set to 1, E_M from the General tab and the Design values
+                    from the iDesign tab will not be used.
+            <br>
             <br>2 - Effectiveness from the General tab will be used in the module.
-            <br>    When iDesign is set to 2, E_M from the General tab will be used; Design values 
-    <br>    and file definitions from the iDesign tab will not be used. </td></tr>
+            <br>    When iDesign is set to 2, E_M from the General tab will be used. Design values
+                    and file definitions from the iDesign tab will not be used. </td></tr>
     <tr><td>dQDes_M</td><td>Design delta energy [BTU/sec]</td></tr>
     <tr><td>FVar_M</td><td>File name for iDes Variables</td></tr>
     <tr><td>SVar_M</td><td>iDes Variable Surname</td></tr>
     <tr><td>ENm_M</td><td>iDes effectiveness variable name</td></tr>
 </table>
-<br>
 
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>Entropy input must be a scalar</td><td>Error is displayed when the entropy
+    input has more than one element. </td></tr>
+    <tr><td>Temperature input must be a scalar</td><td>Error is displayed when the temperature
+    input has more than one element. </td></tr>
+    <tr><td>FAR input must be a scalar.</td><td>Error is displayed when the FAR input
+    has more than one element.</td></tr>
+</table>
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

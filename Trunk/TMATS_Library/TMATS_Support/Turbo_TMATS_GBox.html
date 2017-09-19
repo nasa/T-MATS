@@ -1,25 +1,125 @@
-<font size="6" color="Magenta">T-MATS: Gear Box Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Gearbox Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Gearbox Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the performance of a gearbox.
+
 <br>
-This block simulates the performance of a gear box using basic gear properties. 
-<br>Gear Ratio = NmechA/NmechB = TrqB/TrqA
-<br>
-<br>
-<font size="5" color="Blue">Gear box Inputs:</font>
-<table border="1"> <tr><td>Gear box Input</td><td>Description</td></tr>
-    <tr><td>TorqA</td><td>Torque at gearbox side A [lbf*ft]</td></tr>
-    <tr><td>NmechB</td><td>Mechanical shaft speed at gearbox side B [rpm]</td></tr>
-</table>
-<br>
-<font size="5" color="Blue">Gear box Outputs:</font>
-<table border="1"> <tr><td>Gear box Output</td><td>Description</td></tr>
-    <tr><td>NmechA</td><td>Mechanical shaft speed at gearbox side A [rpm]</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the shaft speed and torque, this block utilizes basic gear
+    properties, such as:
+
+    $$\textit{R_M} = \frac{NmechA}{NmechB} =\frac{TrqB}{TrqA} $$
+
+    in which <i>R_M</i> is the gear ratio and A and B denote sides of the gear box. The above equation is re-written
+    to solve for the outputs, as seen below:
+
+    $$ NmechB = \frac{NmechA}{R_M}$$
+
+    and
+
+    $$ TorqA = \frac{TorqB}{\textit{Eff_M*R_M}}$$
+
+    in which <i>Eff_M</i> is the efficiency of the gearbox.
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input and output torques and shaft speeds to the
+        corresponding places on the block.
+        <li> Double click on the block and specify the gear ratio and the gear efficiency.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Gearbox Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>TorqB</td><td>Torque at gearbox side B [lbf*ft]</td></tr>
+    <tr><td>NmechA</td><td>Mechanical shaft speed at gearbox side A [rpm]</td></tr>
+
 </table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Gearbox Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>NmechB</td><td>Mechanical shaft speed at gearbox side B [rpm]</td></tr>
+    <tr><td>TorqA</td><td>Torque at gearbox side A [lbf*ft]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Gear box Mask Variables: </font>
-<table border="1"> <tr><td>Gear box Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Gearbox Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>R_M</td><td>Gear Ratio [frac]</td></tr>
     <tr><td>Eff_M</td><td>Gear box efficiency from A to B [frac]</td></tr>
 </table>
 
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+    When using this block, an error will occur if either <i>Eff_M</i>
+    or <i>R_M</i> is set to zero.
+</p>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

@@ -1,102 +1,352 @@
-<font size="6" color="Magenta">T-MATS: Compressor, Cantera Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Compressor (Cantera) Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Compressor (Cantera) Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block is used to simulate the performance of a compressor using
+    basic thermodynamic equations, properties, <a href="FunM_TMATSC.html">T-MATS Cantera functions</a>, and table
+    lookups.
+</p>
+
 <br>
-This block simulates the performance of a compressor using basic
-thermodynamic equations, properties, Cantera functions, and table lookups.
-To utilize this block a Cantera object must exist in the workspace as a
-global variable named fs, which may be created with the Cantera importPhase command.
-The fs variable must include all Species defined in the file canteraload.m.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+General compressor performance is dictated by a compressor map that relates
+    corrected shaft speed and an arbitrarily defined monotonically increasing Rline
+    to corrected mass flow, pressure ratio, and efficiency. Values in this map may be scaled
+    (for example 100% shaft speed might correlate to 20,000 rpm), so in this discussion all values
+    taken from the map will be refered to as Map parameters.
+</p>
+<h2>
+Parameter Correction
+</h2>
+<p>
+    To compute the output parameters, this block utilizes the equations below.
+    This block starts by importing all of the input parameter data, as well
+    as initializing standard day conditions. Standard day temperature (<i>C_TSTD</i>)
+    is set to 518.67 R and standard day pressure (<i>C_PSTD</i>) is set to 14.696 psi.
+</p>
+<p>
+    To compute the corrected speed, the following equation is used:
+
+    $$ Nc_{In} = \frac{Nmech_{In}}{\sqrt{\frac{T_t}{\textit{C_TSTD}}}}$$
+
+    To compute the corrected flow, the following equation is used:
+
+    $$Wc_{In} = \frac{W_{In}*\sqrt{\frac{T_t}{\textit{C_TSTD}}}}{\frac{P_t}{\textit{C_PSTD}}}$$
+<h2>
+Operational Modes
+</h2>
+    Depending on the iDesign option selected by the user, the block will calculate
+    the outputs in different ways. The iDes option can be accessed by double
+    clicking the block, navigating to the iDesign tab, and entering 0, 1, or
+    2 for the option of <i>iDesign_M</i>.
+    <ul>
+        <li>If 0 is input, iDes will be enabled and the compressor map scalars
+        will be calculated.
+        <li>If 1 is input, the scalars will be determined by variables in the
+        workspace. (No values from the General tab or iDesign tab will be
+        used).
+        <li>If 2 is input, the scalars will be determined by the scalars specified
+        in the General tab; no values from the iDesign tab will be used.
+    </ul>
+    For more information on how to enable iDes and the different
+    options for how to use it, see the Mask Variables table at the bottom of this page.
+</p>
+<h2>
+Parameter Scaling
+</h2>
+<p>
+    If option iDes is set to 0, the scalars are calculated according to the
+    equations below. Otherwise, the scalars are determined according to the inputs,
+    as previously described.
+
+    $$ \textit{s_C_Nc} = \frac{Nc_{Des}}{Nc_{In}}$$
+
+    $$ \textit{s_eff} = \frac{eff_{Des}}{eff_{Map}}$$
+
+    $$ \textit{s_PR} = \frac{PR_{Des}-1}{PR_{Map}-1}$$
+
+    $$ \textit{s_Wc} = \frac{Wc_{In}}{Wc_{Map}}$$
+
+    In the previous equations, <i>Nc</i> is the corrected shaft speed, <i>eff</i>
+    is the efficiency, <i>PR</i> is the pressure ratio, and <i>Wc</i> is the
+    corrected flow. The corresponding maps are determined from the map file
+    by referencing the Rline specified and the <i>Nc</i> map determined by
+    the following equation:
+
+    $$ Nc_{Map} = Nc_{In} * \textit{s_C_Nc}$$
+
+    The actual efficiency, flow, and pressure ratio are determined by the
+    following equations, respectively.
+
+    $$eff = \textit{eff}*eff_{Map}$$
+    $$Wc = \textit{s_Wc}*Wc_{Map}$$
+    $$PR = \textit{s_PR}*(PR_{Map}-1)+1$$
+<h2>
+Block Error
+</h2>
+    The ouput normalized error of these calcualtions is determined according to the design
+    option selected. If iDes is set to 0, the error is determined by comparing
+    the <i>Rline</i> value to the <i>Rline</i> design point. If iDes is set to 1 or 2, the
+    output normalized error is determined by the following equation:
+
+    $$err = \frac{Wc - Wc_{In}}{Wc}$$
+
+    No matter what setting of iDes is used, the goal is to drive the error
+    to zero using an iterative solver.
+</p>
+<h2>
+Parameter Generation
+</h2>
+<p>
+    The exit pressure is then calculated using the following equation:
+
+    $$Pt_{Out} = Pt_{In}*PR$$
+
+    Using the calculated value of the exit pressure, the ideal exit conditions
+    are determined using a <a href="FunM_TMATSC.html">T-MATS Cantera function</a> (set_SP) with the assumption of an isentropic process.
+    The actual enthalpy is calculated using the following equation:
+
+    $$ht_{Out} = ht_{In} + \frac{ht_{Ideal} - ht_{In}}{eff}$$
+
+    Using the actual enthalpy and exit pressure, the ideal flow parameters
+    are updated to the true values using a <a href="FunM_TMATSC.html">T-MATS Cantera function</a> (set_hP).
+</p>
+<h2>
+Compressor Bleeds
+</h2>
+<p>
+    If the user chooses to implement bleeds, the conditions for the first bleed
+    flow are determined by the following equations:
+
+    $$W_{b1} = Wfrac1 * W_{In}$$
+    $$ht_{b1} = ht_{In} + hfrac1*(ht_{Out} - ht_{In})$$
+    $$Pt_{b1} = Pt_{In} + Pfrac1 * (Pt_{Out} - Pt_{In})$$
+
+    In the above equations, the fractional values <i>Wfrac1 , hfrac1 , </i> and
+    <i>Pfrac1</i> are specified by the user. If a secondary bleed flow is
+    utilized as well, the same equations are used, but the fractional values
+    used correspond to the values specified by the user for the second bleed.
+</p>
+<p>
+    The exit flow is then calculated by subtracting the bleed flows from the
+    input flow, as seen in the equation below.
+
+    $$W_{Out} = W_{In} - W_{b1} - W_{b2}$$
+
+<h2>
+Power
+</h2>
+    The power is determined by the following equation, in which the constant
+    1.4148 is a conversion factor used to obtain the correct units.
+
+    $$ pwr = W_{In}*(ht_{In}-ht_{Out})*1.4148 - W_{b1}*(ht_{b1}-ht_{Out})*1.4148
+    - W_{b2}*(ht_{b2}-ht_{Out})*1.4148$$
+</p>
 <br>
-<br>
-<font size="5" color="Blue">Compressor Inputs:</font>
-<table border="1"> <tr><td>Compressor Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Ensure that a Cantera object exists in the workspace as a global
+        variable named 'fs' and contains all of the species defined in the
+        file 'canteraload.m'.
+        <br>
+        &nbsp;&nbsp;<em>Note:</em>This can be created with the Cantera 'importPhase'
+        command.
+        <li> Connect the input flow, speed, and Rline variables to the
+        corresponding places on the block.
+        <li> Connect the outputs to the next blocks in your simulation.
+        <li> Double click the block and...
+        <ul>
+            <li> Navigate to the iDesign tab and select the value of iDesign_M.
+            Options include:
+            <ul>
+                <li> 0: iDes will be enabled and the compressor map
+                scalars will calculated. Scalars specified in the
+                General tab will not be used.
+                <li> 1: Compressor map scalars will be determined
+                by variables in the workspace.
+                <li> 2: Compressor map scalars will be determined
+                by the scalars specified in the General tab; no values
+                from the iDesign tab will be used.
+            </ul>
+            <li>Input the corresponding values for the parameters you have chosen
+            to use.
+        </ul>
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Compressor (Cantera) Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>Flow In</td><td>Flow Data Input, 25x1 vector consisting of:
-            <br>-1- W      - gas path flow [pps]
-            <br>-2- s     - entropy [BTU/(lbm*degR)]
-            <br>-3- Tt     - total temperature [degR]
-            <br>-4- Pt     - total pressure [psia]
-            <br>-5- ht     - total enthlapy [BTU/lbm]
-            <br>-6- rhot  - total density [lbm/ft3]
-            <br>-7- gamt  - total specific heat ratio
-            <br>-8- Ts    - static temperature [degR]
-            <br>-9- Ps    - static pressure [psia]
-            <br>-10- hs    - static enthalpy [BTU/lbm]
-            <br>-11- rhos  - static density [lbm/ft3]
-            <br>-12- gams  - static specific heat ratio
-            <br>-13- Vflow - flow velocity [ft/sec]
-            <br>-14- MN  - Mach number
-            <br>-15- A     - flow area [in2]
-            <br>-16to21- species array values, defined in canteraload.m
-            <br>-22to25- future use
+            <br>-1- &nbsp;&nbsp; W  &nbsp;&nbsp;    - Gas path flow [pps]
+            <br>-2- &nbsp;&nbsp; s   &nbsp;&nbsp;  - Entropy [BTU/(lbm*degR)]
+            <br>-3- &nbsp;&nbsp; Tt  &nbsp;&nbsp;   - Total temperature [degR]
+            <br>-4- &nbsp;&nbsp; Pt  &nbsp;&nbsp;   - Total pressure [psia]
+            <br>-5- &nbsp;&nbsp; ht  &nbsp;&nbsp;   - Total enthlapy [BTU/lbm]
+            <br>-6- &nbsp;&nbsp; rhot &nbsp;&nbsp; - Total density [lbm/ft3]
+            <br>-7- &nbsp;&nbsp; gamt &nbsp;&nbsp; - Total specific heat ratio
+            <br>-8- &nbsp;&nbsp; Ts  &nbsp;&nbsp;  - Static temperature [degR]
+            <br>-9- &nbsp;&nbsp; Ps  &nbsp;&nbsp;  - Static pressure [psia]
+            <br>-10- &nbsp;&nbsp; hs  &nbsp;&nbsp;  - Static enthalpy [BTU/lbm]
+            <br>-11- &nbsp;&nbsp; rhos &nbsp;&nbsp; - Static density [lbm/ft3]
+            <br>-12- &nbsp;&nbsp; gams &nbsp;&nbsp;  - Static specific heat ratio
+            <br>-13- &nbsp;&nbsp; Vflow &nbsp;&nbsp; - Flow velocity [ft/sec]
+            <br>-14- &nbsp;&nbsp; MN &nbsp;&nbsp;  - Mach number
+            <br>-15- &nbsp;&nbsp; A  &nbsp;&nbsp;   - Flow area [in2]
+            <br>-16to21- &nbsp;&nbsp; Species array values, defined in canteraload.m
+            <br>-22to25- &nbsp;&nbsp; Future use
         </td></tr>
-    <tr><td>Speed</td><td>shaft speed [rpm]</td></tr>
+    <tr><td>Speed</td><td>Shaft speed [rpm]</td></tr>
     <tr><td>Rline</td><td>R-line, position on compressor map
             <br>Determines pressure ratio, efficiency, and gas path flow.
-            <br>The value for this variable will need be solved for by driving
-    <br>flow error across the engine to zero.</td></tr>
+            	The value for this variable will need be solved for by driving
+                flow error across the engine to zero.</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Compressor Outputs:</font>
-<table border="1"><tr><td>Compressor Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Compressor (Cantera) Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>Flow Out</td><td>Flow Data Output, 25x1 vector consisting of:
-            <br>-1- W      - gas path flow [pps]
-            <br>-2- s     - entropy [BTU/(lbm*degR)]
-            <br>-3- Tt     - total temperature [degR]
-            <br>-4- Pt     - total pressure [psia]
-            <br>-5- ht     - total enthlapy [BTU/lbm]
-            <br>-6- rhot  - total density [lbm/ft3]
-            <br>-7- gamt  - total specific heat ratio
-            <br>-8- Ts    - static temperature [degR]
-            <br>-9- Ps    - static pressure [psia]
-            <br>-10- hs    - static enthalpy [BTU/lbm]
-            <br>-11- rhos  - static density [lbm/ft3]
-            <br>-12- gams  - static specific heat ratio
-            <br>-13- Vflow - flow velocity [ft/sec]
-            <br>-14- MN  - Mach number
-            <br>-15- A     - flow area [in2]
-            <br>-16to21- species array values, defined in canteraload.m
-            <br>-22to25- future use
+            <br>-1- &nbsp;&nbsp; W  &nbsp;&nbsp;    - Gas path flow [pps]
+            <br>-2- &nbsp;&nbsp; s  &nbsp;&nbsp;   - Entropy [BTU/(lbm*degR)]
+            <br>-3- &nbsp;&nbsp; Tt  &nbsp;&nbsp;   - Total temperature [degR]
+            <br>-4- &nbsp;&nbsp; Pt  &nbsp;&nbsp;   - Total pressure [psia]
+            <br>-5- &nbsp;&nbsp; ht  &nbsp;&nbsp;   - Total enthlapy [BTU/lbm]
+            <br>-6- &nbsp;&nbsp; rhot &nbsp;&nbsp;  - Total density [lbm/ft3]
+            <br>-7- &nbsp;&nbsp; gamt &nbsp;&nbsp; - Total specific heat ratio
+            <br>-8- &nbsp;&nbsp; Ts   &nbsp;&nbsp; - Static temperature [degR]
+            <br>-9- &nbsp;&nbsp; Ps   &nbsp;&nbsp; - Static pressure [psia]
+            <br>-10- &nbsp;&nbsp; hs  &nbsp;&nbsp;  - Static enthalpy [BTU/lbm]
+            <br>-11- &nbsp;&nbsp; rhos &nbsp;&nbsp; - Static density [lbm/ft3]
+            <br>-12- &nbsp;&nbsp; gams &nbsp;&nbsp; - Static specific heat ratio
+            <br>-13- &nbsp;&nbsp; Vflow &nbsp;&nbsp; - Flow velocity [ft/sec]
+            <br>-14- &nbsp;&nbsp; MN &nbsp;&nbsp; - Mach number
+            <br>-15- &nbsp;&nbsp; A  &nbsp;&nbsp;   - Flow area [in2]
+            <br>-16to21- &nbsp;&nbsp; Species array values, defined in canteraload.m
+            <br>-22to25- &nbsp;&nbsp; Future use
         </td></tr>
     <tr><td>Bleed 1</td><td>Fractional Bleed 1, 25x1 vector defined as Flow Out above.</td></tr>
     <tr><td>Bleed 2</td><td>Fractional Bleed 2, 25x1 vector defined as Flow Out above.</td></tr>
     <tr><td>Flow Error</td><td>Normalized Error [frac], in a typical system this will
-    <br>be driven to zero by an iterative solver </td></tr>
+                            be driven to zero by an iterative solver </td></tr>
     <tr><td>Power</td><td>Compressor power output [hp], negative value for a compressor.</td></tr>
     <tr><td>C_Data</td><td>Compressor internal calculation Data, 4x1 vector including:
             <br>- SMavail - Stall Margin Available [%]
             <br>- eff - Efficiency [frac]
-            <br>- Wc - corrected flow [pps]
-            <br>- PR - pressure ratio [frac]</td></tr>
+            <br>- Wc - Corrected flow [pps]
+            <br>- PR - Pressure ratio [frac]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Compressor Mask Variables: </font>
-<table border="1"> <tr><td>Compressor Mask Variablet</td><td>Description</td></tr>
-    <tr><td>MapFile_M</td><td>compressor map file name</td></tr>
-    <tr><td>s_C_Nc_in_M</td><td>corrected speed scalar constant</td></tr>
-    <tr><td>s_C_Wc_in_M</td><td>corrected flow scalar constant</td></tr>
-    <tr><td>s_C_PR_in_M</td><td>pressure ratio scalar constant</td></tr>
-    <tr><td>s_C_eff_in_M</td><td>cefficiency scalar constant</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Compressor (Cantera) Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>MapFile_M</td><td>Compressor map file name</td></tr>
+    <tr><td>s_C_Nc_in_M</td><td>Corrected speed scalar constant</td></tr>
+    <tr><td>s_C_Wc_in_M</td><td>Corrected flow scalar constant</td></tr>
+    <tr><td>s_C_PR_in_M</td><td>Pressure ratio scalar constant</td></tr>
+    <tr><td>s_C_eff_in_M</td><td>Efficiency scalar constant</td></tr>
     <tr><td>Wfrac1_M</td><td>Fractional Bleed 1 Demand[frac]</td></tr>
-    <tr><td>hfrac1_M</td><td>engine Bleed 1 Fractional enthalpy [frac]</td></tr>
-    <tr><td>Pfrac1_M</td><td>engine Bleed 1 Fractional Total Pressure [frac]</td></tr>
+    <tr><td>hfrac1_M</td><td>Engine Bleed 1 Fractional enthalpy [frac]</td></tr>
+    <tr><td>Pfrac1_M</td><td>Engine Bleed 1 Fractional Total Pressure [frac]</td></tr>
     <tr><td>Wfrac2_M</td><td>Fractional Bleed 2 Demand[frac]</td></tr>
-    <tr><td>hfrac2_M</td><td>engine Bleed 2 Fractional enthalpy [frac]</td></tr>
-    <tr><td>Pfrac2_M</td><td>engine Bleed 2 Fractional Total Pressure [frac]</td></tr>
+    <tr><td>hfrac2_M</td><td>Engine Bleed 2 Fractional enthalpy [frac]</td></tr>
+    <tr><td>Pfrac2_M</td><td>Engine Bleed 2 Fractional Total Pressure [frac]</td></tr>
     <tr><td>iDes_M</td><td> Design fork (0, 1, 2)
-            <br>0 - Calculate compressor map scalars based on design variables
-            <br>    When iDesign is set to 0, scalar constants from the General tab will not be used.
-            <br>    Scalars calculated will be saved to the workspace.
-            <br>1 - Scalar variables will be overwritten with scalar values from the workspace.
-            <br>    When iDesign is set to 1, scalar constants from the General tab and the Design values
-            <br>    from the iDesign tab will not be used.
-            <br>2 - Scalar variables from the general tab will be used as the map scalars.
-            <br>    When iDesign is set to 2, scalar constants from the General tab will be used; Design values
-    <br>            from the iDesign tab will not be used. </td></tr>
-    <tr><td>NcDes_M</td><td>map Design Corrected Shaft Speed [rpm], design point speed used in map</td></tr>
+            <br>
+            <br>0 - Calculate compressor map scalars based on design variables.
+            <br>    When iDesign is set to 0, scalar constants from the General
+                    tab will not be used. Scalars calculated will be saved
+                    to the workspace.
+            <br>
+            <br>1 - Scalar variables will be overwritten with scalar values
+                    from the workspace.
+            <br>    When iDesign is set to 1, scalar constants from the General
+                    tab and the Design values from the iDesign tab will not
+                    be used.
+            <br>
+            <br>2 - Scalar variables from the General tab will be used as the
+                    map scalars.
+            <br>    When iDesign is set to 2, scalar constants from the General
+                    tab will be used; Design values from the iDesign tab will
+                    not be used. </td></tr>
+    <tr><td>NcDes_M</td><td>Map Design Corrected Shaft Speed [rpm], design point speed used in map</td></tr>
     <tr><td>effDes_M</td><td>Design Efficiency [frac], actual design point compressor efficiency</td></tr>
     <tr><td>PRdes_M</td><td>Design Pressure Ratio [frac], actual design point compressor PR</td></tr>
-    <tr><td>RlineDes_M</td><td>map Design Rline, design point Rline used in map</td></tr>
+    <tr><td>RlineDes_M</td><td>Map Design Rline, design point Rline used in map</td></tr>
 </table>
-<br>
 
 
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+    When using this block, an error will occur if a Cantera object does not exist
+    in the workspace as a global variable named 'fs'. An error will also occur
+    if this variable does not contain all of the species defined in 'canteraload.m'.
+</p>
+
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

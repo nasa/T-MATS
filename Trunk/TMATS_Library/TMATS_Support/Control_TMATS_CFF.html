@@ -1,23 +1,126 @@
-<font size="6" color="Magenta">T-MATS: Corrected Fuel Flow Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Corrected Fuel Flow Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Corrected Fuel Flow Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p> This block can be used to calculate the corrected fuel flow.
+
 <br>
-This block calculates corrected fuel flow.
-Wfc = Wf /(delta*sqrt(theta)) 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the corrected fuel flow, this block utilizes the following equations:
+
+    $$ Wfc = \frac{Wf}{\delta * \sqrt{\theta}}$$
+
+    in which
+
+    $$\delta = \frac{Pt}{Pstd}$$
+
+    and
+
+    $$\theta = \frac{Tt}{Tstd}$$
+
 <br>
+    It is important to note that T-MATS assumes standard day temperature (<i>Tstd</i>) and
+    pressure (<i>Pstd</i>) to be 518.67 degR and 14.70 psia, respectively.
+
+</p>
+
 <br>
-<font size="5" color="Blue">Corrected Fuel Flow Inputs:</font>
-<table border="1"> <tr><td>Corrected Fuel Flow Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the fuel flow, total temperature, and total pressure to the corresponding input places on the block.
+        <li> Connect the output corrected fuel flow to the next block in your simulation.
+        <li> Adjust the standard day values by double clicking the block.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Corrected Fuel Flow Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th >Description</th></tr>
     <tr><td>Wf</td><td>Fuel Flow</td></tr>
     <tr><td>Tt</td><td>Total Temperature [degR]</td></tr>
     <tr><td>Pt</td><td>Total Pressure [psia]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Corrected Fuel Flow Outputs:</font>
-<table border="1"> <tr><td>Corrected Fuel Flow Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Corrected Fuel Flow Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>Wfc</td><td>Corrected Fuel Flow</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Corrected Fuel Flow  Mask Variables: </font>
-<table border="1"> <tr><td>Corrected Fuel Flow Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Corrected Fuel Flow Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>C_TSTD_M</td><td>Standard Day Temperature [degR]</td></tr>
     <tr><td>C_PSTD_M</td><td>Standard Day Pressure [psia]</td></tr>
 </table>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+    When using this block, an error will appear if <i>Pt</i> or <i>Tt</i> is set
+    to zero. To avoid this error, ensure that both the total pressure and total
+    temperature inputs are not equal to zero.
+</p>
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

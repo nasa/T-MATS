@@ -1,61 +1,163 @@
-<font size="6" color="Magenta">T-MATS: Inlet Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Inlet (Cantera) Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Inlet (Cantera) Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block is used to simulate the performance of an inlet using basic
+    fluid dynamic equations and properties and <a href="FunM_TMATSC.html">T-MATS Cantera functions</a>.
+</p>
+
 <br>
-This block simulates the performance of an inlet using basic fluid dynamic
-equations and properties, and Cantera functions.
-To utilize this block a Cantera object must exist in the workspace as a
-global variable named fs, which may be created with the Cantera importPhase command.
-The fs variable must include all Species defined in the file canteraload.m.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the output flow parameters, this block utilizes begins by determining
+    the output pressure from the input pressure and the user-specified recovery,
+    as seen in the equation below.
+
+    $$Pt_{Out} = Pt_{In}*Recovery$$
+
+    Other exit conditions are set according to the incoming enthalpy and exit
+    pressure, using <a href="FunM_TMATSC.html">T-MATS Cantera functions</a>.
+</p>
 <br>
-<br>
-<font size="5" color="Blue">Inlet Inputs:</font>
-<table border="1"> <tr><td>Inlet Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Ensure that a Cantera object exists in the workspace as a global
+        variable named 'fs' and contains all of the species defined in the
+        file 'canteraload.m'.
+        <br>
+        &nbsp;&nbsp;<em>Note:</em>This can be created with the Cantera 'importPhase'
+        command.
+        <li> Connect the flow input to the corresponding place on the block.
+        <li> Connect the outputs to the next blocks in your simulation.
+        <li> Double click the block and specify the inlet recovery as a fraction.
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Inlet (Cantera) Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>Flow In</td><td>Flow Data Input, 25x1 vector consisting of:
-            <br>-1- W      - gas path flow [pps]
-            <br>-2- s     - entropy [BTU/(lbm*degR)]
-            <br>-3- Tt     - total temperature [degR]
-            <br>-4- Pt     - total pressure [psia]
-            <br>-5- ht     - total enthlapy [BTU/lbm]
-            <br>-6- rhot  - total density [lbm/ft3]
-            <br>-7- gamt  - total specific heat ratio
-            <br>-8- Ts    - static temperature [degR]
-            <br>-9- Ps    - static pressure [psia]
-            <br>-10- hs    - static enthalpy [BTU/lbm]
-            <br>-11- rhos  - static density [lbm/ft3]
-            <br>-12- gams  - static specific heat ratio
-            <br>-13- Vflow - flow velocity [ft/sec]
-            <br>-14- MN  - Mach number
-            <br>-15- A     - flow area [in2]
-            <br>-16to21- species array values, defined in canteraload.m
-            <br>-22to25- future use
+            <br>-1- &nbsp;&nbsp;W    &nbsp;&nbsp;  - Gas path flow [pps]
+            <br>-2- &nbsp;&nbsp;s   &nbsp;&nbsp;  - Entropy [BTU/(lbm*degR)]
+            <br>-3- &nbsp;&nbsp;Tt   &nbsp;&nbsp;  - Total temperature [degR]
+            <br>-4- &nbsp;&nbsp;Pt   &nbsp;&nbsp;  - Total pressure [psia]
+            <br>-5-&nbsp;&nbsp; ht   &nbsp;&nbsp;  - Total enthlapy [BTU/lbm]
+            <br>-6-&nbsp;&nbsp; rhot &nbsp;&nbsp; - Total density [lbm/ft3]
+            <br>-7-&nbsp;&nbsp; gamt &nbsp;&nbsp; - Total specific heat ratio
+            <br>-8-&nbsp;&nbsp; Ts   &nbsp;&nbsp; - Static temperature [degR]
+            <br>-9- &nbsp;&nbsp;Ps   &nbsp;&nbsp; - Static pressure [psia]
+            <br>-10- &nbsp;&nbsp;hs  &nbsp;&nbsp;  - Static enthalpy [BTU/lbm]
+            <br>-11- &nbsp;&nbsp;rhos &nbsp;&nbsp; - Static density [lbm/ft3]
+            <br>-12-&nbsp;&nbsp; gams &nbsp;&nbsp; - Static specific heat ratio
+            <br>-13- &nbsp;&nbsp;Vflow &nbsp;&nbsp;- Flow velocity [ft/sec]
+            <br>-14- &nbsp;&nbsp;MN&nbsp;&nbsp;  - Mach number
+            <br>-15- &nbsp;&nbsp;A  &nbsp;&nbsp;   - Flow area [in2]
+            <br>-16to21-&nbsp;&nbsp; Species array values, defined in canteraload.m
+            <br>-22to25- &nbsp;&nbsp;Future use
         </td></tr>
-</table>
-<br>
-<font size="5" color="Blue">Inlet Outputs:</font>
-<table border="1"> <tr><td>Inlet Output</td><td>Description</td></tr>
-    <tr><td>Flow Out</td><td>Flow Data Output, 25x1 vector consisting of:
-            <br>-1- W      - gas path flow [pps]
-            <br>-2- Tt     - total temperature [degR]
-            <br>-3- Pt     - total pressure [psia]
-            <br>-4- ht     - total enthlapy [BTU/lbm]
-            <br>-5to10- species array values, defined in canteraload.m
-            <br>-11- s     - entropy [BTU/(lbm*degR)]
-            <br>-12- rhot  - total density [lbm/ft3]
-            <br>-13- Ts    - static temperature [degR]
-            <br>-14- Ps    - static pressure [psia]
-            <br>-15- hs    - static enthalpy [BTU/lbm]
-            <br>-16- rhos  - static density [lbm/ft3]
-            <br>-17- Vflow - flow velocity [ft/sec]
-            <br>-18- MNin  - Mach number
-            <br>-19- A     - flow area [in2]
-            <br>-20- gamt  - total specific heat ratio
-            <br>-21- gams  - static specific heat ratio
-            <br>-22to25- future use
-        </td></tr>
-        <tr><td>I_Data</td><td>Inlet additional  calculation Data</td></tr>
-</table>
-<br>
-<font size="5" color="Blue">Inlet Mask Variables: </font>
-<table border="1"> <tr><td>Inlet Mask Variable</td><td>Description</td></tr>
-    <tr><td>recovery_M</td><td>pressure recovery [frac]</td></tr>
+
 </table>
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Inlet (Cantera) Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>Flow Out</td><td>Flow Data Output, 25x1 vector consisting of:
+            <br>-1- &nbsp;&nbsp;W    &nbsp;&nbsp;  - Gas path flow [pps]
+            <br>-2- &nbsp;&nbsp;s   &nbsp;&nbsp;  - Entropy [BTU/(lbm*degR)]
+            <br>-3- &nbsp;&nbsp;Tt   &nbsp;&nbsp;  - Total temperature [degR]
+            <br>-4- &nbsp;&nbsp;Pt   &nbsp;&nbsp;  - Total pressure [psia]
+            <br>-5-&nbsp;&nbsp; ht   &nbsp;&nbsp;  - Total enthlapy [BTU/lbm]
+            <br>-6-&nbsp;&nbsp; rhot &nbsp;&nbsp; - Total density [lbm/ft3]
+            <br>-7-&nbsp;&nbsp; gamt &nbsp;&nbsp; - Total specific heat ratio
+            <br>-8-&nbsp;&nbsp; Ts   &nbsp;&nbsp; - Static temperature [degR]
+            <br>-9- &nbsp;&nbsp;Ps   &nbsp;&nbsp; - Static pressure [psia]
+            <br>-10- &nbsp;&nbsp;hs  &nbsp;&nbsp;  - Static enthalpy [BTU/lbm]
+            <br>-11- &nbsp;&nbsp;rhos &nbsp;&nbsp; - Static density [lbm/ft3]
+            <br>-12-&nbsp;&nbsp; gams &nbsp;&nbsp; - Static specific heat ratio
+            <br>-13- &nbsp;&nbsp;Vflow &nbsp;&nbsp;- Flow velocity [ft/sec]
+            <br>-14- &nbsp;&nbsp;MN&nbsp;&nbsp;  - Mach number
+            <br>-15- &nbsp;&nbsp;A  &nbsp;&nbsp;   - Flow area [in2]
+            <br>-16to21-&nbsp;&nbsp; Species array values, defined in canteraload.m
+            <br>-22to25- &nbsp;&nbsp;Future use
+        </td></tr>
+        <tr><td>I_Data</td><td>Inlet additional calculation data</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Inlet (Cantera) Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>recovery_M</td><td>Pressure recovery [frac]</td></tr>
+</table>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, an error will occur if a Cantera object does not exist
+in the workspace as a global variable named 'fs'. An error will also occur
+if this variable does not contain all of the species defined in 'canteraload.m'.
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

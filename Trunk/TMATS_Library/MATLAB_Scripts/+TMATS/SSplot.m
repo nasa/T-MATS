@@ -169,7 +169,7 @@ if StnNum > 0 && PlotTS == 1
     hold on
     plot([s(1),s(end)],[Tt(1),Tt(end)],'b')
     ylabel(sprintf('Temperatures, %cR',char(176)));
-    xlabel(sprintf('Enthalpy, BTU/(%cR*lbm)',char(176)));
+    xlabel(sprintf('Entropy, BTU/(%cR*lbm)',char(176)));
     
 end
 

@@ -1,28 +1,193 @@
-<font size="6" color="Magenta">T-MATS: 1-D Trans Cond Model 2mat(FDE) Block</font>
-<br>
-This function models the transient conduction of a plate ,consisting of two different materials, A and B coinciding with inner and outer respectively, with fluid on either side via the finite difference method (explicit). This block is obsolete and will not be supported in the future. For another option see 1-D Trans Conduction Model - Variable Propts + Generic BCs.
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
-<br>Export values are calculated based on a single time step. If additional dynamic behavior is required a simulink memory block may be used to update the temperature initial conditions.
-<br>Units must be specified consistantly. (i.e. If temperature is in Celsius all temperature units must in Celsius)
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for 1-D Trans Cond Model 2mat(FDE) Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: 1-D Trans Cond Model 2mat(FDE) Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to model the transient conduction of a plate
+    consisting of two different materials, A (inner) and B (outer), with
+    fluid on either side, via the finite difference method (explicit).
+</p>
+<p>
+    <em>Note:</em> This block has become obsolete and will not be supported
+    in future releases. For a more versatile option, see the 1-D Trans
+    Conduction Model - Variable Props + Generic BCs (documentation
+    <a href="HeatXfer_TMATS_1DTCondVarPropGenBC.html">here</a>).
+</p>
 <br>
-<font size="5" color="Blue"> 1-D Trans Conduction 2mat Inputs:</font>
-<table border="1"> <tr><td> 1-D Trans Conduction 2mat Inputs</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+
+<p>
+    To compute the output values, this block utilizes an explicit finite
+    difference method to determine the effects of heat transfer. It is important
+    to note that the units must be specified consistently while using this block
+    (i.e. If temperature is in Celsius all temperature units must in Celsius)
+    and that the export values are calculated based on a single time step.
+    If additional dynamic behavior is required, a Simulink Memory block may
+    be used to update the temperature initial conditions.
+</p>
+<p>
+    This block begins by computing the <i>dx</i> step amount, the thermal diffusivity
+    constant, the Biot number, and the Fourier number for both materials (A and B). These parameters are
+    determined for each material by the following equations, respectively:
+
+    $$dx = \frac{X}{N-0.5}$$
+    $$ \alpha = \frac{k}{\rho * Cp}$$
+    $$ Bi = \frac{h*dx}{k}$$
+    $$ Fo = \frac{dt* \alpha}{dx^2}$$
+
+    In the first equation, <i>X</i> is the width of and <i>N</i>
+    is the number of nodes in a material region of the plate. The other variables are properites of the material.
+    All of these values are specified by the user and can be adjusted by
+    double clicking the block and editing the corresponding values.
+</p>
+<p>
+    Once these parameters are calculated for each material, the thermal diffusivity
+    constant and Fourier number for the transition regions (A-B, B-A) are
+    determined. For transition Region AB, the following equations are used:
+
+    $$\alpha_{AB} = \frac{\left(\frac{k_B*dx_B + k_A*dx_A}{dx_B + dx_A}\right)}{\rho_A*Cp_A}$$
+    $$Fo_{AB} = \frac{dt* \alpha_{AB}}{dx_A * \left(\frac{dx_A+dx_B}{2}\right)}$$
+
+    For Region BA, the above equations are used, but the values for <i>k</i>,
+    <i>Cp</i>, etc. of Material A are replaced with those of Material B.
+</p>
+<p>
+    With the thermodynamic parameters specified for all regions of the material,
+    a MATLAB script is used to determine the output temperatures. The following
+    equations are used to determine the temperatures at various points in the
+    material. It is important to note that in these equations, <i>m</i> represents
+    the location of the node and <i>p</i> represents the time dependence. New
+    time step values are represented by <i>p+1</i> while the old time step
+    values are represented by <i>p</i>. For more information on this process,
+    see the book reference at the bottom of this page.
+</p>
+<p>
+    The temperature at the inner boundary of Material A is determined by the
+    following equation:
+
+    $$ T_m^{p+1} = 2*Fo_A*(T_{m+1}^p + Bi_A *T_{inner}) + (1 - 2*Fo_A - 2*Bi_A * Fo_A)*T_m^p$$
+
+	Temperatures for nodes internal to Material A are determined by:
+	$$ T_m^{p+1} = Fo_A *(T_{m+1}^p + T_{m-1}^p) + (1-2*Fo_A)*T_m^p$$
+
+    In the transition from Material A to Material B, the following equation
+    is used to determine the temperature of the interior nodes:
+
+    $$T_m^{p+1} = Fo_A * T_{m-1}^p +Fo_{AB}*T_{m+1}^p + (1-Fo_A - Fo_{AB})*T_m^p$$
+
+    Similarly, in the transition from Material B to Material A, the following
+    equation is used:
+
+    $$T_m^{p+1} = Fo_B * T_{m+1}^p +Fo_{BA}*T_{m-1}^p + (1-Fo_B - Fo_{BA})*T_m^p$$
+
+	Temperatures for nodes internal to Material A are determined by:
+    $$ T_m^{p+1} = Fo_B *(T_{m+1}^p + T_{m-1}^p) + (1-2*Fo_B)*T_m^p$$
+
+    At the outer boundary of Material B, the temperature is determined by the
+    following equation:
+	$$ T_m^{p+1} = 2*Fo_B*(T_{m+1}^p + Bi_B *T_{outer}) + (1 - 2*Fo_B - 2*Bi_B * Fo_B)*T_m^p$$
+    The final parameters determined by this block is the average temperatures,
+    which are determined by the following equation:
+
+    $$Tavg_A = \frac{\sum(Tfvec * Nw_A)}{\sum Nw_A}$$
+    $$Tavg_B = \frac{\sum(Tfvec * Nw_B)}{\sum Nw_B}$$
+
+    In the above equations, each Node Width<i>Nw</i> variable is the vector containing
+    the <i>dx</i> values for the corresponding material. It should also be
+    noted that in the above equations, only the portion of <i>Tfvec</i> that
+    refers to Material A is used in the first equation and only the portion
+    that refers to Material B is used in the second equation.
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the inputs to the corresponding places on the block.
+        <li> Connect the outputs to the next blocks in the simulation.
+        <li> Double click the block and ...
+        <ul>
+            <li>Specify <i>dt</i> in the General tab.
+            <li>Specify the properties of Material A under the Inner Material tab.
+            <li>Specify the properties of Material B under the Outer Material tab.
+        <li> Ensure that temperature units are consistent throughout this block.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        1-D Trans Cond Model 2mat(FDE) Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th >Description</th></tr>
     <tr><td>Tinner</td><td>Inner Fluid Temperature</td></tr>
     <tr><td>Touter</td><td>Outer Fluid Temperature</td></tr>
     <tr><td>TiVec</td><td>Initial Temperature at each Node ((a+b)x1)</td></tr>
 </table>
-<br>
-<font size="5" color="Blue"> 1-D Trans Conduction 2mat Outputs:</font>
-<table border="1"> <tr><td>1-D Trans Conduction 2mat Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        1-D Trans Cond Model 2mat(FDE) Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>TAavg</td><td>Final Average Temperature within the Plate A</td></tr>
     <tr><td>TBavg</td><td>Final Average Temperature within the Plate B</td></tr>
     <tr><td>TfVec</td><td>Final Temperature at each Node ((a+b)x1)</td></tr>
     <tr><td>Xdist</td><td>Placement of each Node in A (ax1)</td></tr>
     <tr><td>Xdist</td><td>Placement of each Node in B (bx1)</td></tr>
 </table>
-<br>
-<font size="5" color="Blue"> 1-D Trans Conduction 2mat Mask Variables: </font>
-<table border="1"> <tr><td> 1-D Trans Conduction 2mat Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        1-D Trans Cond Model 2mat(FDE) Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>dt_M</td><td>Time Step</td></tr>
     <tr><td>BlkNm_M</td><td>Block Name (hidden from view)</td></tr>
     <tr><td>wA_M</td><td>Plate A total Width</td></tr>
@@ -37,5 +202,70 @@ This function models the transient conduction of a plate ,consisting of two diff
     <tr><td>kB_M</td><td>Material B Thermal Conductivity</td></tr>
     <tr><td>rhoB_M</td><td>Material B Density</td></tr>
     <tr><td>cB_M</td><td>Material B Specific Heat</td></tr>
-
 </table>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>FoA > 0.5, input properties are not appropriate for modeling method.</td><td>
+                This error will occur if the Fourier number for Material A is determined to be
+                greater than 0.5, which indicates that the system will be unstable.
+                A different modeling method for the system should be chosen, or
+                the input parameters should be changed.
+    </td></tr>
+    <tr><td>FoB > 0.5, input properties are not appropriate for modeling method.</td><td>
+            This error will occur if the Fourier number for Material B is determined to be
+            greater than 0.5, which indicates that the system will be unstable.
+            A different modeling method for the system should be chosen, or
+            the input parameters should be changed.
+    </td></tr>
+    <tr><td>FoA*(1+BiA) > 0.5, input properties not appropriate for modeling method. </td><td>
+                This error will occur if FoA*(1+BiA) is determined to be
+                greater than 0.5, which indicates that the system will be unstable.
+                A different modeling method for the system should be chosen, or
+                the input parameters should be changed.
+    </td></tr>
+   <tr><td>FoB*(1+BiB) > 0.5, input properties not appropriate for modeling method. </td><td>
+                This error will occur if FoB*(1+BiB) is determined to be
+                greater than 0.5, which indicates that the system will be unstable.
+                A different modeling method for the system should be chosen, or
+                the input parameters should be changed.
+    </td></tr>
+    <tr><td>(1-2*FoB-4*FoBA) < 0, input properties not appropriate for modeling method. </td><td>
+                This error will occur if 1-2*FoB-4*FoBA is determined to be
+                less than 0, which indicates that the system will be unstable.
+                A different modeling method for the system should be chosen, or
+                the input parameters should be changed.
+    </td></tr>
+    <tr><td>(1-2*FoA-4*FoAB) < 0, input properties not appropriate for modeling method. </td><td>
+                This error will occur if 1-2*FoA-4*FoAB is determined to be
+                less than 0, which indicates that the system will be unstable.
+                A different modeling method for the system should be chosen, or
+                the input parameters should be changed.
+    </td></tr>
+</table>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<div class="table_caption">
+    Reference
+</div>
+
+<p>
+    The equations used in this block model the heat transfer of a plate with
+    fluid or material on either side via the finite difference method
+    (explicit), based on equations from Section 5.9.1 of "Fundamentals of
+    Heat and Mass Transfer" 5th edition, by F. Incropera and D. DeWitt.
+</p>
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

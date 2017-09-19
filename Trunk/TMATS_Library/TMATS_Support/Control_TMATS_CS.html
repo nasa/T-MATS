@@ -1,21 +1,121 @@
-<font size="6" color="Magenta">T-MATS: Corrected Speed Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Corrected Speed Library Block
+</title>    
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Corrected Speed Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to calculate the corrected speed.
+</p>
+
 <br>
-This block calculates corrected speed.
-Nc = N / sqrt(theta)
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>    
+
+<p>
+    To compute the corrected speed, this block utilizes the equations below.
+
+    $$ Nc = \frac{N}{\sqrt{\theta}}$$
+    
+    in which
+    
+    $$\theta = \frac{Tt}{Tstd}$$
+
 <br>
+    It is important to note that T-MATS assumes the standard day temperature (<i>Tstd</i>)
+     to be 518.67 degR.
+    
+</p>
 <br>
-<font size="5" color="Blue">Corrected Speed Inputs:</font>
-<table border="1"> <tr><td>Corrected Speed Input</td><td>Description</td></tr>
-    <tr><td>N</td><td>shaft speed</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the speed and total temperature to the corresponding input places on the block.
+        <li> Connect the output corrected speed to the next block in your simulation. 
+        <li> Adjust the standard day temperature by double clicking the block.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Corrected Speed Inputs     
+</div>
+
+<table> 
+    <tr><th> Input </th><th >Description</th></tr>
+    <tr><td>N</td><td>Shaft speed</td></tr>
     <tr><td>Tt</td><td>Total Temperature [degR]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Corrected Speed Outputs:</font>
-<table border="1"> <tr><td>Corrected Speed Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Corrected Speed Outputs  
+</div>
+
+<table> 
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>Nc</td><td>Corrected shaft speed</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Corrected Speed  Mask Variables: </font>
-<table border="1"> <tr><td>Corrected Speed Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Corrected Speed Mask Variables 
+</div>
+ 
+<table> 
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>C_TSTD_M</td><td>Standard Day Temperature [degR]</td></tr>
 </table>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+    When using this block, an error will appear if <i>Tt</i> is set to zero. To 
+    avoid this error, ensure that the total temperature input is not equal to zero.
+</p>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

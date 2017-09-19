@@ -1,0 +1,56 @@
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Color Guide
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Color Guide
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To aid in simulation setup, the inputs and outputs of T-MATS blocks are color coded according to the table below.
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="table_caption">
+        Color Guide
+</div>
+
+<table>
+    <tr><th> Color </th><th >Description</th></tr>
+    <tr><td><font color="blue"> Blue </font></td><td>Gas path information containing flow, enthalpy, total temperature, total pressure, and flow composition (typically fuel to air ratio (FAR))</td></tr>
+    <tr><td> <font color="darkgreen"> Dark Green </font> </td><td>Independent variable</td></tr>
+    <tr><td> <font color="limegreen"> Green </font></td><td>Dependent variable</td></tr>
+    <tr><td> <font color="red"> Red </font></td><td>Independent variable that is obtained through integration in a dynamic simulation, but may be solved for by the solver in a steady state simulation (e.g. shaft speed)</td></tr>
+    <tr><td> <font color="magenta"> Magenta </font></td><td>Dependent variable that is integrated in a dynamic simulation, but may be used as a dependent variable in the iterative solver in the steady state simulation (e.g. Ndot)</td></tr>
+    <tr><td> <font color="lightpink"> Pink </font></td><td>Contributor to the calculation of a dependent variable (e.g. torque)</td></tr>
+    <tr><td> <font color="orange"> Yellow </font></td><td>Effector command (e.g. fuel flow), not typically used by the solver</td></tr>
+</table>
+
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

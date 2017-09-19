@@ -2,67 +2,177 @@
      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
-<font size="6" color="Magenta">T-MATS: Heat Soak Library Block</font>
-<p>This block is meant to add mass to components to simulate the effects of component heat soak.
-    Inputs are the component input flow and metal temperature state. The block will utilize a current lump mass temperature
-    to calculate an updated temperature and generate a change in metal temperature based on
-energy passing between the lump material and the flow.</p>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-<p>The convective heat transfer coefficient is derived from current and design point mass flow and termpature, and heat transfer coefficent at the design point.</p>
-$$
-h = h_{coeff} \left(\frac{T}{T_{des}}\right)^{0.23} \left(\frac{W}{W_{des}}\right)^{0.8}
-$$
-<p>The rate of heat transfer by convection is then calculated based on Newton's law of cooling.</p>
-$$
-\dot{Q} = hA(T_m - T_{ideal})
-$$
-<p>This heat transfer rate is then used to augment the entalpy of the ideal flow using the following relation.</p>
-$$
-\dot{Q} = Ht_{ideal} - Ht_{actual}\\
-Ht = W * ht
-$$
-<p>And, the metal energy is adjusted by the same heat transfer rate and the rate of change in temperature is determined.</p>
-$$
-\dot{Q} = \rho  C_p V \left(\frac{\partial T}{\partial t}\right)
-$$
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Heat Soak Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Heat Soak Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the effects of component heat soak by
+    adding mass to the components. The block utilizes the current lump mass
+    temperature to calculate an updated temperature and generate a change in
+    metal temperature, based on the energy passing between the lump material
+    and the flow.
+</p>
 
 <br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the output characteristics, this block utilizes the equations
+    below. It is important to note that the pressure, flow, and fuel to air
+    ratio do not change across this block.
+</p>
+<p>
+    The convective heat transfer coefficient is derived from current and
+    design point mass flow and temperature, as well as the heat transfer
+    coefficent at the design point.
+
+    $$h = h_{coeff}*\left(\frac{T}{T_{des}}\right)^{0.23} *\left(\frac{W}{W_{des}}\right)^{0.8}$$
+    This emperical relationship was derived
+    from:
+    <blockquote>Martin, S., Wallace, I., Bates, D. G., “Development and Validation of
+    an Aero-engine Simulation Model for Advanced Controller Design,” Proceedings
+    of the 2008 American Control Conference, Seattle, WA, 2008.</blockquote>
+    <br><br>
+
+    The rate of heat transfer by convection is then calculated based on
+    Newton's law of cooling. In the following equation, <i>h</i> refers to
+    the heat transfer coefficient, which was determined by the equation above.
+
+    $$\dot{Q} = h*A*(T_{metal} - T_{in})$$
+
+    The after heat soak total enthalpy(<i>ht<sub>hs</sub></i>) of the flow is calculated by the following equation:
+
+    $$ ht_{hs} = ht_{in} - \frac{\dot{Q}}{W}$$
+</p>
+<p>
+    The metal's energy is adjusted by the same heat transfer rate and the
+    rate of change in temperature is determined by the following equation.
+
+    $$\left(\frac{\partial T_{metal}}{\partial t}\right) = \frac{\dot{Q}}{\rho *C_p* V}$$
+
+    In the above equation, the material properties &rho; and <i>C<sub>p</sub></i>
+    are determined via table lookup, based on the heat soaked temperature.
+
+</p>
 <br>
-<font size="5" color="Blue">Heat Soak Inputs:</font>
-<table border="1"> <tr><td>Heat Soak Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input gas path flow and metal temperature to the
+        corresponding places on the block.
+        <li> Connect the outputs to the next block(s) in your simulation.
+        <ul>
+            <li>Note: The Tmdot output is meant to be fed into an integrator
+            block and fed back into the Tmetal input.
+        </ul>
+        <li> Double click the block and input values for the listed parameters,
+        such as the design flow and temperature.
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Heat Soak Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>Tmetal</td><td> Current metal Temperature [degR] </td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Heat Soak Outputs:</font>
-<table border="1"><tr><td>Heat Soak Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Heat Soak Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>Tmdot</td><td> First derivative of the metal temperature [degR/sec]
             <br> This output is meant to be fed into an integrator block and fed back into the Tmetal input.</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Heat Soak Mask Variables: </font>
-<table border="1"> <tr><td>Heat Soak Mask Variablet</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Heat Soak Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>Wdes_M</td><td>Design point mass flow [pps]</td></tr>
     <tr><td>Tdes_M</td><td>Design point temperature [degR]</td></tr>
     <tr><td>A_M</td><td>Surface Area [ft2]</td></tr>
-    <tr><td>hcoeff_M</td><td>Design point convective heat transfer coefficient [BTU/(sec*ft2*degR]</td></tr>
+    <tr><td>hcoeff_M</td><td>Design point convective heat transfer coefficient [BTU/(sec*ft2*degR)]</td></tr>
     <tr><td>Vol_M</td><td>Volume of lump structure [ft3]</td></tr>
     <tr><td>TVec_M</td><td>Vector of temperatures (mx1) [degR]</td></tr>
     <tr><td>rho_M</td><td>Material Density f(TVec)(mx1) [lbm/ft3]</td></tr>
     <tr><td>Cp_M</td><td>Material Specific Heat f(TVec)(mx1) [BTU/lbm/degR]</td></tr>
 </table>
-<br>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+    When using this block, an error will appear if either <i>Tdes</i> or <i>Wdes</i>
+    is set to zero. To avoid this error, ensure that both the design temperature
+    and design flow are nonzero.
+</p>
 
 
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

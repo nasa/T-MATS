@@ -1,28 +1,135 @@
-<font size="6" color="Magenta">T-MATS: Var Nozzle Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Nozzle Var Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Nozzle Var Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the performance of a variable area
+    nozzle using basic thermodynamic equations, properties, and table-lookups.
+</p>
+
 <br>
-This block simulates the performance of a variable area nozzle using basic
-thermodynamic equations, properties, and table lookups.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+This block is identical to the <a href="Turbo_TMATS_Noz.html">nozzle block</a> with the exception that the input areas are inputs that are dynamically adjustable.
+</p>
+
+
 <br>
-<br>
-<font size="5" color="Blue">Nozzle Inputs:</font>
-<table border="1"> <tr><td>Nozzle Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input gas path flow, ambient pressure, throat area
+        and exit area to the corresponding places on the block.
+        <li> Connect the outputs to the next block(s) in your simulation.
+        <li> Double click the block and...
+        <ol>
+            <li>Select which options you will use under each tab:
+            <ul style="list-style-type:circle">
+                <li>Under the General tab:
+                <ul>
+                    <li>Near the bottom of the page, choose whether to use
+                    a nozzle thrust coefficient or nozzle velocity coefficient.
+                    <ol>
+                        <li> Check the box to enable the nozzle thrust coefficient;
+                        this will disable the nozzle velocity coefficient.
+                        <li> Uncheck the box to disable the nozzle thrust coefficient
+                        and use the nozzle velocity coefficient instead.
+                    </ol>
+                </ul>
+                <li>Under the iDesign tab:
+                <ul>
+                    <li>Select the value of iDesign_M. <br>Options include:
+                    <ul style="list-style-type:disc">
+                        <li> 0: iDes will be enabled and nozzle throat area will
+                        be calculated based on design variables. This disables
+                        the input areas.
+                        <li> 1: Nozzle throat area variables will be determined
+                        by values in a user-specified file (<i>FVar_M</i>).
+                        Values from the iDesign tab will not be used and the
+                        input areas will be disabled.
+                        <li> 2: Nozzle throat area variables will be determined
+                        by the values input to the block.
+                        No values from the iDesign tab will be used.
+                    </ul>
+                </ul>
+            </ul>
+            <li>Input the corresponding values for the parameters you have chosen
+            to use.
+        </ol>
+    </ul>
+</p>
+
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Nozzle Var Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>Pamb</td><td>Ambient static Pressure [psia]</td></tr>
     <tr><td>Ath</td><td>Nozzle Throat Area [in^2]</td></tr>
     <tr><td>Aexit</td><td>Nozzle Exit Area (only for CD nozzle types) [in^2]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Nozzle Outputs:</font>
-<table border="1"> <tr><td>Nozzle Output</td><td>Description</td></tr>
-    <tr><td>Wout</td><td>gas path flow [pps]</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Nozzle Var Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>Wout</td><td>Gas path flow [pps]</td></tr>
     <tr><td>Fg</td><td>Gross thrust [lbf]</td></tr>
     <tr><td>NErr</td><td>Normalized Error [frac], in a typical system this will
-    <br>be driven to zero by an iterative solver</td></tr>
+            be driven to zero by an iterative solver</td></tr>
     <tr><td>N_Data</td><td>Nozzle internal calculation Data, 14x1 bus/vector including:
             <br>- Ath - Throat area [in^2]
             <br>- Aexit - Exit area [in^2]
@@ -36,19 +143,25 @@ thermodynamic equations, properties, and table lookups.
             <br>- Vx - Exit velocity, ideal consistant with exit area [ft/sec]
             <br>- Woutcalc - internally calculated mass flow through the throat [pps]
             <br>- choked - Throat is choked (MN = 1 at throat) [set choked, unset not choked]
-            <br>- Vs - Ideal exit velocity, consistant with Pt/Pambient [ft/sec] 
-            <br>- Test - Nozzle test signal    
-</td></tr>
+            <br>- Vs - Ideal exit velocity, consistant with Pt/Pambient [ft/sec]
+            <br>- Test - Nozzle test signal
 </table>
-<br>
-<font size="5" color="Blue">Nozzle Mask Variables: </font>
-<table border="1"> <tr><td>Nozzle Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Nozzle Var Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>N_FL_M</td><td>Flow Loss Across Nozzle (%)</td></tr>
     <tr><td>X_N_TtVec2_M</td><td>Nozzle Total Temperature Vector (X-axis for TG calc)(ax1)</td></tr>
     <tr><td>T_N_TGArray_M</td><td>Nozzle Thermal Growth Array (TG = f(Tt))(ax1)</td></tr>
     <tr><td>X_N_PEQPaVec_M</td><td>Nozzle PE/Pa Vector (X-axis)(bx1)</td></tr>
     <tr><td>T_N_CdThArray_M</td><td>Nozzle CdTh Array, Throat blockage factor [frac](CdTh = f(PEQPa))(bx1)
-    <br> 0 - Fully Blocked, 1 - Fully unblocked</td></tr>
+            <br> 0 - Fully Blocked, 1 - Fully unblocked</td></tr>
     <tr><td>T_N_CvArray_M</td><td>Nozzle Velocity Coefficient Array (Cv = f(PEQPa))(bx1)</td></tr>
     <tr><td>CfgEn_M</td><td>Enable Thrust Coefficient. Note, this will disable the Velocity Coefficient</td></tr>
     <tr><td>T_N_CfgArray_M</td><td>Nozzle Thrust Coefficient Array (Cfg = f(PEQPa))(bx1)</td></tr>
@@ -57,17 +170,20 @@ thermodynamic equations, properties, and table lookups.
     <tr><td>Y_N_TtVec_M</td><td>Nozzle Total Temperature Vector (Y-axis for Gamma calc)(dx1)</td></tr>
     <tr><td>T_N_MAP_gammaArray_M</td><td>Nozzle Map Gamma Array (Gamma = f(Tt,FAR))(dxc)</td></tr>
     <tr><td>iDesign_M</td><td> Design fork (0, 1, 2)
+            <br>
             <br>0 - iDes Enabled, Calculate nozzle throat area based on design variables
-            <br>    When iDesign is set to 0, N_TArea_M from the General tab will not be used.
+            <br>    When iDesign is set to 0, the input nozzle areas will not be used.
             <br>    Throat area calculated will be saved in the specified file (FVar_M).
-            <br>    This option will also disable input Areas.
-            <br>1 - nozzle throat area variables will be overwritten (mask Initialization) with
-            <br>    values from a specified file (FVar_M).
-            <br>    When iDesign is set to 1, N-TArea_M from the General tab and the Design values
-            <br>    from the iDesign tab will not be used. This option will also disable input Areas.
-            <br>2 - Nozzle throat area from the General tab will be used in the nozzle module.
-            <br>    When iDesign is set to 2, N_TArea_M from the General tab will be used; Design values
-    <br>    and file definitions from the iDesign tab will not be used. </td></tr>
+            <br>
+            <br>1 - Nozzle throat area variables will be overwritten (Mask Initialization) with
+                    values from a specified file (<i>FVar_M</i>).
+            <br>    When iDesign is set to 1, the input areas and the Design values
+            	    from the iDesign tab will not be used.
+            <br>
+            <br>2 - The nozzle throat area input will be used in the nozzle module.
+            <br>    When iDesign is set to 2, the areas input to the block will be used;
+                    Design values and file definitions from the iDesign tab
+                    will not be used. </td></tr>
     <tr><td>WDes_M</td><td>Design flow[pps]</td></tr>
     <tr><td>FVar_M</td><td>File name for iDes Variables</td></tr>
 </table>
@@ -75,3 +191,55 @@ thermodynamic equations, properties, and table lookups.
 Note: Vectors are the x and/or y axis to a table made of an array.
 
 
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+    When using this block, you may receive one of the following errors/warnings. The table
+    below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>Error calculating:
+           <ul>
+                <li>Rt1
+                <li>gammas
+                <li>gammatg
+                <li>gammasg
+                <li>iteration gammasg
+                <li>CdTh
+                <li>Therm_growth
+                <li>Cv
+                <li>Cfg
+           </ul></td><td>Vector input for the parameter is not big enough
+                    to interpolate the correct value.</td></tr>
+   <tr><td>Backflow warning</td><td> This error will appear when the input
+                    total pressure (within the gas path characteristics input)
+                    is less than the input ambient pressure.</td></tr>
+   <tr><td>Error calculating Ps at MN=1, or Ps at exit</td><td>When the flow is choked
+                    and the maximum number of iterations allowable for determining
+                    Ps is reached, this error will appear.</td></tr>
+    <tr><td>Error: Negative throat Mach number</td><td>If the flow is deemed to
+                    be unchoked, the throat Mach number may be calculated to be negative,
+                    if the ideal velocity is calculated to be negative. This could
+                    occur if the static enthalpy was determined to be greater than
+                    the total enthalpy, which could indicate an error in the table-lookup
+                    based on the calculated static temperature.</td></tr>
+   <tr><td>Error: Negative exit Mach number</td><td>If the flow is deemed to be
+                    choked, the exit Mach number may be calculated  to be
+                    negative. This can occur if the velocity is calculated to
+                    be negative, which could occur if the static enthalpy was
+                    determined to be greater than the total enthalpy, which
+                    could indicate an error in the table-lookup based on the
+                    calculated static temperature.</td></tr>
+   <tr><td>Calculating iDes Area with unchoked nozzle</td><td>If iDes is set
+                    to 0 and the flow is determined to be unchoked, this error
+                    will appear.</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

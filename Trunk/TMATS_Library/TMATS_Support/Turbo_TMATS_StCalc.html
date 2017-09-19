@@ -1,38 +1,259 @@
-<font size="6" color="Magenta">T-MATS: Static Calculation Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Static Calc Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Static Calc Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to calculate static pressure and temperature
+    from an input flow stream and either an assumed throat area or mach number.
+</p>
+
 <br>
-This Block calculates static pressure and temperature from an input flow stream and either an assumed throat area or mach number.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the static conditions, this block begins by determining the input
+    entropy and total enthalpy, as well as the ideal gas constant. These values
+    are determined via table-lookups.
+</p>
+<p>
+    At this point, it is important to go over the design choices that are
+    available to the user. The user can choose whether to assume a certain Mach
+    number at the throat or to assume a certain throat area. Depending on the
+    user's choice, the output parameters are solved for in different ways. It is common
+    to use this block by first specifying a known design MN value to determine an area,
+    then change the block to use the calclulated area for off-design operation.
+</p>
+<h2>
+Static Values Based on Known MN
+</h2>
+<p>
+    If the user chooses to specify the Mach number, the specific heat ratio
+    (&gamma;) is determined via table-lookup. This allows the static temperature
+    and pressure to be determined iteratively, using the following equations:
+
+    $$ Ts = \frac{Tt_{In}}{1+MN_{In}^2*\frac{(\gamma-1)}{2}}$$
+    $$ Ps = Pt_{In}*\left(\frac{Ts}{Tt_{In}}\right)^{\frac{\gamma}{\gamma -1}}$$
+
+    Other parameters of the flow are then calculated using the following equations,
+    in which <i>g</i> is the acceleration due to gravity (32.17 [ft*lbm/(lbf*sec^2)]),
+    <i>Jc</i> is Joule's constant (778.17 [ft*lbm/BTU]), and <i>C_PSItoPSF</i>
+    is a unit conversion factor.
+
+    $$&rho;_s = \frac{Ps * \textit{C_PSItoPSF}}{R*Ts*Jc}$$
+    $$V = \sqrt{2*(ht - hs)*g*Jc}$$
+
+    Based on these flow characteristics, the Mach number is recalculated
+    according to the following equation.
+
+    $$MNcalc = \frac{V}{\sqrt{\gamma*R*Ts*g*Jc}}$$
+
+    The throat area is calculated by the following equation, in which <i>C_SINtoSFT</i>
+    is another unit conversion factor.
+
+    $$Acalc = \frac{W_{In}}{V * \frac{&rho;_s}{\textit{C_SINtoSFT}}}$$
+
+    The error between the input Mach number and the calculated Mach number
+    is then determined by the equation below:
+
+    $$err_{MN} = MN_{In} - MNcalc $$
+
+    If the error is not within the tolerance, the process repeats changing <i>Ps</i> using
+    the secant method until the solution converges. Once the final <i>Ps</i> is
+    determined each static variable is updated in accordance with the new value. Area is also
+    noted at the given MN.
+</p>
+<h2>
+Static Values Based on Known Area
+</h2>
+<p>
+    Alternatively, if the user chooses to specify the throat area, the
+    input Mach number is set to be the number that the user specified.
+    This value will be the initial guess that for the iterative solving
+    process.
+</p>
+<p>
+    The initial value for &gamma; is set to be 1.4. This value is used to determine
+    initial values for the static temperature and pressure, which are calculated
+    by using the following equations:
+
+    $$Ts = \frac{Tt_{In}}{1+MN^2*\frac{\gamma-1}{2}}$$
+    $$Ps = Pt_{In}*\left(\frac{Ts}{Tt_{In}}\right)^{\frac{\gamma}{\gamma-1}}$$
+
+    Other parameters of the flow are then calculated using table-lookups (<i>hs</i>),
+    or by using the following equations:
+
+    $$&rho;_s = \frac{Ps * \textit{C_PSItoPSF}}{R*Ts*Jc}$$
+    $$V = \sqrt{2*(ht - hs)*g*Jc}$$
+
+    The throat area is calculated using the following equation. The result
+    of this equation will be compared to the input value to determine if the
+    solution is correct.
+
+    $$Acalc = \frac{W_{In}}{V*\frac{&rho;_s}{\textit{C_SINtoSFT}}}$$
+
+    A new value of &gamma; is found by using a table-lookup. The updated Mach
+    number at the throat is then calculated by the following:
+
+    $$MNcalc = \frac{V}{\sqrt{\gamma*R*Ts*g*Jc}}$$
+
+    The error between the calculated area and the value specified by the user
+    is determined by the following:
+
+    $$err_{A} = \frac{A_{In} - Acalc}{A_{In}}$$
+
+    If the error is not within the tolerance, <i>Ps</i> is updated and the
+    process repeats using the secant method until the solution converges.
+    Once convergence is reached all static values are updated with the new value.
+    MN is also noted for the given area.
+</p>
+
 <br>
-<br>
-<font size="5" color="Blue">StaticCalc Inputs:</font>
-<table border="1"> <tr><td>StaticCalc Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input gas characteristics to the corresponding place
+        on the block.
+        <li> Connect the output to the next block in your simulation.
+        <li> Double click the block and ...
+        <ul>
+            <li>Assume a throat area or throat Mach number.
+            <ul>
+                <li>Check the box to assume a Mach number for the throat.
+                <li>Uncheck the box to assume a throat area instead.
+            </ul>
+            <ul style="list-style-type:none">
+                <li>(<em>Note:</em> When assuming the throat area, the Mach
+                number input to the MN_M textbox will still be used as the
+                initial guess while iteratively solving.)
+            </ul>
+            <li>Input the corresponding values for the parameters you have chosen
+            to use.
+        </ul>
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Static Calc Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
     <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">StaticCalc Outputs:</font>
-<table border="1"> <tr><td>StaticCalc Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Static Calc Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>SOutBus</td><td>Static Output Bus, 5x1 bus/vector consisting of:
             <br>- Ts - Static Temperature [degR]
-    <br>- Ps - Static Pressure [psia]
-    <br>- rhos - Static rho [lbm/ft3]
-    <br>- MN - Mach Number [frac]
-    <br>- Ath - Throat Area [in2]</td></tr>
+            <br>- Ps - Static Pressure [psia]
+            <br>- &rho;<sub>s</sub> - Static density [lbm/ft3]. (Alternately referred to as 'rhos').
+            <br>- MN - Mach Number [frac]
+            <br>- Ath - Throat Area [in2]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">StaticCalc Mask Variables: </font>
-<table border="1"> <tr><td>StaticCalc Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Static Calc Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>ST_M</td><td>Solve Type:
-    <br>unchecked - Assumed Ath
-    <br>checked - Assumed MN </td></tr>
+            <br>unchecked - Assumed Ath
+            <br>checked - Assumed MN </td></tr>
     <tr><td>Ath_M</td><td>Assumed Ath [in^2]</td></tr>
-    <tr><td>MN_M</td><td>Assumed Mach Number[frac].<br> This will also be used as a first guess when using the assumed throat area method. It should be noted that tyipcally there are two solutions to a given throat area, a sub-sonic one and a super sonic one.  A guess of greater than 1 will usually find the super sonic solution and a guess of less than 1 will generally find the subsonic solution. </td></tr>
+    <tr><td>MN_M</td><td>Assumed Mach Number[frac].<br> This will also be used
+    as a first guess when using the assumed throat area method. It should be
+    noted that tyipcally there are two solutions to a given throat area, a
+    sub-sonic one and a super sonic one.  A guess of greater than 1 will
+    usually find the super sonic solution and a guess of less than 1 will
+    generally find the subsonic solution. </td></tr>
     <tr><td>X_FARVec_M</td><td>Fuel to Air Ratio Vector (X-axis) (cx1)</td></tr>
     <tr><td>Y_TtVec_M</td><td>Total Temperature Vector (Y-axis for Gamma calc)(dx1)</td></tr>
     <tr><td>T_RtArray_M</td><td>Gas Constant, R, Array (R = f(FAR))(cx1)</td></tr>
     <tr><td>T_gammaArray_M</td><td>Gamma Array (Gamma = f(Tt,FAR))(dxc)</td></tr>
 </table>
 
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>Error calculating:
+        <ul>
+            <li>Rt
+            <li>gammatg
+            <li>gammasg
+            <li>iteration gammasg
+        </ul></td><td>Error appears if the vector is not
+                    large enough to interpolate. Vector definitions may need
+                    to be adjusted.</td></tr>
+    <tr><td>Error calculating Ps at MN = MNIn</td><td>Error appears if maximum number
+                    of iterations is reached. Can indicate that there is a
+                    problem with the block outputs.</td></tr>
+    <tr><td>SolveType_M is not valid</td><td>Error appears if there is a problem
+                    with the block outputs.</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

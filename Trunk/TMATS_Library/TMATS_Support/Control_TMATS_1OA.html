@@ -2,31 +2,133 @@
      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
-<font size="6" color="Magenta">T-MATS: 1st Order Actuator Library Block</font>
-<p>This block models a generic actuator with a first order lag.</p>
-$$
-\frac {Y(s)}{X(s)} = \frac {Gain}{\tau s+1}
-$$
-<p>Additionally nonlinearities have been included to allow for actuator deadbands, rate limits
-and saturation points. Deadbands are used to simulate the mechanical play in the system. Rate limits can be
-set to simulate physical movement limitations of the actuator. </p>
-<font size="5" color="Blue">1-O Actuator Inputs:</font>
-<table border="1"> <tr><td>1-O Actuator Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for 1st Order Actuator Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: 1st Order Actuator Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to model a generic actuator with a first order lag.
+</p>
+
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    A standard form of the first order differential equation used is as follows:
+
+    $$ \tau * \frac{dy}{dt} + y = k*x(t) $$
+
+    in which <i>k</i> is the gain and \( \tau \) is the time constant for the system.
+    The laplace transform of the above equation is more commonly used and is as follows:
+
+    $$ \frac{Y(s)}{X(s)} = \frac{k}{\tau*s+1}$$
+
+<p>
+    This block operates by multiplying the initial input by the gain, dividing it by the
+    time constant, and then integrating the result with respect to time to solve the above equation. Feedback is also
+    utilized, as the result of the integration is divided by the time constant
+    and then passed back to the start of the loop.
+</p>
+<p>
+    During the second iteration (and those afterwards), the input value is again multiplied by the
+    gain and divided by the time constant, but before being integrated, the previously determined result
+    is subtracted from the new value, and the result is integrated. This process repeats as many times as necessary.
+  <br>
+<p>
+    In addition to the above, nonlinearities have been included to allow for actuator deadbands, rate limits,
+    and saturation points. Deadbands are used to simulate the mechanical play in the system. Rate limits can be
+    set to simulate physical movement limitations of the actuator. The saturation points are used to impose upper
+    and lower limits on the output signal. More information on these attributes can be found in the MATLAB documentation
+    for the backlash, rate limiter, and saturation blocks, respectively.
+
+</p>
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block, the user must specifiy the gain (Gain_M), the time constant (Tau_M),
+    and the initial conditions (IC_M) by double clicking the block. If the user wishes to utilize the nonlinearities,
+    the user must also specify the saturation points, deadband, or rate limit depending on which options they are using.
+    <ul>
+        <li> Connect the input (command) and output (actual) values to the corresponding places on the block.
+        <li> Double click the block and specify the gain, time constant, and initial conditions.
+        <li> Double click the block and specify the saturation points, deadband, and/or rate limit to use the nonlinearities.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        1st Order Actuator Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th >Description</th></tr>
     <tr><td>Command</td><td>Control commanded value (X)</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">1-O Actuator Outputs:</font>
-<table border="1"> <tr><td>1-O Actuator Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        1st Order Actuator Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>Actual</td><td>Actual value (Y)</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">1-O Actuator Mask Variables: </font>
-<table border="1"> <tr><td>1-O Actuator Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        1st Order Actuator Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>Gain_M</td><td>Actuator gain</td></tr>
-    <tr><td>Tau_M</td><td>Actuator time constant(\( \tau \))</td></tr>
+    <tr><td>Tau_M</td><td>Actuator time constant (\( \tau \))</td></tr>
     <tr><td>IC_M</td><td>Actuator initial condition </td></tr>
     <tr><td>MaxSat_M</td><td>Actuator Max saturation point</td></tr>
     <tr><td>MinSat_M</td><td>Actuator Min saturation point</td></tr>
     <tr><td>deadband_M</td><td>Acturator deadband</td></tr>
     <tr><td>rateLimit_M</td><td>Acturator rate limit</td></tr>
 </table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

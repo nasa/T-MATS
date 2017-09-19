@@ -1,53 +1,202 @@
-<font size="6" color="Magenta">T-MATS: Valve Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Valve Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Valve Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the performance of a valve using basic
+thermodynamic equations, properties, and table-lookups.
+</p>
+
 <br>
-This block simulates the performance of a valve using basic 
-thermodynamic equations, properties, and table lookups.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    Across the valve, the total temperature, total pressure, total enthalpy,
+    and fuel to air ratio of each flow are unchanged. The only parameter that
+    changes as a result of the valve is the gas path flow (<i>W</i>). To
+    compute this change, the following equations are used:
+
+    $$Wby_{Out} = Wby_{In} + Wth$$
+
+    $$Wmfp_{Out} = Wmfp_{In} - Wth$$
+
+    In the above equations, <i>Wby</i> refers to the bypass flow, <i>Wmfp</i>
+    refers to the main path flow, and <i>Wth</i> refers to the valve throat
+    flow. The valve throat flow and Mach number are solved for iteratively.
+</p>
+<p>
+    The first step is to compute the fraction that the valve is open, according
+    to the following:
+
+    $$ValveFrac = \frac{VlvPosIn-VlvdeadZone}{VlvfullyOpen-VlvdeadZone}$$
+
+    in which <i>VlvPosIn</i> is an input parameter to the block and the variables
+    <i>VlvdeadZone</i> and <i>VlvfullyOpen</i> are specified by the user. The
+    user-specified values can be accessed by double clicking the block and
+    editing the corresponding values.
+</p>
+<p>
+    The ratio of total pressures at the inlet and exit of the bleed line is
+    determined by the following equation:
+
+    $$ValvePR = \frac{Ptmfp_{In}}{Ptby_{In}}$$
+
+    If the valve is closed completely (<i>ValveFrac = 0</i>) or the main gas path pressure
+    is less than or equal to the bypass pressure (<i>ValvePR &le; 1</i>, the valve does not consider back flow situations)
+    , the valve throat flow is set to be zero.
+    Otherwise, the valve throat flow is determined according to the following
+    process.
+</p>
+<p>
+    First, the active area of the valve is determined by the following equation:
+
+    $$\textit{Valve_active_Ae} = ValveFrac*\textit{Valve_Ae}$$
+
+    in which the valve area (<i>Valve_Ae</i>) is set by the user by
+    double clicking the block and editing the corresponding value.
+</p>
+<p>
+    Then the corrected flow is calculated by interpolating the input vectors
+    in a table-lookup type fashion with the pressure ratio as the input.
+</p>
+<p>
+    Finally, the air flow through the valve is calculated by the following
+    equation, using previously calculated values as well as temperature and
+    pressure values from the main flow path input.
+
+    $$Wth = \frac{Wc*Ptmfp_{In}}{\sqrt{Ttmfp_{In}}*\textit{Valve_active_Ae}}$$
+</p>
+
 <br>
-<br>
-<font size="5" color="Blue">Valve Inputs:</font>
-<table border="1"> <tr><td>Valve Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input gas path flows and valve position to the correct
+        places on the block.
+        <li> Connect the outputs to the next block(s) in your simulation.
+        <li> Double click the block and edit the values for the valve variables.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Valve Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>ByGasPthCharIn</td><td>Gas Path Characteristics of the Bypass, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
-    <tr><td>ValvePos</td><td>Valve Position[frac] 0 - full closed command, 1 - full open command</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>ValvePos</td><td>Valve Position[frac]. 0 - full closed, 1 - full open.</td></tr>
     <tr><td>MFPGasPthCharIn</td><td>Gas Path Characteristics of the Main Flow Path, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
-    <tr><td>Nmech</td><td>shaft speed [rpm]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Valve Outputs:</font>
-<table border="1"> <tr><td>Valve Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Valve Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>ByGasPthCharOut</td><td>Gas Path Characteristics of the Bypass, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>MFPGasPthCharOut</td><td>Gas Path Characteristics of the Main Flow Path, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>V_Data</td><td>Valve internal calculation Data</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Valve Mask Variables: </font>
-<table border="1"> <tr><td>Valve Mask Variable</td><td>Description</td></tr>
-    <tr><td>VFO_M</td><td>Valve fully open Value[frac], mechanical valve limit</td></tr>
-    <tr><td>VDZ_M</td><td>Valve dead zone Value[frac], mechanical requirement
-    <br>before valve begins to move off fully closed</td></tr>
-    <tr><td>VAe_M</td><td>Valve Active Area[in^2], size of valve opening</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Valve Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>VFO_M</td><td>Valve fully open Value[frac]. Mechanical valve limit.</td></tr>
+    <tr><td>VDZ_M</td><td>Valve dead zone Value[frac]. Mechanical requirement
+                          before valve begins to move off fully closed.</td></tr>
+    <tr><td>VAe_M</td><td>Valve Active Area[in^2]. Size of valve opening.</td></tr>
     <tr><td>X_VPRVec_M</td><td>Valve Pressure Ratio Vector (x-axis)</td></tr>
     <tr><td>T_VWArray_M</td><td>Valve Flow Array (W=f(PR))</td></tr>
 </table>
 <br>
 Note: Vectors are the x and/or y axis to a table made of an array.
 
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>Error calculating bleedFlxCr</td><td>Error occurs when vector is not large enough to interpolate.
+                    Vector definitions may need to be expanded.</td></tr>
+</table>
+
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

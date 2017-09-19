@@ -2,40 +2,92 @@
      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
-<font size="6" color="Magenta">T-MATS: Thermal Expansion Library Block</font>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Thermal Expansion Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Thermal Expansion Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to calculate the length or radius of a structure that has
+    expanded or contracted due to thermal expansion.
+</p>
+
 <br>
-<p>This function calculates the length or radius of a structure that has expanded or contracted due to thermal expansion. The block accepts the previous/reference length (Lref), previous/reference temperature (Tref), and current temperature (Tf) as its inputs. The user has the option to specify a constant thermal expansion coefficient or to incorporate temperature dependence by providing data that correlates the thermal expansion coefficient with temperature. The bond length of a specimen has the following relation when considering temperature dependence. <p>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the expanded length, this block accepts the reference length (<i>Lref</i>),
+    reference temperature (<i>Tref</i>), and current temperature (<i>Tf</i>) as its inputs.
+</p>
+<p>
+    The user has the option to specify a constant thermal expansion coefficient or to incorporate temperature
+    dependence by providing data that correlates the thermal expansion coefficient with temperature.
+</p>
+<p>
+    The bond length of a specimen has the following relation when considering temperature dependence:
+
 $$
 L = L_{ref} \left[ 1 + \int_{T_{ref}}^{T_f} \alpha (T) dT \right]
-$$   
-<p>where
 $$
-T = temperature
-$$
-$$
-T_{ref} = previous/reference \: temperature
-$$
-$$
-L_{ref} = previous/reference \: length \: at \: temperature \: T_{ref}
-$$
-$$
-T_f = current/final \: temperature
-$$
-$$
-L = current/final \: length \: at \: temperature \: T_f
-$$
-$$
-\alpha = thermal \: expansion \: coefficient
-$$
-<p>In the case that the thermal expansion coefficient is constant the final length can simply be expressed as:<p>
+
+The variables in the above equation are described in the tables below.
+<br>
+    <p>In the case that the thermal expansion coefficient is constant, the final length can simply be expressed as:
 $$
 L = L_{ref} \left[ 1 + \alpha \left( T_f - T_{ref} \right) \right]
 $$
-<p>This block provides the option to evaluate the first expression in the case where the thermal expansion coefficient is dependent on the temperature. This is done given a temperature and corresponding thermal expansion array which are used to integrate over the appropriate temperature range. The other option is to specify a constant thermal expansion coefficient which is used to evaluate the second expression.<p>
-<p>This function could be used for steady-state calculations. Theoretically it can also be used in dynamic simulations where Tref and Lref are the temperature and length from the previous time-step, Tf is the current temperature, and L is the current length. <p>
-<p>Note that if the temperature dependent option is being utilized then the temperature array, T_data_M, should be monotonically increasing and have at least 2 elements. The thermal expansion coefficient array, alpha_data_M, should be the same size as T_data_M. Generally all units must be specified consistently. For example, if temperature is in Celsius all temperature units must in Celsius. Below is a table that lists the proper units for each input and parameter in standard English and SI units. For definitions of each of the inputs and parameters (masked variables) refer to the tables near the bottom of the page.<p>
-<font size="5" color="Blue"> Input and Parameter Unit Examples:</font>
-<table border="1"> <tr><td> Input/Parameter </td><td> English </td><td> SI </td></tr>
+
+<p>This block provides the option to evaluate the first expression in the case
+where the thermal expansion coefficient is dependent on the temperature. This
+is done by using a given temperature and corresponding thermal expansion array
+to integrate over the appropriate temperature range. The other option is to
+specify a constant thermal expansion coefficient which is used to evaluate the
+second expression.
+
+<p>This block could also be used for steady-state calculations. Theoretically
+it can also be used in dynamic simulations where <i>Tref</i> and <i>Lref</i>
+are the temperature and length from the previous time-step, <i>Tf</i> is the
+current temperature, and <i>L</i> is the current length.
+
+<p><em>Note:</em> If the temperature dependent option is being utilized, then the temperature
+array, <i>T_data_M</i>, should be monotonically increasing and have at least two
+elements. The thermal expansion coefficient array, <i>alpha_data_M</i>, should
+be the same size as <i>T_data_M</i>. Generally, all units must be specified
+consistently. For example, if temperature is in Celsius, all temperature units
+must be in Celsius. Below is a table that lists the proper units for each parameter
+in standard English and SI units. For definitions of each of the parameters, refer
+to the tables near the bottom of the page.
+
+
+<div class="table_caption">
+    Parameter Unit Examples:
+</div>
+<table>
+    <tr><th> Parameter </th><th> English </th><th> SI </th></tr>
     <tr><td>alpha_M</td><td>1/R</td><td>1/K</td></tr>
     <tr><td>T_data_M</td><td>R</td><td>K</td></tr>
     <tr><td>alpha_data_M</td><td>1/R</td><td>1/K</td></tr>
@@ -44,25 +96,118 @@ $$
     <tr><td>Tf</td><td>R</td><td>K</td></tr>
 </table>
 <br>
-<p>The output temperature will be in whatever temperature units were used in the inputs and parameters. Using temperature units of degrees Fahrenheit (F) or Celsius (C) is possible.<p>
+
+<p>The output temperature will be in whatever temperature units were used in the inputs and parameters.
+Using temperature units of degrees Fahrenheit (F) or Celsius (C) is possible.<p>
+
 <br>
-<font size="5" color="Blue"> Thermal Expansion Inputs:</font>
-<table border="1"> <tr><td> Thermal Expansion Inputs</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the original length, reference temperature, and current
+        temperature to the corresponding places on the block.
+        <li> Connect the output (final length) to the next block in your simulation.
+        <li>Double click the block and select whether or not <i>TD_M</i>
+        will be constant or not.
+        <ul>
+            <li>If the box by <i>TD_M</i> is checked, the thermal expansion
+            will be temperature dependent. If the box is unchecked, the thermal expansion will be constant.
+            <li>Update the corresponding values for the case you are simulating.
+        </ul>
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Thermal Expansion Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>Lref</td><td>Length at the previous temperature or reference temperature (1x1)</td></tr>
     <tr><td>Tref</td><td>Previous temperature or reference temperature (1x1)</td></tr>
     <tr><td>Tf</td><td>Current temperature or final temperature (1x1)</td></tr>
 </table>
-<br>
-<font size="5" color="Blue"> Thermal Expansion Outputs:</font>
-<table border="1"> <tr><td>Thermal Expansion Outputs</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Thermal Expansion Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>L</td><td>Length at the current temperature or final temperature (1x1)</td></tr>
 </table>
-<br>
-<font size="5" color="Blue"> Thermal Expansion Mask Variables: </font>
-<table border="1"> <tr><td> Thermal Expansion Mask Variables</td><td>Description</td></tr>
-    <tr><td>alpha_M</td><td>Constant thermal expansion coefficient used when the thermal expansion coefficient is assumed to be constant (1x1)</td></tr>
-    <tr><td>TVec_M</td><td>Temperature array used to integrate the thermal expansion coefficient integral when temperature dependence is considered (nx1)</td></tr>
-    <tr><td>alphaVec_M</td><td>Thermal expansion coefficient array corresponding to TVec_M that is used to integrate the thermal expansion coefficient integral when temperature dependence is considered (nx1)</td></tr>
-    <tr><td>TD_M</td><td>Variable distiguishing whether to consider a constant thermal expansion coefficient or temperature dependent one. When the box corresponding to this variable is unchecked a constant thermal expansion coefficient is assumed and when the box is checked temperature dependence is considered.</td></tr>  
-	<tr><td>BN_M</td><td>Block name (hidden parameter)</td></tr> 
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Thermal Expansion Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>alpha_M</td><td>Constant thermal expansion coefficient used when
+    the thermal expansion coefficient is assumed to be constant (1x1)</td></tr>
+    <tr><td>TVec_M</td><td>Temperature array used to integrate the thermal
+    expansion coefficient integral when temperature dependence is considered (nx1)</td></tr>
+    <tr><td>alphaVec_M</td><td>Thermal expansion coefficient array corresponding
+    to TVec_M that is used to integrate the thermal expansion coefficient integral
+    when temperature dependence is considered (nx1)</td></tr>
+    <tr><td>TD_M</td><td>Variable distiguishing whether to consider a constant
+    thermal expansion coefficient or temperature dependent one. When the box
+    corresponding to this variable is unchecked a constant thermal expansion
+    coefficient is assumed and when the box is checked temperature dependence is considered.</td></tr>
 </table>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>T_data must be an array of at least two elements</td><td>This warning is
+                                displayed if T_data only has one element.</td></tr>
+    <tr><td>T_data and alpha_data must be the same size</td><td>This warning
+                                is displayed if the arrays are not the same size.</td></tr>
+    <tr><td>Reference temperature (To) is less than the minimum value of T_data</td>
+            <td>The reference temperature is out of the range defined by T_data.
+            Expand the data arrays to assure good results.
+            To avoid errors, To is set to the minimum value of T_data.</td></tr>
+    <tr><td>Reference temperature (To) is greater than the maximum value of T_data.</td>
+            <td>The reference temperature is out of the range defined by T_data.
+            Expand the data arrays to assure good results.
+            To avoid errors, To is set to the maximum value of T_data.</td></tr>
+    <tr><td>Current temperature (Tf) is less than the minimum value of T_data</td>
+            <td>The current temperature is out of the range defined by T_data.
+            Expand the data arrays to assure good results.
+            To avoid errors, Tf is set to the minimum value of T_data.</td></tr>
+    <tr><td>Current temperature (Tf) is greater than the maximum value of T_data.</td>
+            <td>The current temperature is out of the range defined by T_data.
+            Expand the data arrays to assure good results.
+            To avoid errors, Tf is set to the maximum value of T_data.</td></tr>
+    <tr><td>T_data must be monotonically increasing.</td><td>This warning is
+                                displayed if the elements in T_data are not
+                                arranged in increasing order.</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

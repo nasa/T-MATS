@@ -1,0 +1,54 @@
+/* Style Sheet for T-MATS documentation*/
+
+.purpose{color:blue;font-size:24px; font-weight:bold;}
+        
+.background{color:green;font-size:24px; font-weight:bold;}
+        
+.instructions{color:lightseagreen;font-size:24px; font-weight:bold;}
+
+.errors{color:red; font-size:24px; font-weight:bold;}
+        
+.inputs{color:darkorange;font-size:24px; font-weight:bold;}
+        
+.outputs{color:deeppink;font-size:24px; font-weight:bold;}
+        
+.maskvars{color:darkred;font-size:24px; font-weight:bold;}
+
+.table_caption{color:black;font-size:20px; font-weight:bold;}
+
+table,th,td{
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th,td{
+    padding:15px;
+}
+
+table{
+width:70%
+}
+
+tr:nth-child(even) {
+     background-color: #eee;
+}
+tr:nth-child(odd) {
+     background-color: #fff;
+}
+
+body{
+    font-family:verdana;
+}
+
+h1{
+    color:Purple;
+    text-align:center;
+}
+h2{
+    font-size:20;
+    color:Black;
+    text-align:center;
+}
+code{
+    font-family:courier;
+}

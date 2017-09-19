@@ -2,38 +2,160 @@
      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
-<font size="6" color="Magenta">T-MATS: Newton Raphson Solver Library Block</font>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Newton Raphson Solver Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Newton Raphson Solver Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block is used to determine the root of a function, or otherwise solve
+    for a specific value, by using the iterative Newton Raphson method.
+</p>
+
 <br>
-Newton Raphson Solver: 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the output values, this block uses the Newton Raphson method,
+    which is an iterative process characterized by the following equation:
+
+    $$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$$
+
+    In the equation above, the variables represent the quantities described
+    below, in which <i>m</i> is the length of the initial conditions matrix
+    and number of system independents and <i>n</i> denotes the time step.
+
+    <ul>
+        <li><i>x<sub>n</sub></i>: known value
+        <br><br>
+        <li><i>f (x<sub>n</sub>)</i>:  value of the function evaluated at
+        <i>x<sub>n</sub></i>; <i>m</i> x 1 matrix
+        <br><br>
+        <li><i>f '(x<sub>n</sub>)</i>: derivative of the function evaluated at
+        <i>x<sub>n</sub></i>; <i>m</i> x <i>m</i> matrix. Also known as the Jacobian matrix.
+        <br><br>
+        <li><i>x<sub>n+1</sub></i>: next value that you are solving for
+    </ul>
+</p>
+<p>
+    As more iterations are run, the fraction in the above equation should
+    approach zero, and the solution should converge to a singular value. It
+    is important to note that it is possible for the system to diverge; for
+    a description of when this could occur, see the Potential Errors section
+    at the bottom of this page.
+</p>
+
 <br>
-<br>
-$$
-x(n+1) = x(n) - \frac{f(x(n))}{f'(x(n)}
-$$
-<br>
-<br>
-Note: 
-f'(x(n)) is an m x m matrix and f(x(n)) is an m x 1 matrix 
-where m is the length of the initial conditions matrix and number of system independents. n denotes a time step.
-<br>
-<br>
-<font size="5" color="Blue">Newton Raphson Solver Inputs:</font>
-<table border="1"> <tr><td>NRS Input</td><td>Description</td></tr>
-    <tr><td>Enable</td><td>Enables the newton raphson solver</td></tr>
-    <tr><td>inv(f'(x(n)))</td><td>Receprical of the derivative of the system</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input variables to the corresponding places on the
+        block.
+        <li> Connect the outputs to the next block(s) in your simulation.
+        <li> Double click the block and specify the initial conditions, the
+        step size limit, and the maximum and minimum limits of the output.
+    </ul>
+</p>
+<p>
+    For more information on what each input, output, and mask variable
+    should contain, see the tables below.
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Newton Raphson Solver Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
+    <tr><td>Enable</td><td>Enables the Newton Raphson solver</td></tr>
+    <tr><td>inv(f'(x(n)))</td><td>Reciprocal of the derivative of the system or inverse of the Jacobian;
+    can be determined by using a Jacobian Calculator block.</td></tr>
     <tr><td>f(x(n))</td><td>Output of the system as function of x(n)</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Newton Raphson Solver Outputs:</font>
-<table border="1"> <tr><td>NRS Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Newton Raphson Solver Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>x(n)</td><td>Current value(mx1)</td></tr>
     <tr><td>x(n+1)</td><td>Next time step value(mx1)</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Newton Raphson Solver  Mask Variables: </font>
-<table border="1"> <tr><td>NRS Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Newton Raphson Solver Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>NR_IC_M</td><td>Initial Conditions of Newton Raphson (mx1)</td></tr>
     <tr><td>NR_dx_Lim_M</td><td>Newton Raphson dx limit[%](1x1), used for stability purposes</td></tr>
     <tr><td>NR_Mx_Lim_M</td><td>Max limit on output(1x1 or mx1)</td></tr>
     <tr><td>NR_Mn_Lim_M</td><td>Min limit on output(1x1 or mx1)</td></tr>
 </table>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, there is a possibility that the solution will not converge.
+This can happen for a variety of reasons, as listed below:
+<ul>
+    <li>The initial guess (initial condition) was not close enough to the
+    desired root. This can cause the system to either diverge completely or converge
+    on a secondary root of the function.
+    <li>The derivative of the function is not well behaved, causing the system
+    to overshoot the correct root and diverge.
+    <li>The initial guess (or a resulting value after one or more iterations)
+    is a point in the function for which the derivative is zero. This results
+    in a divide-by-zero situation, and an error occurs.
+    <li>The results of the solver hit one of the user-specified limits.
+</ul>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

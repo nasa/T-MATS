@@ -1,23 +1,129 @@
-<font size="6" color="Magenta">T-MATS: Set Point Calculation (Tbl)</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Set Point Controller Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Set Point Controller Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block contains a Proportional-Integrator (PI) controlller with windup protection.
+</p>
+
 <br>
-This block contains a set point table look up based on an external request and a manual override.<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    The Effector Value is determined by using a simple PI controller,
+    in which the difference between the Required Input and the Sensed Input (<i>E</i>) is
+    multiplied by the Integral Gain (<i>K<sub>i</sub></i>), integrated, and then added to the
+    Proportional Gain (<i>K<sub>p</sub></i>) multiplied by the difference that was initially determined.
+    The resulting sum is then added to the initial condition to determine the Effector Value (<i>U</i>). </p>
+$$ U = K_p*E+K_i*\int\! E$$
+<p>
+    Windup occurs when the integrator in a PI controller accumlates an error
+    and continues to increase this error through cycles of integration.
+    To protect against windup, this block checks if the sensed value is active
+    or passive during the cycle. If active, the signal has the windup gain
+    applied to it before being used in the main loop. If passive, the effects
+    of the integrator are canceled out so as to avoid windup. </p>
+
+<p>
+    Alternatively, the above process can be overridden by manually setting the
+    Effector Value.</p>
+
 <br>
-<font size="5" color="Blue">LS Inputs:</font>
-<table border="1"> <tr><td>LS Input</td><td>Description</td></tr>
-    <tr><td>External Request</td><td> External system request for table lookup</td></tr>
-    <tr><td>Determiner Signal</td><td> Determiner signal for table lookup</td></tr>
-    <tr><td>Manual_En</td><td> Enable manual input: 1- manual input active, 0- use value based on exernal request</td></tr>
-    <tr><td>Manual Setpoint</td><td> Manual Setpoint: Setpoint used when manual mode is enabled</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    There are two options when using this block:
+    <ol>
+        <li>Use the PI controller to determine the effector value.
+        <li>Manually set the effector value.
+    </ol>
+
+    Whichever option you choose to use, remember to also:
+    <ul>
+        <li> Connect the required inputs to the corresponding places on the block.
+        <li> Connect the output to the next block in your simulation.
+        <li> Double click the block and specify the Initial Condition, Windup Protection Gain, and the Sample Time.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Set Point Controller Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th >Description</th></tr>
+    <tr><td>Input_req</td><td>Required Input</td></tr>
+    <tr><td>Input_sensed</td><td>Sensed input</td></tr>
+    <tr><td>Eff_dmd</td><td>Effector Demand</td></tr>
+    <tr><td>Kp</td><td>Proportional Gain</td></tr>
+    <tr><td>Ki</td><td>Integral Gain</td></tr>
+    <tr><td>Man_En</td><td>Enable manual input: 1- manual input active, 0- use value based on PI Controller</td></tr>
+    <tr><td>Eff_Man</td><td>Manually set effector value</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">LS Outputs:</font>
-<table border="1"> <tr><td>LS Output</td><td>Description</td></tr>
-    <tr><td>Cntrl Setpoint</td><td> Setpoint for use by controller</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Set Point Controller Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>Eff_req</td><td>Required Effector</td></tr>
+    <tr><td>Active</td><td> 1 - Active, 0 - Not active</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">LS  Mask Variables: </font>
-<table border="1"> <tr><td>LS Mask Variable</td><td>Description</td></tr>
-    <tr><td>ERVec_M</td><td>External request vector (for table lookup)(1xm)</td></tr>
-    <tr><td>DSVec_M</td><td>Determine signal vector (for table lookup)(1xn)</td></tr>
-    <tr><td>SPArray_M</td><td>Setpoint array (mxn)</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Set Point Controller Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>PI_IC_M</td><td>Integrator Initial Condition</td></tr>
+    <tr><td>WGain_M</td><td>Windup protection gain</td></tr>
+    <tr><td>Ts_M</td><td>Sample time (sec)</td></tr>
 </table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

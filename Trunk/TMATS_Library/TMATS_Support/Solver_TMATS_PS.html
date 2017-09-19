@@ -1,23 +1,126 @@
-<font size="6" color="Magenta">T-MATS: Parameter Step Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Parameter Step Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Parameter Step Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block is used to step another block's input parameter from an
+    initial value to a different, final value.
 <br>
-The parameter step block will step another block's input parameter from an initial condition to a final postion.
+</p>
+
 <br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To step a another block's parameter from one value to the next, this block
+    replaces an inital value with a final value specified by the user, as
+    long as the specified step time is less than the time at which this block
+    is used. Note: any parameter changed with this block must be tunable.
+</p>
 <br>
-<font size="5" color="Blue">Parameter Step Inputs:</font>
-<table border="1"> <tr><td>Parameter Step Input</td><td>Description</td></tr>
-    <tr><td>None</td><td>N/A</td></tr>
-</table>
-<br>
-<font size="5" color="Blue">Parameter Step Outputs:</font>
-<table border="1"> <tr><td>Parameter Step Output</td><td>Description</td></tr>
-    <tr><td>None</td><td>N/A</td></tr>
-</table>
-<br>
-<font size="5" color="Blue">Parameter Step Mask Variables: </font>
-<table border="1"> <tr><td>Parameter Step Mask Variable</td><td>Description</td></tr>
-    <tr><td>BN_M</td><td>Block Name. Note: the MATLAB command "gcb" can be used to determine the block name.</td></tr>
-    <tr><td>PN_M</td><td>Parameter Name Note: the block internal workings makes use of the MATLAB set_parm function and parameter names will need to be in the form required by this function. </td></tr>
-    <tr><td>IV_M</td><td>Initial Value defined as a string. Size and value must match block's parameter initial size and value</td></tr>
-    <tr><td>FV_M</td><td>Final Value defined as a string. Size must match block's parameter initial size.</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Double click the block.
+        <li> Enter the name of the block that contains the parameter to be adjusted.
+        <li> Enter the name of the parameter to be adjusted.
+        <li> Input the initial value of the parameter.
+        <li> Input the final value of the parameter.
+        <li> Input the step time for this action.
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Parameter Step Inputs
+</div>
+
+No direct inputs are required for this block, as the needed inputs are specified
+by the mask variables.
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Parameter Step Outputs
+</div>
+
+No direct outputs are required for this block, as the needed outputs are specified
+by the mask variables.
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Parameter Step Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>BN_M</td><td>Block Name.<br> Note: The MATLAB command "gcb" can be
+                                    used to determine the block name.</td></tr>
+    <tr><td>PN_M</td><td>Parameter Name.<br> Note: The block internal workings
+                                    makes use of the MATLAB set_parm function
+                                    and parameter names will need to be in
+                                    the form required by this function. </td></tr>
+    <tr><td>IV_M</td><td>Initial Value defined as a string. Size and value
+                         must match block's parameter initial size and value</td></tr>
+    <tr><td>FV_M</td><td>Final Value defined as a string. Size must match
+                         block's parameter initial size.</td></tr>
     <tr><td>ST_M</td><td>Step Time defined as a number</td></tr>
 </table>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, an error may occur if the parameter names are not specified
+in the way that the MATLAB function "set_parm" specifies. To resolve this error,
+enter the parameter names in the form required by this function. Another error
+may occur if the values input by the user for the initial value and final value
+mask variables are not the same size as the parameter specified in the block.
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

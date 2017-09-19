@@ -1,24 +1,118 @@
-<font size="6" color="Magenta">T-MATS: Simple PI controller Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Simple PI Controller Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Simple PI Controller Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the effects of a simple
+    proportional-integral (PI) controller.
+</p>
+
 <br>
-Simple PI contoroller:
-DMD - Sens = Error
-Error*(Kp + Ki/s) = Effector DMD
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+
+
+    To simulate a PI controller, this block utilizes the equation below.
+
+    $$U = E*K_p + K_i*\int{E}$$
+
+    in which
+
+    $$E = R - Y $$
+
+
+    In the above equations, <i>K<sub>p</sub></i> is the proportional gain, <i>K<sub>i</sub></i> is the integrator gain,
+    <i>E</i> is the error as a function of time, <i>R</i> is the input demand, <i>Y</i> is the input to be controlled,
+    and <i>U</i> is output effector demand value.
+    These equations are used to compute the controller output while eliminating any offset of the signal.
+
+</p>
+
 <br>
-<br>
-<font size="5" color="Blue">PI Inputs:</font>
-<table border="1"> <tr><td>PI Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input demand and input to be controlled to the correct places on the block
+        <li> Connect the output to the next block in your simulation.
+        <li> Double click the block and input the values of the proportional gain, integrator gain, and the initial condition.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Simple PI Controller Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th >Description</th></tr>
     <tr><td>Input_demand</td><td> R - input demanded value </td></tr>
     <tr><td>Input_sensed</td><td> Y - input of plant output to be controlled</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">PI Outputs:</font>
-<table border="1"> <tr><td>PI Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Simple PI Controller Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>Effector Demand</td><td> U - output to plant Effector</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">PI  Mask Variables: </font>
-<table border="1"> <tr><td>PI Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Simple PI Controller Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>Kp_M</td><td>Proportional gain</td></tr>
     <tr><td>Ki_M</td><td>Integrator gain</td></tr>
     <tr><td>PI_IC_M</td><td> Integrator Initial Conditions </td></tr>
 </table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

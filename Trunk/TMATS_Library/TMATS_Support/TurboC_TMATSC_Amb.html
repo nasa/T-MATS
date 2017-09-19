@@ -1,50 +1,202 @@
-<font size="6" color="Magenta">T-MATS: Ambient, Cantera Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Ambient (Cantera) Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Ambient (Cantera) Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block is used to translate environmental conditions to gas characteristics.
+    The altitude, temperature difference, and Mach number are converted to
+    pressure, temperature, and velocity using table lookups and <a href="FunM_TMATSC.html">T-MATS Cantera functions</a>.
+</p>
 <br>
-This block translates environmental condition to gas characteristics: Alt,
-dTamb, and MN to Pressure, Temperature, Velocity, etc..
-To utilize this block a Cantera object must exist in the workspace as a
-global variable named fs, which may be created with the Cantera importPhase command.
-The fs variable must include all Species defined in the file canteraload.m.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the output characteristics, this block utilizes a variety of
+    equations. All data are based on the document NASA-TM-X-74335 and the <a href="http://www.pdas.com/">public domain
+    aeronautical software site</a>.
+    </p>
+    <p>
+    Methodology for parameter calculation uses a emperical method that is relevant for altitudes from 0 to 86km.
+    To calculate the geopotential altitude(<i>h</i>), the equation below is used:
+
+    $$h = \frac{alt}{3280.84}*\frac{R_{Earth}}{\frac{alt}{3280.84}+R_{Earth}}$$
+
+    In the equation above, the value 3280.84 is used to convert between units of
+    kilometers and feet, <i>alt</i> is the user-specified altitude, and the
+    variable <i>R<sub>Earth</sub></i> represents the radius of the earth
+    (6369 km).
+</p>
+<p>
+    A table lookup is done to determine reference values for the geopotential altitude,
+    temperature, pressure, and temperature gradient. Off nominal geopotential altitude
+    (&Delta; h) is determined by the following equation, in which <i>h<sub>ref</sub></i>
+    is the table reference value.
+
+    $$\Delta h = h - h_{ref}$$
+
+
+    The static temperature is
+    then calculated using the following equation, using the table reference
+    values for temperature and the temperature gradient (<i>T<sub>gradient</sub></i>).
+
+    $$T_s = \frac{9}{5} * (T_{ref} + T_{gradient}*\Delta h)$$
+</p>
+<p>
+    If <i>T<sub>gradient</sub></i> is equal to zero, the static pressure is calculated
+    using the first equations. Otherwise, the second equation is used.
+
+    $$ P_s = P_{ref}*e^{\frac{-GMR*\Delta H}{T_{ref}}}*14.696$$
+    $$ P_s = P_{ref}*\left(\frac{T_{ref}*9}{T_s*5}\right)^\frac{GMR}{T_{gradient}}*14.696$$
+
+    In the above equations, GMR is a hydrostatic constant (equal to 34.16)
+    and is equal gravity times molecular weight divided by the gas constant. Additionally,
+    the constant 14.696 in the above equation is used to convert between
+    units of atmosphere and pounds per square inch.
+</p>
+<p>
+    The previously calculated temperature value is then adjusted
+    to account for the change in ambient temperature (<i>dT<sub>s</sub></i>)
+    by using the following equation:
+
+    $$ T_s = T_s + dT_s$$
+
+A Flow object is then created with <a href="FunM_TMATSC.html">T-MATS Cantera functions</a>
+using static temperature, pressure, Mach Number, and defined mass flow.
+
+    The RAM thrust produced is calculated using the following equation:
+
+    $$F_{RAM} = \frac{V_{flow}*W}{g}$$
+
+    In the equation above, <i>V<sub>flow</sub></i> and <i>W</i> are parameters
+    that are specified within the WeightFlow input (pps) and <i>g</i> is the
+    acceleration due to gravity on Earth (32.174  ft/s^2).
+</p>
+
 <br>
-<br>
-<font size="5" color="Blue">Ambient Inputs:</font>
-<table border="1"> <tr><td>Ambient Input</td><td>Description</td></tr>
-    <tr><td>Weight Flow</td><td>gas path flow[pps]</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+<p>
+    To use this block:
+    <ul>
+        <li> Ensure that a Cantera object exists in the workspace as a global
+        variable named 'fs' and contains all of the species defined in the
+        file 'canteraload.m'.
+        <br>
+        &nbsp;&nbsp;<em>Note:</em>This can be created with the Cantera 'importPhase'
+        command.
+        <li> Connect the flow input to the corresponding place on the block.
+        <li> Connect the outputs to the next blocks in your simulation.
+        <li> Double click the block and specify the altitude, Mach number,
+        and difference in ambient temperature.
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Ambient (Cantera) Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
+    <tr><td>Weight Flow</td><td>Gas path flow [pps]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Ambient Outputs:</font>
-<table border="1"> <tr><td>Ambient Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Ambient (Cantera) Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>Flow Out</td><td>Flow Data Output, 25x1 vector consisting of:
-            <br>-1- W      - gas path flow [pps]
-            <br>-2- s     - entropy [BTU/(lbm*degR)]
-            <br>-3- Tt     - total temperature [degR]
-            <br>-4- Pt     - total pressure [psia]
-            <br>-5- ht     - total enthlapy [BTU/lbm]
-            <br>-6- rhot  - total density [lbm/ft3]
-            <br>-7- gamt  - total specific heat ratio
-            <br>-8- Ts    - static temperature [degR]
-            <br>-9- Ps    - static pressure [psia]
-            <br>-10- hs    - static enthalpy [BTU/lbm]
-            <br>-11- rhos  - static density [lbm/ft3]
-            <br>-12- gams  - static specific heat ratio
-            <br>-13- Vflow - flow velocity [ft/sec]
-            <br>-14- MN  - Mach number
-            <br>-15- A     - flow area [in2]
-            <br>-16to21- species array values, defined in canteraload.m
-            <br>-22to25- future use
+            <br>-1- &nbsp;&nbsp; W   &nbsp;&nbsp;    - Gas path flow [pps]
+            <br>-2- &nbsp;&nbsp; s  &nbsp;&nbsp;     - Entropy [BTU/(lbm*degR)]
+            <br>-3- &nbsp;&nbsp; Tt  &nbsp;&nbsp;    - Total temperature [degR]
+            <br>-4- &nbsp;&nbsp; Pt  &nbsp;&nbsp;    - Total pressure [psia]
+            <br>-5- &nbsp;&nbsp; ht  &nbsp;&nbsp;    - Total enthlapy [BTU/lbm]
+            <br>-6- &nbsp;&nbsp; rhot &nbsp;&nbsp;   - Total density [lbm/ft3]
+            <br>-7- &nbsp;&nbsp; gamt &nbsp;&nbsp;   - Total specific heat ratio
+            <br>-8- &nbsp;&nbsp; Ts   &nbsp;&nbsp;   - Static temperature [degR]
+            <br>-9- &nbsp;&nbsp; Ps    &nbsp;&nbsp;  - Static pressure [psia]
+            <br>-10- &nbsp;&nbsp; hs  &nbsp;&nbsp;   - Static enthalpy [BTU/lbm]
+            <br>-11- &nbsp;&nbsp; rhos &nbsp;&nbsp;  - Static density [lbm/ft3]
+            <br>-12- &nbsp;&nbsp; gams &nbsp;&nbsp;  - Static specific heat ratio
+            <br>-13- &nbsp;&nbsp; Vflow &nbsp;&nbsp; - Flow velocity [ft/sec]
+            <br>-14- &nbsp;&nbsp; MN   &nbsp;&nbsp;  - Mach number
+            <br>-15- &nbsp;&nbsp; A    &nbsp;&nbsp;  - Flow area [in2]
+            <br>-16to21- &nbsp;&nbsp; Species array values, defined in canteraload.m
+            <br>-22to25- &nbsp;&nbsp; Future use
         </td></tr>
     <tr><td>Pamb</td><td>Ambient Static Pressure [psia]</td></tr>
-    <tr><td>Fram</td><td>Ram Drag []</td></tr>
-    <tr><td>A_Data</td><td>Ambient additional calculation Data</td></tr>
+    <tr><td>Fram</td><td>Ram Drag [lbf]</td></tr>
+    <tr><td>A_Data</td><td>Ambient additional calculation data</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Ambient Mask Variables: </font>
-<table border="1"> <tr><td>Ambient Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Ambient (Cantera) Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>alt_M</td><td>Altitude [ft]</td></tr>
     <tr><td>MN_M</td><td>Mach number</td></tr>
     <tr><td>dTs_M</td><td>Delta ambient temperature</td></tr>
 </table>
-<br>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, an error will occur if a Cantera object does not exist
+in the workspace as a global variable named 'fs'. An error will also occur
+if this variable does not contain all of the species defined in 'canteraload.m'.
 
 
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

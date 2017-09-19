@@ -1,38 +1,160 @@
 <script type="text/javascript"
-        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
-<font size="6" color="Magenta">T-MATS: 4D Piecewise State Space Model Library Block</font>
-<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for 4D Piecewise State Space Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: 4D Piecewise State Space Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
 <p>
-    This block represents a 4D state-space model.
-    <br>
-    This model will be of the form:
+    This block is used to represent a 4D state-space model. A state-space model
+    is a mathematical model of a physical system, composed of a set of input,
+    output, and state variables that are related by first order differential
+    equations.
 </p>
-$$
-(\dot{X} - \dot{X}_0) = A*(X - X_0) + B*(U - U_0)$$
-$$(Y - Y_0) = C*(X - X_0) + D*(U - U_0)$$
-<p>
-    Where X is the system state, U is the system input (assumed to be 1x1), and Y is the plant output.
-    0 values are the trim point values.
-</p>
-<p>
-    The 4 dimensions are represented as up to 3 "Environmental" parameters and 1 control parameter that may or may not be U. 
-    Note, if NumEnv_M is set to a value less than 3, tables must still be defined as 4D and unused Env values will be set to 0.
-</p>
+
 <br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    The 4D state-space model will be of the form:
+
+    $$\dot{X} = A*(X - X_0) + B*(U - U_0)$$
+    $$(Y - Y_0) = C*(X - X_0) + D*(U - U_0)$$
+
+    in which X is the system state, U is the system input (assumed to be 1x1),
+    and Y is the plant output. The corresponding 0 values are the trim point
+    values.
+</p>
+<p>
+    The 4 dimensions are represented as up to 3 Environmental parameters
+    and 1 Control parameter that may or may not be U.
+    <br><em>Note:</em> If NumEnv_M is set to a value less than 3, the tables
+    must still be defined as 4D and unused Environmental values will be set
+    to 0.
+</p>
+<p>
+    This block begins by creating the A, B, C, and D matrices shown in the
+    equations above using table lookups. These matrices are composed of the input Environment
+    and Control values. If U is specified to be the Control value, it will
+    be used in place of the input Control value when building these matrices.
+    <br><em>Note:</em> To select U as the Control value, double click the block,
+    navigate to the InputDef tab, and check the first box.
+</p>
+<p>
+    The block then determines the values of <i>Xo, Uo, </i> and <i>Yo</i>.
+    These values are determined via table lookup using the input Environment
+    and Control values.
+</p>
+<p>
+    The equations at the beginning of this section are then used to determine the
+    difference between the derivative <i>X</i> values, as well as the <i>Y</i>
+    values. Integration is done using a standard Simulink Integrator block
+    to determine the value of <i>X</i>.
+</p>
+
 <br>
-<font size="5" color="Blue">PWSS Inputs:</font>
-<table border="1"> <tr><td>PWSS Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input environmental and control values to the
+        corresponding places on the block.
+        <li> Connect the outputs to the next block(s) in your simulation.
+        <br> <em>Note:</em> The <i>PW_Data</i> output contains the information
+        for the A, B, C, and D matrices as well as the trim values and the
+        integrated value of <i>X</i>.
+        <li> Double click the block and...
+        <ul>
+            <li>Select which options you will use under each tab:
+            <ul>
+                <li>Under the InputDef tab:
+                <ul  style="list-style-type:disc">
+                    <li>Click the first box if the input <i>U</i> will be the
+                    Control variable.
+                    <li>Select the number of Environmental variables that will
+                    be used.
+                    <br><em>Note:</em> If NumEnv_M is set to a value less
+                    than 3, the tables must still be defined as 4D and unused
+                    Environmental values will be set to 0.
+                    <li>Input the initial condition for <i>X</i>.
+                </ul>
+                <li>Under the StateSpaceDef tab:
+                <ul  style="list-style-type:disc">
+                    <li>Check the box to manually define the state-space model.
+                    <br><em>Note:</em>If this box is checked, the user will
+                    need to input the coresponding vector and scalar values
+                    to fully define the state-space model.
+                </ul>
+                <li>Under the StateSpaceDefAlt tab:
+                <ul  style="list-style-type:disc">
+                    <li>Check the box if the state-space model variables were
+                    generated using the T-MATS PW linear model generator.
+                    <br><em>Note:</em>If this box is checked, input the name
+                    of the piecewise linear model structure.
+                </ul>
+            </ul>
+        </ul>
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        4D Piecewise State Space Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>U</td><td>System input </td></tr>
     <tr><td>Env 1</td><td>First table lookup term for piecewise linear model</td></tr>
     <tr><td>Env 2</td><td>Second table lookup term for piecewise linear model</td></tr>
     <tr><td>Env 3</td><td>Third table lookup term for piecewise linear model</td></tr>
     <tr><td>CntrlVal</td><td>Fourth table lookup term for piecewise linear model. If UisCntrl_M is checked this variable will be removed and U will be the fourth term.</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">PWSS Outputs:</font>
-<table border="1"> <tr><td>PWSS Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        4D Piecewise State Space Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>Y</td><td>Plant output (Ynum_M x 1)</td></tr>
     <tr><td>PW_Data</td><td>Internal data bus:
             <br> -A - A state space matrix (Xnm_M x Xnm_M)
@@ -44,14 +166,20 @@ $$(Y - Y_0) = C*(X - X_0) + D*(U - U_0)$$
             <br> -Yo - Y trim point
             <br> -dX - Change in system states
             <br> -X - System states
-    </td></tr>
 </table>
-<br>
-<font size="5" color="Blue">PWSS Mask Variables: </font>
-<table border="1"> <tr><td>PWSS Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        4D Piecewise State Space Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>UisCntrl_M</td><td>U is the control variable</td></tr>
     <tr><td>NumEnv_M</td><td>Number of environmental variables. 1, 2, or 3.</td></tr>
-    <tr><td>ManDefLM_M</td><td>Manually define linear model</td></tr>    
+    <tr><td>ManDefLM_M</td><td>Manually define linear model</td></tr>
     <tr><td>Env1_M</td><td>Table lookup axis 1,Env (mx1)</td></tr>
     <tr><td>Env2_M</td><td>Table lookup axis 2,Env (nx1).</td></tr>
     <tr><td>Env3_M</td><td>Table lookup axis 3,Env (px1)</td></tr>
@@ -61,11 +189,15 @@ $$(Y - Y_0) = C*(X - X_0) + D*(U - U_0)$$
     <tr><td>Atbl_M</td><td>A matrix table (mxnxpxqx(Xnm_M*Xnm_M))</td></tr>
     <tr><td>Btbl_M</td><td>B matrix table (mxnxpxqx(Xnm_M))</td></tr>
     <tr><td>Ctbl_M</td><td>C matrix table (mxnxpxqx(Xnm_M*Ynm_M))</td></tr>
-    <tr><td>Dtbl_M</td><td>D matrix table (mxnxpxqx(Ynm_M))(</td></tr>
+    <tr><td>Dtbl_M</td><td>D matrix table (mxnxpxqx(Ynm_M))</td></tr>
     <tr><td>Xo_M</td><td>X trim points (mxnxpxqx(Xnm_M))</td></tr>
     <tr><td>Uo_M</td><td>U trim points (mxnxpxq)</td></tr>
     <tr><td>Yo_M</td><td>Y trim points (mxnxpxqx(Ynm_M))</td></tr>
     <tr><td>SortEn_M</td><td>Sort piecewise linear model state-space variables, only applicable if using structure input (ManDefLM_M is unchecked). This will need be done only if the T-MATS PW linear model generator was used to create the inputs.</td></tr>
-    <tr><td>PLM_M</td><td>Structure name for piecewise linear model, only used when ManDefLM_M is unchecked. View block mask initialization for more details on variable definition.</td></tr>    
+    <tr><td>PLM_M</td><td>Structure name for piecewise linear model, only used when ManDefLM_M is unchecked. View block mask initialization for more details on variable definition.</td></tr>
 </table>
-<br>
+
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

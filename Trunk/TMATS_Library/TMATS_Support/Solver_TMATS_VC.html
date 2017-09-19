@@ -1,23 +1,125 @@
-<font size="6" color="Magenta">T-MATS: Vector Condition Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Vector Condition Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Vector Condition Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block is used to determine if the absolute value of each element in a
+    vector meets a specific condition. It is typically used to enable
+    blocks when the condition is unmet, and/or disable blocks when the
+    condition is met.
+</p>
+
 <br>
-Determines if the absolute value of each element in a vector is greater then a condition.<br>
-abs(V) > Cond_Limits<br>
-where V (nx1)and Cond_Limits (nx1 or 1x1)
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To determine if each element of the vector meets the condition, this
+    block takes the absolute value of each element and compares it to the
+    condition limit. If the element is greater than the condition, the
+    statement below will result in an output of 1 for that element. If the
+    element is not greater than the condition, the result will be an output
+    of 0 for that element.
+
+    $$ |x| > cond $$
+
+    The results of the comparisons are then summed. If the summation is greater
+    than 0, the output from the block will be a 1, indicating that some of
+    the conditions were unmet. If the summation is zero, the output
+    from the block will be a 0, indicating that all of the conditions were met.
+    To successfully meet the condition, all elements of the vector should be
+    less than the condition limit.
+</p>
+<p>
+    Additionally, if the vector input is of the size nx1 and the condition
+    limit is specified to also be nx1, each element of the vector will
+    only be compared with the corresponding element of the condition limit.
+</p>
 <br>
-<br>
-<font size="5" color="Blue">Vector Condition Inputs:</font>
-<table border="1"> <tr><td>Vector Condition Input</td><td>Description</td></tr>
-    <tr><td>f(x)</td><td>Input Vector to be compared against the Condition</td></tr>
-</table>
-<br>
-<font size="5" color="Blue">Vector Condition Outputs:</font>
-<table border="1"> <tr><td>Vector Condition Output</td><td>Description</td></tr>
-    <tr><td>Condition</td><td>0 - condition true
-    <br> 1 - condition false</td></tr>
-</table>
-<br>
-<font size="5" color="Blue">Duct Mask Variables: </font>
-<table border="1"> <tr><td>Duct Mask Variable</td><td>Description</td></tr>
-    <tr><td>Cond_Limits_M</td><td>Conditions Limits (nx1 or 1x1)</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input vector to the corresponding place on the block.
+        <li> Connect the output to the next block in your simulation.
+        <li> Double click the block and specify the condition limits.
+        <br> <em>Note:</em>The condition limit should be an upper limit and
+        specify the value that the vector elements should not surpass.
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Vector Condition Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
+    <tr><td>f(x)</td><td>Input Vector to be compared against the condition</td></tr>
 </table>
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Vector Condition Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>Unmet</td><td>0 - all conditions met (each element < condition limit)
+                         <br> 1 - one or more conditions unmet (one or more
+                                elements > condition limit)</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Vector Condition Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>Cond_Limits_M</td><td>Condition Limits (nx1 or 1x1)</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

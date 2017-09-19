@@ -1,20 +1,107 @@
-<font size="6" color="Magenta">T-MATS: OuterLoop Integrator Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Outer Loop Integrator Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Outer Loop Integrator Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block is used to provide continuous integration with respect to time
+    of the input value. It is meant to be used in the simulation's outer,
+    time-based loop.
+</p>
 <br>
-Continuous-time integration of the input signal. 
-To be used in the simulations outer, time based, loop.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the integrated signal, this block utilizes a standard Simulink
+    integrator block, which outputs the input value integrated with respect
+    to time. The initial conditions for the integration are specified by
+    double-clicking the block and editing the value of the Model Outer Loop
+    Initial Conditions parameter.
+</p>
+$$ X =\int\dot{X}$$
 <br>
-<br>
-<font size="5" color="Blue">Outer Loop Integrator Inputs:</font>
-<table border="1"> <tr><td>Outer Loop Integrator Inputs</td><td>Description</td></tr>
-    <tr><td>Xdot</td><td>acceleration of X</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input signal to the place labeled <i>Xdot</i> on
+        the block.
+        <li> Connect the output signal to the next block in the outer loop
+        of the simulation.
+        <li> Double click the block and specify the initial conditions.
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Outer Loop Integrator Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
+    <tr><td>Xdot</td><td>Acceleration of X</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Outer Loop Integrator Outputs:</font>
-<table border="1"> <tr><td>Outer Loop Integrator Output</td><td>Description</td></tr>
-    <tr><td>X</td><td>integrated Xdot</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Outer Loop Integrator Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>X</td><td>Integrated value of  Xdot</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Outer Loop Integrator Mask Variables: </font>
-<table border="1"> <tr><td>Outer Loop Integrator Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Outer Loop Integrator Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>OL_IC_M</td><td>Initial Conditions</td></tr>
 </table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

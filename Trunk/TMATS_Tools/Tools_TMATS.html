@@ -1,0 +1,59 @@
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Simulink Tools
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Simulink Tools
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+    <p>T-MATS tools have been created to automate certain tasks in T-MATS. T-MATS Simulink tools can be accessed from a Simlink diagram via the menu Diagram > T-MATS.
+For T-MATS tools to work properly, the file Menu_customization_TMATS.m located within the TMATS_Tools folder in the T-MATS directory must be run. </p>
+
+<p> To automate loading, add the lines below to the startup.m script and verify the TMATS_Tools folder is on the permanent path list.</p>
+
+load_simulink <br>
+Menu_customization_TMATS
+
+<br><br>
+<p>Other T-MATS tools include:
+<br><a href="GasTableBuilder/GasTableBuilder_TMATS.html"> 1) Gas Table Builder</a>
+<br><a href="NPSStoTMATS_Tool/NPSStoTMATS_TMATS.html"> 2) NPSS to TMATS Conversion Tool</a>
+    <br>(see \TMATS_Tools folder for access)</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="table_caption">
+        T-MATS Simulink Tools:
+</div>
+
+<table> <tr><th>Tool</th><th>hotkey</th><th>Description</td></tr>
+    <tr><td>GF_Convert</td><td>Alt-K</td><td>Go and from tag convert, converts a goto tag to a from tag or visa versa.</td></tr>
+    <tr><td>Block Line Setup</td><td>Alt-L</td><td>block line setup, adds appropriate go to tags to T-MATS blocks or any subsystem. These tag are designed to make model creation faster and more intuitive.</td></tr>
+    <tr><td>Set IDes</td><td>N/A</td><td>Set Ides will look through the current diagram for blocks containing the variable iDesign_M and changes it to the value specified in the GUI. Note: this only works for the current diagram and if there are sub-models being used they much be changed separately.</td></tr>
+</table>
+
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

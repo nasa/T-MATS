@@ -1,23 +1,126 @@
-<font size="6" color="Magenta">T-MATS: Corrected Gas Path Flow Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Corrected Gas Path Flow Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Corrected Gas Path Flow Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to calculate the corrected flow.
+
+</p>
+
 <br>
-This block calculates corrected flow.
-Wc = W * sqrt(theta) /delta  
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the corrected flow, this block utilizes the following equations:
+
+    $$Wc = \frac{W * \sqrt{\theta}}{\delta}$$
+
+    in which
+
+    $$\delta = \frac{Pt}{Pstd}$$
+
+    and
+
+    $$\theta = \frac{Tt}{Tstd}$$
 <br>
+    It is important to note that T-MATS assumes standard day temperature (<i>Tstd</i>) and
+    pressure (<i>Pstd</i>) to be 518.67 degR and 14.70 psia, respectively.
+
+</p>
 <br>
-<font size="5" color="Blue">Corrected Flow Inputs:</font>
-<table border="1"> <tr><td>Corrected Flow Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the gas path flow, total temperature, and total pressure to the corresponding input places on the block.
+        <li> Connect the output corrected flow to the next block in your simulation.
+        <li> Adjust the standard day values by double clicking the block.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Corrected Gas Path Flow Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th >Description</th></tr>
     <tr><td>W</td><td>Gas path Flow</td></tr>
     <tr><td>Tt</td><td>Total Temperature [degR]</td></tr>
     <tr><td>Pt</td><td>Total Pressure [psia]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Corrected Flow Outputs:</font>
-<table border="1"> <tr><td>Corrected Flow Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Corrected Gas Path Flow Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>Wc</td><td>Corrected Flow</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Corrected Flow  Mask Variables: </font>
-<table border="1"> <tr><td>Corrected Flow Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Correct Gas Path Flow Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>C_TSTD_M</td><td>Standard Day Temperature [degR]</td></tr>
     <tr><td>C_PSTD_M</td><td>Standard Day Pressure [psia]</td></tr>
 </table>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+    When using this block, an error will appear if <i>Pt</i> is set to zero. To
+    avoid this error, ensure that the total pressure input is not equal to zero.
+</p>
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

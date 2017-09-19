@@ -1,38 +1,348 @@
-<font size="6" color="Magenta">T-MATS: Mixer Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Mixer Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Mixer Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the performance of a flow mixer using basic
+thermodynamic equations, properties, and table-lookups.
+</p>
+
 <br>
-This block simulates the performance of a flow mixer using basic 
-thermodynamic equations, properties, and table lookups.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    This block utilizes conservation of mass, energy, and momentum to determine the output
+    characteristics of the combined flow. To compute the total output flow, the
+    following equation is used:
+
+    $$ W_{Out}  = W1_{In} + W2_{In}$$
+
+    Output fuel to air ratio is determined based on a weighted average detained in the following equation:
+
+    $$FARc_{Out} = \frac{FARc1_{In} * W1_{In} + FARc2_{In} *W2_{In}}{W_{Out}}$$
+</p>
+<p>
+    The gas constant (<i>R</i>) for each flow is then determined using a table-lookup method,
+    with the fuel to air ratio of each flow being the input parameter. The total
+    enthalpies of each flow are determined using an additional table-lookup
+    method with the total temperature as the input parameter. The output total
+    enthalpy are then calculated based another weighted average defined by the following equation:
+
+    $$ht_{Out} = \frac{W1_{In}*ht1_{In} + W2_{In}*ht2_{In}}{W_{Out}}$$
+
+    Based on the value of the output total enthalpy, the output total temperature
+    is determined using a table-lookup method.
+</p>
+	<h2>
+      Operational Modes
+    </h2>
+<p>
+    Before explaining how the other parameters are calculated, it is important
+    to first explain what design options are available to the user, as these
+    design choices impact how various parameters are calculated.
+</p>
+<p>
+    If the user chooses to enable iDesign (iDes) by double clicking the block,
+    navigating to the iDesign tab, and entering 0 for the value of <i>iDesign_M</i>,
+    the throat areas specified by the user in the parameters <i>Aphy1_M</i>
+    and <i>Aphy2_M</i> will not be used and the throat areas calculated will
+    be saved in the file specified by <i>FVar_M</i>. Additionally, with iDes
+    enabled, the primary flow switch can be toggled such that the primary flow
+    is either the first input flow or the second input flow.
+</p>
+<p>
+    If the user chooses to set the input for <i>iDesign_M</i> to 1, the throat
+    area variables will be retrieved from the file specified by <i>FVar_M</i>.
+    The values specified in the General tab and iDesign tab will not be used.
+</p>
+<p>
+    If the user chooses to set the input for <i>iDesign_M</i> to 2, the throat
+    area specified in the General tab will be used. The values specified in the
+    iDesign tab will not be used.
+</p>
+<p>
+    With this explanation of the effects of iDesign in mind, the other flow
+    parameters are calculated based on the following.
+</p>
+	<h2>
+      Design Mode
+    </h2>
+<p>
+    With iDesign enabled (input = 0), the following procedure is used to calculate output
+    parameters and to determine the primary and secondary throat areas from design primary and secondary
+    Mach number and a design bypass ratio.
+    </p>
+    <p>
+    First, the primary and secondary flow parameters
+    (<i>Wp, htp, Ttp, Ptp, FARp, Rtp, Rsp, Ws, hts, Tts, Pts, FARs,</i> and
+    <i>Rts</i>) are defined by the corresponding input flow parameters, depending
+    on the setting of the primary flow switch. To determine the primary flow
+    area and static pressure, an iterative process is required.
+</p>
+<p>
+    Initial guesses for the static temperature and pressure are determined
+    by the following equations, respectively, using the input Mach number and
+    other previously defined flow values and a user specified specific heat ratio <i>&gamma;<sub>tg</sub></i>.
+
+    $$TsMN = \frac{Ttp}{1+MN^2*\left(\frac{\gamma_{tg}-1}{2}\right)}$$
+    $$PsMN = Ptp*\left(\frac{TsMN}{Ttp}\right)^{\frac{\gamma_{tg}}{\gamma_{tg}-1}}$$
+
+    Additionally, <i>S<sub>In</sub>, TsMN, hs, &rho;<sub>s</sub>,</i> and <i>V</i> are calculated
+    utilizing table-lookups and the equations below. It is important to note that the previously calculated
+    value of <i>TsMN</i> is overwritten at this point with the table-lookup value assuming
+    the calculated static pressure; as the previously determined value was simply an initial
+    estimate used to determine the initial value of <i>PsMN</i>.
+
+    $$&rho;_s = \frac{Ps * \textit{C_PSItoPSF}}{Rs *Ts * Jc}$$
+
+    $$V = \sqrt{(2*(ht - hs)*g*Jc}$$
+
+    in which <i>C_PSItoPSF</i> is a conversion factor used to convert PSI to PSF,
+    <i>g</i> is the gravitational constant (32.17 [(ft*lbm)/(lbf*sec^2)]),
+    and <i>Jc</i> is Joule's constant (778.17 [ft*lbm/BTU]).
+
+    An initial guess value of the Mach number is then made based on the calculated velocity and the speed of sound:
+
+    $$MN_g = \frac{V}{\sqrt{\gamma_{s}*Rsp*TsMN*Jc*g}}$$
+
+    The error between this calculated value and the actual input value is
+    determined by the following equation:
+
+    $$errMn = MN - MN_g$$
+
+    If the error is not close enough for convergence, the system iteratively
+    adjusts <i>PsMN</i> until the error is very small. Once the solution has converged,
+    the flow areas are calculated by the following equations, unless otherwise specified by the user.
+    Secondary parameters are determined by assuming the static pressure in the primary flow is equal
+    to the static pressure in the secondary flow.
+
+    $$Ap = \frac{Wp}{V * \frac{&rho;_s}{\textit{C_SINtoSFT}}}$$
+    $$As = \frac{Ws}{V * \frac{&rho;_s}{\textit{C_SINtoSFT}}}$$
+
+    in which <i>C_SINtoSFT</i> is a conversion constant.
+</p>
+	<h2>
+      Off-Design Mode
+    </h2>
+<p>
+    With iDesign diabled (input = 1 or 2), the following procedure is used to calculate output
+    parameters, determining output flow properties from primary and secondary input flow properties
+    and throat areas.
+
+    First, the areas are set to the user-specified parameters.
+    An iterative method is then used to determine the primary and secondary static pressures. An intial
+    guess of the Mach number and &gamma; values are made, and then initial
+    guesses of the static temperatures and static pressures are determined by
+    the following equations, respectively:
+
+    $$Ts1 = \frac{Tt1_{In}}{1+MN1^2*\frac{(\gamma_{t1}-1)}{2}}$$
+    $$Ps1 = Pt1_{In}*\left(\frac{Ts1}{Tt1_{In}}\right)^{\frac{\gamma_{t1}}{\gamma_{t1}-1}}$$
+
+    Additional calculations for <i>S1<sub>In</sub>, Ts1, hs1, &rho;s1,</i> and
+    <i>V1</i> were made using the PcalcStat script that was previously used.
+    Again, the previously determined value of <i>Ts1</i> using the above equation
+    was replaced with the value determined by the PcalcStat script.
+
+    The area is then calculated by the following equation:
+
+    $$A1calc = \frac{W1_{In}}{V1 * \frac{&rho;_{s1}}{\textit{C_SINtoSFT}}}$$
+
+    The error between this calculated value and the user-specified value is
+    determined by the following:
+
+    $$err1 = \frac{|Aphy1 - A1calc|}{Aphy1}$$
+
+    If the error is not within the allowed range, the iteration continues
+    until the solution converges for <i>Ps1</i>. The same process is used
+    to solve for the second flow's input static pressure, using the corresponding
+    values from the second flow in the above equations. An iterative process
+    is again used for <i>Ps2</i> until the solution converges.
+</p>
+	<h2>
+      Determining Output Pressure (static and total)
+    </h2>
+<p>
+    To determine the output total and static pressure, an iterative process is used,
+    as follows. The output total pressure is first guessed, according to
+    the following equation:
+
+    $$Ptoutg = \frac{W1_{In}* Pt1_{In} + W2_{In} * Pt2_{In}}{W_{Out}}$$
+
+    Guesses for the output Mach number and output &gamma; are made arbitrarily,
+    while guesses for the output static temperature and output static pressure
+    are made according to the following equations, respectively:
+
+    $$Ts_{Out} = \frac{Tt_{Out}}{1+MN_{Out}^2*\frac{\gamma_{t_{Out}}-1}{2}}$$
+    $$Ps_{Out} = Pt_{Out}*\left(\frac{Ts_{Out}}{Tt_{Out}}\right)^{\frac{\gamma_{t_{Out}}}{\gamma_{t_{Out}}-1}}$$
+
+    The parameters of <i>S<sub>Out</sub>, Ts<sub>Out</sub>, hs<sub>Out</sub>,
+    &rho;s<sub>Out</sub>, </i> and <i>V<sub>Out</sub></i> are then calculated
+    using the methodology and equations defined above. The output area, based on the initial guesses
+    and the parameters previously determined, is calculated according to the
+    following equation:
+
+    $$Acalc_{Out} = \frac{W_{Out}}{V_{Out} * \frac{&rho;_{sOut}}{\textit{C_SINtoSFT}}}$$
+
+    The error between this calculated value and the actual value is determined by:
+
+    $$Error_{Area} = \frac{|Aphy_{Out} - Acalc_{Out}|}{Aphy_{Out}}$$
+	where
+	$$Aphy_{Out} = Aphy1 + Aphy2$$
+	Note: whether using iDesign or  not, the output area is determined by summing the input areas.
+	<br><br>
+    The error between the guessed output total pressure is determined by
+    comparing the impulses. The impulse of the mixed fluid is given by the
+    following equation, in which <i>s_M_Imp1</i> and <i>s_M_Imp2</i> are
+    specified by the user.
+
+    $$ImpulseMixed = \textit{s_M_Imp1}*\left(Ps1*Aphy1 + \frac{W1_{In} * V1 * \textit{s_M_V1}}{g}\right)
+    + \textit{s_M_Imp2}*\left(Ps2 * Aphy2 + \frac{W2_{In} * V2 * \textit{s_M_V2}}{g}\right)$$
+
+    The estimated value of the impulse, based on the initially guessed
+    value for the total pressure, is determined by:
+
+    $$Impulse_{Out} = Ps_{Out} * Aphy_{Out} + \frac{W_{Out} * V_{out}}{g}$$
+
+    The error between the two impulses is then determined by:
+
+    $$Error_{Impulse} = \frac{|ImpulseMixed - Impulse_{Out}|}{ImpulseMixed}$$
+
+    While either(area or impulse) error is outside of the allowable range, the system iterates
+    to update the guesses of total and static pressure until the solution converges.
+
+</p>
+	<h2>
+      Normalized Error Calculation
+    </h2>
+<p>
+    Once the solution has converged, the output normalized error is determined
+    in one of two ways. If iDesign is enabled, it is determined by the
+    first equation below, in which <i>BPRdes</i> is the bypass ratio specified
+    by the user. If iDesign is disabled, it is determined by the second equation
+    below.
+
+    $$NErr = \frac{\frac{W1_{In}}{W2_{In}} - BPRdes}{\frac{W1_{In}}{W2_{In}}}$$
+    $$NErr = \frac{Ps1 - Ps2}{Ps1}$$
+</p>
+
 <br>
-<br>
-<font size="5" color="Blue">Mixer Inputs:</font>
-<table border="1"> <tr><td>Mixer Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the two gas path flow inputs to the corresponding places
+        on the block.
+        <li> Connect the outputs to the next block(s) in your simulation.
+        <li> Double click the block and...
+        <ul>
+            <li>Navigate to the iDesign tab.
+            <li>Select which value of iDesign_M you will use.
+            <br> Options include:
+                <ul>
+                    <li> 0: iDes will be enabled and the values of Aphy1_M
+                    and Aphy2_M from the General tab will not be used. Selection
+                    for the primary flow switch must also be made:
+                    <ul style="list-style-type:disc">
+                        <li> 0: Primary flow is input #1.
+                        <li> 1: Primary flow is input #2.
+                    </ul>
+                    <li> 1: Mixer throat area variables will be determined
+                    by values in a specified file (<i>FVar_M</i>) that is uploaded by
+                    the user and specified in the iDesign tab. The values in
+                    the General tab and the iDesign tab will not be used.
+                    <li> 2: Mixer throat area from the General tab will be used.
+                    No values from the iDesign tab will be used.
+                </ul>
+            <li>Input the corresponding values for the parameters you have chosen
+            to use.
+        </ul>
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Mixer Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>GasPthChar1</td><td>Gas Path Characteristics Input 1, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>GasPthChar2</td><td>Gas Path Characteristics Input 2, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Mixer Outputs:</font>
-<table border="1"><tr><td>Mixer Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Mixer Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>NErr</td><td>Normalized error</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Mixer Mask Variables: </font>
-<table border="1"> <tr><td>Mixer Mask Variablet</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Mixer Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>Aphy1_M</td><td>Area of input 1 (in^2)</td></tr>
     <tr><td>Aphy2_M</td><td>Area of input 2 (in^2)</td></tr>
     <tr><td>s_M_Imp1_M</td><td>Impulse 1 scalar</td></tr>
@@ -44,24 +354,76 @@ thermodynamic equations, properties, and table lookups.
     <tr><td>X_M_TVec_M</td><td>Mixer Temperature Vector (X-axis for Gamma calc)(dx1)</td></tr>
     <tr><td>T_M_gammaArray_M</td><td>Mixer Gamma Array (Gamma = f(Tt,FAR))(dxc)</td></tr>
     <tr><td>iDesign_M</td><td> Design fork (0, 1, 2)
+            <br>
             <br>0 - iDes Enabled, Calculate mixer input areas based on design variables
             <br>    When iDesign is set to 0, Aphy1_M and Aphy2_M from the General tab will not be used.
-            <br>    Throat areas calculated will be saved in the specified file (FVar_M).
-            <br>1 - Mixer throat area variables will be overwritten (mask Initialization) with 
-            <br>    values from a specified file (FVar_M).
-            <br>    When iDesign is set to 1, Aphy1_M and Aphy2_M from the General tab and the Design values 
-            <br>    from the iDesign tab will not be used. 
+                    Throat areas calculated will be saved in the specified file (<i>FVar_M</i>).
+            <br>
+            <br>1 - Mixer throat area variables will be overwritten (mask Initialization) with
+            	    values from a specified file (<i>FVar_M</i>).
+            <br>    When iDesign is set to 1, Aphy1_M and Aphy2_M from the General tab and the Design values
+                    from the iDesign tab will not be used.
+            <br>
             <br>2 - Mixer throat area from the General tab will be used in the nozzle module.
-            <br>    When iDesign is set to 2, Aphy1_M and Aphy2_M from the General tab will be used; Design values 
-    <br>    and file definitions from the iDesign tab will not be used. </td></tr>
+            <br>    When iDesign is set to 2, Aphy1_M and Aphy2_M from the General tab will be used; Design values
+                    and file definitions from the iDesign tab will not be used. </td></tr>
     <tr><td>SWPS_M</td><td>primary flow switch ( 0 - primary flow is input 1 , 1 - primary flow is input 2</td></tr>
-    <tr><td>BPRDes_M</td><td>Design pressure ratio [W1/W2]</td></tr>
+    <tr><td>BPRDes_M</td><td>Design bypass ratio [W1/W2]</td></tr>
     <tr><td>MNDes_M</td><td>Primary flow mach number</td></tr>
     <tr><td>FVar_M</td><td>File name for iDes Variables</td></tr>
 </table>
 <br>
 Notes: Vectors are the x and/or y axis to a table made of an array.
-Scalars are used to "scale" the mixer equations.<br> 
+Scalars are used to "scale" the mixer equations.
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>Error calculating:
+        <ul>
+            <li>Rt1
+            <li>Rt2
+            <li>Rtout
+            <li>gammatg
+            <li>gammasg
+            <li>iteration gammasg
+        </ul></td><td>Error appears if the vector is too large to interpolate.
+                        Vector definitions may need to be adjusted.</td></tr>
+    <tr><td>Error calculating:
+        <ul>
+            <li>Ps at MN = MNp
+            <li>Ps1
+            <li>Ps2
+            <li>PtOut
+            <li>PsOut
+        </ul></td><td>Error appears if maximum number of iterations has
+                        been reached. Indicates that the outputs may contain
+                        large errors.</td></tr>
+    <tr><td>Primary flow velocity is zero</td><td>Warning appears if the primary
+                        flow input is zero.</td></tr>
+    <tr><td>Secondary flow velocity is zero</td><td>Warning appears if the
+                        secondary flow input is zero.</td></tr>
+    <tr><td>Input 1 flow velocity is zero</td><td>Warning appears if the first input
+                        flow is zero.</td></tr>
+    <tr><td>Input 2 flow velocity is zero</td><td>Warning appears if the second
+                        input flow is zero.</td></tr>
+    <tr><td>Error calculating input static pressures</td><td>Error occurs if
+                        Ps1 > Pt1In or Ps2 > Pt2In.</td></tr>
+    <tr><td>Output flow velocity is zero</td><td>Error appears if Vout is determined
+                        to be less than or equal to zero.</td></tr>
+    <tr><td>Error calculating Psout</td><td>Warning occurs if Psoutg > Ptoutg.</td></tr>
+</table>
 
 
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

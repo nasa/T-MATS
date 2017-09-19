@@ -1,33 +1,128 @@
-<font size="6" color="Magenta">T-MATS: Splitter Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Splitter Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Splitter Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the performance of a splitter
+    using basic fluid dynamic equations.
+
+</p>
+
 <br>
-This block simulates the performance of a splitter/branch using basic flow fluid dynamic equations.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    Across this block, the temperature, enthalpy, pressure, and fuel to air ratio
+    are unchanged. However, the flow (<i>W</i>) is altered according to the
+    follow equations, in which <i>BPR</i> is the bypass ratio. The
+    <i>BPR</i> is tyically a system independent and is derived from an iterative solver.
+</p>
+<p> For the bypass flow path:
+
+    $$ W_{BFP} = \frac{W*BPR}{1+BPR} $$
+
+</p>
+<p> For the main flow path:
+
+    $$W_{MFP} = \frac{W}{1+BPR} $$
+</p>
 <br>
-<br>
-<font size="5" color="Blue">Splitter Inputs:</font>
-<table border="1"> <tr><td>Splitter Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the main flow path gas characteristics and the bypass
+        ratio inputs to the corresponding places on the block.
+        <li> Connect the outputs to the next block in your simulation.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Splitter Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>MFPGasPthCharIn</td><td>Gas Path Characteristics of the Main Flow Path, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
-    <tr><td>BPR</td><td>Branch Pressure Ratio, 0 - no branch flow
-    <br>Tyically this input is a system independent and is derived from an iterative solver.</td></tr>
-</table>
-<br>
-<font size="5" color="Blue">Splitter Outputs:</font>
-<table border="1"> <tr><td>Splitter Output</td><td>Description</td></tr>
-    <tr><td>BranchGasPthCharOut</td><td>Gas Path Characteristics of the Branch, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
-            <br>- Tt - Total Temperature [degR]
-            <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
-    <tr><td>MFPGasPthCharOut</td><td>Gas Path Characteristics of the Main Flow Path, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
-            <br>- Tt - Total Temperature [degR]
-            <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>BPR</td><td>Bypass Ratio
+                    <br>An input of 0 indicates no bypass flow</td></tr>
 </table>
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Splitter Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>BypGasPthCharOut</td><td>Gas Path Characteristics of the Bypass, 5x1 bus/vector consisting of:
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>MFPGasPthCharOut</td><td>Gas Path Characteristics of the Main Flow Path, 5x1 bus/vector consisting of:
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Splitter Mask Variables
+</div>
+ <br>
+ No mask variables are needed for this block, since all of the calculations
+ depend only on the inputs.
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

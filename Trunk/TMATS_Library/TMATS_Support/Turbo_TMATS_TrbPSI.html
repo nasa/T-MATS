@@ -1,77 +1,434 @@
-<font size="6" color="Magenta">T-MATS: Turbine_PSI Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Turbine PSI Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Turbine PSI Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the performance of a turbine using basic
+thermodynamic equations, properties, and table lookups. The lookup tables for
+this block are based on PSI instead of Pressure Ratio as in the Turbine block.
+</p>
+
 <br>
-This block simulates the performance of a turbine using basic 
-thermodynamic equations, properties, and table lookups. Turbine_PSI look up tables for this block
-are based on PSI instead Pressure Ratio as in the Turbine block.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+<p>
+General turbine performance is dictated by a turbine map that relates
+    corrected shaft speed and a Psi pressure ratio criteria
+    to corrected mass flow and efficiency. Values in this map may be scaled
+    (for example 100% shaft speed might correlate to 20,000 rpm), so in this discussion all values
+    taken from the map will be refered to as Map parameters.
+</p>
+<p>
+    To compute the output parameters, this block first checks if the user
+    has selected to use the cooling flow. This choice is accessed by double
+    clicking the block and navigating to the CoolingFlow tab. If enabled, the
+    corresponding variables for the cooling flow are intialized. If not enabled,
+    these variables are set to be equal to zero.
+</p>
+<p>
+    It is important to note that if cooling is enabled, the cooling flow input
+    vector must have a length of Cx5 in which C is equal to the number of
+    positions specified under the CoolingFlow tab. The cooling mass flow is
+    determined at station one and the exit by the following equations.
+
+    $$Wcool_{s1} = \sum Wcool*(1-\textit{T_BldPos})$$
+    $$Wcool_{Out} =  \sum  Wcool$$
+
+    Essentially, these equations cycle through the cooling flow
+    positions and determine the amount of mass flow through each one and sum
+    these values together to determine the total mass flow at station one and
+    the exit.
+</p>
+<p>
+    Similarly, the fuel mass flow for the cooling flow is determined by the
+    following equations for station one and the exit, respectively.
+
+    $$Wfcool_{s1} = \sum \frac{FARcool*Wcool*(1-\textit{T_BldPos})}{1+FARcool}$$
+    $$Wfcool_{Out} = \sum \frac{FARcool*Wcool}{1+FARcool}$$
+</p>
+<p>
+    The total flow at station one and the exit is determined by the following
+    equations:
+
+    $$W_{s1-In} = W_{In} + Wcool_{s1}$$
+    $$W_{Out} = W_{In} + Wcool_{out}$$
+
+    The fuel to air ratio at station one and the exit is determined by the
+    following equations:
+
+    $$FAR_{s1-In} = \frac{\left(\frac{FARc_{In}* W_{In}}{1+FARc_{In}} + Wfcool_{s1}\right)}{\frac{W_{In}}{1+FARc_{In}} + Wcool_{s1}- Wfcool_{s1}}$$
+    $$FARc_{Out} = \frac{\left(\frac{FARc_{In}* W_{In}}{1+FARc_{In}}+ Wfcool_{Out}\right)}{\frac{W_{In}}{1+FARc_{In}} + Wcool_{Out}- Wfcool_{Out}}$$
+
+    The enthalpy of the cooling flow is then determined at station one
+    and the exit. The following iterative equations are used to determine the
+    enthalpy assuming that the input <i>htcool</i> is equal to <i>htcoolout</i>
+    for the turbine's rear bleeds.
+
+    $$dHcool_{s1} = \sum htcool*Wcool*(1-\textit{T_BldPos})$$
+    $$dHcool_{Out} = \sum htcool*Wcool*\text{T_BldPos}$$
+
+    In the above equations, <i>dHcool<sub>s1</sub></i> and <i>dHcool<sub>Out</sub></i>
+    are initially set to zero. The values of <i>htcool</i>, <i>Wcool</i> and
+    <i>T_BldPos</i> are changed each iteration, according to the values
+    within the cooling flow input.
+</p>
+<p>
+     The average enthalpy at station one is then determined by the following
+    equations, in which <i>ht<sub>In</sub></i> is determined via table lookup,
+     using the input total temperature and fuel to air ratio as the lookup
+     parameters.
+
+    $$ht_{s1-In} = \frac{ht_{In}*W_{In} + dHcool_{s1}}{W_{s1-In}}$$
+
+    The total temperature and entropy at station one are then determined
+    via table lookup using the other parameters (enthalpy, fuel to air ratio,
+    total pressure input, etc.) as the lookup parameters.
+</p>
+<p>
+    Other fluid condition related variables are determined by the following
+    equations, in which <i>C_PSTD</i> and <i>C_TSTD</i> are constants for the
+    pressure and temperature at standard day conditions.
+
+    $$\delta = \frac{Pt_{In}}{\textit{C_PSTD}}$$
+    $$\Theta = \frac{Tt_{In}}{\textit{C_TSTD}}$$
+</p>
+<p>
+    At this point, it is important to cover the other design options available to
+    the user. By double clicking the block and navigating to the iDesign tab,
+    the user can adjust what aspects of the design they want to use by inputting
+    0, 1, or 2 for the option of <i>iDesign_M</i>.
+    <ul>
+        <li>If 0 is input, iDesign will be enabled and the turbine map scalars
+        will be determined by the design variables in the iDesign tab. The
+        scalar constants defined in the T-Map tab will not be used.
+        <li>If 1 is input, the turbine map scalars will be determined by values
+        in a user-specified file (<i>FVar_M</i>) in the iDesign tab.
+        <li>If 2 is input, the turbine map scalars will be determined by the
+        values specified in the T-Map tab; no values from the iDesign tab
+        will be used.
+    </ul>
+    For more information on how to enable iDesign and the different options
+    for how to use it, see the Mask Variables table at the bottom of this page.
+</p>
+
+<p>
+    With this description of design options in mind, the corrected speed is
+    determined by the following equation:
+
+    $$Nc = \frac{Nmech}{\sqrt{\Theta}}$$
+
+    If iDesign is enabled, the corrected speed scalar constant is determined
+    by the following equation. Otherwise, this constant is set equal to the
+    user-specified value.
+
+    $$\textit{C_Nc} = \frac{Nc}{NcDes}$$
+
+    The map for the corrected speed is then determined by:
+
+    $$NcMap = \frac{Nc}{\textit{C_Nc}}$$
+
+
+    The maps for the efficiency and PSI (<i>MapEff</i> and <i>psiMapI</i>
+    respectively) are determined by interpolating the input turbine map vectors.
+</p>
+<p>
+    The efficiency of the turbine is calculated using the following equation:
+
+    $$Eff = EffMap * \textit{C_Eff}$$
+
+    in which <i>C_Eff</i> is determined by the user-input if iDesign is not
+    enabled, or by the following equation if iDesign is enabled.
+
+    $$\textit{C_Eff} = \frac{EffDes}{EffMap}$$
+
+    The map of the ideal enthalpy is determined by the following equation,
+    using the previously determined map of PSI.
+
+    $$delHtIdealMap = psiMapI * \left(\frac{Nmech}{60}\right)^2$$
+
+    The total ideal enthalpy output is determined by the following:
+
+    $$htIdeal_{Out} = ht_{s1-In} - delHtIdealMap * \textit{s_T_hi}$$
+
+    The ideal exit temperature is determined via table lookup using the
+    ideal exit enthalpy as the lookup parameter.
+</p>
+<p>
+    To determine the pressure ratio, an iterative process is used. The starting
+    point of this process is determined by calculating initial guess for
+    the total exit pressure, which is calculated according to the following
+    equation:
+
+    $$Pt_{out - guess} = Pt_{In}*\left(\frac{TtIdeal_{Out}}{Tt_{In}}\right)^{\frac{\gamma}{\gamma-1}}$$
+
+    A guessed value for the ideal total temperature is then determined via
+    table lookup, based on this guessed pressure value. To find the actual
+    value of <i>Pt<sub>Out</sub></i>, the guessed ideal total temperature
+    is compared to the previously calculated ideal total temperature. If
+    the error is not within the tolerance, the process repeats by guessing
+    a new pressure value using the secant method, re-determining the guessed
+    ideal temperature, and calculating the error again. This repeats until
+    the solution converges, at which point the pressure ratio is determined
+    by the following equation:
+
+    $$PR_{In} = \frac{Pt_{In}}{Pt_{Out}}$$
+
+    The output pressure is recalculated using this pressure ratio and the
+    pressure ratio scalar constant and PR map. With iDesign enabled, the
+    pressure ratio scalar constant is determined by the following equation.
+    Otherwise, this value is determined by the user's input.
+
+    $$\textit{C_PR} = \frac{PR_{In} -1}{PRmapDes-1}$$
+
+    The pressure ratio map is determined by the following equation:
+
+    $$PRmapRead = \frac{PR_{In} -1}{\textit{C_PR} + 1}$$
+
+    The output pressure is recalculated using the following equation:
+
+    $$Pt_{Out} = \frac{Pt_{In}}{PR_{In}}$$
+
+    The total flow input is determined by using the flow maps and the flow
+    scalar constants. The <i>WowMap</i> is determined by interpolating the
+    input turbine map vectors. Other parameters that correspond to the maps
+    are determined by the following equations:
+
+    $$WpqAcrit = \frac{\sqrt{\frac{\gamma*g}{R*Jc}}}{\left(1+\frac{\gamma-1}{2}\right)^{\frac{\gamma+1}{2*\gamma-1}}}$$
+
+    $$WMap = WowMap * WpqAcrit * \frac{Pt_{In}}{\sqrt{Tt_{s1-In}}}$$
+
+    $$WcMap = WMap * \frac{\sqrt{\Theta}}{\delta}$$
+
+    In the above equations, <i>g</i> is the acceleration due to gravity (32.17
+    [ft*lbm/(lbf*sec^2)]), <i>Jc</i> is Joule's constant (778.17 [ft*lbm/BTU]),
+    <i> R</i> is the user-specified ideal gas constant, and &gamma; is the
+    user-specified specific heat ratio.
+</p>
+<p>
+    If iDesign is enabled, the flow scalar constant is determined by the following
+    equation. Otherwise, this constant is determined by the user's input.
+
+    $$\textit{C_Wc} = \frac{W_{s1-In}*\sqrt{\Theta}}{\delta*WcMap}$$
+
+    The corrected flow input is calculated using the following equation:
+
+    $$WcCalc_{In} = WcMap * \textit{C_Wc}$$
+
+    The output enthalpy and temperature of the flow are determined by the
+    following process. First, the output total enthalpy is calculated using
+    the following equation:
+
+    $$ht_{Out} = \frac{[(htIdeal_{Out}-ht_{s1-In})*Eff+ht_{s1-In}]*W_{s1-In}+dHcool_{Out}}{W_{Out}}$$
+
+    Once the output enthalpy is calculated, the output total temperature is
+    determined via table lookup, using the calculated value of the total
+    enthalpy as the lookup parameter.
+</p>
+<p>
+    The output power is determined by the following equation, in which
+    <i>C_BTU_PER_SECtoHP</i> is a unit conversion factor. It is important
+    to note that this only takes into account cooling flow that enters at the
+    front of engine (station one) and does not account for cooling flows at
+    other positions.
+
+    $$Pwr_{Out} = (ht_{s1-In} - htIdeal_{Out})*Eff*W_{s1-In} * \textit{C_BTU_PER_SECtoHP}$$
+
+    The output torque to the shaft is determined using the calculated value
+    of the output power and the following equation:
+
+    $$Torque_{Out} = \frac{\textit{C_HP_PER_RPMtoFT_LBF}*Pwr_{Out}}{Nmech}$$
+
+    The normalized flow error is determined by the following equation, if
+    iDesign is enabled.
+
+    $$NError_{Out} = \frac{Nmech - NDes}{NDes}$$
+
+    If iDesign is not enabled, the normalized flow error is determined by
+    the following equation:
+
+    $$NError_{Out} = \frac{\frac{W_{s1-In}*\sqrt{\Theta}}{\delta} - WcCalc_{In}}{\frac{W_{s1-In}*\sqrt{\Theta}}{\Delta}}$$
+
+    If <i>W<sub>s1-In</sub></i> is set to zero, the normalized error will
+    be equal to 100. This will also occur if iDesign is enabled and <i>NDes</i>
+    is set to zero.
+</p>
+
 <br>
-<br>
-<font size="5" color="Blue">Turbine Inputs:</font>
-<table border="1"> <tr><td>Turbine Input</td><td>Description</td></tr>
-    <tr><td>CoolingFlwCharIn</td><td>Cooling flow Gas Characteristics Input, 
-            <br> 5x1 bus/vector (for each cooling flow) consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input gas path flow, cooling flow, pressure ratio,
+        and Nmech values to the corresponding places on the block.
+        <li> Connect the outputs to the next block(s) in your simulation.
+        <li> Double click the block and...
+        <ol>
+            <li>Select which options you will use under each tab:
+            <ul style="list-style-type:circle">
+                <li>Under the T-Map tab:
+                <ul>
+                    <li>In the bottom-right corner of the page, select which
+                    (if any) scalars you will use for the plot. <br> Options include:
+                    <ol>
+                        <li>None: Plots the maps as defined.
+                        <li>User Defined: Plots the maps with Wc, PR, and Eff
+                        scaled using the scalars defined in the T-Map tab.
+                        <li>iDesign: Plots the maps with Wc, PR, and Eff scaled
+                        using the scalars calculated with iDesign, as defined
+                        in the iDesign tab.
+                    </ol>
+                </ul>
+                <li>Under the Cooling Flow tab:
+                <ul>
+                    <li>Check the box to enable Cooling Flow.
+                </ul>
+                <li>Under the iDesign tab:
+                <ul>
+                    <li>Select the value of iDesign_M. <br>Options include:
+                    <ul style="list-style-type:disc">
+                        <li> 0: iDes will be enabled and the turbine map
+                        scalars will be based on design variables specified
+                        by the user in the iDesign tab.
+                        <li> 1: Turbine map scalars will be determined
+                        from a specified file (<i>FVar_M</i>) that is uploaded by
+                        the user and specified in the iDesign tab.
+                        <li> 2: Turbine map scalars will be determined
+                        by the scalars specified in the T-Map tab; no values
+                        from the iDesign tab will be used.
+                    </ul>
+                </ul>
+            </ul>
+            <li>Input the corresponding values for the parameters you have chosen
+            to use.
+        </ol>
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Turbine PSI Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
+    <tr><td>CoolingFlwCharIn</td><td>Cooling flow Gas Characteristics Input,
+            	 5x1 bus/vector (for each cooling flow) consisting of:
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
             <br>- FAR - Combusted Fuel to Air Ratio [frac]
-    <br> This feature must be enabled, see Cooling Flow tab variable (CFlwEn_M) definition</td></tr>
+            <br> This feature must be enabled, see Cooling Flow tab variable (CFlwEn_M) definition</td></tr>
     <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
-    <tr><td>PSImapIn</td><td>Map turbine PSI, position on turbine map
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>PSImapIn</td><td>Map turbine PSI, position on turbine map.
             <br> Determines Pressure ratio, efficiency, and gas path flow.
             <br> The value for this variable will need to be solved for by driving
-    <br> the flow error accross the engine to zero.</td></tr>
-    <tr><td>Nmech</td><td>shaft speed [rpm]</td></tr>
+                 the flow error accross the engine to zero.</td></tr>
+    <tr><td>Nmech</td><td>Shaft speed [rpm]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Turbine Outputs:</font>
-<table border="1"> <tr><td>Turbine Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Turbine PSI Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
-    <tr><td>NErr</td><td>Normalized Error [frac], in a typical system this will 
-    <br>be driven to zero by an iterative solver</td></tr>
-    <tr><td>TrqOut</td><td>turbine Torque Output (lbf*ft), positive value for a turbine.</td></tr>
-    <tr><td>T_Data</td><td>Turbine internal calculation Data</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>NErr</td><td>Normalized Error [frac], in a typical system this will
+                be driven to zero by an iterative solver</td></tr>
+    <tr><td>TrqOut</td><td>Turbine Torque Output (lbf*ft), positive value for a turbine.</td></tr>
+    <tr><td>T_Data</td><td>Turbine internal calculation data</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Turbine Mask Variables: </font>
-<table border="1"> <tr><td>Turbine Mask Variable</td><td>Description</td></tr>
-    <tr><td>X_T_PRpVec_M</td><td>Turbine Map Pressure Ratio Vector for PSI array (X-axis)(nx1)</td></tr>    
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Turbine PSI Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>X_T_PRpVec_M</td><td>Turbine Map Pressure Ratio Vector for PSI array (X-axis)(nx1)</td></tr>
     <tr><td>Y_T_NcpVec_M</td><td>Turbine Map Corrected Speed Vector for PSI array (Y-axis)(mx1)</td></tr>
     <tr><td>T_T_Map_PSIArray_M</td><td>Turbine Map PSI Array (PSIMAPI = f(Nc,PR))(mxn)</td></tr>
     <tr><td>X_T_PRwVec_M</td><td>Turbine Map Pressure Ratio Vector for WoW array (X-axis)(rx1)</td></tr>
     <tr><td>Y_T_NcwVec_M</td><td>Turbine Map Corrected Speed Vector for WoW array (Y-axis)(qx1)</td></tr>
     <tr><td>T_T_Map_WoWArray_M</td><td>Turbine Map Flow calculation Array (WoW=f(Nc,PR))(qxr)</td></tr>
-    <tr><td>s_T_hi_M</td><td>Corrected Entalpy Constant (T_hi), note, this variable is not calculated with iDesign</td></tr>
+    <tr><td>s_T_hi_M</td><td>Corrected Entalpy Constant (T_hi). Note: this variable is not calculated with iDesign</td></tr>
     <tr><td>s_T_Nc_M</td><td>Corrected Speed Scalar Constant (T_Nc)</td></tr>
     <tr><td>s_T_PR_M</td><td>Pressure Ratio Scalar Constant (T_PR)</td></tr>
     <tr><td>s_T_Wc_M</td><td>Flow Scalar Constant (T_Wc)</td></tr>
     <tr><td>s_T_Eff_M</td><td>Efficiency Scalar Constant (T_Eff)</td></tr>
     <tr><td>CFlwEn_M</td><td>Cooling Flow Enable [check - enabled]</td></tr>
     <tr><td>T_CoolFlwPos_M</td><td>Cooling Flow position [0 at inlet,  1 at exit](cx1)
-            <br> With Cooling Flow Enabled, the turbine will expect cooling flow input 
-    <br> vector lenght of c *5. See CoolingFlwCharIn definition </td></tr>
+            <br> With Cooling Flow Enabled, the turbine will expect cooling flow input
+            	 vector length of Cx5. See CoolingFlwCharIn definition </td></tr>
     <tr><td>gamma_M</td><td>Turbine Design Gamma</td></tr>
     <tr><td>Rt_M</td><td>Turbine Design Rt</td></tr>
     <tr><td>iDesign_M</td><td> Design fork (0, 1, 2)
+            <br>
             <br>0 - iDes Enabled, Calculate turbine map scalars based on design variables
             <br>    When iDesign is set to 0, scalar constants from the Map tab will not be used.
-            <br>    Scalars calculated will be saved in the specified file (FVar_M).
-            <br>1 - Scalar variables will be overwritten (mask Initialization) with 
+            	    Scalars calculated will be saved in the specified file (FVar_M).
+            <br>
+            <br>1 - Scalar variables will be overwritten (mask Initialization) with
             <br>    values from a specified file (FVar_M).
-            <br>    When iDesign is set to 1, scalar constants from the Map tab and the Design values 
-            <br>    from the iDesign tab will not be used. 
+            <br>    When iDesign is set to 1, scalar constants from the Map tab and the Design values
+            	    from the iDesign tab will not be used.
+            <br>
             <br>2 - Scalar variables from the map tab will be used as the map scalars.
-            <br>    When iDesign is set to 2, scalar constants from the Map tab will be used; Design values 
-    <br>    and file definitions from the iDesign tab will not be used. </td></tr>
+            <br>    When iDesign is set to 2, scalar constants from the Map tab will be used; Design values
+            	    and file definitions from the iDesign tab will not be used. </td></tr>
     <tr><td>NcDes_M</td><td>Design Corrected Shaft Speed [rpm]</td></tr>
     <tr><td>EffDes_M</td><td>Design Efficiency [frac]</td></tr>
     <tr><td>PRDes_M</td><td>Design Pressure Ratio [frac]</td></tr>
@@ -80,6 +437,36 @@ are based on PSI instead Pressure Ratio as in the Turbine block.
 </table>
 <br>
 Note: Vectors are the x and/or y axis to a table made of an array.<br>
-&nbsp; &nbsp; Scalars are used to "scale" the turbine map for off design turbines. 
+Scalars are used to "scale" the turbine map for off design turbines.
 
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>One or more of the cooling flow input vector elements is missing.</td><td>
+                    Error appears if the input vector is not the correct size.
+                    Recall each flow needs to be a 5x1 vector consisting of W, ht, Tt, Pt, FAR.</td></tr>
+    <tr><td>Number of cooling flow inputs does not match the length of the cooling flow
+                position vector defined in the mask.</td><td>Error appears if the
+                cooling flow input vector is not the correct size (5x1).</td></tr>
+    <tr><td>Cooling flow position element needs to be defined as a 0 or 1.</td><td>
+                    Error appears if any of the elements of T_BldPos are not 0 or 1.</td></tr>
+    <tr><td>Error calculating psiMapI.</td><td>Error appears if the table size
+                    does not match the axis vector lengths. One or more vectors
+                    is not the correct size.</td></tr>
+    <tr><td>Error calculating WoWMap.</td><td>Error appears if the table size
+                    does not match the axis vector lengths. One or more vectors
+                    is not the correct size.</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

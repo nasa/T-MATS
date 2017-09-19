@@ -1,36 +1,191 @@
-<font size="6" color="Magenta">T-MATS: Ambient Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Ambient Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Ambient Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to translate environmental conditions (Mach number,
+    ambient temperature, air purity) to gas characteristics (pressure, temperature,
+    fuel to air ratio, velocity).
+</p>
+
 <br>
-This block translates environmental condition to gas characteristics: Alt, 
-dTamb, Air purity, and MN to Pressure, Temperature, FAR, and Velocity.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p> This block utilizes a MATLAB script to compute the gas characteristics from
+     the environmental condiditons.
+</p>
+
+<p>
+    Within this MATLAB script, the initial static conditions
+    (<i>T<sub>s</sub> , P<sub>s</sub> , h<sub>s</sub></i>)
+    are determined by referencing and interpolating between the input vectors
+    for the ambient altitude, ambient static temperature, and other ambient
+    qualitites.
+    <br><em>Note:</em> These vectors are defined within the Mask and can be
+    accessed by double clicking on the block.
+</p>
+<p>
+    The static enthalpy and output entropy are then calculated using additional
+    MATLAB scripts that perform table-lookups using the static pressure and static
+    temperature.
+</p>
+<p>
+    Initial guesses for the total temperature and total pressure are then made
+    according to the following isentropic relations:
+
+    $$ T_t = T_s * \left[1+ MN^2 * \left(\frac{\gamma - 1}{2}\right)\right] $$
+
+    $$ P_t = \frac{P_s}{\left(\frac{T_s}{T_t}\right)^{\frac{\gamma}{\gamma-1}}}$$
+
+    These initial guesses are then used in the table-lookups (to determine total enthalpy) and iterated
+    until the solution converges. Convergence is determined by the error between
+    the input mach number and the calculated mach number (see equations below). While iterating,
+    the velocity is calculated by the two following equations. The first equation
+    is for the velocity of the air, while the second is for the speed of sound.
+
+    $$V = \sqrt{2*(h_t - h_s)*g*Jc}$$
+
+    $$V_s = \sqrt{\gamma*R_s*T_s*g*Jc}$$
+
+    In the above equations, <i>g</i> is the gravitational constant (32.17 [(ft*lbm)/(lbf*sec^2)]),
+    <i>Jc</i> is Joule's constant (778.17 [ft*lbm/BTU]), and <i>R<sub>s</sub></i> is
+    the gas constant determined through interpolation.
+
+</p>
+<p>
+    After determining the above velocities, the Mach number is determined by the
+    following equation.
+    <br><em>Note:</em> The subscript "g" is used to denote that this value
+    is calculated within the iteration loop, per the notation used within the MATLAB scripts.
+    It is not referencing the gravitational constant in any way.
+
+    $$MN_g = \frac{V}{V_s} $$
+
+    This value is then compared to the input value to determine if the solution
+    has converged using the following equation:
+
+    $$er = MN - MN_g$$
+
+    Once the error is below a certain point, the solution is assumed to be converged.
+    However, while the solution is not converged, the process repeats by updating the
+    initial guesses for the total pressure, according to the following secant algorithm:
+
+    $$P_{t-new} = P_t - er*\frac{P_t - P_{t-old}}{er - er_{old}}$$
+
+    Using the result of this algorithm, the total temperature and total enthalpy
+    are recalculated using the table-lookup method with the total pressure as
+    the input. The velocities and Mach number are again calculated using the above equations,
+    and this process continues until the solution converges.
+
+</p>
+<p>
+Once the solution converges, the final values of <i>h<sub>t</sub> ,
+P<sub>t</sub> , </i> and <i>T<sub>t</sub></i>
+are output, while the final velocity of the engine is determined by the following:
+
+$$V_{eng} = MN * V_s $$
+
+In addition to determining the gas path characteristics, this block also calculates
+the drag using the following equation:
+
+$$F_{drag} = \frac{W*V_{eng}}{g}$$
+
+
 <br>
-<br>
-<font size="5" color="Blue">Ambient Inputs:</font>
-<table border="1"> <tr><td>Ambient Input</td><td>Description</td></tr>
-    <tr><td>W</td><td>gas path flow[pps]</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the inputs of altitude, temperature difference, gas path,
+        and Mach number to the corresponding places on the block.
+        <li> Connect the outputs to the next block(s) of your simulation.
+        <li> Double click the block and enter/adjust the vectors for the
+        ambient qualities.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Ambient Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
+    <tr><td>W</td><td>Gas path flow[pps]</td></tr>
     <tr><td>Alt</td><td>Altitude(ft)</td></tr>
     <tr><td>dTamb</td><td>Delta Temperature from Ambient [degF]</td></tr>
     <tr><td>MN</td><td>Mach Number [frac]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Ambient Outputs:</font>
-<table border="1"> <tr><td>Ambient Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Ambient Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>Pamb</td><td>Ambient Static Pressure [psia]</td></tr>
     <tr><td>A_Data</td><td>Ambient additional  calculation Data (4x1 vector):
             <br>- Ts - Static Temperature [degR]
             <br>- Pa - Ambient Static Pressure [psia]
             <br>- Veng - Engine Velocity [ft/sec]
             <br>- Fdrag - Ram Drag [lbf]
-    <br>- Test - Internally Calculated Data </td></tr>
+            <br>- Test - Internally Calculated Data </td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Ambient Mask Variables: </font>
-<table border="1"> <tr><td>Ambient Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Ambient Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>X_A_AltVec_M</td><td>Ambient Altitude Vector (mx1)</td></tr>
     <tr><td>T_A_TsVec_M</td><td>Ambient Static Temperature Table Vector (Ts = f(Alt)) (mx1)</td></tr>
     <tr><td>T_A_PsVec_M</td><td>Ambient Static Pressure Table Vector (Ps = f(Alt)) (mx1)</td></tr>
@@ -43,4 +198,30 @@ dTamb, Air purity, and MN to Pressure, Temperature, FAR, and Velocity.
 <br>
 Note: Vectors are the x and/or y axis to a table made of another vector.
 
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th>Error/Warning </th><th>Description</th></tr>
+    <tr><td>Error calculating:
+            <ul>
+                <li>iteration gammasg
+                <li>Rt
+                <li>TsStDayOut
+                <li>PsOut
+            </ul></td><td>Error occurs if the vector is not large enough to interpolate.
+                          Vector definitions may need to be expanded. </td></tr>
+    <tr><td>Error calculating Ps at input MN </td><td> Error occurs
+                          if maximum number of iterations reached.</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

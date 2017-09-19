@@ -1,38 +1,151 @@
-<font size="6" color="Magenta">T-MATS: CompressorVG Library Block</font>
-<br>
-This block simulates the performance of a compressor using basic 
-thermodynamic equations, properties, and table lookups.
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
-This block also takes into account 3 dimensional performance maps. Shifting between 
-the tables can be completed using the Alpha term. This feature can be used 
-for simulation of variable geometries.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Compressor VG Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Compressor VG Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the performance of a compressor using basic
+    thermodynamic equations, properties, and table-lookups.
+
+    This block also takes into account three-dimensional performance maps. Shifting between
+    the tables can be completed using the Alpha term. This feature can be used
+    for simulation of variable geometries.
+</p>
+
 <br>
-<br>
-<font size="5" color="Blue">Compressor Inputs:</font>
-<table border="1"> <tr><td>Compressor Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    This block utilizes the Compressor_TMATS.c script to compute the output gas characteristics
+    and other variables. It should be noted that all of the equations listed below
+    are the same as the ones used in the compressor block. The only difference
+    between this block and that block is that this block utilizes the alpha
+    value to all 3-D table-lookups, which allows for the simulation of variable
+    geometries. These alternate compressor maps give the user the ability to adjust the map
+    in a 3rd dimension for the purposes of simulating variable geometry, degradation, or other dynamic changes in compressor performance.
+    For more information on the theory behind this block see the
+    <a href="Turbo_TMATS_Cmp.html">compressor block documentation</a>.
+</p>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input gas path flow, Rline, and Nmech values to the
+        corresponding places on the block.
+        <li> Connect the outputs to the next block(s) in your simulation.
+        <li> Double click the block and...
+        <ol>
+            <li>Select which options you will use under each tab:
+            <ul style="list-style-type:circle">
+                <li>Under the Bleeds tab:
+                <ul>
+                    <li>Check the first box to enable Customer Bleeds. These
+                    bleeds are based on the flow and the parameters you input.
+                    <li>Check the second box to enable Fractional Bleeds. These
+                    bleeds are based on fractional values that you input.
+                </ul>
+                <li>Under the Surge Margin tab:
+                <ul>
+                    <li>Check the box to use the map default surge line.
+                    <li>Uncheck the box to specify your own values to determine
+                    the surge line.
+                </ul>
+                <li>Under the iDesign tab:
+                <ul>
+                    <li>Select the value of iDesign_M. <br>Options include:
+                    <ul style="list-style-type:disc">
+                        <li> 0: iDes will be enabled and the compressor map
+                        scalars will be based on design variables specified
+                        by the user in the iDesign tab.
+                        <li> 1: Compressor map scalars will be determined
+                        from a specified file (<i>FVar_M</i>) that is uploaded by
+                        the user and specified in the iDesign tab.
+                        <li> 2: Compressor map scalars will be determined
+                        by the scalars specified in the C-Map tab; no values
+                        from the iDesign tab will be used.
+                    </ul>
+                </ul>
+            </ul>
+            <li>Input the corresponding values for the parameters you have chosen
+            to use.
+        </ol>
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Compressor VG Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
-    <tr><td>Rline</td><td>R-line, position on compressor map 
-            <br>Determines pressure ratio, efficiency, and gas path flow. 
-            <br>The value for this variable will need be solved for by driving 
-    <br>flow error across the engine to zero.</td></tr>
-    <tr><td>Alpha</td><td>Alpha, positionin for dynamically alternate 
-            <br>compressor maps. typically alpha is used to define alternate
-    <br>variable geometry configurations.</td></tr>
-    <tr><td>HP_Mods</td><td>Health parameter modifiers (3x1), enabled with HP_M in mask
-            <br>- WMod - Flow modifier [frac]
-            <br>- PRMod - Pressure ratio modifier [frac]
-            <br>- EffMod - Efficiency modifier [frac]
-    <br> Modifiers are defined fractionally, example: -0.05 is a 5% loss</td></tr>
-    <tr><td>Nmech</td><td>shaft speed [rpm]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>Rline</td><td>R-line, position on compressor map.
+            <br>Determines pressure ratio, efficiency, and gas path flow.
+            <br>The value for this variable will need be solved for by driving
+            flow error across the engine to zero.</td></tr>
+        <tr><td>Alpha</td><td>Alpha, position for dynamically alternate
+            compressor maps. Typically alpha is used to define alternate
+            variable geometry configurations.</td></tr>
+    <tr><td>Nmech</td><td>Shaft speed [rpm]</td></tr>
+    <tr><td>HP_Mods</td><td>Health Parameter Modifiers, 3x1 vector consisting of:
+	            <br>- WcMod - Wc gain [frac]
+	            <br>- PRMod - PR gain [frac]
+	            <br>- EffMod - Eff gain [frac]
+	            <br> these modifiers are typically defined as negative fractional numbers, i.e. -0.01 is a 1% loss.
+        <br> Note: this inport appears only if HP_M under Health Parameters in the mask is checked.</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Compressor Outputs:</font>
-<table border="1"><tr><td>Compressor Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Compressor VG Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>CustBldsCharOut</td><td>Customer or flow based Bleeds Characteristics Output,
             <br>[5 x 1] bus/vector for each customer bleed (total #cbleeds *5 x 1)
             <br> consisting of the following repeating format:
@@ -41,7 +154,7 @@ for simulation of variable geometries.
             <br>- Tt - Total temperature [degR]
             <br>- Pt - Total pressure [psia]
             <br>- FAR - Combusted fuel to air ratio [frac]
-    <br> This feature must be enabled, see Bleed tab variable (CBLDEN_M) definition</td></tr>
+            <br> This feature must be enabled, see Bleed tab variable (CBLDEN_M) definition.</td></tr>
     <tr><td>FBldsCharOut</td><td>Fractional Bleeds Characteristics Output,
             <br>[5 x 1] bus/vector for each customer bleed (total #fbleeds *5 x 1)
             <br> consisting of the following repeating format:
@@ -50,16 +163,17 @@ for simulation of variable geometries.
             <br>- Tt - Total temperature [degR]
             <br>- Pt - Total pressure [psia]
             <br>- FAR - Combusted fuel to air ratio [frac]
-    <br> This feature must be enabled, see Bleed tab variable (FBLDEN_M) definition<br></td></tr>
+            <br> This feature must be enabled, see Bleed tab variable (FBLDEN_M) definition.<br></td></tr>
     <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
-    <tr> <td>NErr</td><td>Normalized Error [frac], in a typical system this will 
-    <br>be driven to zero by an iterative solver </td></tr>
-    <tr><td>TrqOut</td><td>compressor Torque Output (lbf*ft), negative value for a compressor.</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr> <td>NErr</td><td>Normalized Error [frac].
+            <br> In a typical system, this will be driven to zero by an iterative solver. </td></tr>
+    <tr><td>TrqOut</td><td>Compressor Torque Output (lbf*ft).
+            <br> Negative value for a compressor.</td></tr>
     <tr><td>C_Data</td><td>Compressor internal calculation Data, 18x1 bus/vector including:
             <br>- SMavail - Stall margin available [%]
             <br>- s_C_Nc - Corrected shaft speed map scalar value
@@ -77,59 +191,108 @@ for simulation of variable geometries.
             <br>- Pwrb4bleeds - Power required to run compressor if there were no bleeds [hp]
             <br>- PwrBld - Bled off power [hp]
             <br>- Pwrout - Total output power [hp]
-            <br>- SMMap - stall margin based on map values [%]
-            <br>- SPRMap - stall pressure ratio from the map
-            <br>- Test - Compressor internal calculation Data 
-            <br>- Nmech - mechanical shaft speed, from input [rpm] 
-    <br>- BlkNm - block name as double, if required use char(BlkNm) to retrieve </td></tr>
+            <br>- SMMap - Stall margin based on map values [%]
+            <br>- SPRMap - Stall pressure ratio from the map
+            <br>- Test - Compressor internal calculation Data
+            <br>- Nmech - Mechanical shaft speed, from input [rpm]
+            <br>- BlkNm - Block name as double. If required use char(BlkNm) to retrieve. </td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Compressor Mask Variables: </font>
-<table border="1"> <tr><td>Compressor Mask Variablet</td><td>Description</td></tr>
-    <tr><td>X_C_RlineVec_M</td><td>compressor map Rline vector(nx1)</td></tr>
-    <tr><td>Z_C_AlphaVec_M</td><td>compressor map Alpha vector(rx1)</td></tr>
-    <tr><td>Y_C_Map_NcVec_M</td><td>compressor map corrected speed vector(mx1)</td></tr>
-    <tr><td>T_C_Map_WcArray_M</td><td>compressor map flow array (Wc = f(Nc, Rline,Alpha))(mxnxr)</td></tr>
-    <tr><td>T_C_Map_PRArray_M</td><td>compressor map pressure ratio array (PR = f(Nc, Rline,Alpha))(mxnxr)</td></tr>
-    <tr><td>T_C_Map_EffArray_M</td><td>compressor map efficiency array (Eff = f(Nc, Rline,Alpha))(mxnxr)</td></tr>
-    <tr><td>s_C_Nc_M</td><td>corrected speed scalar constant</td></tr>
-    <tr><td>s_C_Wc_M</td><td>corrected flow scalar constant</td></tr>
-    <tr><td>s_C_PR_M</td><td>pressure ratio scalar constant</td></tr>
-    <tr><td>s_C_Eff_M</td><td>efficiency scalar constant</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Compressor VG Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>X_C_RlineVec_M</td><td>Compressor map Rline vector(nx1)</td></tr>
+    <tr><td>Z_C_AlphaVec_M</td><td>Compressor map Alpha vector(rx1)</td></tr>
+    <tr><td>Y_C_Map_NcVec_M</td><td>Compressor map corrected speed vector(mx1)</td></tr>
+    <tr><td>T_C_Map_WcArray_M</td><td>Compressor map flow array (Wc = f(Nc, Rline,Alpha))(mxnxr)</td></tr>
+    <tr><td>T_C_Map_PRArray_M</td><td>Compressor map pressure ratio array (PR = f(Nc, Rline,Alpha))(mxnxr)</td></tr>
+    <tr><td>T_C_Map_EffArray_M</td><td>Compressor map efficiency array (Eff = f(Nc, Rline,Alpha))(mxnxr)</td></tr>
+    <tr><td>s_C_Nc_M</td><td>Corrected speed scalar constant</td></tr>
+    <tr><td>s_C_Wc_M</td><td>Corrected flow scalar constant</td></tr>
+    <tr><td>s_C_PR_M</td><td>Pressure ratio scalar constant</td></tr>
+    <tr><td>s_C_Eff_M</td><td>Efficiency scalar constant</td></tr>
     <tr><td>CBLDEN_M</td><td>Customer or flow based Bleed Enable [check - enabled]</td></tr>
     <tr><td>C_CBD_M</td><td>Customer or flow based Bleed Demand[pps](cbx1)</td></tr>
     <tr><td>C_CBFht_M</td><td>Customer or flow based Bleed Fractional enthalpy[frac](cbx1)</td></tr>
     <tr><td>C_CBFPt_M</td><td>Customer or flow based Bleed Fractional Total Pressure[frac](cbx1)</td></tr>
     <tr><td>FBLDEN_M</td><td>Fractional based Bleed Enable [check - enabled]</td></tr>
     <tr><td>C_FBD_M</td><td>Fractional Bleed Demand[frac](bx1)</td></tr>
-    <tr><td>C_BFht_M</td><td>engine Bleed Fractional enthalpy (bx1)[frac](bx1)</td></tr>
-    <tr><td>C_BFPt_M</td><td>engine Bleed Fractional Total Pressure (bx1)[frac](bx1)</td></tr>
-    <tr><td>DefSMEn_M</td><td>Enable default surge margin(set - use SRline_M, un-set - define manually via X_C_Map_WcSurgeVec_M and T_C_Map_PRSurgeVec_M </td></tr>
+    <tr><td>C_BFht_M</td><td>Engine Bleed Fractional enthalpy (bx1)[frac](bx1)</td></tr>
+    <tr><td>C_BFPt_M</td><td>Engine Bleed Fractional Total Pressure (bx1)[frac](bx1)</td></tr>
+    <tr><td>DefSMEn_M</td><td>Enable default surge margin
+             <br>
+             <br> Set - use SRline_M
+             <br>
+             <br> Un-set - define manually via X_C_Map_WcSurgeVec_M and T_C_Map_PRSurgeVec_M </td></tr>
     <tr><td>SRline_M</td><td>Rline defined as the surge line (typically defined as 1)</td></tr>
     <tr><td>X_C_Map_WcSurgeVec_M</td><td>Compensated flow surge vector (map value)(Vec = f(Alpha))(sxr)</td></tr>
     <tr><td>T_C_Map_PRSurgeVec_M</td><td>Surge line pressure ratio vector (map value)(Vec = f(Alpha)(sxr)</td></tr>
     <tr><td>iDesign_M</td><td> Design fork (0, 1, 2)
+            <br>
             <br>0 - iDes Enabled, Calculate compressor map scalars based on design variables
             <br>    When iDesign is set to 0, scalar constants from the Map tab will not be used.
-            <br>    Scalars calculated will be saved in the specified file (FVar_M).
-            <br>1 - Scalar variables will be overwritten (mask Initialization) with 
-            <br>    values from a specified file (FVar_M).
-            <br>    When iDesign is set to 1, scalar constants from the Map tab and the Design values 
-            <br>    from the iDesign tab will not be used. 
+            <br>    Scalars calculated will be saved in the specified file (<i>FVar_M</i>).
+            <br>
+            <br>1 - Scalar variables will be overwritten (mask Initialization) with
+            <br>    values from a specified file (<i>FVar_M</i>).
+            <br>    When iDesign is set to 1, scalar constants from the Map tab and the Design values
+                    from the iDesign tab will not be used.
+            <br>
             <br>2 - Scalar variables from the map tab will be used as the map scalars.
-            <br>    When iDesign is set to 2, scalar constants from the Map tab will be used; Design values 
-    <br>    and file definitions from the iDesign tab will not be used. </td></tr>
-    <tr><td>NcDes_M</td><td>map Design Corrected Shaft Speed [rpm], design point speed used in map</td></tr>
+            <br>    When iDesign is set to 2, scalar constants from the Map tab will be used; Design values
+                    and file definitions from the iDesign tab will not be used. </td></tr>
+    <tr><td>NcDes_M</td><td>Map Design Corrected Shaft Speed [rpm], design point speed used in map</td></tr>
     <tr><td>EffDes_M</td><td>Design Efficiency [frac], actual design point compressor efficiency</td></tr>
     <tr><td>PRDes_M</td><td>Design Pressure Ratio [frac], actual design point compressor PR</td></tr>
-    <tr><td>RlineDes_M</td><td>map Design Rline, design point Rline used in map</td></tr>
+    <tr><td>RlineDes_M</td><td>Map Design Rline, design point Rline used in map</td></tr>
     <tr><td>FVar_M</td><td>File name for iDes Variables</td></tr>
-    <tr><td>HP_M</td><td>Enable health parameter input. This input is required to be a 3x1 vector.</td></tr>
+    <tr><td>HP_M</td><td>Enable Health Parameter input (3x1 vector), checked enabled. </td></tr>
 </table>
-<br>
 Notes: Vectors are the x and/or y axis to a table made of an array.
-Scalars are used to "scale" the compressor map for off design compressors.<br> 
-cb - number of customer bleeds<br>
-b - number of fractional bleeds<br>
+Scalars are used to "scale" the compressor map for off design compressors.<br>
+cb = number of customer bleeds<br>
+b = number of fractional bleeds<br>
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>Error calculating:
+            <ul>
+                <li>WcMap
+                <li>PRMap
+                <li>EffMap
+            </ul></td><td>Error appears if the table size does not match the axis vector lengths.</td></tr>
+    <tr><td>Error calculating:
+            <ul>
+                <li>WcMap
+                <li>PRMap
+                <li>EffMap
+                <li>1D SMWcVec
+                <li>1D SMPRVec
+                <li>2D SPR
+                <li>SPR
+            </ul></td><td>Error appears if the vectors are not large enough
+            to interpolate. Vector definitions may need to be adjusted.</td></tr>
+    <tr><td>Number of bleeds in compressor exceeds 100...</td><td>Error appears if
+                the iterations significantly exceeds the maximum number of
+                bleeds, indicating bad data.</td></tr>
+</table>
 
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

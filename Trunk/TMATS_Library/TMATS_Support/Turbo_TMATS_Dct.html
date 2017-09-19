@@ -1,30 +1,121 @@
-<font size="6" color="Magenta">T-MATS: Duct Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<title>
+    T-MATS: Help for Duct Library Block
+</title>    
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<body>
+    <h1> 
+    T-MATS: Duct Library Block
+    </h1>
+    
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+ <div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block simulates the performance of a duct.
+</p> 
+
 <br>
-This block simulates the performance of a duct using basic fluid dynamic equations and properties.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>  
+
+<p>
+    To compute flow properties, this block utilizes basic fluid dynamic 
+    equations and properties.
+    Across the duct, the Total Temperature, Total Enthalpy, Fuel to Air 
+    Ratio, and Gas Path Flow are unchanged, however the Total Pressure 
+    changes according to the following equation:
+    <br>
+$$
+Pt_2 = (1-\Delta P)*Pt_1 
+$$
+    
+where &Delta;P is the fraction of total pressure lost, as specified by the 
+user in the mask variable <i> dP_M </i>  based on the properties of the duct.
+As a reference, in the Steady State Gas Turbine example this value is equal to 0.01.   
+</p>
+
 <br>
-<br>
-<font size="5" color="Blue">Duct Inputs:</font>
-<table border="1"> <tr><td>Duct Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  
+<div class="instructions">
+        Instructions 
+</div>
+    
+<p>    To use this block, connect the core gas path across the Duct block and set the value of the fraction of total pressue lost, dP_M. This is done by: 
+    <ul>
+        <li>Connecting the <i> GasPthCharOut </i> of the previous block to
+        the <i> GasPthCharIn </i> of the Duct block.
+        <li>Connecting the <i> GasPthCharOut </i> of the Duct block to the 
+        <i> GasPthCharIn </i> of the next block.
+        <li>Double-clicking the Duct block and setting the <i> dP_M </i> 
+        value for the duct being used. 
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+ 
+<div class="inputs">
+        Duct Inputs     
+</div>
+    
+<table> <tr><th> Input </th><th> Description </th></tr>
     <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
-            <br>- Tt - Total Temperature [degR]
-            <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
-</table>
-<br>
-<font size="5" color="Blue">Duct Outputs:</font>
-<table border="1"> <tr><td>Duct Output</td><td>Description</td></tr>
-    <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
-            <br>- Tt - Total Temperature [degR]
-            <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
-</table>
-<br>
-<font size="5" color="Blue">Duct Mask Variables: </font>
-<table border="1"> <tr><td>Duct Mask Variable</td><td>Description</td></tr>
-    <tr><td>dP_M</td><td>Delta Pressure [frac lost]</td></tr>
+<br>- W - Gas Path Flow [pps]
+<br>- ht - Total Enthalpy [BTU/lbm]
+<br>- Tt - Total Temperature [degR]
+<br>- Pt - Total Pressure [psia]
+<br>- FAR - Combusted Fuel to Air Ratio [frac]
+    </td></tr>
 </table>
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  
+<div class="outputs">
+        Duct Outputs  
+</div>
+    
+<table> <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
+<br>- W - Gas Path Flow [pps]
+<br>- ht - Total Enthalpy [BTU/lbm]
+<br>- Tt - Total Temperature [degR]
+<br>- Pt - Total Pressure [psia]
+<br>- FAR - Combusted Fuel to Air Ratio [frac]
+    </td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Duct Mask Variables 
+</div>
+
+<table> <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td> dP_M </td><td> Delta Pressue [frac lost] </td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+</body>

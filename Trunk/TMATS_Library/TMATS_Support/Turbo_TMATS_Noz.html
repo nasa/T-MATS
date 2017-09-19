@@ -1,26 +1,386 @@
-<font size="6" color="Magenta">T-MATS: Nozzle Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Nozzle Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Nozzle Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the performance of a nozzle using basic
+thermodynamic equations, properties, and table-lookups.
+</p>
+
 <br>
-This block simulates the performance of a nozzle using basic 
-thermodynamic equations, properties, and table lookups.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    This block has two main functions, to generate an exit thrust for system
+    studies and to generate a calculated block flow that can be used for system convergence.
+    Both of these functions require a velocity to be calculated.
+    The block operates according to the following procedure. All incoming
+    flow parameters are determined using table-lookups. The ideal conditions
+    are first determined from the input parameters. For the given operating
+    condition, the flow conditions at the throat are then determined by the
+    basic thermodynamic equations and table lookups. From the throat conditions,
+    the effective flow area at the throat can be determined. Using the flow
+    coefficient, the actual throat area is calculated and used to size the
+    nozzle for the corresponding operating condition. (Note: If the throat area
+    is specified by the user, the iterative process converges to this value).
+    The exit conditions of the flow are calculated based on the area of the
+    throat or exit. The gross thrust is determined by the exit parameters and
+    user-specified thrust or velocity coefficients.
+</p>
+<p>
+    The input flow conditions not included in the gas path characteristics
+    input (entropy and ideal gas constant) are determined
+    using a table-lookup method and the input pressure, temperature, and
+    fuel to air ratio.
+</p>
+<h2>
+<i>V</i> and <i>MN</i> at <i>Ps = Pambient</i>
+</h2>
+<p>
+    Ideal flow through the nozzle is then calculated for the case when the nozzle is not choked
+    ; these calculations are based on
+    the assumption that the expansion is perfect such that the exit pressure
+    is equal to the ambient pressure. When calculating these quantities,
+    table-lookups are used for <i>Ts</i> and <i>hs</i> based on input parameters and
+    ambient pressure, in addition to the
+    following equations for the other variables.
+
+    $$ V_s = \sqrt{2*(ht-hs)*g*Jc}$$
+    $$ \rho_s = \frac{Ps * \textit{C_PSItoPSF}}{Rs*Ts*Jc}$$
+    $$MN_s = \frac{V_s}{\sqrt{\gamma_s * Rs*Ts*g*Jc}}$$
+
+    in which <i>g</i> is the acceleration due to gravity (32.17 [ft*lbm/(lbf*sec^2)]),
+    <i>Jc</i> is Joule's constant (778.17 [ft*lbm/BTU]), and <i>C_PSItoPSF</i>
+    is a conversion constant used to get the proper units.
+</p>
+<h2>
+<i>V</i> and <i>Ps</i> when nozzle is choked at the throat(<i>MN = 1</i>)
+</h2>
+<p>
+    In order to determine if the flow is choked, the pressure (<i>Ps</i>) is
+    determined at the throat for <i>MN</i>=1. Using this Mach number, the
+    specific heat ratio is determined via table-lookup and an initial guess for
+    the static pressure is made according to the isentropic relations,
+    shown below. In these equations, the subscript 'g' refers to the fact that
+    these are initial guesses and does not reference gravity.
+
+    $$Ts_g = \frac{Tt_{In}}{1+MN^2*\frac{\gamma_t - 1}{2}}$$
+    $$Ps_g = Pt_{In}*\left(\frac{Ts}{Tt_{In}}\right)^{\frac{\gamma_t}{\gamma_t-1}}$$
+
+    The velocity, density, and Mach number are calculated using the previously
+    mentioned equations and these newly determined guess of <i>Ps</i> (Note: this
+    process is assumed isentropic, <i>Ts</i> can be determined based on <i>Ps</i> and input entropy).
+    The guessed <i>Ps</i> term is then updated based on the the error between the caulcated <i>MN</i>
+    and the choked value of <i>MN = 1</i>:
+
+    $$err_{MN} = 1 - MN$$
+
+    If the error is not within the tolerance, a new guess for the pressure is
+    made and the previous procedure is repeated iteratively until the solution
+    converges.
+</p>
+<h2>
+	Determining parameters based on nozzle choked status
+</h2>
+<p>
+    A comparison between the calculated static pressure at choked
+    and ambient conditions is made to determine if the nozzle is choked.
+    If the ambient pressure is greater,
+    the flow is determined to be unchoked, and the throat conditions are set to
+    be equal to the ideal(<i>Ps = Pamb</i>) conditions. If the ambient pressure is less than
+    the calculated pressure, the flow is determined to be choked, and the
+    throat conditions are equal to the conditions calculated when the Mach
+    number was set to 1.
+</p>
+<p>
+    Whether the flow is choked or not, the ratio between the input pressure and
+    ambient pressure is determined by the following equation:
+
+    $$PQPa = \frac{Pt_{In}}{Pamb_{In}}$$
+
+    Other parameters of the flow, such as the flow coefficient and the thermal
+    growth, are determined by interpolation and table-lookups.
+    <br>
+    <em>Note:</em>The flow coefficient is not a measure of efficiency, it
+    is a sizing parameter that allows the physical area of the nozzle to be
+    matched to an engine cycle.
+</p>
+<h2>
+	Operating Modes
+</h2>
+<p>
+    At this point, it is important to cover the design options available to
+    the user. By double clicking the block and navigating to the iDesign tab,
+    the user can adjust what aspects of the design they want to use by inputting
+    0, 1, or 2 for the option of <i>iDesign_M</i>.
+    <ul>
+        <li>If 0 is input, iDesign will be enabled and the nozzle throat area will be based
+        on design values specified by the user in the iDesign tab.
+        <li>If 1 is input, the nozzle throat area variables will be determined by values
+        in a user-specified file (<i>FVar_M</i>) in the iDesign tab.
+        <li>If 2 is input, the variables will be determined by the values specified in
+        the General tab; no values from the iDesign tab will be used.
+    </ul>
+    For more information on how to enable iDesign and the different options
+    for how to use it, see the Mask Variables table at the bottom of this page.
+</p>
+<h2>
+	Design Mode, Design nozzle flow
+</h2>
+<p>
+    Based on the iDesign option that you choose, the throat area will be determined
+    in different ways. If iDesign is enabled, the area will be calculated using
+    the following equation, in which <i>flowLoss</i> is the user-specified
+    percentage of flow lost across the nozzle.
+
+    $$Ath = \frac{W_{In} * \textit{C_PSItoPSF}}{\textit{Therm_growth} *\left(1-\frac{flowLoss}{100}\right)*CdTh*\rho_{s-th}*Vth}$$
+</p>
+<h2>
+	Off-Design Mode, Calculated nozzle flow
+</h2>
+<p>
+    The calculated mass flow out of the nozzle is determined by the following
+    equation:
+
+    $$Wcalc_{Out} = \frac{\left(1-\frac{flowLoss}{100}\right)*AthroatH*CdTh*\rho_{s,th}*Vth}{\textit{C_PSItoPSF}}$$
+
+    in which
+
+    $$AthroatH = Ath * \textit{Therm_growth}$$
+</p>
+<h2>
+	Exit conditions and the Convergent-Divergent nozzle
+</h2>
+<p>
+    There are a few options for how the exit parameters are calculated, depending
+    on if the flow is choked and the type of nozzle being used. The options include:
+    <ul>
+        <li> If the nozzle is unchoked, the exit parameters of the flow are set to
+        be equal to the previously determined ideal values. Any divergent sections
+        will not accelerate the flow further.
+        <li> If the nozzle is choked and set to be Convergent, the exit parameters
+        are set to be equal to be equal to the previously determined values for
+        sonic flow (<i>MN</i>=1) at the throat.
+        <li> If the nozzle is choked and is set to be Convergent-Divergent, the divergent
+        section accelerates the exit flow further, as described below.
+    </ul>
+
+    For choked flow and a Convergent-Divergent nozzle, the exit area is set
+    to be equal to the input exit area if iDesign is disabled.
+    <h2>
+		Design Mode and Exit Area
+	</h2>
+    If iDesign is
+    enabled, the exit area is calculated using the following equation:
+
+    $$Ax = \frac{W_{In} * \textit{C_PSItoPSF}}{\textit{Therm_growth} *\left(1-\frac{flowLoss}{100}\right)*CdTh*\rho_{s}*V_s}$$
+    <h2>
+		Off-Design Mode and the Divergent Section
+	</h2>
+    Initially, the exit static pressure is guessed to be equal to ambient.
+    To find the correct values, an iterative process is used in which the entropy,
+    temperature, and enthalpy are determined via table-lookups and the density and
+    velocity are determined by the following equations:
+
+    $$V = \sqrt{2*(ht-hs)*g*Jc}$$
+    $$\rho = \frac{Ps*\textit{C_PSItoPSF}}{Rs*Ts*Jc}$$
+
+    From these parameters, a guess for the exit area is determined by the following
+    equation, in which <i>C_SINtoSFT</i> is a unit conversion factor.
+
+    $$Axcalc = \frac{W_{In}}{V*\frac{\rho}{\textit{C_SINtoSFT}}}$$
+
+    The error between this guessed value and the actual area is determined by
+    the equation below.
+
+    $$ Errx = \frac{|Ax - Axcalc|}{Ax}$$
+
+    If the error is not within the tolerance, a new guess for the static pressure
+    is made and the process is repeated until the solution converges.
+</p>
+<p>
+    Once the solution converges, the exit values for <i>Ts, V, Ps, &rho;,</i>
+    and <i>&gamma;</i> are defined. The exit Mach number is calculated using the
+    following equation:
+
+    $$MNx = \frac{Vx}{\sqrt{\gamma_x*Rs*Tsx*g*Jc}}$$
+</p>
+    <h2>
+		Thrust
+	</h2>
+<p>
+    The gross thrust produced is determined by first determining which coefficient
+    to use.
+        <ul>
+            <li>If the user selected to use the nozzle velocity coefficient, the
+            thrust coefficient (<i>Cfg</i>) will be set to 1 and the velocity
+            coefficient (<i>Cv</i>) will be determined via table-lookup using the
+            pressure ratio, <i>PQPa</i>, to find the correct value. Note: If this
+            method is used, only ideal velocity will be used for thrust calculation.
+            <li>If the user selected to use the nozzle thrust coefficient,
+            the velocity coefficient will be set to 1 and the thrust coefficient
+            will be determined via table-lookup, using the pressure ratio,
+             <i>PQPa</i>, to find the correct value.Note: If this
+            method is used, only throat or exit velocity will be used for thrust
+            calculation.
+        </ul>
+
+    It is important to note that the thrust coefficient is the ratio of actual
+    nozzle gross thrust to the ideal available gross thrust and represents
+    the measure of nozzle efficiency. This coefficient also includes
+    losses due to friction, angularity, and expansion and can also include
+    losses due to leakage and cooling air throttling loss. The velocity coefficient
+    accounts for the effects of boundary-layer momentum loss caused by friction
+    in the nozzle.
+
+    <br>
+
+    If the nozzle is set to be Convergent-Divergent, the gross thrust is calculated
+    using one of the following equations, depending on which coefficient is
+    being used.
+
+    $$\text{If using Cfg:} \:\:\:\: Fg_{Out} = \frac{W_{Out}*V_s*Cfg}{g}$$
+
+    $$\text{If using Cv:} \:\:\:\: Fg_{Out} = \frac{W_{Out} *Vx*Cv}{g}+(Psx - Pamb_{In})*Ax$$
+
+
+    If the nozzle is set to be Convergent, the gross thrust is calculated using
+    one of the following equations, again depending on which coefficient is
+    being used.
+
+    $$\text{If using Cfg:} \:\:\:\: Fg_{Out} = \frac{W_{Out}*V_s*Cfg}{g}$$
+
+    $$\text{If using Cv:} \:\:\:\: Fg_{Out} = \frac{W_{Out} *Vth*Cv}{g}+(Psth - Pamb_{In})*Ath$$
+    <h2>
+		Mass Flow
+	</h2>
+    The normalized flow error is determined in one of the following ways,
+    depending on if iDesign was enabled or not. If iDesign was enabled, the
+    normalized error is determined by the following equation, in which <i>WDes</i>
+    is the user-specified design flow.
+
+    $$ NErr = \frac{W_{In}-WDes}{WDes}$$
+
+    If iDesign was disabled, the normalized error is determined by:
+
+    $$NErr = \frac{W_{In} - Wcalc_{Out}}{W_{In}}$$
+
+    Note: The total output flow, <i>W<sub>Out</sub></i>, is set to be equal to the input flow,
+    since all the flow that enters the nozzle must also exit the nozzle.
+</p>
+
 <br>
-<br>
-<font size="5" color="Blue">Nozzle Inputs:</font>
-<table border="1"> <tr><td>Nozzle Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input gas path flow and ambient pressure to the
+        corresponding places on the block.
+        <li> Connect the outputs to the next block(s) in your simulation.
+        <li> Double click the block and...
+        <ol>
+            <li>Select which options you will use under each tab:
+            <ul style="list-style-type:circle">
+                <li>Under the General tab:
+                <ul>
+                    <li>Near the top of the page, choose whether to use a Convergent
+                    or Converent-Divergent Nozzle.
+                    <li>Near the bottom of the page, choose whether to use
+                    a nozzle thrust coefficient or nozzle velocity coefficient.
+                    <ol>
+                        <li> Check the box to enable the nozzle thrust coefficient;
+                        this will disable the nozzle velocity coefficient.
+                        <li> Uncheck the box to disable the nozzle thrust coefficient
+                        and use the nozzle velocity coefficient instead.
+                    </ol>
+                </ul>
+                <li>Under the iDesign tab:
+                <ul>
+                    <li>Select the value of iDesign_M. <br>Options include:
+                    <ul style="list-style-type:disc">
+                        <li> 0: iDes will be enabled and nozzle throat area will
+                        be calculated based on design variables. Values from the
+                        General tab will not be used.
+                        <li> 1: Nozzle throat area variables will be determined
+                        by values in a user-specified file (<i>FVar_M</i>).
+                        Values from the General tab and iDesign tab will not be used.
+                        <li> 2: Nozzle throat area variables will be determined
+                        by the values specified in the General tab.
+                        No values from the iDesign tab will be used.
+                    </ul>
+                </ul>
+            </ul>
+            <li>Input the corresponding values for the parameters you have chosen
+            to use.
+        </ol>
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+       Nozzle Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>Pamb</td><td>Ambient static Pressure [psia]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Nozzle Outputs:</font>
-<table border="1"> <tr><td>Nozzle Output</td><td>Description</td></tr>
-    <tr><td>Wout</td><td>gas path flow [pps]</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Nozzle Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>Wout</td><td>Gas path flow [pps]</td></tr>
     <tr><td>Fg</td><td>Gross thrust [lbf]</td></tr>
-    <tr><td>NErr</td><td>Normalized Error [frac], in a typical system this will 
-    <br>be driven to zero by an iterative solver</td></tr>
+    <tr><td>NErr</td><td>Normalized Error [frac], in a typical system this will
+                        be driven to zero by an iterative solver</td></tr>
     <tr><td>N_Data</td><td>Nozzle internal calculation Data, 14x1 bus/vector including:
             <br>- Ath - Throat area [in^2]
             <br>- Aexit - Exit area [in^2]
@@ -32,45 +392,113 @@ thermodynamic equations, properties, and table lookups.
             <br>- Tsx - Exit static temperature, ideal consistant with exit area[R]
             <br>- MNx - Exit Mach Number, ideal consistant with exit area
             <br>- Vx - Exit velocity, ideal consistant with exit area [ft/sec]
-            <br>- Woutcalc - internally calculated mass flow through the throat [pps]
-            <br>- choked - Throat is choked (MN = 1 at throat) [set choked, unset not choked]
-            <br>- Vs - Ideal exit velocity, consistant with Pt/Pambient [ft/sec] 
-            <br>- Test - Nozzle test signal    
+            <br>- Woutcalc - Internally calculated mass flow through the throat [pps]
+            <br>- Choked - Throat is choked (MN = 1 at throat) [set choked, unset not choked]
+            <br>- Vs - Ideal exit velocity, consistant with Pt/Pambient [ft/sec]
+            <br>- Test - Nozzle test signal
 </td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Nozzle Mask Variables: </font>
-<table border="1"> <tr><td>Nozzle Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Nozzle Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>N_TArea_M</td><td>Nozzle Throat Area [in^2]</td></tr>
     <tr><td>N_EArea_M</td><td>Nozzle Exit Area [in^2]</td></tr>
     <tr><td>N_FL_M</td><td>Flow Loss Across Nozzle (%)</td></tr>
     <tr><td>X_N_TtVec2_M</td><td>Nozzle Total Temperature Vector (X-axis for TG calc)(ax1)</td></tr>
     <tr><td>T_N_TGArray_M</td><td>Nozzle Thermal Growth Array (TG = f(Tt))(ax1)</td></tr>
     <tr><td>X_N_PEQPaVec_M</td><td>Nozzle PE/Pa Vector (X-axis)(bx1)</td></tr>
-    <tr><td>T_N_CdThArray_M</td><td>Nozzle CdTh Array, Throat blockage factor [frac](CdTh = f(PEQPa))(bx1)
-    <br> 0 - Fully Blocked, 1 - Fully unblocked</td></tr>
+    <tr><td>T_N_CdThArray_M</td><td>Nozzle CdTh Array; Throat blockage factor [frac](CdTh = f(PEQPa))(bx1)
+                                    <br>
+                                    <br> 0 - Fully Blocked
+                                    <br>
+                                    <br> 1 - Fully Unblocked</td></tr>
     <tr><td>T_N_CvArray_M</td><td>Nozzle Velocity Coefficient Array (Cv = f(PEQPa))(bx1)</td></tr>
-    <tr><td>CfgEn_M</td><td>Enable Thrust Coefficient. Note, this will disable the Velocity Coefficient</td></tr>
+    <tr><td>CfgEn_M</td><td>Enable Thrust Coefficient.
+                        <br> <em> Note:</em> This will disable the Velocity Coefficient.</td></tr>
     <tr><td>T_N_CfgArray_M</td><td>Nozzle Thrust Coefficient Array (Cfg = f(PEQPa))(bx1)</td></tr>
     <tr><td>X_N_FARVec_M</td><td>Nozzle Fuel to Air Ratio Vector(X-axis)(cx1)</td></tr>
     <tr><td>T_N_RtArray_M</td><td>Nozzle Gas Constant, R, Array (R = f(FAR))(cx1)</td></tr>
     <tr><td>Y_N_TtVec_M</td><td>Nozzle Total Temperature Vector (Y-axis for Gamma calc)(dx1)</td></tr>
     <tr><td>T_N_MAP_gammaArray_M</td><td>Nozzle Map Gamma Array (Gamma = f(Tt,FAR))(dxc)</td></tr>
     <tr><td>iDesign_M</td><td> Design fork (0, 1, 2)
+            <br>
             <br>0 - iDes Enabled, Calculate nozzle throat area based on design variables
             <br>    When iDesign is set to 0, N_TArea_M from the General tab will not be used.
             <br>    Throat area calculated will be saved in the specified file (FVar_M).
-            <br>1 - nozzle throat area variables will be overwritten (mask Initialization) with 
+            <br>
+            <br>1 - Nozzle throat area variables will be overwritten (Mask Initialization) with
             <br>    values from a specified file (FVar_M).
-            <br>    When iDesign is set to 1, N-TArea_M from the General tab and the Design values 
-            <br>    from the iDesign tab will not be used. 
+            <br>    When iDesign is set to 1, N-TArea_M from the General tab and the Design values
+            <br>    from the iDesign tab will not be used.
+            <br>
             <br>2 - Nozzle throat area from the General tab will be used in the nozzle module.
-            <br>    When iDesign is set to 2, N_TArea_M from the General tab will be used; Design values 
-    <br>    and file definitions from the iDesign tab will not be used. </td></tr>
-    <tr><td>WDes_M</td><td>Design flow[pps]</td></tr>
+            <br>    When iDesign is set to 2, N_TArea_M from the General tab will be used; Design values
+                    and file definitions from the iDesign tab will not be used. </td></tr>
+    <tr><td>WDes_M</td><td>Design flow [pps]</td></tr>
     <tr><td>FVar_M</td><td>File name for iDes Variables</td></tr>
 </table>
 <br>
 Note: Vectors are the x and/or y axis to a table made of an array.
+<br>
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+<div class = "errors">
+    Potential Errors
+</div>
 
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being
+displayed.
+</p>
+
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>Error calculating:
+           <ul>
+                <li>Rt1
+                <li>gammas
+                <li>gammatg
+                <li>gammasg
+                <li>iteration gammasg
+                <li>CdTh
+                <li>Therm_growth
+                <li>Cv
+                <li>Cfg
+           </ul></td><td>Vector input for the parameter is not big enough
+                    to interpolate the correct value.</td></tr>
+   <tr><td>Backflow warning</td><td> This error will appear when the input
+                    total pressure (within the gas path characteristics input)
+                    is less than the input ambient pressure.</td></tr>
+   <tr><td>Error calculating Ps at MN=1, or Ps at exit</td><td>When the flow is choked
+                    and the maximum number of iterations allowable for determining
+                    Ps is reached, this error will appear.</td></tr>
+    <tr><td>Error: Negative throat Mach number</td><td>If the flow is deemed to
+                    be unchoked, the throat Mach number may be calculated to be negative,
+                    if the ideal velocity is calculated to be negative. This could
+                    occur if the static enthalpy was determined to be greater than
+                    the total enthalpy, which could indicate an error in the table-lookup
+                    based on the calculated static temperature.</td></tr>
+   <tr><td>Error: Negative exit Mach number</td><td>If the flow is deemed to be
+                    choked, the exit Mach number may be calculated  to be
+                    negative. This can occur if the velocity is calculated to
+                    be negative, which could occur if the static enthalpy was
+                    determined to be greater than the total enthalpy, which
+                    could indicate an error in the table-lookup based on the
+                    calculated static temperature.</td></tr>
+   <tr><td>Calculating iDes Area with unchoked nozzle</td><td>If iDes is set
+                    to 0 and the flow is determined to be unchoked, this error
+                    will appear.</td></tr>
+</table>
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+</body>

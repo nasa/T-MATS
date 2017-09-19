@@ -1,20 +1,117 @@
-<font size="6" color="Magenta">T-MATS: SFC Calculation Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for SFC Calculation Library Block
+</title>    
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: SFC Calculation Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to calculate the specific fuel consumption (SFC) 
+    and net thrust.
+</p>
+
 <br>
-This block calculates specific fuel consumption (SFC) and net thrust.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>    
+
+<p>
+    To compute the net thrust and SFC, this block utilizes the following equations:
+
+    $$Fnet = Fg - Fram $$
+    <br>
+    $$SFC = \frac{Wf*3600}{Fg-Fram} = \frac{Wf*3600}{Fnet}$$
+    
+    In the above equations, <i>Fg</i> is the gross thrust, <i>Fram</i> is
+    the RAM thrust, and <i>Wf</i> is the fuel flow. The constant 3600 in the equation
+    for <i>SFC</i> is used to convert the fuel flow units from pounds per second to pounds per hour.
+
 <br>
-<br>
-<font size="5" color="Blue">SFC Inputs:</font>
-<table border="1"> <tr><td>SFC Input</td><td>Description</td></tr>
-    <tr><td>Wf</td><td>Fuel Flow[pps]</td></tr>
-    <tr><td>Fg</td><td>Gross Thrust[lbf]</td></tr>
-    <tr><td>Fram</td><td>RAM Thrust[lbf]</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the fuel flow and force inputs to the corresponding places on the block.
+        <li> Connect the outputs to the next block in your simulation.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        SFC Calculation Inputs     
+</div>
+
+<table> 
+    <tr><th> Input </th><th>Description</th></tr>
+    <tr><td>Wf</td><td>Fuel Flow [pps]</td></tr>
+    <tr><td>Fg</td><td>Gross Thrust [lbf]</td></tr>
+    <tr><td>Fram</td><td>RAM Thrust [lbf]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">SFC Outputs:</font>
-<table border="1"> <tr><td>SFC Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        SFC Calculation Outputs  
+</div>
+
+<table> 
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>SFC</td><td>Specific Fuel Consumption [(lbm/hr)/lbf]</td></tr>
-    <tr><td>Fnet</td><td>Net Thrust[lbf]</td></tr>
-</table>
+    <tr><td>Fnet</td><td>Net Thrust [lbf]</td></tr>
 </table>
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+<div class="maskvars">
+        SFC Calculation Mask Variables 
+</div>
+ <br>
+ No mask variables are needed for this block, since all of the calculations 
+ depend only on the inputs.
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, an error will occur when computing the specific fuel
+consumption if <i>Fnet</i> is determined to be zero. To avoid this error, 
+ensure that <i>Fg</i> is not equal to <i>Fram</i>.
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

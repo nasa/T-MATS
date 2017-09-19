@@ -1,47 +1,192 @@
-<font size="6" color="Magenta">T-MATS: Model Source Library Block</font>
-<br>
-The Iterative Newton Raphson Solver with Jacobian Calculator block will
-supply the inputs to iteratively drive the outputs of a system to zero.
-<br>
-<br>
-This will be performed in three steps.<br>
-1) Jabobian calculator sends Perturbations to the plant then calculates the plant
-Jacboian based on the system response. <br>
-2) The Newton Raphson will use the inverse of the Jacobian to iteratively step the
-system toward solution.<br>
-3) Once the solution has satisfied the conditions the Newton Raphson is shut off.<br>
-<br>
-This module is designed for dynamic systems and should be paired with
-a "do... while" block in Simulink. The "do...while" block and this module
-should both be located in the same subsystem as the plant that is to be solved for.
-<br>
-<br>
-<font size="5" color="Blue">Iter_NRSwJC Condition Inputs:</font>
-<table border="1"> <tr><td>Iter_NRSwJC Input</td><td>Description</td></tr>
-    <tr><td>Iterations</td><td>Number of times the do.. while block has re-run the subsystem.</td></tr>
-	<tr><td>Enable</td><td>Enable Solver</td></tr>
-    <tr><td>f(x)</td><td>Output of plant to be solved for, (mx1 vector consisting of all plant outputs)</td></tr>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
-</table>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Iterative Newton Raphson Solver with Jacobian Calculator
+        Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Iterative Newton Raphson Solver with Jacobian Calculator Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block is used to supply the inputs to iteratively drive the outputs
+    of a system to zero by using a <a href="TMATS_Library/TMATS_Support/NumMthd_TMATS_NRS.html">
+    Newton Raphson Solver block</a> in combination with a <a href="TMATS_Library/TMATS_Support/NumMthd_TMATS_JC.html">
+    Jacobian Calculator block</a>.
+</p>
+
 <br>
-<font size="5" color="Blue">Iter_NRSwJC Condition Outputs:</font>
-<table border="1"> <tr><td>Iter_NRSwJC Output</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    This block performs its calculations by utilizing the following steps:
+
+    <ol>
+        <li>Jabobian Calculator sends perturbations to the plant and then
+        calculates the plant Jacboian based on the system response.
+        <li>Newton Raphson Solver will use the inverse of the Jacobian to
+        iteratively step the system towards the solution.
+        <li>Once the solution has satisfied the conditions, the Newton
+        Raphson Solver is shut off.<br>
+    </ol>
+</p>
+<p>
+This block is designed to be used in dynamic systems and should be paired
+with a "do... while" block in Simulink. The "do...while" block and this one
+should both be located in the same subsystem as the plant that is to be
+solved for.
+</p>
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+    	<li>Place block within a "While Iterator Subsystem" subsystem
+    	<li>Double click the While Iterator block
+    	<ul>
+    		<li>Set Maximum number of iterations to desired amount
+    		<li>Set "While loop type" to do-while
+    		<li> check the "Show iteration number port" check box
+    	</ul>
+        <li>Connect the input iterations to outport of the While Iterator
+        <li>Connect the output do_while Condition to the "cond" inport of the While Iterator
+        <li>Connect the function to the corresponding
+        places on the block.
+        <li>Connect the input command to enable the block.
+        <li>Connect the <i>X</i> outputs to the next blocks in the simulation.
+        <li>Double click the block and specify the following:
+        <ul>
+            <li>Jacobian perturbation size
+            <li>Newton Raphson initial conditions
+            <li>Newton Raphson step size limits
+            <li>Newton Raphson max/min limits
+            <li>Newton Raphson attempts before Jacobian recalculation
+            <li>Iteration condition limits
+        </ul>
+    </ul>
+</p>
+<p>
+    For more information about each input, output, and mask variable, see
+    the tables below.
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Iterative Newton Raphson Solver w Jacobian Calculator Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
+    <tr><td>Iterations</td><td>Number of times the do.. while block has
+    re-run the subsystem.</td></tr>
+	<tr><td>Enable</td><td>Enable Solver</td></tr>
+    <tr><td>f(x)</td><td>Output of plant to be solved for, (mx1 vector
+    consisting of all plant outputs)</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Iterative Newton Raphson Solver w Jacobian Calculator Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>X</td><td>Input to plant to be solved for, (mx1 vector consisting of all plant inputs)
-    <br> Initial value will be set as the initial conditions</td></tr>
+        <br> Initial value will be set as the initial conditions</td></tr>
     <tr><td>do_while Condition</td><td>Input to the do... while loop.
-    <br> The current subystem should repeat until the Solver's conditions are met.</td></tr>
-    <tr><td>S_Data</td><td>Solver internal calculation Data, including:
-    <br>- J - Calculated Jacobian Matrix
-    <br>- JacFailed - Jacobian inversion fault (0 - no fault, 1 - fault)</td></tr>
+        <br> The current subystem should repeat until the Solver's conditions are met.</td></tr>
+    <tr><td>S_Data</td><td>Solver internal calculation data, including:
+                <br>- J - Calculated Jacobian Matrix
+                <br>- JacFailed - Jacobian inversion fault (0 - no fault, 1 - fault)</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Iter_NRSwJC Mask Variables: </font>
-<table border="1"> <tr><td>Iter_NRSwJC Mask Variable</td><td>Description</td></tr>
-    <tr><td>SJac_Per_M</td><td>Jacobian Perturbation size (nxm), where m is the number of inputs and n is the number of times each input is perturbed</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Iterative Newton Raphson Solver w Jacobian Calculator Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>SJac_Per_M</td><td>Jacobian Perturbation size (nxm), where m is
+        the number of inputs and n is the number of times each input is
+        perturbed</td></tr>
     <tr><td>SNR_IC_M</td><td>Newton Raphson Initial Conditions (mx1)</td></tr>
     <tr><td>SNR_DX_M</td><td>Newton Raphson step size (dx) limiter (%)(1x1)</td></tr>
     <tr><td>SNR_Mx_M</td><td>Newton Raphson max value limit(1x1 or mx1)</td></tr>
     <tr><td>SNR_Mn_M</td><td>Newton Raphson min value limit (1x1 or mx1)</td></tr>
-    <tr><td>SJacobianAttempts_M</td><td>Newton Raphson attempts before the Jacobian recalculation (1x1)</td></tr>
+    <tr><td>SJacobianAttempts_M</td><td>Newton Raphson attempts before the
+        Jacobian recalculation (1x1)</td></tr>
     <tr><td>Cond_Limits_M</td><td>Iteration Conditions Limits (mx1 or 1x1)</td></tr>
 </table>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>Jacobian can not be inverted.</td><td>The resulting Jacobian matrix
+is singular (determinant = 0) and cannot be inverted.</td></tr>
+</table>
+<p>
+When using this block, there is also a possibility that the Newton Raphson
+Solver will not converge to a solution. This can happen for a variety of
+reasons, as listed below:
+<ul>
+    <li>The initial guess (initial condition) was not close enough to the
+    desired root. This can cause the system to either diverge completely or converge
+    on a secondary root of the function.
+    <li>The derivative of the function is not well behaved, causing the system
+    to overshoot the correct root and diverge.
+    <li>The initial guess (or a resulting value after one or more iterations)
+    is a point in the function for which the derivative is zero. This results
+    in a divide-by-zero situation, and an error occurs.
+    <li>The results of the solver hit one of the user-specified limits.
+</ul>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

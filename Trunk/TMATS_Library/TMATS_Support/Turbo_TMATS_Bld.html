@@ -1,44 +1,124 @@
 <script type="text/javascript"
-        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
-<font size="6" color="Magenta">T-MATS: Bleed Library Block</font>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Bleed Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Bleed Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to extract bleed flow(s) from the main stream or to
+    combine flow(s) into the main stream.
+</p>
+<p>
+    It should be noted that this block is meant for small bleed flows.
+
 <br>
-This block extracts bleed flows from the main stream or combines flows into the main stream. 
-It should be noted that this block is meant for small bleed flows. Inflows are introduced 
-to the main flow as to preserve total mass flow and total enthalpy, however momentum calculations 
-are not performed. Outflows are defined fractionally based on the main input flow.
-<br><br> Input bleed is added to the main flow at station 1 of the block:
-$$ W_{s1} = W_{In} + \sum W_{bleed} $$
-Station 1 total enthalpy is a summation of all input flow enthlapies
-$$ Ht_{s1} = ht_{In}*W_{In} + \sum Ht_{bleed} $$
-Because bleed flows are assumed to be relatively small, station 1 pressure is assumed to be equal to the input main flow pressure
-    $$P_{s1} = P_{In} $$
-    Each output bleed flow is a fraction of the main flow
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    Inflows to the main flow are designed to preserve total mass flow and total
+    enthalpy, however momentum calculations are not performed, so this block
+    should only be considered if the bleed flow is relatively small.
+    Outflows are defined fractionally based on the main input flow.
+</p>
+<p>
+    Input bleed is added to the main flow at Station 1 of the block:
+
+    $$ W_{s1} = W_{In} + \sum W_{bleed} $$
+
+    Station 1 total enthalpy is a summation of all input flow enthlapies:
+
+    $$ Ht_{s1} = ht_{In}*W_{In} + \sum Ht_{bleed} $$
+
+    Temperature is determined based a table lookup making use of station 1 enthlapy.
+    Because bleed flows are assumed to be relatively small, Station 1 pressure is assumed to be equal to the input main flow pressure:
+
+    $$Pt_{s1} = Pt_{In} $$
+
+    Each output bleed flow is a fraction of the main flow:
+
     $$W_{bleedout} = C_{Wfrac} * W_{In} $$
+
     $$W_{out} = W_{s1} - W_{bleedout} $$
-    All other output flow parameters are condered the same as for station 1.
+
+    All other output flow parameters are considered the same as those at Station 1.
+
 <br>
-<br>
-<font size="5" color="Blue">Bleed Inputs:</font>
-<table border="1"> <tr><td>Bleed Input</td><td>Description</td></tr>
-    <tr><td>BleedIn</td><td>Bleed flow Gas Characteristics Input, 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the gas path across the block.
+        <li> Connect the flow that will be added and the flow that will
+        be subtracted.
+        <li> Connect the bleed data to the next block in your simulation, or terminate the output.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Bleed Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
+    <tr><td>BleedIn</td><td>Bleed flow Gas Characteristics Input,
             <br> 5x1 bus/vector (for each cooling flow) consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Bleed Outputs:</font>
-<table border="1"> <tr><td>Bleed Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Bleed Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>BleedOut</td><td>Bleeds Characteristics Output,
     <br>[5 x 1] bus/vector for each customer bleed (total #cbleeds *5 x 1)
     <br> consisting of the following repeating format:
@@ -48,21 +128,45 @@ Because bleed flows are assumed to be relatively small, station 1 pressure is as
     <br>- Pt - Total pressure [psia]
     <br>- FAR - Combusted fuel to air ratio [frac]
     <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
-    <tr><td>B_Data</td><td>Bleed internal calculation data
-    <br>- Test - Turbine interal calculation Data</td></tr>
-</table>
-<br>
-<font size="5" color="Blue">Bleed Mask Variables: </font>
-<table border="1"> <tr><td>Bleed Mask Variable</td><td>Description</td></tr>
-    <tr><td>Wfrac_M</td><td>Fraction of main input flow that will be diverted to a bleed flow for the output. 
-    <br> n flows can be defined with a vector input [frac](1xn)</td></tr>
-    
-    
-    
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>B_Data</td><td>Bleed internal calculation data</td></tr>
 </table>
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Bleed Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>Wfrac_M</td><td>Fraction of main input flow that will be diverted to a bleed flow for the output.
+    <br> n flows can be defined with a vector input [frac](1xn)</td></tr>
+</table>
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>One or more of the cooling flow input vector elements is missing.
+            </td><td>Error appears if one or more of the flow characteristics
+            (W,ht,Tt,Pt,FAR) is missing, such that the vector is no longer
+            the correct size (5x1).</td></tr>
+</table>
+
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

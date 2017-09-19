@@ -2,18 +2,117 @@
      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
-<font size="6" color="Magenta">T-MATS: Normaized Error Library Block</font>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Normalized Error Library Block
+</title>    
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Normalized Error Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
 <p>
-    The Normaized Error block determines a difference and then normalizes to the first input. This is useful for quickly creating error terms to be used with the T-MATS solvers.
+    This block can be used to determine the normalized error between two 
+    inputs. This is useful for quickly creating error terms that can be used
+    with T-MATS solvers.
 </p>
-<p> $$\frac{(X_1-X_2)}{X_1}= NError$$ </p>
-<font size="5" color="Blue">NEr Inputs:</font>
-<table border="1"> <tr><td>NEr Inputs</td><td>Description</td></tr>
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>    
+
+<p>
+    To compute the normalized error, this block first determines the difference
+    between the two input values, and then normalizes the result to the first
+    input. This process is summarized by the equation below.
+    
+    $$ NEr = \frac{X1-X2}{X1}$$
+</p>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the two input values to the corresponding places on the
+        block. 
+        <ul>
+            <li>Ensure that the value to which the error will be normalized
+            is input as <i>X1</i>.
+        </ul>
+        <li> Connect the output to the next block in your system.
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Normalized Error Inputs     
+</div>
+
+<table> 
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>X1</td><td>Input 1</td></tr>
     <tr><td>X2</td><td>Input 2</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">NEr Outputs:</font>
-<table border="1"> <tr><td>NEr Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Normalized Error Outputs  
+</div>
+
+<table> 
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>NEr</td><td>Normalized Error</td></tr>
 </table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Normalized Error Mask Variables 
+</div>
+<br>
+No mask variables are needed for this block, as all calculations are based 
+on the input values. 
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+    When using this block, an error will occur if input one is set to zero.
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

@@ -1,47 +1,259 @@
-<font size="6" color="Magenta">T-MATS: Valve_Phy Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Valve (Physics-based) Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Valve (Physics-based) Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the performance of a valve using basic
+thermodynamic equations, properties, and table-lookups. This block
+takes a more physics-based modeling approach than the other Valve block.
+</p>
+
 <br>
-This block simulates the performance of a valve using basic 
-thermodynamic equations, properties, and table lookups. This Valve block takes a more physics 
-based modeling approach then the Valve block.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    Across the valve, the total temperature, total pressure, total enthalpy,
+    and fuel to air ratio of each flow are unchanged. The only parameter that
+    changes as a result of the valve is the gas path flow (<i>W</i>). To
+    compute this change, the following equations are used:
+
+    $$Wby_{Out} = Wby_{In} + Wth$$
+
+    $$Wmfp_{Out} = Wmfp_{In} - Wth$$
+
+    In the above equations, <i>Wby</i> refers to the bypass flow, <i>Wmfp</i>
+    refers to the main path flow, and <i>Wth</i> refers to the valve throat
+    flow. The valve throat flow is solved for iteratively.
+</p>
+<p>
+    If the valve is closed completely (<i>VlvPos = 0</i>), the valve throat
+    flow and the throat Mach number are set to be zero. Otherwise, these parameters
+    are determined according to the following  process.
+</p>
+<p>
+    First, the throat area is determined, using the following equation:
+
+    $$Ath = VlvPosIn*\textit{s_V_Ae_th}$$
+
+    in which <i>VlvPosIn</i> is the valve's position and <i>s_V_Ae_th</i> is
+    the valve area, as specified by the user by double clicking the block
+    and editing the corresponding parameter.
+</p>
+<p>
+    Next, the script determines the ideal gas constant, <i>R</i>, and the specific
+    heat ratio, &gamma;, by using a table-lookup method. The heat capacity, <i>Cp</i>,
+    is determined by the following equation:
+
+    $$Cp = \frac{R*\gamma}{\gamma-1}$$
+
+    The static pressure at the exit plane (<i>Pe</i>) is determined by
+    utilizing an additional script (calc_Pstatic.c), which calculates the
+    static pressure using the secant method. These calculations also assume
+    that the bypass flow is greater than the bleed flow.
+</p>
+<p>
+    The area ratio between the exit area and critical area is determined by
+    using the following equation:
+
+    $$\textit{Ae_o_Acr} = \frac{\textit{Tcr_o_Te}^\frac{\gamma+1}{2(\gamma-1)}}{Me}$$
+
+    in which the temperature ratio is determined by:
+
+    $$\textit{Tcr_o_Te} = \frac{2}{\gamma+1}*[1+0.5*(\gamma-1)*Me^2]$$
+
+    and the exit Mach number is determined by:
+
+    $$ Me = \sqrt{\frac{2}{\gamma-1}*\left[\left(\frac{Pe}{Ptmfp_{In}}\right)^{\frac{1-\gamma}{\gamma}}-1\right]}  $$
+
+    In the previous equation, <i>Ptmfp<sub>In</sub></i> is the total pressure
+    of the main path flow, as determined by the input gas path characteristics.
+</p>
+<p>
+    The throat to critical area ratio is determined by the following:
+
+    $$\textit{Ath_o_Acr} = \frac{\textit{Ae_o_Acr}*Ath}{\textit{s_V_Ae_vlv}}$$
+
+    in which <i>s_V_Ae_vlv</i> is specified by the user and can be accessed
+    by double clicking the block and editing the corresponding parameter.
+</p>
+<p>
+    The throat Mach number is then determined using an iterative process.
+    Initial, subsonic guesses for the variables <i>Mth<sub>0</sub></i> and <i>Mth<sub>1</sub></i>
+    are made arbitrarily, and the initial guesses for the corresponding temperature
+    and area ratios are determined by using the following equations:
+
+    $$\textit{Tcr_o_T}th_0 = \frac{2}{\gamma+1}*[1+0.5*(\gamma-1)*Mth_0^2]$$
+    $$\textit{Ath_o_A}cr_0 = \frac{\textit{Tcr_o_T}th_0^\frac{\gamma+1}{2(\gamma-1)}}{Mth_0}$$
+
+    The ratios for <i>Mth<sub>1</sub></i> are determined using the same equations, with
+    <i>Mth<sub>1</sub></i> instead of <i>Mth<sub>0</sub></i>. The error between the actual area ratio
+    and these values is determined by the following:
+
+    $$err_0 = \textit{Ath_o_Acr - Ath_o_A}cr_0$$
+
+    Likewise, the error between <i>Ath_o_Acr</i> and <i>Ath_o_Acr<sub>1</sub></i> is determined
+    by the same equation, using <i>Ath_o_Acr<sub>1</sub></i> in place of <i>A_th_o_Acr<sub>0</sub></i>.
+</p>
+<p>
+    The updated guess for the throat Mach number is determined by the following
+    equation:
+
+    $$Mth = Mth_0 - \frac{err_0*(Mth_0-Mth_1)}{err_0-err_1}$$
+
+    If the new guess for the throat Mach number is determined to be greater
+    than 1, the throat Mach number is set to be equal to 1. Otherwise, the new error
+    is determined by recalculating the temperature and area ratios based on
+    the new value of <i>Mth</i> and subtracting the area ratios, as done
+    previously. If the new error is not within the tolerance, the newly calculated
+    Mach number and error values become <i>Mth<sub>0</sub></i> and <i>err<sub>0</sub></i>, respectively,
+    and the previous values of <i>Mth<sub>0</sub></i> and <i>err<sub>0</sub></i> become the new values
+    for <i>Mth<sub>1</sub></i> and <i>err<sub>1</sub></i>. The process repeats itself until the
+    solution converges.
+</p>
+<p>
+    Once the solution has converged, the static conditions at the throat are
+    calculated. However, before calculating the static conditions, the ratio
+    between the critical and static temperature and the ratio between the
+    throat and static temperature must be determined. These ratios can be
+    solved for by using the following equations, respectively:
+
+    $$\textit{Tcr_o_}T_0 = \frac{2}{\gamma+1}$$
+    $$\textit{Tth_o_}T_0 = \frac{1}{1+0.5(\gamma-1)*Mth^2}$$
+
+    It is important to note that these ratios are adjusted accordingly if the
+    flow at the throat is determined to be sonic (flow is choked). The static
+    conditions are then calculated using the following equations:
+
+    $$Tth = Ttmfp_{In}*\textit{Tth_o_}T_0$$
+    $$Pth = Ptmfp_{In}*\textit{Tth_o_}T_0^\frac{\gamma}{\gamma-1}$$
+
+    Other flow conditions are then determined, under the assumption that there
+    was no pressure loss across the valve. The velocity is determined by the
+    following, in which <i>g</i> is the acceleration due to gravity (32.17 [(ft*lbm)/(lbf*sec^2)]),
+    and <i>Jc</i> is Joule's constant (778.17 [ft*lbm/BTU]).
+
+    $$Vth = \sqrt{2*Cp*g*Jc*(Ttmfp_{In} - Tth)}$$
+
+    The flow density at the throat is determined by:
+
+    $$&rho;_{th} = \frac{Pth*144}{R*Jc*Tth}$$
+
+    in which the 144 is used to convert from PSI to PSF.
+</p>
+<p>
+    The flow at the throat is determined by the following equation, in which
+    the 144 is again used to convert to the proper units.
+
+    $$Wth = \frac{&rho;_{th}*Ath*Vth}{144}$$
+
+    The Mach number at the throat is verified and recalculated by the following:
+
+    $$Mth = \frac{Vth}{\sqrt{\gamma*R*g*Jc*Tth}}$$
+</p>
+
+
 <br>
-<br>
-<font size="5" color="Blue">Valve Inputs:</font>
-<table border="1"> <tr><td>Valve Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input gas path flows and valve position to the correct
+        places on the block.
+        <li> Connect the outputs to the next block(s) in your simulation.
+        <li> Double click the block and edit the values for the valve variables.
+    </ul>
+</p>
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Valve (Physics-based) Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>ByGasPthCharIn</td><td>Gas Path Characteristics of the Bypass, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
-    <tr><td>ValvePos</td><td>Valve Position[frac] 0 - full closed command, 1 - full open command</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>ValvePos</td><td>Valve Position[frac]. 0 - full closed, 1 - full open.</td></tr>
     <tr><td>MFPGasPthCharIn</td><td>Gas Path Characteristics of the Main Flow Path, 5x1 vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
-    <tr><td>Nmech</td><td>shaft speed [rpm]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Valve Outputs:</font>
-<table border="1"> <tr><td>Valve Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Valve (Physics-based) Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>ByGasPthCharOut</td><td>Gas Path Characteristics of the Bypass, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>MFPGasPthCharOut</td><td>Gas Path Characteristics of the Main Flow Path, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>V_Data</td><td>Valve internal calculation Data</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Valve Mask Variables: </font>
-<table border="1"> <tr><td>Valve Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Valve (Physics-based) Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>s_V_AeVLV_M</td><td>Valve area [in^2]</td></tr>
     <tr><td>s_V_AeBYP_M</td><td>Valve bypass area [in^2]</td></tr>
     <tr><td>s_V_AeTH_M</td><td>Valve throat area [in^2]</td></tr>
@@ -50,6 +262,29 @@ based modeling approach then the Valve block.
     <tr><td>Y_V_TtVec_M</td><td>Total Temperature Vector (y - axis)[degR]</td></tr>
     <tr><td>Y_T_V_gammaArray_M</td><td>Gamma Array (Gamma = f(FAR, Tt))</td></tr>
 </table>
-<br>
-Note: Vectors are the x and/or y axis to a table made of an array.
 
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>Flow rates must be nonzero</td><td>Error occurs when one or both input flows are zero.</td></tr>
+    <tr><td>Error calculating:
+            <ul>
+                <li>Rb
+                <li>gamb
+            </ul></td><td>Error occurs when vectors are not large enough to interpolate.
+                        Vector definitions may need to be expanded.</td></tr>
+</table>
+
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

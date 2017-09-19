@@ -2,49 +2,156 @@
      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
-<font size="6" color="Magenta">T-MATS: Piecewise Linear Model Generator Library Block</font>
-<br>
-<p>
-This block operates the inputs of a system to automatically create a piecewise linear model of that system.
-<br>
-The linear model generated is in the form:
-</p>
-$$
-(\dot{X} - \dot{X}_0) = A*(X - X_0) + B*(U - U_0)$$
-$$(Y - Y_0) = C*(X - X_0) + D*(U - U_0)$$
-<br>
-<p>
-    Where X is the system state, U is the system input, and Y is the plant output.
-    0 values are the trim point values. This block assumes U is dimension 1x1. Other plant effectors will be taken into account with the Env variables.
-</p>
-<p>    
-    This block attempts to characterize a system by creating many linear models at different operating points. To do this, system inputs (Env and U) or operating points
-    will be generated and fed to the system dynamically. Transitions between the operating points will be governed by quasi-steady state slewing. Once slewing to a new operating point is complete
-    the block will wait until the system has reached steady-state then freeze the state integrator and perform a linearization. Once complete the block will re-engage the state integrator and begin
-    slewing to the next operating point. As the linear models are generated they will be stored in a file called "LinPW_TMATS.mat".
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-</p>
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Piecewise Linear Model Generator Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Piecewise Linear Model Generator Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
 <p>
-    Block operation is governed by two main functions, dynamic slewing and linearization.
-    Linearization is handled by the T-MATS linearization block with documentation located <a href="Solver_TMATS_Linearize.html">here</a>. <br>
-    Dynamic slewing is performed to operate the system model to the operating points defined by the Env and U inputs. The U input
-    can be managed directly by checking DCntrlEn and changing TVec or it can be updated to a control signal by unchecking DCntrlEn and changing TVec to become target control values.
-    When DCntrlEn is unchecked the Cntrlsen block input appears. Cntrlsen should be assigned an appropriate system output that is effected by U. A proportunal integral (PI) controller is then used to
-    drive the system to the target control value by updating U.
+    This block is used to automatically create a piecewise linear model of
+    a system based on the inputs of that system. Linearization is handled
+    by the T-MATS Linearize block, the documentation for which can be found
+    <a href="Solver_TMATS_Linearize.html">here</a>.
 </p>
 
 <br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    The linear model generated is of the form:
+
+    $$\dot{X} = A*(X - X_0) + B*(U - U_0)$$
+    $$(Y - Y_0) = C*(X - X_0) + D*(U - U_0)$$
+
+    where <i>X</i> is the system state, <i>U</i> is the system input (assumed
+    to be 1x1), and <i>Y</i> is the plant output. The "0" values are the
+    trim point values. Other plant effectors will be taken into account with
+    the <i>Env</i> variables.
+</p>
+<p>
+    This block characterizes a system by creating many linear
+    models at different operating points. To do this, system inputs (<i>Env</i>
+    and <i>U</i>) and operating points will be generated and fed to the system
+    dynamically. Transitions between the operating points are governed
+    by quasi-steady state slewing. Once slewing to a new operating point
+    is complete, the block will wait until the system has reached steady-state,
+    then freeze the state integrator and perform a linearization. Once
+    linearization is complete the block will re-engage the state integrator
+    and begin slewing to the next operating point. As the linear models are
+    generated, they are stored in a file called "LinPW_TMATS.mat".
+</p>
+<p>
+    As previously described, block operation is governed by two main functions:
+    linearization and dynamic slewing. Linearization is done by using a
+    T-MATS Linearize block (more info <a href="Solver_TMATS_Linearize.html">
+    here</a>). Dynamic slewing is performed to transition the system
+    model to the operating points defined by the <i>Env</i> and <i>U</i>
+    inputs. The <i>U</i> input can be managed directly by checking the box
+    for <i>DCntrlEn</i> and specifying <i>TVec</i>, or it can be updated to a
+    control signal by unchecking the box for <i>DCntrlEn</i> and changing
+    <i>TVec</i> to become target control values. When <i>DCntrlEn</i> is
+    unchecked, the <i>Cntrlsen</i> block input appears. <i>Cntrlsen</i>
+    should be assigned an appropriate system output that is affected by <i>U</i>.
+    A proportunal integral(PI) controller is then used to drive the system
+    to the target control value by updating <i>U</i>.
+</p>
+<p>
+    For an example of how to use this block within a simulation, run the
+    TMATS_Run_Example.m script, select the option to view the Linearization
+    examples, and then select the option to run the JT9D Piecewise Linearization.
+</p>
 <br>
-<font size="5" color="Blue">PWLinearize Inputs:</font>
-<table border="1"> <tr><td>PWLin. Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the inputs to the corresponding places on the block.
+        <ul>
+            <li>Ensure that the block is enabled through the <i>SysGood</i>
+            input. See the Input table below for more details.
+             <br> &nbsp; &nbsp;<i>Note:</i> The inputs <i>dX</i> and <i>Y</i> should come
+            from the system that is being linearized.
+        </ul>
+        <li> Connect the outputs to the next blocks in the simulation.
+        <li> Double click the block and specify the following parameters in
+        each tab.
+        <ul>
+            <li>Under the Slew tab:
+            <ul>
+                <li>Specify the Env parameters, initial conditions, and sample time.
+                <li>Check the box to enable direct <i>U</i> control, or leave it
+                unchecked to specify a target control value.
+                <br> &nbsp; &nbsp; <em>Note:</em> If the box is checked,
+                the block input <i>Cntrlsen</i> will be disabled.
+            </ul>
+            <li>Under the SlewCntrl tab:
+            <ul>
+                <li>Specify the gains, slew rates, conditional limits, and
+                maximum time before a slew run failure is declared.
+            </ul>
+            <li>Under the Linearization tab:
+            <ul>
+                <li>Specify the perturbation values and the number of expected
+                <i>Y</i> variables.
+            </ul>
+        </ul>
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Piecewise Linear Model Generator Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>Cntrlsen</td><td>Sensed control value. When DCntrlEn_M is unchecked an internal proportinal integral (PI) controller will be used to adjust the system input U to meet this desired value. </td></tr>
     <tr><td>SysGood</td><td>System Good. Similar to an enable bit, if set to 1 the system being linearized is producing good values, if set to 0 it is not and linearization will not occur.</td></tr>
     <tr><td>dX</td><td>Change in state value to be integrated.</td></tr>
     <tr><td>Y</td><td>System outputs(px1)</td></tr>
 </table>
-<br>
-    <font size="5" color="Blue">PWLinearize Outputs:</font>
-<table border="1"> <tr><td>PWLin. Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Piecewise Linear Model Generator Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>"LinPW_TMATS"</td><td>Output to File. This file contains all piecewise linear model information.</td></tr>
     <tr><td>Env</td><td>Environmental values. Items that have an effect on the plant, but are not U.</td></tr>
     <tr><td>X</td><td>Current value of X, or system states(mx1)</td></tr>
@@ -63,15 +170,22 @@ $$(Y - Y_0) = C*(X - X_0) + D*(U - U_0)$$
 <br> -LinU - U value from linearization routine.
 <br> -LinActive - Linearization routine is active.
 <br> -SysGood - System being linearized is providing good data.
-<br> -MaxSlews - maximum number of slews that will be performed.
+<br> -MaxSlews - Maximum number of slews that will be performed.
 <br> -InputSlewDone - Slewing is completed for a given run.
 <br> -SystemSteady - System being linearized has reached steady-state.
 <br> -FailCount - Slew fail counter value.
 </td></tr>
 </table>
-<br>
-<font size="5" color="Blue">PWLinearize Mask Variables: </font>
-<table border="1"> <tr><td>PWLinearize Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Piecewise Linear Model Generator Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>Env_M</td><td>Environmental parameter matrix, row values are differnt outputs and column values are Env values.(qxz)</td></tr>
     <tr><td>DCntrlEn_M</td><td>Enable Direct U control, checked use TVec_M contains U values, unchecked TVec_M contains control input target values.</td></tr>
     <tr><td>TVec_M</td><td>Target control vector or direct U vector.(cx1)</td></tr>
@@ -82,10 +196,28 @@ $$(Y - Y_0) = C*(X - X_0) + D*(U - U_0)$$
     <tr><td>Ki_M</td><td>Integral gain for internal controller, used if DCntrlEn_M is unchecked.</td></tr>
     <tr><td>ER_M</td><td>Slew rates for each environmental parameter,(qx1).</td></tr>
     <tr><td>UR_M</td><td>Slew rates for the system input, U,(1x1).</td></tr>
-    <tr><td>dXC_M</td><td>condition on dX for determining when system is steady-state.</td></tr>
+    <tr><td>dXC_M</td><td>Condition on dX for determining when system is steady-state.</td></tr>
     <tr><td>Fail_M</td><td>Time required to fail a slew run.[sec]</td></tr>
     <tr><td>XPer_M</td><td>X perturbation values. (rxm) [frac], these are fed directly to the Linearization block as noted above</td></tr>
     <tr><td>UPer_M</td><td>U perturbation values. (rx1) [frac], these are fed directly to the Linearization block as noted above</td></tr>
     <tr><td>NY_M</td><td>Number of system output Y variables</td></tr>
 </table>
-<br>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, a warning will occur if the vectors do not have the
+proper sizes. For example, a warning would appear if the sizes of the vectors
+for <i>x0</i> and <i>xdot</i> did not match. Additionally, since this block
+is used to linearize a system around a certain operating point, if the initial
+conditions are not near the operating point, the system may become unstable
+or fail.
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

@@ -1,49 +1,220 @@
-<font size="6" color="Magenta">T-MATS: Flow Start, Cantera Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Flow Start (Cantera) Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Flow Start (Cantera) Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block is used to create a <a href="FunM_TMATSC.html">T-MATS Cantera</a> formated flow element
+    from specified inputs.
+</p>
 <br>
-The flow start block creates a T-MATS cantera formated flow element from specified inputs.
-To utilize this block a Cantera object must exist in the workspace as a
-global variable named fs, which may be created with the Cantera importPhase command.
-The fs variable must include all Species defined in the file canteraload.m.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To determine the flow parameters, this block utilizes the input flow rate,
+    user-specified exit temperature and pressure, and <a href="FunM_TMATSC.html">T-MATS Cantera functions</a> to
+    set the other parameters of the flow.
+</p>
+<p>
+    When using this block, it is important to set the species within the
+    canteraload.m script. Currently, there may be up to six types of flows
+    that each contain up to six molecule components. The matrix below is the
+    <i>Name</i> matrix, and specifies the types of molecules within each flow
+    type.
+
+    $$
+    Name:
+
+    \left[ \begin{matrix}
+    Air\\
+    Water\\
+    Fuel\\
+    -\\
+    -\\
+    -\\
+    \end{matrix} \right]
+
+    =
+
+    \left[ \begin{matrix}
+    'N_2' & 'O_2' & 'AR' & - & - & - & \\
+    'H_2O' & - & - & -& -& -& \\
+    'CH_2' & 'CH' & -& -& -& -& \\
+    -&-&-&-&-&-& \\
+    -&-&-&-&-&-& \\
+    -&-&-&-&-&-& \\
+    \end{matrix} \right] $$
+
+    The composition values of the flow are defined by the <i>Species</i>
+    matrix (below), in which the values correspond to the moelcular compounds
+    specified by the <i>Name</i> matrix.
+
+    $$
+    Species:
+
+    \left[ \begin{matrix}
+    Air\\
+    Water\\
+    Fuel\\
+    -\\
+    -\\
+    -\\
+    \end{matrix} \right]
+
+    =
+
+    \left[ \begin{matrix}
+    0.7547 & 0.2320 & 0.0128& 0&0&0\\
+    1& 0&0 &0&0&0\\
+    0.922189&0.077811&0&0&0&0\\
+    0&0&0&0&0&0\\
+    0&0&0&0&0&0\\
+    0&0&0&0&0&0\\
+    \end{matrix} \right] $$
+
+    To add a species, one would only need to edit the canteraload.m file
+    and add the conditions of the species to the matrices.
+</p>
+<p>
+    When using this block, the amount of each species is specified by
+    double-clicking the block and entering the fractional amount of each
+    species. For example, if a flow was 90% air and 10% fuel, the value
+    for <i>comp1_M</i> would be 0.9 (corresponding to the air), the value
+    for <i>comp2_M</i> would be 0 (no water in this example), the value for
+    <i>comp3_M</i> would be 0.1 (corresponding to the fuel), and the values for species
+    4, 5, and 6 would be 0.
+</p>
 <br>
-<br>
-<font size="5" color="Blue">FlowStart Inputs:</font>
-<table border="1"> <tr><td>FlowStart Input</td><td>Description</td></tr>
-    <tr><td>Flow</td><td>Flow Input [pps]
-    </td></tr>
-</table>
-<br>
-<font size="5" color="Blue">FlowStart Outputs:</font>
-<table border="1"> <tr><td>FlowStart Output</td><td>Description</td></tr>
-    <tr><td>Flow Out</td><td>Flow Data Output, 25x1 vector consisting of:
-            <br>-1- W      - gas path flow [pps]
-            <br>-2- s     - entropy [BTU/(lbm*degR)]
-            <br>-3- Tt     - total temperature [degR]
-            <br>-4- Pt     - total pressure [psia]
-            <br>-5- ht     - total enthlapy [BTU/lbm]
-            <br>-6- rhot  - total density [lbm/ft3]
-            <br>-7- gamt  - total specific heat ratio
-            <br>-8- Ts    - static temperature [degR]
-            <br>-9- Ps    - static pressure [psia]
-            <br>-10- hs    - static enthalpy [BTU/lbm]
-            <br>-11- rhos  - static density [lbm/ft3]
-            <br>-12- gams  - static specific heat ratio
-            <br>-13- Vflow - flow velocity [ft/sec]
-            <br>-14- MN  - Mach number
-            <br>-15- A     - flow area [in2]
-            <br>-16to21- species array values, defined in canteraload.m
-            <br>-22to25- future use
-    </td></tr>
-</table>
-<br>
-<font size="5" color="Blue">FlowStart Mask Variables: </font>
-<table border="1"> <tr><td>FlowStart Mask Variable</td><td>Description</td></tr>
-    <tr><td>Tt_M</td><td>Total Temperature [degR]</td></tr>
-    <tr><td>Pt_M</td><td>Total Pressure [psia]</td></tr>
-    <tr><td>comp1_M</td><td>amount of species 1, defined in canteraload.m [frac]</td></tr>
-    <tr><td>comp2_M</td><td>amount of species 2, defined in canteraload.m [frac]</td></tr>
-    <tr><td>comp3_M</td><td>amount of species 3, defined in canteraload.m [frac]</td></tr>
-    <tr><td>comp4_M</td><td>amount of species 4, defined in canteraload.m [frac]</td></tr>
-    <tr><td>comp5_M</td><td>amount of species 5, defined in canteraload.m [frac]</td></tr>
-    <tr><td>comp6_M</td><td>amount of species 6, defined in canteraload.m [frac]</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Ensure that a Cantera object exists in the workspace as a global
+        variable named 'fs' and contains all of the species defined in the
+        file 'canteraload.m'.
+        <ul>
+            <li><em>Note:</em>'fs' can be created with the Cantera 'importPhase'
+            command.
+        </ul>
+        <li> Connect the flow input to the corresponding place on the block.
+        <li> Connect the outputs to the next blocks in your simulation.
+        <li> Double click the block and specify the exit temperature, exit
+        pressure, and amount of each species of the flow.
+            <ul>
+                <li> If needed, edit 'canteraload.m' to add other species or
+                edit the composition of existing species. Details for how to
+                do this are described in the Background section of this page.
+            </ul>
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Flow Start (Cantera) Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
+    <tr><td>Flow</td><td>Flow Input [pps]</td></tr>
 </table>
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Flow Start (Cantera) Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>Flow Out</td><td>Flow Data Output, 25x1 vector consisting of:
+            <br>-1- &nbsp;&nbsp; W  &nbsp;&nbsp;   - Gas path flow [pps]
+            <br>-2- &nbsp;&nbsp; s  &nbsp;&nbsp;    - Entropy [BTU/(lbm*degR)]
+            <br>-3- &nbsp;&nbsp; Tt &nbsp;&nbsp;    - Total temperature [degR]
+            <br>-4- &nbsp;&nbsp; Pt &nbsp;&nbsp;     - Total pressure [psia]
+            <br>-5- &nbsp;&nbsp; ht  &nbsp;&nbsp;    - Total enthlapy [BTU/lbm]
+            <br>-6- &nbsp;&nbsp;  rhot &nbsp;&nbsp;  - Total density [lbm/ft3]
+            <br>-7- &nbsp;&nbsp; gamt  &nbsp;&nbsp;  - Total specific heat ratio
+            <br>-8- &nbsp;&nbsp; Ts    &nbsp;&nbsp;   - Static temperature [degR]
+            <br>-9- &nbsp;&nbsp; Ps    &nbsp;&nbsp;   - Static pressure [psia]
+            <br>-10- &nbsp;&nbsp; hs   &nbsp;&nbsp;  - Static enthalpy [BTU/lbm]
+            <br>-11- &nbsp;&nbsp; rhos  &nbsp;&nbsp;  - Static density [lbm/ft3]
+            <br>-12- &nbsp;&nbsp; gams  &nbsp;&nbsp;   - Static specific heat ratio
+            <br>-13- &nbsp;&nbsp; Vflow &nbsp;&nbsp;  - Flow velocity [ft/sec]
+            <br>-14- &nbsp;&nbsp; MN    &nbsp;&nbsp;  - Mach number
+            <br>-15- &nbsp;&nbsp; A     &nbsp;&nbsp;   - Flow area [in2]
+            <br>-16to21-  &nbsp;&nbsp; Species array values, defined in canteraload.m
+            <br>-22to25-  &nbsp;&nbsp; Future use
+    </td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Flow Start (Cantera) Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>Tt_M</td><td>Total Temperature [degR]</td></tr>
+    <tr><td>Pt_M</td><td>Total Pressure [psia]</td></tr>
+    <tr><td>comp1_M</td><td>Amount of species 1, defined in canteraload.m [frac]</td></tr>
+    <tr><td>comp2_M</td><td>Amount of species 2, defined in canteraload.m [frac]</td></tr>
+    <tr><td>comp3_M</td><td>Amount of species 3, defined in canteraload.m [frac]</td></tr>
+    <tr><td>comp4_M</td><td>Amount of species 4, defined in canteraload.m [frac]</td></tr>
+    <tr><td>comp5_M</td><td>Amount of species 5, defined in canteraload.m [frac]</td></tr>
+    <tr><td>comp6_M</td><td>Amount of species 6, defined in canteraload.m [frac]</td></tr>
+</table>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+    When using this block, an error will occur if a Cantera object does not exist
+    in the workspace as a global variable named 'fs'. An error will also occur
+    if this variable does not contain all of the species defined in 'canteraload.m'.
+</p>
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

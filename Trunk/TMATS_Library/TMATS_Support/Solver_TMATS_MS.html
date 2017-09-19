@@ -1,17 +1,110 @@
-<font size="6" color="Magenta">T-MATS: Model Source Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Model Source Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Model Source Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block is used to set up the interface to change simulation variables
+    dynamically.
+</p>
+
 <br>
-This block sets up the interface to change simulation variable dynamically.
-Enter an input vector and time vector to allocate when each element 
-of the intput vector will occur.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To determine the output of this block, the user must enter an input vector
+    and a time vector. The time vector is used to allocate when each element
+    of the input vector occurs. Linear interpolation of the input
+    values is then performed to determine the corresponding value at the
+    time that this block is used within the simulation.
+</p>
+
 <br>
-<br>
-<font size="5" color="Blue">Model Source Outputs:</font>
-<table border="1"> <tr><td>Model Source Output</td><td>Description</td></tr>
-    <tr><td>Model_Input</td><td>Output of source block,  Input for simulation</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the output to the next block in your simulation.
+        <li> Double click the block and...
+            <ol>
+        <li>Specify the input vector. Note that this parameter should be a
+        function of time.
+        <li>Specify the time vector.
+        </ol>
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Model Source Inputs
+</div>
+
+<p>
+No direct inputs are required for this block, as the needed inputs are specified
+by the mask variables.
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Model Source Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>Model_Input</td><td>Output of source block; input for next section
+                                of the simulation.</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Model Source Mask Variables: </font>
-<table border="1"> <tr><td>Model Source Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Model Source Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>T_vec_M</td><td>Time Vector (x-axis)</td></tr>
     <tr><td>input_array_M</td><td>Input Array 1-D f(Time)</td></tr>
 </table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

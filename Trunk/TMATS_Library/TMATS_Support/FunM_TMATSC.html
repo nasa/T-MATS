@@ -1,63 +1,115 @@
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-<font size="6" color="Magenta">T-MATS: Cantera enabled MATLAB function </font>
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Cantera Enabled MATLAB Function
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Cantera Enabled MATLAB Function
+    </h1>
+<hr>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
 <p>The T-MATS package contains a simplified interface for use with Cantera. Information about these sets of functions are located in the users manual.</p>
 <p>As a quick reference the flow vector definition and T-MATS functions are also located below. They can be accessed by using the class structure TMATSC.* .</p>
+<p>
+    To utilize T-MATS Cantera functions or Simulink blocks that contain Cantera functions
+    , a Cantera object must exist in the workspace as
+	a global variable named 'fs', which may be created with the Cantera
+	'importPhase' command. This variable must include all Species defined
+    in the file 'canteraload.m', found at ...\TMATS_Library\MATLAB_Scripts\Cantera_Enabled\+TMATSC.
+</p>
+<p>
+Example MATLAB setup command:
+<code>
+	<br>global fs
+	<br>fs = importPhase('gri30.cti')
+</code>
+</p>
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<div class="table_caption">
+    TMATSC.* Flow Vector
+</div>
 
-<font size="5" color="Blue"> TMATSC.* flow vector</font>
-<table border="1"> <tr><td> <b>ID</b></td><td><b>Parameter</b></td><td><b>Description</b></td></tr>
-<tr><td>1</td><td>W</td><td>gas path flow [pps]</td></tr>
-<tr><td>2</td><td>s</td><td>entropy [BTU/(lbm*degR)]</td></tr>
-<tr><td>3</td><td>Tt</td><td>total temperature [degR]</td></tr>
-<tr><td>4</td><td>Pt</td><td>total pressure [psia]</td></tr>
-<tr><td>5</td><td>ht</td><td>total enthalpy [BTM/lbm]</td></tr>
-<tr><td>6</td><td>rhot</td><td>total density (rho) [lbm/ft^3]</td></tr>
-<tr><td>7</td><td>gamt</td><td>total specific heat ratio (gamma)</td></tr>
-<tr><td>8</td><td>Ts</td><td>static temperature [degR]</td></tr>
-<tr><td>9</td><td>Ps</td><td>static pressure [psia]</td></tr>
-<tr><td>10</td><td>hs</td><td>static enthalpy [BTU/lbm]</td></tr>
-<tr><td>11</td><td>rhos</td><td>static density (rho) [lbm/ft^3]</td></tr>
-<tr><td>12</td><td>gams</td><td>static specific heat ratio (gamma)</td></tr>
-<tr><td>13</td><td>Vflow</td><td>flow velocity [ft/sec]</td></tr>
-<tr><td>14</td><td>MN</td><td>Mach number</td></tr>
-<tr><td>15</td><td>A</td><td>flow area [in^2]</td></tr>
-<tr><td>16-21</td><td>CompVal_TMATS</td><td>Flow composition vector, see canteraload.m for definition of the 6 matter types</td></tr>
-<tr><td>22-25</td><td>none</td><td>future use</td></tr>
-
+<table> <tr><th> ID </th><th> Parameter </th><th> Description </th></tr>
+    <tr><td>1</td><td>W</td><td>Gas path flow [pps]</td></tr>
+    <tr><td>2</td><td>s</td><td>Entropy [BTU/(lbm*degR)]</td></tr>
+    <tr><td>3</td><td>Tt</td><td>Total temperature [degR]</td></tr>
+    <tr><td>4</td><td>Pt</td><td>Total pressure [psia]</td></tr>
+    <tr><td>5</td><td>ht</td><td>Total enthalpy [BTM/lbm]</td></tr>
+    <tr><td>6</td><td>rhot</td><td>Total density (rho) [lbm/ft^3]</td></tr>
+    <tr><td>7</td><td>gamt</td><td>Total specific heat ratio (gamma)</td></tr>
+    <tr><td>8</td><td>Ts</td><td>Static temperature [degR]</td></tr>
+    <tr><td>9</td><td>Ps</td><td>Static pressure [psia]</td></tr>
+    <tr><td>10</td><td>hs</td><td>Static enthalpy [BTU/lbm]</td></tr>
+    <tr><td>11</td><td>rhos</td><td>Static density (rho) [lbm/ft^3]</td></tr>
+    <tr><td>12</td><td>gams</td><td>Static specific heat ratio (gamma)</td></tr>
+    <tr><td>13</td><td>Vflow</td><td>Flow velocity [ft/sec]</td></tr>
+    <tr><td>14</td><td>MN</td><td>Mach number</td></tr>
+    <tr><td>15</td><td>A</td><td>Flow area [in^2]</td></tr>
+    <tr><td>16-21</td><td>CompVal_TMATS</td><td>Flow composition vector, see canteraload.m for definition of the 6 matter types</td></tr>
+    <tr><td>22-25</td><td>None</td><td>Future use</td></tr>
 </table>
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-<font size="5" color="Blue"> TMATSC.* functions</font>
-<table border="1"> <tr><td> <b>Class Method</b></td><td><b>Description</b></td></tr>
-<tr><td>Object = FlowDef()</td><td>Flow object constructor</td><td>
-<tr><td>[val] = canteraload(RequestType)</td><td>Returns Name or Species matrix to be used in Cantera command generation.</td><td>
-<tr><td>[effMap, WcMap] = PRmapFile(MapFileName, NcMap, PRmap)</td><td>Table lookup for effMap and WcMap</td><td>
-<tr><td>[effMap, PRMap, WcMap, StallMargin] = RlineMap(MapFileName, NcMap, Rline)</td><td>Table lookup for effMap, PRMap, WcMap, and StallMargin</td><td>
-<tr><td>[val] = getV(var, parent)</td><td>Get a variable from the workspace  </td><td>
-<tr><td>setV(var, parent, value)</td><td>Set a variable to the workspace.</td><td>
-<tr><td>[string] = stripchar(string)</td><td>Remove’ \’, ‘/’, or ‘\o’ from a character string.</td><td>
-<tr><td><b>Flow object construction:</b></td><td></td><td>
-<tr><td>flow_new = FlowDef()</td><td>0 input Creates empty TMATSC flow object</td><td>
-<tr><td>flow_new = FlowDef(FlowVector)</td><td>1 input. Flow constructor based on flow vector. </td><td>
-<tr><td>flow_new = FlowDef(flow, compNN, W, Tt, Pt)</td><td>4 inputs. Create populated flow object with total values only (Total only, based on set_TP)</td><td>
-<tr><td>flow_new = FlowDef(flow, compNN, W, Ts, Ps, MN)</td><td>5 inputs.  Create populated flow object (Total and Static, based on set_TsPsMN)  </td><td>
-<tr><td>flow_new = CanSet(flow)</td><td>Set flow object composition values to Cantera format (CompVal_Can based on CompVal_TMATS flow object value)</td><td>
-<tr><td>flow_new = CanSet(flow, compNN)</td><td>Set flow object composition values to Cantera format (CompVal_Can based on input compNN, 6×1 vector)</td><td>
-<tr><td><b>Cantera interface functions:</b></td><td></td><td>
-<tr><td>flow_new = flowadd(flow1, flow2)</td><td>Add flow1 and flow2 together, conserving enthalpy and mass</td><td>
-<tr><td>flow_new =  flowcopy(flow)</td><td>Copy information from one flow to another flow</td><td>
-<tr><td>mass_frac = getMassFraction(flow, c)</td><td>Return mass fraction of compound c in the object flow</td><td>
-<tr><td>flow_new =  set_hP(flow, ht, Pt)</td><td>Set total conditions based on flow,  total enthalpy and total pressure</td><td>
-<tr><td>flow_new =  set_MN1(flow)</td><td>Set the static conditions to sonic flow based on flow conditions</td><td>
-<tr><td>flow_new =  set_Ps(flow, Ps)</td><td>Set the static conditions based on flow and static pressure</td><td>
-<tr><td>flow_new = set_SP(flow, S, Pt)</td><td>Set the total conditions based on flow and input entropy and total pressure</td><td>
-<tr><td>flow_new = set_TP(flow, Tt, Pt)</td><td>Set the total conditions based on flow, total temperature, and total pressure</td><td>
-<tr><td>flow_new = set_TsPsMN(flow, Ts, Ps, MN)</td><td>Set the conditions based on flow, static temperature, static pressure, and Mach number</td><td>
-<tr><td><b>Flow object manual set functions:</b></td><td></td><td>
-<tr><td>flow_new = TotalSet(flow, s, Tt, Pt, ht, rhot, gamt)</td><td>Manually sets total variables in flow object</td><td>
-<tr><td>flow_new = StaticSet(flow, Ts, Ps,hs, rhos, gams)</td><td>Manually sets static variables in flow object</td><td>
-<tr><td>flow_new = SpeedSet(flow, MN, A, Vflow)</td><td>Manually sets speed variables in flow object</td><td>
-<tr><td>flow_new = SClr(flow)</td><td>Clears all static variables in a flow object</td><td>
-<tr><td>flow_vector = FlwVec(flow)</td><td>Creates 25×1 flow vector</td><td>
+<div class="table_caption">
+    TMATSC.* Functions
+</div>
+
+<table> <tr><th> Class Method </th><th> Description </th></tr>
+    <tr><td>Object = FlowDef()</td><td>Flow object constructor</td></tr>
+    <tr><td>[val] = canteraload(RequestType)</td><td>Returns Name or Species matrix to be used in Cantera command generation.</td></tr>
+    <tr><td>[effMap, WcMap] = PRmapFile(MapFileName, NcMap, PRmap)</td><td>Table lookup for effMap and WcMap</td></tr>
+    <tr><td>[effMap, PRMap, WcMap, StallMargin] = RlineMap(MapFileName, NcMap, Rline)</td><td>Table lookup for effMap, PRMap, WcMap, and StallMargin</td></tr>
+    <tr><td>[val] = getV(var, parent)</td><td>Get a variable from the workspace  </td></tr>
+    <tr><td>setV(var, parent, value)</td><td>Set a variable to the workspace.</td></tr>
+    <tr><td>[string] = stripchar(string)</td><td>Remove’ \’, ‘/’, or ‘\o’ from a character string.</td></tr>
+    <tr><th>Flow object construction:</th><td></td></tr>
+    <tr><td>flow_new = FlowDef()</td><td>0 input Creates empty TMATSC flow object</td></tr>
+    <tr><td>flow_new = FlowDef(FlowVector)</td><td>1 input. Flow constructor based on flow vector. </td></tr>
+    <tr><td>flow_new = FlowDef(compNN, W, Tt, Pt)</td><td>4 inputs. Create populated flow object with total values only (Total only, based on set_TP)</td></tr>
+    <tr><td>flow_new = FlowDef(compNN, W, Ts, Ps, MN)</td><td>5 inputs.  Create populated flow object (Total and Static, based on set_TsPsMN)  </td></tr>
+    <tr><td>flow_new = CanSet(flow)</td><td>Set flow object composition values to Cantera format (CompVal_Can based on CompVal_TMATS flow object value)</td></tr>
+    <tr><td>flow_new = CanSet(flow, compNN)</td><td>Set flow object composition values to Cantera format (CompVal_Can based on input compNN, 6×1 vector)</td></tr>
+    <tr><th>Cantera interface functions:</th><td></td></tr>
+    <tr><td>flow_new = flowadd(flow1, flow2)</td><td>Add flow1 and flow2 together, conserving enthalpy and mass</td></tr>
+    <tr><td>flow_new =  flowcopy(flow)</td><td>Copy information from one flow to another flow</td></tr>
+    <tr><td>mass_frac = getMassFraction(flow, c)</td><td>Return mass fraction of compound c in the object flow</td></tr>
+    <tr><td>flow_new =  set_hP(flow, ht, Pt)</td><td>Set total conditions based on flow,  total enthalpy and total pressure</td></tr>
+    <tr><td>flow_new =  set_MN1(flow)</td><td>Set the static conditions to sonic flow based on flow conditions</td></tr>
+    <tr><td>flow_new =  set_Ps(flow, Ps)</td><td>Set the static conditions based on flow and static pressure</td></tr>
+    <tr><td>flow_new = set_SP(flow, S, Pt)</td><td>Set the total conditions based on flow and input entropy and total pressure</td></tr>
+    <tr><td>flow_new = set_TP(flow, Tt, Pt)</td><td>Set the total conditions based on flow, total temperature, and total pressure</td></tr>
+    <tr><td>flow_new = set_TsPsMN(flow, Ts, Ps, MN)</td><td>Set the conditions based on flow, static temperature, static pressure, and Mach number</td></tr>
+    <tr><th>Flow object manual set functions:</th><td></td></tr>
+    <tr><td>flow_new = TotalSet(flow, s, Tt, Pt, ht, rhot, gamt)</td><td>Manually sets total variables in flow object</td></tr>
+    <tr><td>flow_new = StaticSet(flow, Ts, Ps,hs, rhos, gams)</td><td>Manually sets static variables in flow object</td></tr>
+    <tr><td>flow_new = SpeedSet(flow, MN, A, Vflow)</td><td>Manually sets speed variables in flow object</td></tr>
+    <tr><td>flow_new = SClr(flow)</td><td>Clears all static variables in a flow object</td></tr>
+    <tr><td>flow_vector = FlwVec(flow)</td><td>Creates 25×1 flow vector</td></tr>
 </table>
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

@@ -1,39 +1,182 @@
-<font size="6" color="Magenta">T-MATS: Burner Library Block</font>
-<br>
-This block simulates the performance of a burner using basic 
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Burner Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Burner Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the performance of a burner using basic
 thermodynamic equations and properties.
+</p>
+
 <br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    This block utilizes a MATLAB script to compute the gas characteristics.
+</p>
+
+<p>
+    To begin, the script empirically calculates the input total enthalpy using a
+    table-lookup method based on the input temperature and fuel to air ratio.
+</p>
+<p>
+    The output flow is calculated using the following equation, based on the
+    conservation of mass. The total mass entering the system must equal the total
+    mass leaving the system.
+
+    $$ W_{Out} = Wf_{In} + W_{In} $$
+
+    The output fuel to air ratio is calculated by the following equation:
+
+    $$ FAR_{Out} = \frac{W_{In}*FAR_{In}+Wf_{In}}{W_{In}*(1-FAR_{In})}$$
+
+    At this point, the system checks whether you are using the lower heating value
+    (LHV) method before calculating the exit total enthalpy.
+</p>
+<p>
+    If using LHV method:
+
+    $$ ht_{Out} = \frac{W_{In}*ht_{In}+Wf_{In}*LHV*Eff}{W_{Out}} $$
+
+
+    If using the fuel enthalpy method:
+
+    $$ ht_{Out} = \frac{W_{In}*ht_{In}+Wf_{In}*hFuel}{W_{Out}}$$
+
+Special Note: if the thermodynamic lookup tables have been changed using Cantera functions the user
+should define the enthalpy directly as the Cantera enthlpy values will contain the heat of formation.
+
+    <br><br>The output total temperature is then determined using a table-lookup method
+    with the output total enthalpy as the reference value. The total
+    pressure drop accross the burner is calculated using the following equation:
+
+    $$ Pt_{Out} = Pt_{In} * (1 - dPnormBurner) $$
+
+    In the above equations, <i>dPnormBurner, LHV, Eff, LHVEn, </i> and <i>hFuel</i>
+    are Mask variables that can be adjusted by double clicking the block and editing
+    the corresponding values.
+</p>
 <br>
-<font size="5" color="Blue">Burner Inputs:</font>
-<table border="1"> <tr><td>Burner Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the fuel flow and gas path characteristics to the corresponding
+        places on the block.
+        <li> Connect the output gas path characteristics to the next block in your
+        simulation.
+        <li>Terminate the output of B_Data, unless your simulation needs the
+        internal burner calculation data.
+        <li> Double click the block and...
+        <ul>
+              <li>Check the LHVEn_M box if using the LHV method.
+              <li>Uncheck the LHVEn_M box to use hFuel instead.
+              <li>Adjust the efficiency and other variables as needed.
+        </ul>
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Burner Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>FuelFlwIn</td><td>Fuel Flow Input [pps]</td></tr>
     <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Burner Outputs:</font>
-<table border="1"> <tr><td>Burner Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Burner Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
             <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>B_Data</td><td>Burner internal calculation data</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Burner Mask Variables: </font>
-<table border="1"> <tr><td>Burner Mask Variable</td><td>Description</td></tr>
-    <tr><td>LHVEn_M</td><td>Enable LHV method of calculating fuel energy (set use LHV method with efficiency, unset use hFuel)</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Burner Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>LHVEn_M</td><td>Enable LHV method of calculating fuel energy
+    (set use LHV method with efficiency, unset use hFuel)</td></tr>
     <tr><td>LHV_M</td><td>Fuel Lower Heating Value[BTU/lb]</td></tr>
     <tr><td>Eff_M</td><td>Burner Efficiency[frac]</td></tr>
-    <tr><td>hFuel_M</td><td>Enthlapy of the fuel [BTU/lbm], typically used when heat of formation is included in enthalpy values (not default). Will be equal to LHV*eff when heat of formation is not included.</td></tr>
+    <tr><td>hFuel_M</td><td>Enthlapy of the fuel [BTU/lbm], typically used
+    when heat of formation is included in enthalpy values (not default).
+    Will be equal to LHV*eff when heat of formation is not included.</td></tr>
     <tr><td>dPnormBurner_M</td><td>Normalized Burner deltaP accross the burner[1 - psi/psi]</td></tr>
-
-    
 </table>
 
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+    When using this block, an error will occur if <i>W<sub>Out</sub></i> is
+    determined to be zero. An error will also occur if <i>W<sub>In</sub></i>
+    is set to zero or if the input fuel to air ratio is equal to 1.
+</p>
+
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

@@ -1,33 +1,136 @@
-<font size="6" color="Magenta">T-MATS: Inlet Library Block</font>
-<br>
-This block simulates the performance of an inlet using basic fluid dynamic 
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Inlet Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Inlet Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the performance of an inlet using basic fluid dynamic
 equations and properties.
+</p>
+
 <br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the gas path characteristics, this block utilizes an emperical approach to
+    determine inlet effects on flow. Across the inlet, pressure changes are developed
+    according to the following equation:
+
+    $$ \textit{PtOut} = \textit{PtIn} * \textit{eRambase_M}*\textit{T_eRamtbl_M}\left(\frac{PtIn}{Pamb}\right) $$
+
+    in which <i>eRambase_M</i> is the base fraction of pressure lost, as specified by the user and
+    <i>T_eRamtbl_M</i> is an off nominal fractional pressure loss determined by a table-lookup
+    using the values of <i>PtIn</i> and <i>Pamb</i>. Additionally,  Changes in temperature are
+    considered negligible.
+
+
 <br>
-<font size="5" color="Blue">Inlet Inputs:</font>
-<table border="1"> <tr><td>Inlet Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Specify the ambient pressure by connecting it to the corresponding place on the block.
+        <li> Connect the gas path across the block by inputting the gas path characteristics from
+        the previous block to the input of this block and by connecting the output of this block to
+        the input of the next block in your simulation.
+        <li>Specify the value of the base fractional pressure lost across the inlet by double
+        clicking the block.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Inlet Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
             <br>- Tt - Total Temperature [degR]
             <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
-</table>
-<br>
-<font size="5" color="Blue">Inlet Outputs:</font>
-<table border="1"> <tr><td>Inlet Output</td><td>Description</td></tr>
-    <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
-            <br>- W - gas path flow [pps]
-            <br>- ht - enthalpy [BTU/lbm]
-            <br>- Tt - Total Temperature [degR]
-            <br>- Pt - Total Pressure [psia]
-    <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
-</table>
-<br>
-<font size="5" color="Blue">Inlet Mask Variables: </font>
-<table border="1"> <tr><td>Inlet Mask Variable</td><td>Description</td></tr>
-    <tr><td>eRambase_M</td><td>Base delta pressure [frac]</td></tr>
-    <tr><td>X_eRamVec_M</td><td>Pt/Pamb Vector [nx1]</td></tr>
-    <tr><td>T_eRamtbl_M</td><td>delta pressure based on Pt/Pamb [frac][nx1)</td></tr>
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>Pamb</td><td>Ambient pressure [psia]</td></tr>
 </table>
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Inlet Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Inlet Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>eRambase_M</td><td>Base delta pressure [frac]</td></tr>
+    <tr><td>X_eRamVec_M</td><td>Pt/Pamb Vector [nx1]</td></tr>
+    <tr><td>T_eRamtbl_M</td><td>delta pressure based on Pt/Pamb [frac][nx1]</td></tr>
+</table>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+    When using this block, an error will occur if <i>Pamb</i> is set to zero. To
+    avoid this error, ensure that the input ambient pressure is nonzero.
+</p>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

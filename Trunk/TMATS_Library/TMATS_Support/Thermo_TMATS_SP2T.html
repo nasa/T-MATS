@@ -1,20 +1,173 @@
-<font size="6" color="Magenta">T-MATS: SP2T Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for SP2T Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: SP2T Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to emperically calculate temperature (T) from
+    input values of entropy (S), pressure (P), and fuel to air ratio (FAR).
+    The temperature calculated will be total or static, depending on the
+    input of either total pressure (Pt) or static pressure (Ps), respectively.
+</p>
+
 <br>
-This block emperically calculates temperature (T) from entropy (S), temperature (T) and fuel to air ratio (FAR).
-Temperature will be total or static based on input pressure (total "Pt" or static "Ps"). 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the temperature, this block utilizes a table-lookup method
+    based on data from standard thermodynamic tables for a combination of
+    air and combusted hydrocarbons, as well as a few equations.
+</p>
+<p>
+    In order to do this, an iteration process is required, since the tables
+    and curve fits are for <i>P<sub>r</sub></i> in terms of <i>T</i>.
+
+    To begin, the system estimates an initial temperature value by using
+    the following equation:
+
+    $$T = T' *P_{r}^{\frac{\gamma -1}{\gamma}}$$
+
+    In which the initial relative pressure (<i>P<sub>r</sub></i>) is
+    determined by:
+
+    $$ P_r = e^{\left(\frac{s}{R_0}-\frac{s_r}{R_0}\right)} = e^{\frac{\Delta s}{R_0}}$$
+
+
+    in which <i>s<sub>r</sub> / R<sub>0</sub></i> is approximately 23 at 0 degR.
+    The initial guess of temperature (<i>T'</i>) is determined using the lower
+    bound of the curve that corresponds to the initial <i>P<sub>r</sub></i> value.
+
+    The difference between the entropy values is determined by:
+
+    $$\Delta s = s_A - s$$
+
+    where <i>s<sub>A</sub></i> is determined by:
+
+    $$s_A = R_0*\left(\log{P_r} + \frac{s_r}{R_0}\right)$$
+
+
+    If the convergence criterion is not met, the slope of temperature to
+    entropy is calculated from:
+
+    $$S_s = \frac{\gamma-1}{\gamma} * \left(\frac{T}{R_0}\right)$$
+
+    during the first iteration or from:
+
+    $$S_s = \frac{T-T'}{s-s'}$$
+
+    in the iterations thereafter. The initial temperature estimate is then
+    corrected using:
+
+    $$T= T' + S_s*\Delta s$$
+
+
+    until the solution converges.
+</p>
+
 <br>
-<br>
-<font size="5" color="Blue">SP2T Inputs:</font>
-<table border="1"> <tr><td>SP2T Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the entropy, pressure, and fuel to air ratio inputs to
+        the corresponding places on the block.
+        <li> Connect the termperature output to the next block in your simulation.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        SP2T Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th >Description</th></tr>
     <tr><td>S</td><td>Entropy [BTU/(lbm*degR)] </td></tr>
     <tr><td>P</td><td>Pressure [psia] </td></tr>
     <tr><td>FAR</td><td>Fuel to Air Ratio[frac]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">SP2T Outputs:</font>
-<table border="1"> <tr><td>SP2T Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        SP2T Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>T</td><td>Temperature [degR] </td></tr>
 </table>
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        SP2T Mask Variables
+</div>
+<p>
+    No mask variables are needed for this block, as all calculations are
+    based on the input values.
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>Three inputs required</td><td>One or more inputs are not connected to the block.</td></tr>
+    <tr><td>One output required</td><td>The output is not connected to anything.</td></tr>
+    <tr><td>Pressure input must be a scalar</td><td>Error is displayed when the pressure
+    input has more than one element. </td></tr>
+    <tr><td>Entropy input must be a scalar</td><td>Error is displayed when the entropy
+    input has more than one element.</td></tr>
+    <tr><td>FAR input must be a scalar.</td><td>Error is displayed when the FAR input
+    has more than one element.</td></tr>
+</table>
 
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

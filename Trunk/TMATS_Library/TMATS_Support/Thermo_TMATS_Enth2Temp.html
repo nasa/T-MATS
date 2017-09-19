@@ -1,19 +1,174 @@
-<font size="6" color="Magenta">T-MATS: Enth2Temp Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Enth2Temp Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Enth2Temp Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to emperically calculate temperature (<i>T</i>)
+    from input values of enthalpy (<i>h</i>) and fuel to air ratio (<i>FAR</i>).
+    The temperature calculated will be total or static, depending on the
+    input of either total enthalpy (<i>ht</i>) or static enthalpy (<i>hs</i>),
+    respectively.
+</p>
+
 <br>
-This block emperically calculates temperature (T) from enthalpy (h) and fuel to air ratio (FAR).
-Temperature will be total or static based on input enthalpy (total "ht" or static "hs").
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the temperature, this block utilizes a table-lookup method
+    based on data from standard thermodynamic tables for a combination of
+    air and combusted hydrocarbons, as well as a few equations.
+</p>
+<p>
+    To begin, the system assumes an initial temperature value (<i>T</i>),
+    based on the input enthalpy value ((<i>h<sub>A</sub></i>)). This assumed
+    temperature is then used to calculate the corresponding enthalpy value
+    (<i>h</i>), using a table-lookup method based on data from standard
+    thermodynamic tables. The calculations are made from the built-in curve
+    fit data, using the basic equation of:
+
+    $$h = \frac{h_f*n_{f,p}+h_a*n_{a,p}}{n_{f,p}+n_{a,p}}$$
+
+    in which
+
+    $$h_a = d_{ha,i}*\Delta T^3 + c_{ha,i}*\Delta T^2 + b_{ha,i}*\Delta T + a_{ha,i} $$
+
+    and
+
+    $$h_f = d_{hf,i}*\Delta T^3 + c_{hf,i}*\Delta T^2 + b_{hf,i}*\Delta T + a_{hf,i} $$
+    <br>
+
+    In the above equations, <i>&Delta;T</i> is the difference between the
+    assumed temperature value and an index value that is obtained from a
+    data array  as a function of the integer value of one percent of the
+    assigned gas temperature.
+</p>
+<p>
+    Additionally, the variables <i>a</i>,<i> b</i>,<i> c</i>, and <i>d </i>
+    are arrays of cubic spline-fit coefficients, based on the data tables.
+</p>
+    <br>
+<p>
+    With this new enthalpy value, the difference between the two enthalpy
+    values is determined by the following:
+
+    $$\Delta h = h_A - h$$
+
+    If the convergence conditions are not met, the slope of the variation
+    is calculated from the following equation:
+
+    $$S_h = \frac{T - T'}{h - h'}$$
+
+    in which the system initially assumes T' to be 1 degR and determines
+    the corresponding value of h'.
+
+    The temperature value is then updated using the equation below:
+
+    $$T = T' + S_h * \Delta h$$
+
+    This process continues until the solution meets the convergence criteria.
+</p>
+
 <br>
-<br>
-<font size="5" color="Blue">Enth2Temp Inputs:</font>
-<table border="1"> <tr><td>Enth2Temp Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the enthalpy and fuel to air ratio inputs to the
+        corresponding places on the block.
+        <li> Connect the temperature output to the next block in your simulation.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Enth2Temp Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th >Description</th></tr>
     <tr><td>h</td><td>Enthalpy [BTU/lbm] </td></tr>
     <tr><td>FAR</td><td>Fuel to Air Ratio[frac]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Enth2Temp Outputs:</font>
-<table border="1"> <tr><td>Enth2Temp Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Enth2Temp Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>T</td><td>Temperature [degR] </td></tr>
 </table>
 
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+<div class="maskvars">
+        Enth2Temp Mask Variables
+</div>
+<p>
+    No mask variables are needed for this block, as all calculations are
+    based on the input values.
+</p>
 
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>Two inputs required</td><td>One or more inputs are not connected to the block.</td></tr>
+    <tr><td>One output required</td><td>The output is not connected to anything.</td></tr>
+    <tr><td>Entropy input must be a scalar</td><td>Error is displayed when the entropy
+    input has more than one element. </td></tr>
+    <tr><td>FAR input must be a scalar.</td><td>Error is displayed when the FAR input
+    has more than one element.</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

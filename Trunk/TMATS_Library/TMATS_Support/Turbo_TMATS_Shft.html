@@ -1,26 +1,130 @@
-<font size="6" color="Magenta">T-MATS: Shaft Library Block</font>
-<br>
-This block simulates the performance of a shaft using basic
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Shaft Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Shaft Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the performance of a shaft using basic
 dynamic equations and properties.
+</p>
+
 <br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+    <p>
+        To compute the acceleration (<i>Ndot</i>), this block takes the sum of the
+        input torque elements and uses the equation below.
+
+        $$ Ndot = \frac{60*\sum{Torque}}{2\pi*\textit{Shaft_Inertia_M}}$$
+
+        Since the input torque can be a vector, the summation is used to add all
+        of the components together. The constants in the above equation are used to
+        convert the input units to the proper output units for the shaft's acceleration.
+        Generally negative torque is used for energy being taken from the shaft and
+        positive torque is for energy put into the shaft.
+    </p><p>
+    It should be noted that the <i>Nmech</i> input is simply passed through to the output and is needed only for
+    understandability purposes. Calculation of <i>Nmech</i> is completed with the
+    integration of shaft output <i>Ndot</i> using an iterative solver.
+
+</p>
+
 <br>
-<font size="5" color="Blue">Shaft Inputs:</font>
-<table border="1"> <tr><td>Shaft Input</td><td>Description</td></tr>
-    <tr><td>Torque</td><td>input torque from torque source or sink [lbf*f]</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the torque and mechanical shaft speed to the corresponding
+        places on the block.
+        <li> Connect the outputs to the next block in your simulation.
+        <li> Double click the block and specify the shaft inertia.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Shaft Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
+    <tr><td>Torque</td><td>Input torque from torque source or sink [lbf*f]</td></tr>
     <tr><td>NmechIn</td><td>Mechanical shaft speed[rpm].
-            <br>This input is simply passed through to the output and is needed only for
-            <br> understandability purposes. Calculation of Nmech is completed with the
-    <br>integration of shaft output Ndot.</td></tr>
+</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Shaft Outputs:</font>
-<table border="1"> <tr><td>Shaft Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Shaft Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>NmechOut</td><td>Mechanical shaft speed[rpm], equal to the input shaft speed.</td></tr>
-    <tr><td>Ndot</td><td>mechanical shaft speed acceleratoin [rpm/sec]</td></tr>
+    <tr><td>Ndot</td><td>Mechanical shaft speed acceleratoin [rpm/sec]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Shaft Mask Variables: </font>
-<table border="1"> <tr><td>Turbine Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Shaft Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>Shaft_Inertia_M</td><td> Shaft Inertia Term [slugs*ft^2]</td></tr>
 </table>
 
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+    When using this block, an error will occur if the shaft inertia is set
+    to zero.
+
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

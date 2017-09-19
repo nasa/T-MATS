@@ -1,23 +1,114 @@
-<font size="6" color="Magenta">T-MATS: Set Point Calculation (Tbl)</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Set Point Calculation Library Block
+</title>    
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Set Point Calculation Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to determine a set point, either by utilizing a 
+    table-lookup method or by a manual input. 
+</p>
+
 <br>
-This block contains a set point table look up based on an external request and a manual override.<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>    
+
+<p>
+    Based on the External Request and the Determiner Signal, this block uses a 
+    table-lookup to compute the set point. This process can be overridden by entering
+    a manual set point.
+    
 <br>
-<font size="5" color="Blue">LS Inputs:</font>
-<table border="1"> <tr><td>LS Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    There are two options for using this block:
+    <ol>
+        <li> Use the table-lookup method
+        <li> Enter a set point manually
+    </ol>
+    
+    Whichever method you choose to use, remember that you need to:
+    <ul>
+        <li>Connect the inputs to the corresponding places on the block.
+        <li>Connect the output to the next block in your simulation.
+        <li>Double click the block and adjust the vector/matrix values, if necessary.
+    </ul>
+    
+    More information on the specifics of what should be entered can be found in the tables below.
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+       Set Point Calculation Inputs     
+</div>
+
+<table> 
+    <tr><th> Input </th><th >Description</th></tr>
     <tr><td>External Request</td><td> External system request for table lookup</td></tr>
     <tr><td>Determiner Signal</td><td> Determiner signal for table lookup</td></tr>
     <tr><td>Manual_En</td><td> Enable manual input: 1- manual input active, 0- use value based on exernal request</td></tr>
     <tr><td>Manual Setpoint</td><td> Manual Setpoint: Setpoint used when manual mode is enabled</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">LS Outputs:</font>
-<table border="1"> <tr><td>LS Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Set Point Calculation Outputs  
+</div>
+
+<table> 
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>Cntrl Setpoint</td><td> Setpoint for use by controller</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">LS  Mask Variables: </font>
-<table border="1"> <tr><td>LS Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+       Set Point Calculation Mask Variables 
+</div>
+ 
+<table> 
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>ERVec_M</td><td>External request vector (for table lookup)(1xm)</td></tr>
     <tr><td>DSVec_M</td><td>Determine signal vector (for table lookup)(1xn)</td></tr>
     <tr><td>SPArray_M</td><td>Setpoint array (mxn)</td></tr>
 </table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

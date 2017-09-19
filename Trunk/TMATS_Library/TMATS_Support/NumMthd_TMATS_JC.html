@@ -1,30 +1,149 @@
-<font size="6" color="Magenta">T-MATS: Jacobian Calculator Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Jacobian Calculator Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Jacobian Calculator Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to calculate the Jacobian of a system.
+</p>
+<p>
+    <em>Note: This module will run once on start up and then again only if
+    reset.</em>
+</p>
+
 <br>
-The Jacobian Calculator block calculates the Jabobian of the system by perturbing
-the system around an initial point and calculating the gradient for each perturbation.
-This module will run once on start up and then again only if the reset.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+<p>
+    The Jacobian matrix is a linear map between the inputs and the outputs.
+    It is defined by perturbing each input from an initial condition to find
+    the effect on the outputs. Starting at the initial condition, the
+    Jacobian calculator perturbes each input, records
+    the results, and calculates the slope of each output as a function of
+    each input (i.e. calculates the gradient for each perturbation). Once
+    this is completed for each input, the Jacobian matrix is built and output.
+</p>
+$$ J={\begin{pmatrix}{\frac {\partial f_{1}}{\partial x_{1}}}&{\frac {\partial f_{1}}{\partial x_{2}}}&\ldots &{\frac {\partial f_{1}}{\partial x_{n}}}\\\vdots &\vdots &\ddots &\vdots \\{\frac {\partial f_{m}}{\partial x_{1}}}&{\frac {\partial f_{m}}{\partial x_{2}}}&\ldots &{\frac {\partial f_{m}}{\partial x_{n}}}\end{pmatrix}} $$
+<p>
+    The inverted Jacobian matrix  can be used in combination
+    with the Newton Raphson solver. For this inversion to operate correctly m must be equal to n and the rank of J must be equal to n.
+</p>
+
 <br>
-<br>
-<font size="5" color="Blue">Jacobian Calculator Inputs:</font>
-<table border="1"><tr><td>Jacobian Calculator Input</td><td>Description</td></tr>
-    <tr><td>Reset</td><td>Resets the Jacobian Calculator causing it to Re-run (bool),<br> 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the inputs to the corresponding places on the block.
+        <br>&nbsp;&nbsp; <em>Note:</em> Inputting a 1 to the Reset option
+        will reset the block.
+        <li> Connect the outputs to the next block(s) in the simulation.
+        <li> Double click the block and specify the perturbations.
+   </ul>
+</p>
+<p>
+    For more information on what each input, output, and mask variable
+    should contain, see the tables below.
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Jacobian Calculator Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th >Description</th></tr>
+    <tr><td>Reset</td><td>Resets the Jacobian Calculator causing it to re-run (bool),
     the calcuator will reset on a transition from 0 to 1.</td></tr>
     <tr><td>f(x_p)</td><td>Output of perturbed system (mx1)</td></tr>
-    <tr><td>Xo</td><td>Initial point the Jacobian Calculator will perturb around (mx1)</td></tr>
+    <tr><td>Xo</td><td>Initial point the Jacobian Calculator will perturb
+    around (mx1)</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Jacobian Calculator Outputs:</font>
-<table border="1"><tr><td>Jacobian Calculator Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Jacobian Calculator Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>J</td><td>Jacobian output (mxm)</td></tr>
     <tr><td>x_p</td><td>Purturbed input to system(mx1)</td></tr>
-    <tr><td>Iteration</td><td>Number of times this module has run while attempting to find the Jacobian(1x1)</td></tr>
+    <tr><td>Iteration</td><td>Number of times this module has run while
+    attempting to find the Jacobian(1x1)</td></tr>
     <tr><td>Active</td><td>0 - Jacobian Calculator is not actively running<br>
     1- Jacobian Calculator is actively running</td></tr>
     <tr><td>inv(J)</td><td>1/J (mxm)</td></tr>
     <tr><td>JacFailed</td><td>Jacobian inversion fault (0 - no fault, 1 - fault)</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">Jacobian Calculator  Mask Variables: </font>
-<table border="1"> <tr><td>Jacobian Calculator Mask Variable</td><td>Description</td></tr>
-    <tr><td>N_Per_M</td><td>Perturbation sizes (nxm), where m columns equal the number of inputs and n rows equals the number times each input is perturbed.</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Jacobian Calculator Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>N_Per_M</td><td>Perturbation sizes (nxm), where m columns
+    equal the number of inputs and n rows equals the number times each
+    input is perturbed.</td></tr>
 </table>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>Jacobian can not be inverted.</td><td>The resulting Jacobian matrix
+is singular (determinant = 0) and cannot be inverted.</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

@@ -1,22 +1,116 @@
-<font size="6" color="Magenta">T-MATS: Power Generator Library Block</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Power Generator Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Power Generator Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to convert a power demand with rotational speed
+    into a torque. In general, this block is used to simulate a simple power generator with no dynamics.
+
 <br>
-This block converts a power demand with rotational speed into a torque and can be used to simulate a power generator.
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the torque, this block utilizes the equation below, along with a few unit conversions.
+
+    $$ Torq = \frac{-PowerDMD * 5252}{\textit{Eff_M} * Nmech * 746}$$
+
+    In the above equation, 5252 is used to convert from HP/RPM to ft/lbf and 746
+    is used to convert HP to Watts.
+
 <br>
-<br>
-<font size="5" color="Blue">PGen Inputs:</font>
-<table border="1"> <tr><td>PGen Input</td><td>Description</td></tr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input power demand and shaft speed to the corresponding places on the block.
+        <li> Connect the calculated torque to the next block in your simulation.
+        <li> Specify the efficiency by double clicking on the block.
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Power Generator Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>PowerDMD</td><td>Power demand[Watt]</td></tr>
     <tr><td>Nmech</td><td>Mechanical shaft speed[rpm]</td></tr>
 </table>
-<br>
-<font size="5" color="Blue">PGen Outputs:</font>
-<table border="1"> <tr><td>PGen Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Power Generator Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>Req_Torq</td><td>Required Torque [lbf*ft]</td></tr>
 </table>
-</table>
-<br>
-<font size="5" color="Blue">PGen Mask Variables: </font>
-<table border="1"> <tr><td>PGen Mask Variable</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Power Generator Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>Eff_M</td><td>Generator efficiency [frac]</td></tr>
 </table>
 
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, an error will occur if either <i>Eff_M</i> or <i>Nmech</i>
+is equal to zero. To avoid this error, ensure that both the efficiency and
+shaft speed inputs are nonzero.
+
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

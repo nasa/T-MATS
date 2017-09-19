@@ -1,35 +1,233 @@
 <script type="text/javascript"
-     src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
-<font size="6" color="Magenta">T-MATS: 1-D Trans Cond Model(FDI) Block</font>
-<p>This function models the transient conduction of a plate with fluid or additional plates on either side via the finite difference method (implicit). This block is obsolete and will not be supported in the future. For another option see 1-D Trans Conduction Model - Variable Propts + Generic BCs.</p>
-<p>Setup requires the use of an external solver for determining Next temperature states.</p>
-<p>This block is setup to be a general use material that is devided into 3 regions, A,B,C.</p>
-<p> Region A can be defined as a fluid or a solid material at the inner boundary. If it is a fluid, a TinnerNext is set to a constant.
-If it is defined as a solid the thermodynamic properties need to be defined and TinnerNext needs to be connected to the adjacent node
-of another 1-D Trans Conduction Model (FDI) block.
-<br> Region B is the material as defined in the General Tab
-<br> Region C is defined similarly to A, however it is considered the outer material. </p>
-<p>Export values are calculated based on a single time step. If additional dynamic behavior is required a simulink memory block may be used to update the temperature initial conditions.
-Units must be specified consistantly. (i.e. If temperature is in Celsius all temperature units must in Celsius)</p>
-<font size="5" color="Blue"> 1-D Trans Conduction Inputs:</font>
-<table border="1"> <tr><td> 1-D Trans Conduction Inputs</td><td>Description</td></tr>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for 1D Trans Cond Model(FDI) Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: 1D Trans Cond Model(FDI) Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block is used to model the transient conducation of a plate with
+    fluid or additional plates on either side, via the finite difference
+    method (implicit).
+</p>
+<p>
+    <em>Note:</em> This block has become obsolete and will not be supported
+    in future releases. For a more versatile option, see the 1-D Trans
+    Conduction Model - Variable Props + Generic BCs (documentation
+    <a href="HeatXfer_TMATS_1DTCondVarPropGenBC.html">here</a>).
+</p>
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the output values, this block utilizes an implicit finite
+    difference method to determine the effects of heat transfer. It is important
+    to note that the units must be specified consistently while using this block
+    (i.e. If temperature is in Celsius all temperature units must in Celsius)
+    and that the export values are calculated based on a single time step.
+    If additional dynamic behavior is required, a Simulink Memory block may
+    be used to update the temperature initial conditions. Additionally, when
+    using this block, the setup requires the use of an external solver
+    to determine the "Next" temperature states.
+</p>
+<p>
+    To compute the output temperatures, this block divides a general-use
+    material into three sections: the plate (Region B), fluid/solid on one side
+    of the plate (Region A), and fluid/solid on the other side of the plate
+    (Region C). The finite difference method (Crank-Nicolson) is then used
+    to determine the effects of the heat transfer.
+</p>
+<p>
+    Region A can be defined as a fluid or a solid material at the inner
+    boundary. If it is a fluid, the variable <i>TinnerNext</i> is set to
+    be constant. If it is defined as a solid, the thermodynamic properties
+    need to be defined manually and <i>TinnerNext</i> needs to be connected
+    to the adjacent node of another 1-D Trans Conduction Model (CN) block.
+    The thermodynamic properties for Region A are accessed by double clicking
+    the block and adjusting the values in the "Inner Material" tab.
+</p>
+<p>
+    Region B is the plate, and its material properties are defined in the
+    General Tab (accessed by double clicking the block).
+</p>
+<p>
+    Region C is defined similarly to A, however it is considered the outer
+    material. Just like Region A, if Region C is defined to be solid, the
+    thermodynamic properties need to be set manually by double clicking the
+    block and adjusting the values in the "Outer Material" tab.
+</p>
+<p>
+    To determine the output values, this block begins by calculating the thermal
+    diffusivity constant, Biot number, and Fourier number for each material.
+    For Region A and Region C, these constants are determined by the following
+    equations, respectively.
+
+    $$ \alpha = \frac{k}{\rho*Cp}$$
+    $$ Bi = \frac{h*dx}{k}$$
+    $$ Fo = \frac{dt*\alpha}{dx^2}$$
+
+    In the equations above, the variables are parameters set by the user.
+    These parameters are accessed by double clicking the block. For Region A
+    and Region C, the corresponding <i>dx</i> value is the width of these
+    regions. However, <i>dx</i> for Region B must be calculated; the equation below
+    is used to determine this parameter:
+
+    $$ dx_B = \frac{X}{N-\left(1 - \frac{A}{2}-\frac{C}{2}\right)}$$
+
+    in which <i>X</i> is the plate width, <i>N</i> is the number of nodes,
+    and <i>A</i> and <i>C</i> are each a 0 or 1 depending on if the
+    corresponding region is specified to be a fluid or a solid, respectively. Generally, when an
+    adjacent material is a fluid nodal placement is on the surface of the boundary and
+    then the adjacent material is a solid the node is placed centrally. This distinction adjusts the nodal material width.
+</p>
+<p>
+    Once these parameters are calculated for each region, the thermal diffusivity
+    constant and Fourier number for the transition regions (B-C, B-A) are
+    determined. For Region BC, the following equations are used:
+
+    $$\alpha_{BC} = \frac{\left(\frac{k_B*dx_B + k_C*dx_C}{dx_B + dx_C}\right)}{\rho*Cp}$$
+    $$Fo_{BC} = \frac{dt* \alpha_{BC}}{dx_B * \left(\frac{dx_C+dx_B}{2}\right)}$$
+
+    For Region BA, the above equations are used with the corresponding values
+    for Region A in place of the values for Region C.
+</p>
+<p>
+    Using the energy balance method and the implicit finite difference method,
+    the follow equations can be derived and used to solve for the output
+    temperature values. The first equation is for the boundaries (Region A
+    and Region C), while the second equation is for the inner nodes (Region
+    BA - Region BC). The equations below assume a fluid boundary (Region A
+    and Region C), but are easily adjusted within the MATLAB script if these
+    regions are set to be solid.
+
+    $$(1+2*Fo+2*Fo*Bi)*T_0^{p+1} - 2*Fo*T_1^{p+1} = 2*Fo*Bi*T_{\infty} + T_0^p$$
+    $$ (1+2*Fo)*T_m^{p+1} - Fo * \left( T_{m-1}^{p+1} + T_{m+1}^{p+1}\right) = T_m^p$$
+
+    In the above equations, the corresponding values for the region being
+    evaluated are used. Additionally, <i>m</i> represents the location of the
+    node and <i>p</i> represents the time dependence. New time step values are
+    represented by <i>p+1</i> while the old time step values are represented
+    by <i>p</i>. For more information on this process, see the book reference
+    at the bottom of this page.
+</p>
+<p>
+    The error between the calculated value and the actual value is determined
+    by the following equation:
+
+    $$Terr = \frac{ToCalc - ToVec}{ToVec}$$
+
+    In which <i>ToCalc</i> is the vector of the calculated, current values for
+    the temperature across the material and <i>ToVec</i> is the input, current
+    temperature state of the system. For convergence a local solver must be used
+    to converge this sytem and drive the calculated current values to the actual
+    current values by adjusting the temperature values for the next time step.
+</p>
+<p>
+    The final parameter determined by this block is the average temperature,
+    which is determined by the following equation:
+
+    $$Tavg = \frac{\sum(TNext * Nw)}{\sum Nw}$$
+
+    In the above equation, <i>Nw</i> is the vector containing the <i>dx</i>
+    values.
+</p>
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the inputs to the corresponding places on the block.
+        <li> Connect the outputs to the next blocks in the simulation.
+        <li> Double click the block and...
+        <ul>
+            <li>Specify the properties of Region B (the plate) by editing
+            the values in the General tab.
+            <li>If Region A is solid, check the box under the Inner Material
+            tab and specify the properties of Region A.
+            <li>If Region A is fluid, ensure that the box under the Inner Material
+            tab is not checked.
+            <li>If Region C is solid, check the box under the Outer Material
+            tab and specify the properties of Region C.
+            <li>If Region C is fluid, ensure that the box under the Outer Material
+            tab is not checked.
+        </ul>
+        <li> Use an external solver to determine the Next temperature values.
+        <li> Ensure that temperature units are consistent throughout this block.
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        1D Trans Cond Model(FDI) Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
     <tr><td>TinnerNext</td><td>Next temperature adjacent to the inner most node</td></tr>
     <tr><td>TouterNext</td><td>Next temperature adjacent to the outer most node</td></tr>
     <tr><td>ToVec</td><td>Initial Temperature at each Node (mx1)</td></tr>
     <tr><td>TNext</td><td>Temperature at each Node for next time step (mx1)</td></tr>
 </table>
-<br>
-<font size="5" color="Blue"> 1-D Trans Conduction Outputs:</font>
-<table border="1"> <tr><td>1-D Trans Conduction Output</td><td>Description</td></tr>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        1D Trans Cond Model(FDI) Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
     <tr><td>Tavg</td><td>Final Average Temperature within the Plate</td></tr>
     <tr><td>TfVec</td><td>Final Temperature at each Node (mx1)</td></tr>
     <tr><td>Xdist</td><td>Placement of each Node (mx1)</td></tr>
     <tr><td>Terr</td><td>Difference between initial and calculated intial temperatures (mx1)</td></tr>
 </table>
-<br>
-<font size="5" color="Blue"> 1-D Trans Conduction Mask Variables: </font>
-<table border="1"> <tr><td> 1-D Trans Conduction Mask Variable</td><td>Description</td></tr>
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+       1D Trans Cond Model(FDI) Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>dt_M</td><td>Time Step</td></tr>
     <tr><td>w_M</td><td>Plate total Width</td></tr>
     <tr><td>Node_M</td><td>Number of Nodes in material B</td></tr>
@@ -50,3 +248,21 @@ Units must be specified consistantly. (i.e. If temperature is in Celsius all tem
 	<tr><td>rhoC_M</td><td>Material A Density (rho)</td></tr>
     <tr><td>cC_M</td><td>Material A Specific Heat (Cp)</td></tr>
 </table>
+
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<div class="table_caption">
+    Reference
+</div>
+
+<p>
+    The equations used in this block model the heat transfer of a plate with
+    fluid or material on either side via the finite difference method
+    (implicit), based on equations from Section 5.9.2 of "Fundamentals of
+    Heat and Mass Transfer" 5th edition, by F. Incropera and D. DeWitt.
+</p>
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

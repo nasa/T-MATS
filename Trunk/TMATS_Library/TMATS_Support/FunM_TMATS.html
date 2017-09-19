@@ -1,30 +1,70 @@
-<font size="6" color="Magenta">T-MATS: MATLAB functions</font>
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: MATLAB Functions
+</title>    
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: MATLAB Functions
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>    
+
 <p>The T-MATS package contains MATLAB functions for doing certain Thermodynamic operations. Information about these sets of functions are located in the users manual.</p>
 <p>As a quick reference the T-MATS functions are also located below. They can be accessed by using the class structure TMATS.* .</p>
-<p> Units consist of:<br>
-    temperature - R<br>
-    pressure - psia<br>
-    enthalpy = BTU/lbm<br>
-    entropy - BTU/(lbm*R)<br>
-FAR - NA</p>
-<font size="5" color="Blue"> TMATS.* functions</font>
-<table border="1"> <tr><td> <b>Class Method</b></td><td><b>Description</b></td></tr>
-<tr><td>[T] = h2t(h)</td><td>Look up temperature(T) based on enthalpy(h).</td>
-<tr><td>[h] = t2h(T)</td><td>Look up enthalpy(h) based on temperature(T)</td>
-<tr><td>[s] = PT2s(T,P)</td><td>Look up entropy(s) based on pressure(P) and temperature(T)</td>
-<tr><td>[T] = sP2T(s,P)</td><td>Look up temperature(T) based on entropy(s) and pressure(P)</td>
-<tr><td>DViewGUI</td><td>Run T-MATS Data Viewer. This tool consists of a GUI that runs the SSplot and TDplot among other things.</td>
-<tr><td>PlotCMap(NcV,WcA,PRA,EffA)</td><td>Plot compressor map based on an Nc vector, Wc array, PR array, and Eff array.
-<br> addtional inputs can be included by with the format PlotCMap(_,Name,Value,...,Value)
-<br> type "help TMATS.PlotCMap" for acceptable inputs and format.
-<br> An exmaple of this command might look like: 
-<br>TMATS.PlotCMap(NcV,WcA,PRA,EffA,'scalar',s_Wc,s_PR,s_Eff,'effcolor',0.5,'slformat','%2.2f','offset',0.03,'defsurge',WcA(:,1), PRA(:,1));</td>
-<tr><td>PlotTMap(NcV,PRV,WcA,EffA)</td><td>Plot turbine map based on an Nc vector, PR vector, Wc array, and Eff array
-<br> addtional inputs can be included by with the format PlotTMap(_,Name,Value,...,Value)
-<br> type "help TMATS.PlotTMap" for acceptable inputs and format.
-<br> An exmaple of this command might look like: 
-<br>TMATS.PlotTMap(NcV,WcA,PRA,EffA,'scalar',s_Wc,s_PR,s_Eff,'effcolor',0.5,'slformat','%2.2f','offset',0.03);</td>
-<tr><td>DViewGUI</td><td>Run T-MATS Data Viewer. This tool consists of a GUI that runs the SSplot and TDplot among other things.</td>
-<tr><td>SSplot(filename, StationVarVec)</td><td> Autogenerate steady state data plots. Note: all data must be generated with the Simulink/ToWorkspace block as a TimeSeries and consistant with the GasPropChar bus or Data bus (from compressors or turbines).</td>
-<tr><td>TDplot(filename)</td><td> Autogenerate transient data plots. Note: all data must be generated with the Simulink/ToWorkspace block as a TimeSeries and be consistant with the GasPropChar bus or Data bus (from compressors or turbines).</td>
+<p><b> Units consist of:</b><br>
+    Temperature - degR<br>
+    Pressure - psia<br>
+    Enthalpy - BTU/lbm<br>
+    Entropy - BTU/(lbm*degR)<br>
+    FAR - N/A
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="table_caption">
+       TMATS.* Functions
+</div>
+
+<table border="1"> <tr><th> Class Method </th><th> Description </th></tr>
+    <tr><td>[T] = h2t(h)</td><td>Look up temperature(T) based on enthalpy(h).</td>
+    <tr><td>[h] = t2h(T)</td><td>Look up enthalpy(h) based on temperature(T)</td>
+    <tr><td>[s] = PT2s(T,P)</td><td>Look up entropy(s) based on pressure(P) and temperature(T)</td>
+    <tr><td>[T] = sP2T(s,P)</td><td>Look up temperature(T) based on entropy(s) and pressure(P)</td>
+    <tr><td>DViewGUI</td><td>Run T-MATS Data Viewer. This tool consists of a GUI that runs the SSplot and TDplot among other things.</td>
+    <tr><td>PlotCMap(NcV,WcA,PRA,EffA)</td><td>Plot compressor map based on an Nc vector, Wc array, PR array, and Eff array.
+        <br> Addtional inputs can be included by with the format PlotCMap(_,Name,Value,...,Value)
+        <br> Type "help TMATS.PlotCMap" for acceptable inputs and format.
+        <br> An exmaple of this command might look like: 
+    <br>TMATS.PlotCMap(NcV,WcA,PRA,EffA,'scalar',s_Wc,s_PR,s_Eff,'effcolor',0.5,'slformat','%2.2f','offset',0.03,'defsurge',WcA(:,1), PRA(:,1));</td>
+    <tr><td>PlotTMap(NcV,PRV,WcA,EffA)</td><td>Plot turbine map based on an Nc vector, PR vector, Wc array, and Eff array
+        <br> Addtional inputs can be included by with the format PlotTMap(_,Name,Value,...,Value)
+        <br> Type "help TMATS.PlotTMap" for acceptable inputs and format.
+        <br> An exmaple of this command might look like: 
+    <br>TMATS.PlotTMap(NcV,WcA,PRA,EffA,'scalar',s_Wc,s_PR,s_Eff,'effcolor',0.5,'slformat','%2.2f','offset',0.03);</td>
+    <tr><td>DViewGUI</td><td>Run T-MATS Data Viewer. This tool consists of a GUI that runs the SSplot and TDplot among other things.</td>
+    <tr><td>SSplot(filename, StationVarVec)</td><td> Autogenerate steady state data plots. Note: all data must be generated with the Simulink/ToWorkspace block as a TimeSeries and consistant with the GasPropChar bus or Data bus (from compressors or turbines).</td>
+    <tr><td>TDplot(filename)</td><td> Autogenerate transient data plots. Note: all data must be generated with the Simulink/ToWorkspace block as a TimeSeries and be consistant with the GasPropChar bus or Data bus (from compressors or turbines).</td>
 </table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>
