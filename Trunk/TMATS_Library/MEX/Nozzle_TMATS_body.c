@@ -1,5 +1,5 @@
-#include "constants_TMATS.h"
 #include "types_TMATS.h"
+#include "constants_TMATS.h"
 #include "functions_TMATS.h"
 #include <math.h>
 
@@ -7,7 +7,7 @@
 #include "simstruc.h"
 #endif
 
-void Nozzle_TMATS_body(double* y, const double* u, NozzleStruct* prm)
+void Nozzle_TMATS_body(double* y, const double* u, const NozzleStruct* prm)
 {
     double WIn       = u[0];     /* Input Flow [pps] 	*/
     double htIn      = u[1];     /* enthaply [BTU/lbm] 	*/
@@ -17,6 +17,7 @@ void Nozzle_TMATS_body(double* y, const double* u, NozzleStruct* prm)
     double PambIn    = u[5];     /* Ambient Pressure [psia] 	*/
     double AthroatIn = u[6];     /* Throat area [in2] 	*/
     double AexitIn   = u[7];     /* Exit area [in2] 	*/
+    
     
     /*--------Define Constants-------*/
     double choked, Ts, rhos, V, Test, Ptin;
@@ -33,6 +34,11 @@ void Nozzle_TMATS_body(double* y, const double* u, NozzleStruct* prm)
     int maxiter, iter, maxiterx, iterx, CDNoz;
     int interpErr = 0;
     
+        
+    /* Determine Nozzle Type                  */
+    /*prm->SwitchType:                             */
+    /*        1: Convergent Nozzle            */
+    /*        2: Convergent-Divergent Nozzle  */
     if (prm->SwitchType < 1.5)
         CDNoz = 0;
     else
@@ -46,12 +52,12 @@ void Nozzle_TMATS_body(double* y, const double* u, NozzleStruct* prm)
     htin = t2hc(TtIn,FARcIn);
     
     /*  Where gas constant is R = f(FAR), but NOT P & T */
-    Rt = interp1Ac(prm->Y_N_FARVec,prm->T_N_RtArray,FARcIn,prm->Y_N_FARVecLen,&interpErr);
-    if (interpErr == 1 && prm->IWork[Er1]==0){
+    Rt = interp1Ac(prm->Y_N_FARVec,prm->T_N_RtArray,FARcIn,prm->A,&interpErr);
+    if (interpErr == 1 && *(prm->IWork+Er1)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating Rt1. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er1] = 1;
+        *(prm->IWork+Er1) = 1;
     }
     Rs = Rt;
     
@@ -60,21 +66,21 @@ void Nozzle_TMATS_body(double* y, const double* u, NozzleStruct* prm)
     Ptin = PtIn;
     if (Ptin <= PambIn) {
         Ptin = PambIn + 0.1;
-        if (prm->IWork[Er2]==0){
+        if (*(prm->IWork+Er2)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Backflow warning PtIn <= Pamb\n", prm->BlkNm);
             #endif
-            prm->IWork[Er2] = 1;
+            *(prm->IWork+Er2) = 1;
         }
     }
     /* Determine ideal velocity defined by perfect expansion to Pambient */
     PcalcStat(Ptin, PambIn, TtIn, htin, FARcIn, Rt, &Sin, &Ts, &hs, &rhos, &V);
-    gammas_s = interp2Ac(prm->Y_N_FARVec,prm->X_N_TtVec,prm->T_N_MAP_gammaArray,FARcIn,Ts,prm->Y_N_FARVecLen,prm->X_N_TtVecLen,&interpErr);
-    if (interpErr == 1 && prm->IWork[Er3]==0){
+    gammas_s = interp2Ac(prm->Y_N_FARVec,prm->X_N_TtVec,prm->T_N_MAP_gammaArray,FARcIn,Ts,prm->A,prm->B,&interpErr);
+    if (interpErr == 1 && *(prm->IWork+Er3)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating gammas. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er3] = 1;
+        *(prm->IWork+Er3) = 1;
     }
     MN_s = V*divby(sqrtT(gammas_s*Rs*Ts*C_GRAVITY*JOULES_CONST));
     Ts_s = Ts;
@@ -85,25 +91,25 @@ void Nozzle_TMATS_body(double* y, const double* u, NozzleStruct* prm)
     /* Determine if nozzle throat is choked by comparing pressure when MN = 1 to ambient pressure
      * ---- set MN = 1 and calc throat Ps for iteration IC --------*/
     MNg = 1;
-    gammatg = interp2Ac(prm->Y_N_FARVec,prm->X_N_TtVec,prm->T_N_MAP_gammaArray,FARcIn,TtIn,prm->Y_N_FARVecLen,prm->X_N_TtVecLen,&interpErr);
-    if (interpErr == 1 && prm->IWork[Er4]==0){
+    gammatg = interp2Ac(prm->Y_N_FARVec,prm->X_N_TtVec,prm->T_N_MAP_gammaArray,FARcIn,TtIn,prm->A,prm->B,&interpErr);
+    if (interpErr == 1 && *(prm->IWork+Er4)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating gammatg. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er4] = 1;
+        *(prm->IWork+Er4) = 1;
     }
-    /* use isentropic equations for prm->Y_N_FARVecLen first cut guess */
+    /* use isentropic equations for a first cut guess */
     TsMNg = TtIn*divby(1+MNg*MNg*(gammatg-1)/2);
     PsMNg = Ptin*powT((TsMNg*divby(TtIn)),(gammatg*divby(gammatg-1)));
     
     /* Calculate velcocity and MN using guessed static pressure */
     PcalcStat(Ptin, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
-    gammasg = interp2Ac(prm->Y_N_FARVec,prm->X_N_TtVec,prm->T_N_MAP_gammaArray,FARcIn,TsMNg,prm->Y_N_FARVecLen,prm->X_N_TtVecLen,&interpErr);
-    if (interpErr == 1 && prm->IWork[Er4]==0){
+    gammasg = interp2Ac(prm->Y_N_FARVec,prm->X_N_TtVec,prm->T_N_MAP_gammaArray,FARcIn,TsMNg,prm->A,prm->B,&interpErr);
+    if (interpErr == 1 && *(prm->IWork+Er4)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating gammasg. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er4] = 1;
+        *(prm->IWork+Er4) = 1;
     }
     MNg = Vg*divby(sqrtT(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST));
     
@@ -124,12 +130,12 @@ void Nozzle_TMATS_body(double* y, const double* u, NozzleStruct* prm)
         else
             PsMNg = PsMNg_new;
         PcalcStat(Ptin, PsMNg, TtIn, htin, FARcIn, Rt, &Sin, &TsMNg, &hsg, &rhosg, &Vg);
-        gammasg = interp2Ac(prm->Y_N_FARVec,prm->X_N_TtVec,prm->T_N_MAP_gammaArray,FARcIn,TsMNg,prm->Y_N_FARVecLen,prm->X_N_TtVecLen,&interpErr);
-        if (interpErr == 1 && prm->IWork[Er5]==0){
+        gammasg = interp2Ac(prm->Y_N_FARVec,prm->X_N_TtVec,prm->T_N_MAP_gammaArray,FARcIn,TsMNg,prm->A,prm->B,&interpErr);
+        if (interpErr == 1 && *(prm->IWork+Er5)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", prm->BlkNm);
             #endif
-            prm->IWork[Er5] = 1;
+            *(prm->IWork+Er5) = 1;
         }
         MNg = Vg*divby(sqrtT(gammasg*Rs*TsMNg*C_GRAVITY*JOULES_CONST));
         erMN =1 - MNg;
@@ -139,11 +145,11 @@ void Nozzle_TMATS_body(double* y, const double* u, NozzleStruct* prm)
         }
         iter = iter + 1;
     }
-    if (iter == maxiter && prm->IWork[Er6]==0 ){
+    if (iter == maxiter && *(prm->IWork+Er6)==0 ){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating Ps at MN = 1.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er6] = 1;
+        *(prm->IWork+Er6) = 1;
     }
     /*  MN = 1 parameters */
     TsMN1 = TsMNg;
@@ -172,23 +178,23 @@ void Nozzle_TMATS_body(double* y, const double* u, NozzleStruct* prm)
         Psth = PsMN1;
         Tsth = TsMN1;
         MNth = 1;
-        gammasth = interp2Ac(prm->Y_N_FARVec,prm->X_N_TtVec,prm->T_N_MAP_gammaArray,FARcIn,Tsth,prm->Y_N_FARVecLen,prm->X_N_TtVecLen,&interpErr);
-        if (interpErr == 1 && prm->IWork[Er7]==0){
+        gammasth = interp2Ac(prm->Y_N_FARVec,prm->X_N_TtVec,prm->T_N_MAP_gammaArray,FARcIn,Tsth,prm->A,prm->B,&interpErr);
+        if (interpErr == 1 && *(prm->IWork+Er7)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating iteration gammasg. Vector definitions may need to be expanded.\n", prm->BlkNm);
             #endif
-            prm->IWork[Er7] = 1;
+            *(prm->IWork+Er7) = 1;
         }
         Vth = MNth*sqrtT(gammasth*Rs*Tsth*C_GRAVITY*JOULES_CONST);
         rhosth = rhosMN1;
     }
     
     /* error('Nozzle Error: Negative Mach number!!') */
-    if (MNth<0 && prm->IWork[Er8]==0){
+    if (MNth<0 && *(prm->IWork+Er8)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Error in %s: negative throat mach number,  MN = %f.\n", prm->BlkNm, MNth);
         #endif
-        prm->IWork[Er8] = 1;
+        *(prm->IWork+Er8) = 1;
     }
     
     
@@ -199,33 +205,33 @@ void Nozzle_TMATS_body(double* y, const double* u, NozzleStruct* prm)
     PQPaMap = PQPa;
     
     /* look up Flow Coefficient */
-    CdTh = interp1Ac(prm->X_N_PEQPaVec,prm->T_N_CdThArray,PQPaMap,prm->X_N_PEQPaVecLen,&interpErr);
-    if (interpErr == 1 && prm->IWork[Er9]==0){
+    CdTh = interp1Ac(prm->X_N_PEQPaVec,prm->T_N_CdThArray,PQPaMap,prm->B1,&interpErr);
+    if (interpErr == 1 && *(prm->IWork+Er9)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating CdTh. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er9] = 1;
+        *(prm->IWork+Er9) = 1;
     }
-    Therm_growth = interp1Ac(prm->X_N_TtVecTG,prm->T_N_TGArray,TtIn,prm->X_N_TtVecTGLen,&interpErr);
-    if (interpErr == 1 && prm->IWork[Er10]==0){
+    Therm_growth = interp1Ac(prm->X_N_TtVecTG,prm->T_N_TGArray,TtIn,prm->C,&interpErr);
+    if (interpErr == 1 && *(prm->IWork+Er10)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating Therm_growth. Vector definitions may need to be expanded.\n", prm->BlkNm);
         #endif
-        prm->IWork[Er10] = 1;
+        *(prm->IWork+Er10) = 1;
     }
     
     
     /* Determine throat area in^2 */
     if (prm->IDes < 0.5) {
         Ath = WIn * C_PSItoPSF*divby(Therm_growth *(1-prm->flowLoss/100)*CdTh*rhosth*Vth);
-        if (choked == 0 && prm->IWork[Er11]==0){
+        if (choked == 0 && *(prm->IWork+Er11)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Calculating prm->IDes Area with un-choked nozzle.\n", prm->BlkNm);
             #endif
-            prm->IWork[Er11] = 1;
+            *(prm->IWork+Er11) = 1;
         }
     }
-    /* if the thoat area is larger then the exit area of prm->Y_N_FARVecLen CD nozzle it is prm->Y_N_FARVecLen convergent nozzle */
+    /* if the thoat area is larger then the exit area of a CD nozzle it is a convergent nozzle */
     else if (CDNoz == 1 && AthroatIn > AexitIn) {
         Ath = AexitIn;
         CDNoz = 0;
@@ -296,33 +302,33 @@ void Nozzle_TMATS_body(double* y, const double* u, NozzleStruct* prm)
             }
             iterx = iterx + 1;
         }
-        if (iterx == maxiterx && prm->IWork[Er12]==0 ){
+        if (iterx == maxiterx && *(prm->IWork+Er12)==0 ){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating Ps at exit.\n", prm->BlkNm);
             #endif
-            prm->IWork[Er12] = 1;
+            *(prm->IWork+Er12) = 1;
         }
         /* Collect data from the expansion to exit area: */
         Tsx = Ts;
         Vx = V;
         Psx = Psxg;
         rhosx = rhos;
-        gammasx = interp2Ac(prm->Y_N_FARVec,prm->X_N_TtVec,prm->T_N_MAP_gammaArray,FARcIn,Ts,prm->Y_N_FARVecLen,prm->X_N_TtVecLen,&interpErr);
-        if (interpErr == 1 && prm->IWork[Er13]==0){
+        gammasx = interp2Ac(prm->Y_N_FARVec,prm->X_N_TtVec,prm->T_N_MAP_gammaArray,FARcIn,Ts,prm->A,prm->B,&interpErr);
+        if (interpErr == 1 && *(prm->IWork+Er13)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating gammas. Vector definitions may need to be expanded.\n", prm->BlkNm);
             #endif
-            prm->IWork[Er13] = 1;
+            *(prm->IWork+Er13) = 1;
         }
         MNx = Vx*divby(sqrtT(gammasx*Rs*Tsx*C_GRAVITY*JOULES_CONST));
     }
     
     /* error('Nozzle Error: Negative Mach number!!') */
-    if (MNx<0 && prm->IWork[Er14]==0){
+    if (MNx<0 && *(prm->IWork+Er14)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Error in %s: negative exit mach number,  MN = %f.\n", prm->BlkNm, MNx);
         #endif
-        prm->IWork[Er14] = 1;
+        *(prm->IWork+Er14) = 1;
     }
     
     WOut = WIn;
@@ -330,22 +336,22 @@ void Nozzle_TMATS_body(double* y, const double* u, NozzleStruct* prm)
     
     /* look up Thrust and velocity coefficients */
     if (prm->CfgEn < 0.5){
-        Cv = interp1Ac(prm->X_N_PEQPaVec,prm->T_N_CvArray,PQPaMap,prm->X_N_PEQPaVecLen,&interpErr);
-        if (interpErr == 1 && prm->IWork[Er15]==0){
+        Cv = interp1Ac(prm->X_N_PEQPaVec,prm->T_N_CvArray,PQPaMap,prm->B1,&interpErr);
+        if (interpErr == 1 && *(prm->IWork+Er15)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating Cv. Vector definitions may need to be expanded.\n", prm->BlkNm);
             #endif
-            prm->IWork[Er15] = 1;
+            *(prm->IWork+Er15) = 1;
         }
         Cfg = 1;
     }
     else {
-        Cfg = interp1Ac(prm->X_N_PEQPaVec,prm->T_N_CfgArray,PQPaMap,prm->X_N_PEQPaVecLen,&interpErr);
-        if (interpErr == 1 && prm->IWork[Er16]==0){
+        Cfg = interp1Ac(prm->X_N_PEQPaVec,prm->T_N_CfgArray,PQPaMap,prm->B1,&interpErr);
+        if (interpErr == 1 && *(prm->IWork+Er16)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating Cfg. Vector definitions may need to be expanded.\n", prm->BlkNm);
             #endif
-            prm->IWork[Er16] = 1;
+            *(prm->IWork+Er16) = 1;
         }
         Cv = 1;
     }
@@ -391,4 +397,5 @@ void Nozzle_TMATS_body(double* y, const double* u, NozzleStruct* prm)
     y[14] = choked ;      /* nozzle is choked at the throat */
     y[15] = V_s;          /* ideal velocity expanded to ambient */
     y[16] = Test;
+    
 }

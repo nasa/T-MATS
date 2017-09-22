@@ -10,7 +10,7 @@
 #define S_FUNCTION_LEVEL 2
 #include "simstruc.h"
 #include "functions_TMATS.h"
-#include <math.h>
+#include "types_TMATS.h"
 
 #define LHV_p(S)			    ssGetSFcnParam(S,0)
 #define dPnormBurner_p(S)		ssGetSFcnParam(S,1)
@@ -19,6 +19,21 @@
 #define hFuel_p(S)              ssGetSFcnParam(S,4)
 #define NPARAMS 5
 
+/* Forward declaration for Burner body of calcs */
+extern void Burner_TMATS_body(real_T*, const real_T*, const BurnStruct*);
+
+#define MDL_SET_WORK_WIDTHS   /* Change to #undef to remove function */
+#if defined(MDL_SET_WORK_WIDTHS) && defined(MATLAB_MEX_FILE)
+/* Function: mdlSetWorkWidths ===============================================
+ * Abstract:
+ *      Set up run-time parameters.
+ */
+static void mdlSetWorkWidths(SimStruct *S)
+{
+    const char_T *rtParamNames[] = {"LHV", "DPnormBurner", "Eff", "LHVEn", "hFuel"};
+    ssRegAllTunableParamsAsRunTimeParams(S, rtParamNames);
+}
+#endif /* MDL_SET_WORK_WIDTHS */
 
 static void mdlInitializeSizes(SimStruct *S)
 {
@@ -29,8 +44,10 @@ static void mdlInitializeSizes(SimStruct *S)
         return;
     }
     
+    /* Set Block parameters tunable
+       Note: Original version had all parameters set to non-tunable(?) */
     for (i = 0; i < NPARAMS; i++)
-        ssSetSFcnParamTunable(S, i, 0);
+        ssSetSFcnParamTunable(S, i, 1);  
     
     ssSetNumContStates(S, 0);
     ssSetNumDiscStates(S, 0);
@@ -50,6 +67,14 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
     
+    ssSetOptions(S, SS_OPTION_WORKS_WITH_CODE_REUSE |
+                    SS_OPTION_USE_TLC_WITH_ACCELERATOR);
+    
+    /* Register reserved identifiers to avoid name conflict */
+    if (ssRTWGenIsCodeGen(S) || ssGetSimMode(S)==SS_SIMMODE_EXTERNAL) {
+        /* Register reserved identifier for OutputFcnSpec */
+        ssRegMdlInfo(S, "Burner_TMATS_body", MDL_INFO_ID_RESERVED, 0, 0, ssGetPath(S));
+    }
 }
 
 static void mdlInitializeSampleTimes(SimStruct *S)
@@ -69,65 +94,21 @@ static void mdlStart(SimStruct *S)
 
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
-    /*--------Define Parameters-------*/
-    const real_T LHV			= *mxGetPr(LHV_p(S));
-    const real_T dPnormBurner   = *mxGetPr(dPnormBurner_p(S));
-    const real_T Eff            = *mxGetPr(Efficiency_p(S));
-    const real_T LHVEn          = *mxGetPr(LHVEn_p(S));
-    const real_T hFuel          = *mxGetPr(hFuel_p(S));
-    
-    /*---------Define Inputs--------*/
+    /* Input and output vectors */
     const real_T *u  = (const real_T*) ssGetInputPortSignal(S,0);
-    
-    double WfIn	= u[0];     /* Input Fuel Flow[pps] 	*/
-    double WIn = u[1];     /* Input Flow [pps]  */
-    double htIn = u[2];    /* Input enthalpy [BTU/lbm] */
-    double TtIn	= u[3];     /* Temperature Input [degR] 	*/
-    double PtIn	= u[4];     /* Pressure Input [psia] 	*/
-    double FARcIn = u[5];   /* Combusted Fuel to Air Ratio [frac] 	*/
 
-    real_T *y  = (real_T *)ssGetOutputPortRealSignal(S,0);  /* Output Array */
+    real_T *y  = (real_T *) ssGetOutputPortRealSignal(S,0);
     
-    /*--------Define Constants-------*/
-    double htin;
-    double htOut, TtOut, PtOut, FARcOut, WOut;
-    double Test;
+	/* Block mask parameter struct */
+    BurnStruct burnPrms;
+    burnPrms.LHV			= *mxGetPr(LHV_p(S));
+    burnPrms.dPnormBurner   = *mxGetPr(dPnormBurner_p(S));
+    burnPrms.Eff            = *mxGetPr(Efficiency_p(S));
+    burnPrms.LHVEn          = *mxGetPr(LHVEn_p(S));
+    burnPrms.hFuel          = *mxGetPr(hFuel_p(S));
     
-    /*-- Compute Input enthalpy (empirical) --------*/
-    
-    htin = t2hc(TtIn,FARcIn);
-    
-    /*-- Compute Flow output  --------*/
-    
-    WOut = WIn + WfIn;     /*Perfect combustion*/
-    
-    /*-- Compute Input fuel to air ratio --*/
-    
-    FARcOut = (WIn* FARcIn + WfIn)*divby(WIn*(1-FARcIn));
-    
-    /*------ Compute enthalpy output ---------*/
-    if (LHVEn < 0.5)
-        htOut = (WIn*htin + WfIn*hFuel)*divby(WOut);
-    else
-        htOut = (WIn*htin + WfIn*LHV*Eff)*divby(WOut);
-    
-    /*------ Compute Temperature output ---------*/
-    
-    TtOut = h2tc(htOut,FARcOut);
-    
-    /*------ Compute pressure output ---------*/
-    PtOut = (1- dPnormBurner) * PtIn;
-    
-    Test = htin;
-    
-    /*------Assign output values------------*/
-    y[0] = WOut;     /* Output Air Flow [pps]	*/
-    y[1] = htOut; 	  /* Output Enthalpy [BTU/lbm] */
-    y[2] = TtOut;     /* Output Temperature  [degR]*/
-    y[3] = PtOut;     /* Output Pressure [psia]	*/
-    y[4] = FARcOut;   /* Output Combusted Fuel to Air Ratio [frac] */
-    y[5] = Test;      /* Output Test Point */
-    
+    /* Perform core block calculations */
+    Burner_TMATS_body(y, u, &burnPrms);
 }
 
 static void mdlTerminate(SimStruct *S)

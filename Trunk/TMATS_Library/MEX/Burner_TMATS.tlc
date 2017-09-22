@@ -1,9 +1,9 @@
-%% File : Burner_TMATS_new.tlc
+%% File : Burner_TMATS.tlc
 %%
 %% Description: 
 %%   Simulink Coder TLC Code Generation file for Burner_TMATS
 %%
-%implements Burner_TMATS_new "C"
+%implements Burner_TMATS "C"
 
 %% Function: BlockTypeSetup ===============================================
 %%
