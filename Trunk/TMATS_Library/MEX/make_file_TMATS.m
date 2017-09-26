@@ -17,11 +17,15 @@ mex Burner_TMATS.c Burner_TMATS_body.c t2hc_TMATS.c h2tc_TMATS.c functions_TMATS
 mex Compressor_TMATS.c Compressor_TMATS_body.c h2tc_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp1Ac_TMATS.c interp2Ac_TMATS.c interp3Ac_TMATS.c functions_TMATS.c
 mex DO_TMATS.c
 mex Enth2Temp_TMATS.c h2tc_TMATS.c
+mex H2TM_TMATS.c h2tc_TMATS.c
 mex Mixer_TMATS.c Mixer_TMATS_body.c h2tc_TMATS.c PcalcStat_TMATS.c t2hc_TMATS.c interp1Ac_TMATS.c interp2Ac_TMATS.c sp2tc_TMATS.c pt2sc_TMATS.c functions_TMATS.c
 mex Nozzle_TMATS.c Nozzle_TMATS_body.c PcalcStat_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp1Ac_TMATS.c interp2Ac_TMATS.c functions_TMATS.c
 mex PT2S_TMATS.c pt2sc_TMATS.c
+mex PT2SM_TMATS.c pt2sc_TMATS.c
 mex SP2T_TMATS.c sp2tc_TMATS.c
+mex SP2TM_TMATS.c sp2tc_TMATS.c
 mex StaticCalc_TMATS.c StaticCalc_TMATS_body.c PcalcStat_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp1Ac_TMATS.c interp2Ac_TMATS.c functions_TMATS.c
+mex T2HM_TMATS.c t2hc_TMATS.c
 mex Temp2Enth_TMATS.c t2hc_TMATS.c
 mex Turbine_TMATS.c Turbine_TMATS_body.c h2tc_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp2Ac_TMATS.c functions_TMATS.c
 mex Turbine_PSI_TMATS.c Turbine_PSI_TMATS_body.c h2tc_TMATS.c pt2sc_TMATS.c sp2tc_TMATS.c t2hc_TMATS.c interp2Ac_TMATS.c functions_TMATS.c
