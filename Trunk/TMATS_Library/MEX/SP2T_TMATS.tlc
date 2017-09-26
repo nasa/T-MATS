@@ -17,7 +17,7 @@
     %<SLibAddToStaticSources("sp2tc_TMATS.c")>
 
     %openfile forwardDecls
-		extern double sp2tc(double, double);
+		extern double sp2tc(double, double, double);
 	%closefile forwardDecls
 
 	%assign srcFile = LibGetModelDotCFile()
@@ -40,8 +40,9 @@
 
     %assign in1 = LibBlockInputSignal(0, "", "", 0)
     %assign in2 = LibBlockInputSignal(0, "", "", 1)
+    %assign in3 = LibBlockInputSignal(0, "", "", 2)
 
-    %<out> = sp2tc(%<in1>, %<in2>);
+    %<out> = sp2tc(%<in1>, %<in2>, %<in3>);
     %%
 %endfunction
 

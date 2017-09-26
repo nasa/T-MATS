@@ -7,7 +7,7 @@
 #include "simstruc.h"
 #endif
 
-void ValvePHY_TMATS_body(real_T *y, const real_T *u, const ValvePHYStruct* prm)
+void ValvePHY_TMATS_body(double *y, const double *u, const ValvePHYStruct* prm)
 {
     double WbyIn	= u[0];     /* Bypass flow path flow rate [pps] 	*/
     double TtbyIn   = u[1];     /* Bypass Temperature [degR] 	*/

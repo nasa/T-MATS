@@ -199,11 +199,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
-    compressorStruct.BlkNm = mxMalloc(buflen);
+    compressorStruct.BlkNm = malloc(buflen);
     status = mxGetString(BN_p(S), compressorStruct.BlkNm, buflen);
 
     /* Perform core block calculations */
     Compressor_TMATS_body(y, y1, y2, u, Wcust, FracWbld, &compressorStruct);
+    free(compressorStruct.BlkNm);
 }
 
 static void mdlTerminate(SimStruct *S)

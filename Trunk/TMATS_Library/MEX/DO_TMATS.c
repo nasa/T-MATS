@@ -77,7 +77,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     
     /* Get File Name from dialog parameter (string) */
     buflen = mxGetN(FN_p(S))*sizeof(mxChar)+1;
-    FileNm = mxMalloc(buflen);
+    FileNm = malloc(buflen);
     status = mxGetString(FN_p(S), FileNm, buflen);
     
     
@@ -95,6 +95,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     }
     
     fclose(fp);
+    free(FileNm);
 }
 
 static void mdlTerminate(SimStruct *S)
@@ -118,7 +119,7 @@ static void mdlRTW(SimStruct *S)
     
     /* Get File Name from dialog parameter (string) */
     buflen = mxGetN(ssGetSFcnParam(S,0))*sizeof(mxChar)+1;
-    FileNm = mxMalloc(buflen);
+    FileNm = malloc(buflen);
     if (!FileNm) {
         ssSetErrorStatus(S,"Memory allocation error in mdlRTW");
         return;
@@ -126,6 +127,7 @@ static void mdlRTW(SimStruct *S)
     
     status = mxGetString(FN_p(S), FileNm, buflen);
     ssWriteRTWParamSettings(S, 1, SSWRITE_VALUE_STR, "FileNm", FileNm, buflen);
+    free(FileNm);
 }
 #endif /* MDL_RTW */
 

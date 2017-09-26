@@ -168,11 +168,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
-    turbine_PSIStruct.BlkNm = mxMalloc(buflen);
+    turbine_PSIStruct.BlkNm = malloc(buflen);
     status = mxGetString(BN_p(S), turbine_PSIStruct.BlkNm, buflen);
 
     /* Perform core block calculations */
     Turbine_PSI_TMATS_body(y, u, CoolFlow, &turbine_PSIStruct);
+    free(turbine_PSIStruct.BlkNm);
 }
 
 static void mdlTerminate(SimStruct *S)

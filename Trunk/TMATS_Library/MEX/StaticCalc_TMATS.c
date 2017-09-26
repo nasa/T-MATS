@@ -122,11 +122,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
-    staticCalcStruct.BlkNm = mxMalloc(buflen);
+    staticCalcStruct.BlkNm = malloc(buflen);
     status = mxGetString(BN_p(S), staticCalcStruct.BlkNm, buflen);
 
     /* Perform core block calculations */
     StaticCalc_TMATS_body(y, u, &staticCalcStruct);
+    free(staticCalcStruct.BlkNm);
 }
 
 static void mdlTerminate(SimStruct *S)

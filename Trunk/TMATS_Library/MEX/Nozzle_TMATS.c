@@ -157,11 +157,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 
     /* Get name of block from dialog parameter (string) */
     buflen = mxGetN(BN_p(S))*sizeof(mxChar)+1;
-    nozzleStruct.BlkNm = mxMalloc(buflen);
+    nozzleStruct.BlkNm = malloc(buflen);
     status = mxGetString(BN_p(S), nozzleStruct.BlkNm, buflen);
 
     /* Perform core block calculations */
     Nozzle_TMATS_body(y, u, &nozzleStruct);
+    free(nozzleStruct.BlkNm);
 }
 
 static void mdlTerminate(SimStruct *S)
