@@ -1,0 +1,161 @@
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Volume Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Volume Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block is used to model the thermodynamic properties and mass flow rate of a constant volume block.
+</p>
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the fluid properties within the volume this block utilizes predefined fluid property lookup tables and calculates changes in density and internal energy.
+
+    <br>
+    <br>
+The instantaneous change in density is calculated from the equation below; by calculating the net mass flow rate of the volume.
+$$ \frac{d\rho}{dt} = \frac{W_{in}-W_{out}}{Vol} $$
+
+The instantaneous change in internal energy is calculated from the difference between inlet and outlet enthaply minus the the change in enthlpy due to the net mass flow rate. This is divided by the total mass to provide the change in the internalengergy within the volume.
+$$ \frac{du}{dt} = \frac{H_{in} - H_{out} - u(W_{in} - W_{out})}{ \rho * Vol} $$
+
+
+</p>
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the inputs of; upstream flow properties, downstream flow properties, and integrated density and internal energy (if creating a dynamic model) to the corresponding ports.
+        <li> Connect the outputs of; downstream flow properties and dependent variables density and internal energy or change in those terms to the appropriate solver or terminator.
+        <li> Click on the mask to provide inputs for volume and fluid properties.
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Volume Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th> Description </th></tr>
+    <tr><td> Inflow </td><td>Properties of inflow vector consisting of sets of the 5x1 vectors:
+    <br> W - mass flow rate \( [\frac{lbm}{sec}]\)
+    <br> ht - enthalp \( [\frac{BTU}{lbm}]\)
+    <br> Tt - temperature [<i>Rankine</i>]
+    <br> Pt - pressure \([\frac{lb}{in^2}]\)
+    <br> FAR - fuel to air ratio [N/A]</td></tr>
+    <tr><td> htVol </td><td>Enthalpy of the volume \([\frac{BTU}{lbm}]\)</td></tr>
+    <tr><td> DownStreamFlows </td><td>Properties of downstream flow vectors consisting of sets of the 5x1 vectors:
+    <br> W - mass flow rate \( [\frac{lbm}{sec}]\)
+    <br> ht - enthalp \( [\frac{BTU}{lbm}]\)
+    <br> Tt - temperature [<i>Rankine</i>]
+    <br> Pt - pressure \([\frac{lb}{in^2}]\)
+    <br> FAR - fuel to air ratio [N/A]</td></tr>
+    <tr><td> rhoTrans </td><td> Integrated density (dynamic simulation only) \([\frac{lbm}{ft^3}]\)</td></tr>
+    <tr><td> uTrans </td><td> Integrated internal energy (dynamic simulation only) \([\frac{BTU}{lbm}]\)</td></tr>
+
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Volume Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>VolChar</td><td>Properties of outflows 4x1 bus consisting of:
+    <br> ht - enthalp [\( \frac{BTU}{lbm}\)]
+    <br> Tt - temperature [<i>Rankine</i>]
+    <br> Pt - pressure \([\frac{lbm}{in^3}]\)
+    <br> FAR - fuel to air ratio [N/A]</td></tr>
+    <tr><td> \(\frac{d\rho}{dt}\) </td><td>Change in density used as dependent with steady-state operaiton and sent to integrator with dynamic operation. \( [\frac{lbm}{s*in^3}]\)</td></tr>
+    <tr><td> \(\frac{du}{dt}\) </td><td>Change in internal energy used as dependent with steady-state operaiton and sent to integrator with dynamic operation.\( [\frac{BTU}{s*lbm}]\)</td></tr>
+    <tr><td> \(error_{\rho}\) </td><td> Error between calculated density and table lookup density (used as dependent for dynamic operation) </td></tr>
+    <tr><td> \(error_{u}\) </td><td> Error between calculated internal energy and table lookup internal energy (used as dependent for dynamic operation)</td></tr>
+    <tr><td> Vol_Data </td><td> Properties of volume 2x1 bus consisting of of:
+    <br> rho - density of volume [\( \frac{lbm}{ft^3}\)]
+    <br> u - internal energy of volume [\( \frac{BTU}{lbm}\)]</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Volume Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td> volume_M </td><td> Volume \( [in^3]\) </td></tr>
+    <tr><td> htVec_M </td><td> Enthalpy vector for table lookup \( [\frac{BTU}{lbm}]\)</td></tr>
+    <tr><td> PtVec_M </td><td>Pressure vector for table lookup \([\frac{lb}{in^2}]\)</td></tr>
+    <tr><td> TtArray_M </td><td>Total temperature array a function of enthalpy and pressure f(ht,Pt) \( [Rankine]\)</td></tr>
+    <tr><td> uArray_M </td><td>Internal energy array a function of enthalpy and pressure f(ht,Pt) \( [\frac{BTU}{lbm}]\)</td></tr>
+    <tr><td> rhoArray_M </td><td>Density array a function of enthalpy and pressure f(ht,Pt) \( [\frac{lbm}{in^3}]\)</td></tr>
+</table>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>...</td><td>...</td></tr>
+    <tr><td>...</td><td>...</td></tr>
+</table>
+
+
+
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

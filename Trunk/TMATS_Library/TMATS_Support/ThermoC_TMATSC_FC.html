@@ -1,0 +1,172 @@
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Flow Convert Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Flow Convert, Cantera Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block converts a Gas Path Characterization Bus to a Cantera flow bus using <a href="FunM_TMATSC.html">T-MATS Cantera functions</a>
+    , thermodynamic equations and properties.
+</p>
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+    <p>
+        This block creates a cantera flow bus with the information provided by a gas
+        path characterization bus as well as component a and b definitions.Output flow components
+        are dictated by the fuel to air ratio (FAR) of the incoming bus.  This ratio is
+        directly matched to a Flow a and b (Wa and Wb respectively) defined within the mask to define
+        the components within the output Cantera flow bus.
+        $$ FAR = \frac{Wb}{Wa}$$
+    </p>
+    <p>
+    To utilize
+    this block a Cantera object must exist in the workspace as a global variable named fs,
+    which may be created with the Cantera importPhase command. The fs variable must include
+    all Species defined in the file canteraload.m.
+</p>
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Ensure that a Cantera object exists in the workspace as a global
+        variable named 'fs' and contains all of the species defined in the
+        file 'canteraload.m'.
+        <br>
+        &nbsp;&nbsp;<em>Note:</em>This can be created with the Cantera 'importPhase'
+        command.
+        <li> Connect the inputs of; Gas path char. bus.
+        <li> Connect the outputs of downstream flow properties.
+        <li> Click on the mask to provide details of the two flow components.
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Flow Convert Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th> Description </th></tr>
+    <tr><td> GasPathCar </td><td> Gas Path Characteristics, 5x1 bus/vector consisting of:
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Flow Convert Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>C_Flow</td><td>Flow Data Output, 25x1 vector consisting of:
+            <br>-1-&nbsp;&nbsp; W &nbsp;&nbsp;     - Gas path flow [pps]
+            <br>-2-&nbsp;&nbsp; s &nbsp;&nbsp;    - Entropy [BTU/(lbm*degR)]
+            <br>-3-&nbsp;&nbsp; Tt &nbsp;&nbsp;    - Total temperature [degR]
+            <br>-4-&nbsp;&nbsp; Pt &nbsp;&nbsp;    - Total pressure [psia]
+            <br>-5-&nbsp;&nbsp; ht &nbsp;&nbsp;    - Total enthlapy [BTU/lbm]
+            <br>-6-&nbsp;&nbsp; rhot &nbsp;&nbsp; - Total density [lbm/ft3]
+            <br>-7-&nbsp;&nbsp; gamt &nbsp;&nbsp; - Total specific heat ratio
+            <br>-8-&nbsp;&nbsp; Ts &nbsp;&nbsp;   - Static temperature [degR]
+            <br>-9-&nbsp;&nbsp; Ps &nbsp;&nbsp;   - Static pressure [psia]
+            <br>-10-&nbsp;&nbsp; hs &nbsp;&nbsp;   - Static enthalpy [BTU/lbm]
+            <br>-11-&nbsp;&nbsp; rhos &nbsp;&nbsp; - Static density [lbm/ft3]
+            <br>-12-&nbsp;&nbsp; gams &nbsp;&nbsp; - Static specific heat ratio
+            <br>-13-&nbsp;&nbsp; Vflow &nbsp;&nbsp; - Flow velocity [ft/sec]
+            <br>-14-&nbsp;&nbsp; MN &nbsp;&nbsp; - Mach number
+            <br>-15-&nbsp;&nbsp; A   &nbsp;&nbsp;  - Flow area [in2]
+            <br>-16to21-&nbsp;&nbsp; Species array values, defined in canteraload.m
+            <br>-22to25-&nbsp;&nbsp; Future use
+        </td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Flow Convert Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td> comp1a_M </td><td> Fraction of component 1 in flow a </td></tr>
+    <tr><td> comp2a_M </td><td> Fraction of component 2 in flow a </td></tr>
+    <tr><td> comp3a_M </td><td> Fraction of component 3 in flow a </td></tr>
+    <tr><td> comp4a_M </td><td> Fraction of component 4 in flow a </td></tr>
+    <tr><td> comp5a_M </td><td> Fraction of component 5 in flow a </td></tr>
+    <tr><td> comp6a_M </td><td> Fraction of component 6 in flow a </td></tr>
+    <tr><td> comp1b_M </td><td> Fraction of component 1 in flow b </td></tr>
+    <tr><td> comp2b_M </td><td> Fraction of component 2 in flow b </td></tr>
+    <tr><td> comp3b_M </td><td> Fraction of component 3 in flow b </td></tr>
+    <tr><td> comp4b_M </td><td> Fraction of component 4 in flow b </td></tr>
+    <tr><td> comp5b_M </td><td> Fraction of component 5 in flow b </td></tr>
+    <tr><td> comp6b_M </td><td> Fraction of component 6 in flow b </td></tr>
+</table>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>...</td><td>...</td></tr>
+    <tr><td>...</td><td>...</td></tr>
+</table>
+
+
+
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

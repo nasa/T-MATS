@@ -1,0 +1,154 @@
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Flow Start Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Flow Start Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block simulates the initialization of fluid properties through a lookup table based on total pressure and temperature.
+</p>
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+    <p>
+        This block simulates the initialization of fluid properties through a lookup table based on total pressure and temperature.
+    </p>
+
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the inputs of; Gas path char. bus.
+        <li> Connect the outputs of downstream flow properties.
+        <li> Click on the mask to provide details of the two flow components.
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Flow Start Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th> Description </th></tr>
+    <tr><td> W </td><td> Mass flow [pps]</td></tr>
+    <tr><td> Tt </td><td> Total temperature \( [R^\circ]\)</td></tr>
+    <tr><td> Pt </td><td> Mass flow [psi]</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Flow Start Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>FlowOut</td><td>Properties of inflow 5x1 bus consisting of:
+    <br> W - mass flow rate \( [\frac{lbm}{sec}]\)
+    <br> ht - enthalp [\( \frac{BTU}{lbm}\)]
+    <br> Tt - temperature [<i>Rankine</i>]
+    <br> Pt - pressure \([\frac{lb}{in^3}]\)
+    <br> FAR - fuel to air ratio [N/A]</td></tr>
+    <tr><td>GasProps</td><td>Properties 14x1 bus of:
+    <br> rho - Density
+    <br> u - Internal energy
+    <br> s - Entropy
+    <br> mu - Dynamic viscosity
+    <br> Tt - Total temperature
+    <br> Cv - Specific heat with constant volume
+    <br> k - Specific heat ratio
+    <br> Ts - Static temperature
+    <br> hs - Static enthalpy
+    <br> ht - Total enthlapy
+    <br> Cp - Specific heat with constant pressure
+    <br> R - Gas constant
+    <br> gamma - Specific heat ratio</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Flow Start Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td> TtVec_M </td><td>Total temperature vector</td></tr>
+    <tr><td> PtVec_M </td><td>Total pressure vector</td></tr>
+    <tr><td> htVec_M </td><td>Enthalpy vector</td></tr>
+    <tr><td> sVec_M </td><td>Entropy vector</td></tr>
+    <tr><td> htArray_M </td><td>Enthlapy table as function of temperature and pressure</td></tr>
+    <tr><td> TtArray_M </td><td>Total temperature table as function of enthalpy and pressure</td></tr>
+    <tr><td> sArray_M </td><td>Entropy table as function of enthalpy and pressure</td></tr>
+    <tr><td> rhoArray_M </td><td>Density table as function of enthalpy and pressure</td></tr>
+    <tr><td> muArray_M </td><td>Dynamic viscosity table as function of enthalpy and pressure</td></tr>
+    <tr><td> CpArray_M </td><td>Specific heat with constant pressure table as function of enthalpy and pressure</td></tr>
+    <tr><td> CvArray_M </td><td>Specific heat with constant volume table as function of enthalpy and pressure</td></tr>
+    <tr><td> uArray_M </td><td>Internal energy table as function of enthalpy and pressure</td></tr>
+    <tr><td> Rval_M </td><td>Gas Constant</td></tr>
+</table>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>...</td><td>...</td></tr>
+    <tr><td>...</td><td>...</td></tr>
+</table>
+
+
+
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

@@ -1,0 +1,170 @@
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Variable Volume Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Variable Volume Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block is used to model the thermodynamic properties of the working fluid in a variable volume block.
+</p>
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    To compute the fluid properties within the volume this block utilizes predefined fluid property lookup tables and calculates changes in density and internal energy.
+
+    <br>
+    <br>
+The instantaneous change in density is calculated from the equation below; by calculating the net mass flow rate of the volume.
+$$ \frac{d\rho}{dt} = \frac{W_{in}-W_{out}}{V} $$
+
+The instantaneous change in internal energy is calculated from the difference between inlet and outlet enthaply minus the the change in enthlpy due to the net mass flow rate. This is divided by the total mass to provide the change in the internalengergy within the volume.
+$$ \frac{du}{dt} = \frac{H_{in} - H_{out} - u(W_{in} - W_{out})}{ \rho V} $$
+
+The internal pressure of the volume is calculated using the Redlich-Kwong equation of state. This is an emperical algebraic two parameter cuibic quation of state. Here a and b are constants, the subscript c denotes the critical values of pressure and temperature. Finally \(\bar{R}\) is the universal gas constant.
+$$ a' = 0.42748 $$
+$$ a = \frac{a'\bar{R}^2{T_c}^{5/2}}{P_c} $$
+
+$$ b' = 0.08664 $$
+$$ b = \frac{b'\bar{R}{T_c}}{P_c} $$
+
+The specific volume is calculated from the molar mass of the working fluid (M) and the volume (V) and mass within the volume (m).
+$$ \bar{v} = \frac{M V}{m} $$
+
+Finally the above equations can be combined to calculate a pressure as seen below:
+$$ P = \frac{\bar{R}T}{\bar{v}-b}-\frac{a}{\bar{v}(\bar{v}+b)T^{1/2}} $$
+</p>
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the inputs of; upstream flow properties, independent variables pressure and enthalpy, integrated density and internal energy to the corresponding ports.
+        <li> Connect the outputs of; downstream flow properties and independent variable enthaply to the output ports.
+        <li> Click on the mask to provide inputs for volume.
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Var Vol Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th> Description </th></tr>
+    <tr><td> Inflow </td><td>Properties of inflow 5x1 bus of:
+    <br> W - mass flow rate \( [\frac{lbm}{sec}]\)
+    <br> ht - enthalpy \( [\frac{BTU}{lbm}]\)
+    <br> Tt - temperature [<i>Rankine</i>]
+    <br> Pt - pressure \([\frac{lb}{in^2}]\)
+    <br> FAR - fuel to air ratio [N/A]</td></tr>
+    <tr><td> Enthalpy </td><td>Independent enthalpy \([\frac{BTU}{lbm}]\)</td></tr>
+    <tr><td> Density </td><td>Integrated density value \([\frac{lbm}{ft^3}]\)</td></tr>
+    <tr><td> Internal Energy </td><td>Integrated internal energy \([\frac{BTU}{lbm}]\)</td></tr>
+    <tr><td> Volume </td><td> Current volume \([in^3]\)</td></tr>
+    <tr><td> Mass </td><td> Current mass contained within volume \([lbm]\)</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Var Vol Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>Outflow</td><td>Properties of inflow 4x1 bus of:
+    <br> ht - enthalp [\( \frac{BTU}{lbm}\)]
+    <br> Tt - temperature [<i>Rankine</i>]
+    <br> Pt - pressure \([\frac{lb}{in^2}]\)
+    <br> FAR - fuel to air ratio [N/A]</td></tr>
+    <tr><td> \(\frac{d\rho}{dt}\) </td><td>Change in density \( [\frac{lbm}{s*ft^3}]\)</td></tr>
+    <tr><td> \(\frac{du}{dt}\) </td><td>Change in internal energy \( [\frac{BTU}{s*lbm}]\)</td></tr>
+    <tr><td> \(error_{P}\) </td><td> Error between calculated calculated pressure and independent pressure variable</td></tr>
+    <tr><td> \(error_{u}\) </td><td> Error between calculated internal energy and table lookup internal energy</td></tr>
+    <tr><td>Volume Properties</td><td>Properties of the volume for runtime access:
+    <br> \(\rho\) - Density [\( \frac{lbm}{ft^3}\)]
+    <br> u - Internal energy \([\frac{BTU}{lbm}]\)
+    <br> V - Volume \([in^3]\)</td></tr>
+    <tr><td> W </td><td>  mass flow rate \( [\frac{lbm}{sec}]\)</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Var Vol Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td> volume_M </td><td> Inital volume \( [in^3]\) </td></tr>
+    <tr><td> MolarMass_M </td><td> Molar mass \( [\frac{lbm}{mol}]\) </td></tr>
+    <tr><td> htVec_M </td><td> Enthalpy vector for table lookup \( [\frac{BTU}{lbm}]\)</td></tr>
+    <tr><td> PtVec_M </td><td>Pressure vector for table lookup \([\frac{lb}{in^2}]\)</td></tr>
+    <tr><td> TtArray_M </td><td>Total temperature array a function of enthalpy and pressure f(ht,Pt) \( [Rankine]\)</td></tr>
+    <tr><td> uArray_M </td><td>Internal energy array a function of enthalpy and pressure f(ht,Pt) \( [\frac{BTU}{lbm}]\)</td></tr>
+    <tr><td> rhoArray_M </td><td>Density array a function of enthalpy and pressure f(ht,Pt) \( [\frac{lbm}{ft^3}]\)</td></tr>
+</table>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>...</td><td>...</td></tr>
+    <tr><td>...</td><td>...</td></tr>
+</table>
+
+
+
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>

@@ -21,7 +21,8 @@ InpMsg{6} = '5) Dynamic Dual Spool High Bypass Engine JT9D';
 InpMsg{7} = '6) Steady State JT9D, Cantera';
 InpMsg{8} = '7) Cycle Model';
 InpMsg{9} = '8) Linearization Examples';
-InpMsg{10} = '9) Cancel Setup';
+InpMsg{10} = '9) Volume Example';
+InpMsg{11} = '10) Cancel Setup';
 InpMsgFinal = '';
 
 for i = 1: length(InpMsg)
@@ -144,6 +145,13 @@ switch TMATS.S
         end
         
     case '9'
+        disp(strcat('Loading Simulation from: ', TMATS.P ,TMATS.POp,'Example_Volumes'))
+        cd Example_Volumes
+        load('Properties.mat')
+        open_system('Dyn_Vol_Line.slx');
+        cd ..
+        
+    case '10'
         disp('Example Setup Canceled');
     otherwise,
         disp('Selection Invalid')
