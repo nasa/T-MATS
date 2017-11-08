@@ -21,10 +21,10 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
     double s_C_Wc   = u[9];     /* Wc map scalar [NA] */
     double s_C_PR   = u[10];     /* PR map scalar [NA]  */
     double s_C_Eff  = u[11];    /* Eff map scalar [NA]  */
-    
+
     int uWidth1 = prm->CustBldNm;
     int uWidth2 = prm->FracBldNm;
-    
+
     /*--------Define Constants-------*/
     double WOut, htOut, TtOut, PtOut, FARcOut, TorqueOut, NErrorOut;
     double C_Nc, C_Wc, C_PR, C_Eff;
@@ -32,7 +32,7 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
     double TtIdealout, htIdealout, Test, Sout, NcMap, Nc, PRMap, PR, EffMap, Eff;
     double Wb4bleed, Pwrb4bleed, PwrBld;
     double SPR, SPRMap, SMavail, SMMap;
-    
+
     /* Define Arrays for bleed calcs */
     int MaxNumberBleeds = 100;
     double WcustOut[500];
@@ -45,44 +45,44 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
     double TtbldOut[500];
     double htbldOut[500];
     double htcustOut[500];
-    
+
     double SMWcVec[500];
     double SMPRVec[500];
-    
+
     int interpErr = 0;
     int i;
-    
+
     /*-- Compute output Fuel to Air Ratio ---*/
     FARcOut = FARcIn;
-    
+
     /*-- Compute Input enthalpy --------*/
-    
+
     htin = t2hc(TtIn,FARcIn);
-    
+
     /*-- Compute Input entropy  --------*/
-    
+
     Sin = pt2sc(PtIn,TtIn,FARcIn);
-    
+
     /*---- calculate misc. fluid condition related variables and corrected Flow --*/
     delta = PtIn / C_PSTD;
     theta = TtIn / C_TSTD;
     Wcin = WIn*sqrtT(theta)*divby(delta);
-    
+
     /*------ Calculate corrected speed ---------*/
     Nc = Nmech*divby(sqrtT(theta));
     if (prm->IDes < 0.5)
         C_Nc = Nc *divby(prm->NcDes) ;
     else
         C_Nc = s_C_Nc;
-    
+
     NcMap = Nc *divby(C_Nc);
-    
+
     /*-- Compute Total Flow input (from Compressor map)  --------*/
     if(prm->C > 1)
         WcMap = interp3Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->Z_C_AlphaVec,prm->T_C_Map_WcArray,Rline,NcMap,Alpha,prm->B,prm->A,prm->C,&interpErr);
     else
         WcMap = interp2Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->T_C_Map_WcArray,Rline,NcMap,prm->B,prm->A,&interpErr);
-        
+
     if ((prm->WcMapCol != prm->B || prm->WcMapRw != prm->A || prm->WcMapLay !=prm->C) && *(prm->IWork+Er1)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating WcMap. Table size does not match axis vector lengths.\n", prm->BlkNm);
@@ -95,20 +95,20 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
         #endif
         *(prm->IWork+Er1) = 1;
     }
-    
+
     if (prm->IDes < 0.5)
         C_Wc = Wcin*divby(WcMap);
     else
         C_Wc = s_C_Wc;
-    
+
     WcCalcin = WcMap * C_Wc;
-    
+
     /*-- Compute Pressure Ratio (from Compressor map)  --------*/
     if(prm->C > 1)
         PRMap = interp3Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->Z_C_AlphaVec,prm->T_C_Map_PRArray,Rline,NcMap,Alpha,prm->B,prm->A,prm->C,&interpErr);
     else
         PRMap = interp2Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->T_C_Map_PRArray,Rline,NcMap,prm->B,prm->A,&interpErr);
-    
+
     if ((prm->PRMapCol != prm->B || prm->PRMapRw != prm->A || prm->PRMapLay !=prm->C) && *(prm->IWork+Er2)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating PRMap. Table size does not match axis vector lengths.\n", prm->BlkNm);
@@ -121,20 +121,20 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
         #endif
         *(prm->IWork+Er2) = 1;
     }
-    
+
     if (prm->IDes < 0.5)
         C_PR = (prm->PRDes -1)*divby(PRMap-1);
     else
         C_PR = s_C_PR;
-    
+
     PR = C_PR*(PRMap - 1) + 1 ;
-    
+
     /*-- Compute Efficiency (from Compressor map) ---*/
     if(prm->C > 1)
         EffMap = interp3Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->Z_C_AlphaVec,prm->T_C_Map_EffArray,Rline,NcMap,Alpha,prm->B,prm->A,prm->C,&interpErr);
     else
         EffMap = interp2Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->T_C_Map_EffArray,Rline,NcMap,prm->B,prm->A,&interpErr);
-    
+
     if ((prm->EffMapCol != prm->B || prm->EffMapRw != prm->A || prm->EffMapLay !=prm->C) && *(prm->IWork+Er3)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating EffMap. Table size does not match axis vector lengths.\n", prm->BlkNm);
@@ -147,40 +147,40 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
         #endif
         *(prm->IWork+Er3) = 1;
     }
-    
+
     if (prm->IDes < 0.5)
         C_Eff = prm->EffDes*divby(EffMap);
     else
         C_Eff = s_C_Eff;
-    
+
     Eff = EffMap * C_Eff;
-    
+
     /*------ Compute pressure output --------*/
-    
+
     PtOut = PtIn*PR;
-    
-    
+
+
     /*------ enthalpy calculations ---------*/
-    
+
     /* ---- Ideal enthalpy ----*/
     Sout = Sin;
     TtIdealout = sp2tc(Sout,PtOut,FARcIn);
     htIdealout = t2hc(TtIdealout,FARcIn);
-    
-    
+
+
     /* ---- Final enthalpy output ----*/
-    
+
     htOut = ((htIdealout - htin)*divby(Eff)) + htin;
-    
+
     /*------ Compute Temperature output ---------*/
-    
+
     TtOut = h2tc(htOut,FARcIn);
-    
-    
+
+
     /* initalize Bleed sums components */
     Wbleeds = 0;
     PwrBld = 0;
-    
+
     /* compute customer Bleed components */
     for (i = 0; i < uWidth1; i++)
     {
@@ -209,9 +209,9 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
             *(prm->IWork+Er4) = 1;
         }
     }
-    
+
     /*----Disable Fractional bleed when requested----*/
-    
+
     for (i = 0; i < uWidth2; i++)
     {
         if (FracWbld[i] <= 0 || prm->FBldEn < 0.5 ){
@@ -221,7 +221,7 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
             TtbldOut[i] = 0;
             PtbldOut[i] = 0;
         }
-        
+
         else {
             /*-- Compute sum of Fractional Bleed Flow output  --------*/
             Wbleeds = Wbleeds + FracWbld[i]*WIn; /* add to total bleed value */
@@ -239,19 +239,19 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
             *(prm->IWork+Er4) = 1;
         }
     }
-    
+
     /*-- Compute Flows  --------*/
     Wb4bleed = WIn;
     WOut = WIn - Wbleeds;
-    
+
     /*------ Compute Powers ---------*/
-    
+
     Pwrb4bleed = Wb4bleed * (htin - htOut) * C_BTU_PER_SECtoHP;
     Pwrout = Pwrb4bleed - PwrBld;
-    
+
     /*----- Compute output Torque to shaft ----*/
     TorqueOut = C_HP_PER_RPMtoFT_LBF * Pwrout*divby(Nmech);
-    
+
     /* ----- Compute Normalized Flow Error ----- */
     if (prm->IDes < 0.5 && Rline == 0)
         NErrorOut = 100;
@@ -261,7 +261,7 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
         NErrorOut = 100;
     else
         NErrorOut = (Wcin - WcCalcin)*divby(Wcin);
-    
+
     /* Compute Stall Margin */
     if (prm->C > 1){
         /* Define 1-prm->D surge margin vectors based on alpha */
@@ -281,7 +281,7 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
                 *(prm->IWork+Er5) = 1;
             }
         }
-        SPRMap = interp1Ac(SMWcVec, SMPRVec,WcMap,prm->A,&interpErr);
+        SPRMap = interp1Ac(SMWcVec, SMPRVec,WcMap,prm->D/prm->C,&interpErr);
         if (interpErr == 1 && *(prm->IWork+Er5)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating 2D SPR. Vector definitions may need to be adjusted.\n", prm->BlkNm);
@@ -291,7 +291,7 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
     }
     else
         SPRMap = interp1Ac(prm->X_C_Map_WcSurgeVec,prm->T_C_Map_PRSurgeVec,WcMap,prm->D,&interpErr);
-    
+
     if (interpErr == 1 && *(prm->IWork+Er5)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating SPR. Vector definitions may need to be expanded.\n", prm->BlkNm);
@@ -301,10 +301,10 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
     SPR = C_PR*(SPRMap - 1) + 1;
     SMavail = (SPR - PR)*divby(PR) * 100;
     SMMap = (SPRMap - PRMap)*divby(PRMap) * 100;
-    
+
     /* Test variable */
     Test = SPRMap;
-    
+
     /*------Assign output values port1------------*/
     y[0] = WOut;            /* Outlet Total Flow [pps]	*/
     y[1] = htOut;           /* Output Enthalpy [BTU/lbm]	*/
@@ -333,7 +333,7 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
     y[24] = SMMap;          /* Stall margin calculated from map values [%]*/
     y[25] = SPRMap;         /* Map stall pressure ratio*/
     y[26] = Test;           /* test signal */
-    
+
     /*------Assign output values port2------------*/
     /* Customer or flow based bleed*/
     for (i = 0; i < uWidth1; i++)
@@ -344,7 +344,7 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
         *y1++ = PtcustOut[i];
         *y1++ = FARcustOut[i];
     }
-    
+
     /*------Assign output values port3------------*/
     /* fractional bleed, typically used for turbine cooling flow */
     for (i = 0; i < uWidth2; i++)
@@ -355,5 +355,5 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
         *y2++ = PtbldOut[i];
         *y2++ = FARbldOut[i];
     }
-    
+
 }
