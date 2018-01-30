@@ -24,25 +24,26 @@
 #define X_C_Map_WcSurgeVec_p(S) ssGetSFcnParam(S,10)
 #define T_C_Map_PRSurgeVec_p(S) ssGetSFcnParam(S,11)
 #define IDesign_p(S)            ssGetSFcnParam(S,12)
-#define NcDes_p(S)              ssGetSFcnParam(S,13)
-#define EffDes_p(S)             ssGetSFcnParam(S,14)
-#define PRDes_p(S)              ssGetSFcnParam(S,15)
-#define RlineDes_p(S)           ssGetSFcnParam(S,16)
-#define CustBldEn_p(S)          ssGetSFcnParam(S,17)
-#define FBldEn_p(S)             ssGetSFcnParam(S,18)
-#define BN_p(S)                 ssGetSFcnParam(S,19)
-#define CustBldNm_p(S)          ssGetSFcnParam(S,20)
-#define FracBldNm_p(S)          ssGetSFcnParam(S,21)
-#define WcMapCol_p(S)           ssGetSFcnParam(S,22)
-#define PRMapCol_p(S)           ssGetSFcnParam(S,23)
-#define EffMapCol_p(S)          ssGetSFcnParam(S,24)
-#define WcMapRw_p(S)            ssGetSFcnParam(S,25)
-#define PRMapRw_p(S)            ssGetSFcnParam(S,26)
-#define EffMapRw_p(S)           ssGetSFcnParam(S,27)
-#define WcMapLay_p(S)           ssGetSFcnParam(S,28)
-#define PRMapLay_p(S)           ssGetSFcnParam(S,29)
-#define EffMapLay_p(S)          ssGetSFcnParam(S,30)
-#define NPARAMS 31
+#define SMNEn_p(S)              ssGetSFcnParam(S,13)
+#define NcDes_p(S)              ssGetSFcnParam(S,14)
+#define EffDes_p(S)             ssGetSFcnParam(S,15)
+#define PRDes_p(S)              ssGetSFcnParam(S,16)
+#define RlineDes_p(S)           ssGetSFcnParam(S,17)
+#define CustBldEn_p(S)          ssGetSFcnParam(S,18)
+#define FBldEn_p(S)             ssGetSFcnParam(S,19)
+#define BN_p(S)                 ssGetSFcnParam(S,20)
+#define CustBldNm_p(S)          ssGetSFcnParam(S,21)
+#define FracBldNm_p(S)          ssGetSFcnParam(S,22)
+#define WcMapCol_p(S)           ssGetSFcnParam(S,23)
+#define PRMapCol_p(S)           ssGetSFcnParam(S,24)
+#define EffMapCol_p(S)          ssGetSFcnParam(S,25)
+#define WcMapRw_p(S)            ssGetSFcnParam(S,26)
+#define PRMapRw_p(S)            ssGetSFcnParam(S,27)
+#define EffMapRw_p(S)           ssGetSFcnParam(S,28)
+#define WcMapLay_p(S)           ssGetSFcnParam(S,29)
+#define PRMapLay_p(S)           ssGetSFcnParam(S,30)
+#define EffMapLay_p(S)          ssGetSFcnParam(S,31)
+#define NPARAMS 32
 #define NERRORS 5
 
 extern void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, const double* Wcust, const double* FracWbld, const CompressorStruct* prm);
@@ -51,7 +52,7 @@ extern void Compressor_TMATS_body(double* y, double* y1, double* y2, const doubl
 #if defined(MDL_SET_WORK_WIDTHS) && defined(MATLAB_MEX_FILE)
 static void mdlSetWorkWidths(SimStruct *S)
 {
-    const char_T *rtParamNames[] = {"Y_C_Map_NcVec", "X_C_RlineVec", "Z_C_AlphaVec", "T_C_Map_WcArray", "T_C_Map_PRArray", "T_C_Map_EffArray", "FracCusBldht", "FracCusBldPt", "FracBldht", "FracBldPt", "X_C_Map_WcSurgeVec", "T_C_Map_PRSurgeVec", "IDesign", "NcDes", "EffDes", "PRDes", "RlineDes", "CustBldEn", "FBldEn", "CustBldNm", "FracBldNm", "WcMapCol", "PRMapCol", "EffMapCol", "WcMapRw", "PRMapRw", "EffMapRw", "WcMapLay", "PRMapLay", "EffMapLay"};
+    const char_T *rtParamNames[] = {"Y_C_Map_NcVec", "X_C_RlineVec", "Z_C_AlphaVec", "T_C_Map_WcArray", "T_C_Map_PRArray", "T_C_Map_EffArray", "FracCusBldht", "FracCusBldPt", "FracBldht", "FracBldPt", "X_C_Map_WcSurgeVec", "T_C_Map_PRSurgeVec", "IDesign", "SMNEn", "NcDes", "EffDes", "PRDes", "RlineDes", "CustBldEn", "FBldEn", "CustBldNm", "FracBldNm", "WcMapCol", "PRMapCol", "EffMapCol", "WcMapRw", "PRMapRw", "EffMapRw", "WcMapLay", "PRMapLay", "EffMapLay"};
     ssRegAllTunableParamsAsRunTimeParams(S, rtParamNames);
 }
 #endif
@@ -65,8 +66,10 @@ static void mdlInitializeSizes(SimStruct *S)
         return;
     }
     
+    // You don't want param[20] (or param #21, as this is zero based) to be
+    // tunable. This is the block name string that we get via "gcs".
     for (i = 0; i < NPARAMS; i++) {
-        if (i != 19)
+        if (i != 20)
             ssSetSFcnParamTunable(S, i, 1);
         else
             ssSetSFcnParamTunable(S, i, 0);
@@ -163,6 +166,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     compressorStruct.EffDes             = *mxGetPr(EffDes_p(S));
     compressorStruct.RlineDes           = *mxGetPr(RlineDes_p(S));
     compressorStruct.IDes               = *mxGetPr(IDesign_p(S));
+    compressorStruct.SMNEn              = *mxGetPr(SMNEn_p(S));
     compressorStruct.CustBldEn          = *mxGetPr(CustBldEn_p(S));
     compressorStruct.FBldEn             = *mxGetPr(FBldEn_p(S));
     compressorStruct.CustBldNm          = *mxGetPr(CustBldNm_p(S));

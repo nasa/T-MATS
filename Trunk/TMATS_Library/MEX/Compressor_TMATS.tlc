@@ -44,6 +44,7 @@
     compressorStruct.EffDes              = %<LibBlockParameter(EffDes,"","",0)>;
     compressorStruct.RlineDes            = %<LibBlockParameter(RlineDes,"","",0)>;
     compressorStruct.IDes                = %<LibBlockParameter(IDesign,"","",0)>;
+    compressorStruct.SMNEn               = %<LibBlockParameter(SMNEn,"","",0)>;
     compressorStruct.CustBldEn           = %<LibBlockParameter(CustBldEn,"","",0)>;
     compressorStruct.FBldEn              = %<LibBlockParameter(FBldEn,"","",0)>;
     compressorStruct.CustBldNm           = %<LibBlockParameter(CustBldNm,"","",0)>;

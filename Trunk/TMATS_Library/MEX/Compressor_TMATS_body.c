@@ -19,7 +19,7 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
     double Alpha    = u[7];     /* Alpha [NA]  */
     double s_C_Nc   = u[8];     /* Nc map scalar [NA]  */
     double s_C_Wc   = u[9];     /* Wc map scalar [NA] */
-    double s_C_PR   = u[10];     /* PR map scalar [NA]  */
+    double s_C_PR   = u[10];    /* PR map scalar [NA]  */
     double s_C_Eff  = u[11];    /* Eff map scalar [NA]  */
 
     int uWidth1 = prm->CustBldNm;
@@ -48,9 +48,15 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
 
     double SMWcVec[500];
     double SMPRVec[500];
-
-    int interpErr = 0;
+    
     int i;
+    
+    // Variables for iterative search to find Rline stall
+    int interpErr = 0;
+    int iterations;
+    double RlineErr, RlineErrOld, RlineGuess;
+    double RlineGuessBounds[2];
+    double WcMapTemp, PRMapTemp, SPRMapTemp;
 
     /*-- Compute output Fuel to Air Ratio ---*/
     FARcOut = FARcIn;
@@ -291,7 +297,7 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
     }
     else
         SPRMap = interp1Ac(prm->X_C_Map_WcSurgeVec,prm->T_C_Map_PRSurgeVec,WcMap,prm->D,&interpErr);
-
+        
     if (interpErr == 1 && *(prm->IWork+Er5)==0){
         #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating SPR. Vector definitions may need to be expanded.\n", prm->BlkNm);
@@ -299,9 +305,102 @@ void Compressor_TMATS_body(double* y, double* y1, double* y2, const double* u, c
         *(prm->IWork+Er5) = 1;
     }
     SPR = C_PR*(SPRMap - 1) + 1;
-    SMavail = (SPR - PR)*divby(PR) * 100;
-    SMMap = (SPRMap - PRMap)*divby(PRMap) * 100;
-
+    
+    // If SMN calculation desired instead of SMW (via checkbox in mask)...
+    if (prm->SMNEn > 0.5)
+    {
+        // Iterative stall r-line finder, via binary search.
+        // Should not take many iterations since this is an easy search.
+        // Assumes RlineVec is monotonically increasing and that the stall
+        // line is a function with an inverse.
+        iterations = 20;
+        RlineErr = 1000;
+        RlineGuessBounds[0] = prm->X_C_RlineVec[0];
+        RlineGuessBounds[1] = prm->X_C_RlineVec[prm->B - 1];
+        while ( ((iterations--) > 0) && abs(RlineErr) > 0.01)
+        {
+            // Take a guess at the stall R-line for current speed, use the
+            // middle of our current search range (which narrows as we go)
+            RlineGuess = (RlineGuessBounds[0] + RlineGuessBounds[1]) / 2;
+            // Look up the Wc and PR at current Nc, and guessed R-line.
+            if(prm->C > 1)
+                WcMapTemp = interp3Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->Z_C_AlphaVec,prm->T_C_Map_WcArray,RlineGuess,NcMap,Alpha,prm->B,prm->A,prm->C,&interpErr);
+            else
+                WcMapTemp = interp2Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->T_C_Map_WcArray,RlineGuess,NcMap,prm->B,prm->A,&interpErr);
+            if(prm->C > 1)
+                PRMapTemp = interp3Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->Z_C_AlphaVec,prm->T_C_Map_PRArray,RlineGuess,NcMap,Alpha,prm->B,prm->A,prm->C,&interpErr);
+            else
+                PRMapTemp = interp2Ac(prm->X_C_RlineVec,prm->Y_C_Map_NcVec,prm->T_C_Map_PRArray,RlineGuess,NcMap,prm->B,prm->A,&interpErr);
+            
+            // Compute the stall pressure ratio of the guess point.
+            // Take the difference between that stall PR and the PR of the
+            // guess point. As the guess point gets closer to the stall
+            // line, this difference will get closer to zero. Once we're
+            // there, the guess value for Rline will be the stall Rline.
+            if (prm->C > 1)
+            {
+                SPRMapTemp = interp1Ac(SMWcVec, SMPRVec,WcMapTemp,prm->D/prm->C,&interpErr);
+                if (interpErr == 1 && *(prm->IWork+Er5)==0){
+                    #ifdef MATLAB_MEX_FILE
+                    printf("Warning in %s, Error calculating 2D SPR for SMN solver. Vector definitions may need to be expanded.\n", prm->BlkNm);
+                    #endif
+                    *(prm->IWork+Er5) = 1;
+                }
+            }
+            else
+            {
+                SPRMapTemp = interp1Ac(prm->X_C_Map_WcSurgeVec,prm->T_C_Map_PRSurgeVec,WcMapTemp,prm->D,&interpErr);
+                if (interpErr == 1 && *(prm->IWork+Er5)==0){
+                    #ifdef MATLAB_MEX_FILE
+                    printf("Warning in %s, Error calculating SPR for SMN solver. Vector definitions may need to be expanded.\n", prm->BlkNm);
+                    #endif
+                    *(prm->IWork+Er5) = 1;
+                }
+            }
+            RlineErr = (SPRMapTemp-PRMapTemp) / SPRMapTemp;
+            
+            // If this error is greater than zero, we are below stall.
+            // So we'll want to decrease Rline (to get closer to stall)
+            // Therefore, we'll want to shrink upper search bounds.
+            if (RlineErr > 0)
+            {
+                // Search between current guess Rline and lower bound.
+                RlineGuessBounds[1] = RlineGuess;
+            }
+            // Otherwise, error is positive, so we are past stall.
+            // So we'll want to increase Rline (to move away from stall)
+            // Therefore, we'll want to shrink lower search bounds.
+            else
+            {
+                // Search between current guess Rline and upper bound.
+                RlineGuessBounds[0] = RlineGuess;
+            }
+        }
+        if (iterations <= 0)
+        {
+            #ifdef MATLAB_MEX_FILE
+            printf("Warning in %s, SM solver could not converge.\n", prm->BlkNm);
+            #endif
+            *(prm->IWork+Er5) = 2;
+        }
+        // Ok, so our iterative search process should have driven us up
+        // our current speed line, up to the stall line.
+        // If converged, we'll have the stall Wc and Pr in the temp vars.
+        // Stall margin at constant speed
+        SMMap = ((WcMap/WcMapTemp) / (PRMap/PRMapTemp) - 1.0) * 100.;
+        // Ok, to compute the SMavail number, just scale the unscaled map
+        // values for stall PR and Wc and use those.
+        WcMapTemp = C_Wc*WcMapTemp;
+        PRMapTemp = C_PR*(PRMapTemp - 1) + 1;
+        SMavail = ((WcCalcin/WcMapTemp) / (PR/PRMapTemp) - 1.0) * 100.;
+    }
+    // Else, we're calculating normal SMW.
+    else
+    {
+        SMavail = (SPR - PR)*divby(PR) * 100;
+        SMMap = (SPRMap - PRMap)*divby(PRMap) * 100;
+    }
+    
     /* Test variable */
     Test = SPRMap;
 

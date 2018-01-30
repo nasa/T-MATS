@@ -86,6 +86,7 @@ struct CompressorStruct {
     double EffDes;
     double RlineDes;
     double IDes;
+    double SMNEn;
     double CustBldEn;
     double FBldEn;
     double CustBldNm;
