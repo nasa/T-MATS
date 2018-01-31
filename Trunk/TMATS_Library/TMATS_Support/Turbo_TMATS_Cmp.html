@@ -242,7 +242,7 @@ where <i>bld</i> variables are fractional and/or customer bleed values.
     <i>Wc<sub>In</sub></i> is equal to zero.
 </p>
 <p>
-    To determine the available stall margin, the following equation was used:
+    To determine the available stall margin, the following equation was used by default:
 
     $$SMavail = \frac{SPR - PR}{PR} * 100 $$
 
@@ -254,6 +254,25 @@ where <i>bld</i> variables are fractional and/or customer bleed values.
     map and <i>C_PR</i> is dependant upon which iDes option is used. The stall margin map is then determined using the following:
 
     $$SMMap = \frac{SPRMap - PRMap}{PRMap} * 100$$
+</p>
+<p>
+    The alternative definiton of stall margin (based on the distance of the
+    operating point from the stall line by following a constant speed line
+    instead of constant flow line) can be used by checking the appropriate
+    box in the Surge Margin tab of the block mask. The following equation
+    is used to compute this constant speed stall margin:
+
+    $$SMavail = \Bigg(\frac{Wc / SWc}{PR / SPR} - 1\Bigg) * 100 $$
+
+    In this definition, <i>SPR</i> and <i>SWc</i> are the pressure ratio
+    and corrected mass flow obtained where the current speed line intersects with
+    the stall line. These parameters are found via an iterative search
+    process.
+
+    The speed-based, map stall margin is calculated using the unscaled map
+    data with the equation below:
+
+    $$SMMap = \Bigg(\frac{WcMap / SWcMap}{PRMap / SPRMap} - 1\Bigg) * 100 $$
 </p>
 <p>
     For information on which output values are contained within the block outputs,
@@ -457,6 +476,7 @@ where <i>bld</i> variables are fractional and/or customer bleed values.
             <br>Set - use SRline_M
             <br>
             <br>Un-set - define manually via X_C_Map_WcSurgeVec_M and T_C_Map_PRSurgeVec_M </td></tr>
+    <tr><td>SMNEn_M</td><td>Enable alternative (constant speed) surge margin calculation [check - enabled]</td></tr>
     <tr><td>SRline_M</td><td>Rline defined as the surge line (typically defined as 1)</td></tr>
     <tr><td>X_C_Map_WcSurgeVec_M</td><td>Compensated flow surge vector (map value)(sx1)</td></tr>
     <tr><td>T_C_Map_PRSurgeVec_M</td><td>Surge line pressure ratio vector (map value)(sx1)</td></tr>
