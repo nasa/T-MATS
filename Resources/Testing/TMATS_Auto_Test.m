@@ -48,6 +48,8 @@ for i = 1:LengthTV
     
     %Run Simulation
     TB_Output = sim(MWS.Auto.BedName,'SrcWorkspace','current');
+%     TB_Output = sim(MWS.Auto.BedName,'SrcWorkspace','current','SimulationMode','rapid');
+%     TB_Output = sim(MWS.Auto.BedName,'SrcWorkspace','current');
     %Gather Outputs
     %                                         if(nargout == 0)
     %                                             assignin('base','TB_Output',TB_Output);

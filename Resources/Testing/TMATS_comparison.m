@@ -91,5 +91,5 @@ end
 
 assignin('base','TST',TST);
 
-plot(MxEr_tst);
+plot(MxEr_tst,'o');
 
