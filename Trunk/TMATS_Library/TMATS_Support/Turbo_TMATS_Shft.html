@@ -44,6 +44,8 @@ dynamic equations and properties.
         input torque elements and uses the equation below.
 
         $$ Ndot = \frac{60*\sum{Torque}}{2\pi*\textit{Shaft_Inertia_M}}$$
+        with:
+        $$ sum{Torque} = \sum{Torque} - \sum{\frac{Power}{Nmech}*C\_HP\_PER\_RPMtoFT\_LBF}$$
 
         Since the input torque can be a vector, the summation is used to add all
         of the components together. The constants in the above equation are used to
@@ -84,6 +86,7 @@ dynamic equations and properties.
 <table>
     <tr><th> Input </th><th>Description</th></tr>
     <tr><td>Torque</td><td>Input torque from torque source or sink [lbf*f]</td></tr>
+    <tr><td>Power</td><td>Power extraction (positive for power lost) [hp]</td></tr>
     <tr><td>NmechIn</td><td>Mechanical shaft speed[rpm].
 </td></tr>
 </table>

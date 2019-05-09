@@ -1,0 +1,4724 @@
+Model {
+  Name			  "JT9D_SS_Cantera_Template"
+  Version		  8.5
+  MdlSubVersion		  0
+  SavedCharacterEncoding  "windows-1252"
+  GraphicalInterface {
+    NumRootInports	    0
+    NumRootOutports	    0
+    ParameterArgumentNames  ""
+    ComputedModelVersion    "1.108"
+    NumModelReferences	    0
+    NumTestPointedSignals   0
+  }
+  ScopeRefreshTime	  0.035000
+  OverrideScopeRefreshTime off
+  DisableAllScopes	  off
+  DataTypeOverride	  "UseLocalSettings"
+  DataTypeOverrideAppliesTo "AllNumericTypes"
+  MinMaxOverflowLogging	  "UseLocalSettings"
+  MinMaxOverflowArchiveMode "Overwrite"
+  FPTRunName		  "Run 1"
+  MaxMDLFileLineLength	  120
+  CloseFcn		  "run(strcat(MWS.top_level, filesep,'JT9D_SS_Cantera_Example_cleanup'))"
+  Object {
+    $PropName		    "BdWindowsInfo"
+    $ObjectID		    1
+    $ClassName		    "Simulink.BDWindowsInfo"
+    Object {
+      $PropName		      "WindowsInfo"
+      $ObjectID		      2
+      $ClassName	      "Simulink.WindowInfo"
+      IsActive		      [1]
+      Location		      [155.0, 67.0, 1341.0, 717.0]
+      Object {
+	$PropName		"ModelBrowserInfo"
+	$ObjectID		3
+	$ClassName		"Simulink.ModelBrowserInfo"
+	Visible			[0]
+	DockPosition		"Left"
+	Width			[50]
+	Height			[50]
+	Filter			[59]
+      }
+      Object {
+	$PropName		"ExplorerBarInfo"
+	$ObjectID		4
+	$ClassName		"Simulink.ExplorerBarInfo"
+	Visible			[1]
+      }
+      Object {
+	$PropName		"EditorsInfo"
+	$ObjectID		5
+	$ClassName		"Simulink.EditorInfo"
+	IsActive		[1]
+	ViewObjType		"SimulinkTopLevel"
+	LoadSaveID		"0"
+	Extents			[1291.0, 543.0]
+	ZoomFactor		[0.288677130044843]
+	Offset			[-446.06213592233075, 420.50291262135909]
+      }
+    }
+  }
+  Created		  "Mon May 20 08:41:45 2013"
+  Creator		  "tlavelle"
+  UpdateHistory		  "UpdateHistoryNever"
+  ModifiedByFormat	  "%<Auto>"
+  LastModifiedBy	  "jwchapm2"
+  ModifiedDateFormat	  "%<Auto>"
+  LastModifiedDate	  "Thu May 09 10:07:46 2019"
+  RTWModifiedTimeStamp	  479297166
+  ModelVersionFormat	  "1.%<AutoIncrement:108>"
+  ConfigurationManager	  "none"
+  SampleTimeColors	  on
+  SampleTimeAnnotations	  on
+  LibraryLinkDisplay	  "all"
+  WideLines		  off
+  ShowLineDimensions	  off
+  ShowPortDataTypes	  off
+  ShowDesignRanges	  off
+  ShowLoopsOnError	  on
+  IgnoreBidirectionalLines off
+  ShowStorageClass	  off
+  ShowTestPointIcons	  on
+  ShowSignalResolutionIcons on
+  ShowViewerIcons	  on
+  SortedOrder		  off
+  ExecutionContextIcon	  off
+  ShowLinearizationAnnotations on
+  ShowMarkup		  on
+  BlockNameDataTip	  off
+  BlockParametersDataTip  off
+  BlockDescriptionStringDataTip	off
+  ToolBar		  on
+  StatusBar		  on
+  BrowserShowLibraryLinks on
+  BrowserLookUnderMasks	  on
+  SimulationMode	  "normal"
+  PauseTimes		  "5"
+  NumberOfSteps		  1
+  SnapshotBufferSize	  10
+  SnapshotInterval	  10
+  NumberOfLastSnapshots	  0
+  LinearizationMsg	  "none"
+  Profile		  off
+  ParamWorkspaceSource	  "MATLABWorkspace"
+  AccelSystemTargetFile	  "accel.tlc"
+  AccelTemplateMakefile	  "accel_default_tmf"
+  AccelMakeCommand	  "make_rtw"
+  TryForcingSFcnDF	  off
+  Object {
+    $PropName		    "DataLoggingOverride"
+    $ObjectID		    6
+    $ClassName		    "Simulink.SimulationData.ModelLoggingInfo"
+    model_		    "turbofan_cleaned"
+    overrideMode_	    [0.0]
+    Array {
+      Type		      "Cell"
+      Dimension		      1
+      Cell		      "turbofan_cleaned"
+      PropName		      "logAsSpecifiedByModels_"
+    }
+    Array {
+      Type		      "Cell"
+      Dimension		      1
+      Cell		      []
+      PropName		      "logAsSpecifiedByModelsSSIDs_"
+    }
+  }
+  RecordCoverage	  off
+  CovPath		  "/"
+  CovSaveName		  "covdata"
+  CovMetricSettings	  "dw"
+  CovNameIncrementing	  off
+  CovHtmlReporting	  on
+  CovForceBlockReductionOff on
+  CovEnableCumulative	  on
+  covSaveCumulativeToWorkspaceVar on
+  CovSaveSingleToWorkspaceVar on
+  CovCumulativeVarName	  "covCumulativeData"
+  CovCumulativeReport	  off
+  CovReportOnPause	  on
+  CovModelRefEnable	  "Off"
+  CovExternalEMLEnable	  off
+  CovSFcnEnable		  on
+  CovBoundaryAbsTol	  0.000010
+  CovBoundaryRelTol	  0.010000
+  CovUseTimeInterval	  off
+  CovStartTime		  0
+  CovStopTime		  0
+  ExtModeBatchMode	  off
+  ExtModeEnableFloating	  on
+  ExtModeTrigType	  "manual"
+  ExtModeTrigMode	  "normal"
+  ExtModeTrigPort	  "1"
+  ExtModeTrigElement	  "any"
+  ExtModeTrigDuration	  1000
+  ExtModeTrigDurationFloating "auto"
+  ExtModeTrigHoldOff	  0
+  ExtModeTrigDelay	  0
+  ExtModeTrigDirection	  "rising"
+  ExtModeTrigLevel	  0
+  ExtModeArchiveMode	  "off"
+  ExtModeAutoIncOneShot	  off
+  ExtModeIncDirWhenArm	  off
+  ExtModeAddSuffixToVar	  off
+  ExtModeWriteAllDataToWs off
+  ExtModeArmWhenConnect	  on
+  ExtModeSkipDownloadWhenConnect off
+  ExtModeLogAll		  on
+  ExtModeAutoUpdateStatusClock on
+  ShowModelReferenceBlockVersion off
+  ShowModelReferenceBlockIO off
+  Array {
+    Type		    "Handle"
+    Dimension		    1
+    Simulink.ConfigSet {
+      $ObjectID		      7
+      Version		      "1.15.0"
+      Array {
+	Type			"Handle"
+	Dimension		8
+	Simulink.SolverCC {
+	  $ObjectID		  8
+	  Version		  "1.15.0"
+	  StartTime		  "0.0"
+	  StopTime		  "1.5"
+	  AbsTol		  "auto"
+	  FixedStep		  "0.015"
+	  InitialStep		  "auto"
+	  MaxNumMinSteps	  "-1"
+	  MaxOrder		  5
+	  ZcThreshold		  "auto"
+	  ConsecutiveZCsStepRelTol "10*128*eps"
+	  MaxConsecutiveZCs	  "1000"
+	  ExtrapolationOrder	  4
+	  NumberNewtonIterations  1
+	  MaxStep		  "auto"
+	  MinStep		  "auto"
+	  MaxConsecutiveMinStep	  "1"
+	  RelTol		  "1e-3"
+	  SolverMode		  "Auto"
+	  EnableConcurrentExecution off
+	  ConcurrentTasks	  off
+	  Solver		  "FixedStepDiscrete"
+	  SolverName		  "FixedStepDiscrete"
+	  SolverJacobianMethodControl "auto"
+	  ShapePreserveControl	  "DisableAll"
+	  ZeroCrossControl	  "UseLocalSettings"
+	  ZeroCrossAlgorithm	  "Nonadaptive"
+	  AlgebraicLoopSolver	  "TrustRegion"
+	  SolverResetMethod	  "Fast"
+	  PositivePriorityOrder	  off
+	  AutoInsertRateTranBlk	  off
+	  SampleTimeConstraint	  "Unconstrained"
+	  InsertRTBMode		  "Whenever possible"
+	}
+	Simulink.DataIOCC {
+	  $ObjectID		  9
+	  Version		  "1.15.0"
+	  Decimation		  "1"
+	  ExternalInput		  "[t, u]"
+	  FinalStateName	  "xFinal"
+	  InitialState		  "xInitial"
+	  LimitDataPoints	  on
+	  MaxDataPoints		  "1000"
+	  LoadExternalInput	  off
+	  LoadInitialState	  off
+	  SaveFinalState	  off
+	  SaveCompleteFinalSimState off
+	  SaveFormat		  "Array"
+	  SignalLoggingSaveFormat "Dataset"
+	  SaveOutput		  on
+	  SaveState		  off
+	  SignalLogging		  on
+	  DSMLogging		  on
+	  InspectSignalLogs	  off
+	  VisualizeSimOutput	  on
+	  SaveTime		  on
+	  ReturnWorkspaceOutputs  off
+	  StateSaveName		  "xout"
+	  TimeSaveName		  "tout"
+	  OutputSaveName	  "yout"
+	  SignalLoggingName	  "logsout"
+	  DSMLoggingName	  "dsmout"
+	  OutputOption		  "RefineOutputTimes"
+	  OutputTimes		  "[]"
+	  ReturnWorkspaceOutputsName "out"
+	  Refine		  "1"
+	}
+	Simulink.OptimizationCC {
+	  $ObjectID		  10
+	  Version		  "1.15.0"
+	  Array {
+	    Type		    "Cell"
+	    Dimension		    8
+	    Cell		    "BooleansAsBitfields"
+	    Cell		    "PassReuseOutputArgsAs"
+	    Cell		    "PassReuseOutputArgsThreshold"
+	    Cell		    "ZeroExternalMemoryAtStartup"
+	    Cell		    "ZeroInternalMemoryAtStartup"
+	    Cell		    "OptimizeModelRefInitCode"
+	    Cell		    "NoFixptDivByZeroProtection"
+	    Cell		    "UseSpecifiedMinMax"
+	    PropName		    "DisabledProps"
+	  }
+	  BlockReduction	  on
+	  BooleanDataType	  on
+	  ConditionallyExecuteInputs on
+	  InlineParams		  off
+	  UseDivisionForNetSlopeComputation "off"
+	  UseFloatMulNetSlope	  off
+	  DefaultUnderspecifiedDataType	"double"
+	  UseSpecifiedMinMax	  off
+	  InlineInvariantSignals  off
+	  OptimizeBlockIOStorage  on
+	  BufferReuse		  on
+	  EnhancedBackFolding	  off
+	  CachingGlobalReferences off
+	  GlobalBufferReuse	  on
+	  StrengthReduction	  off
+	  ExpressionFolding	  on
+	  BooleansAsBitfields	  off
+	  BitfieldContainerType	  "uint_T"
+	  EnableMemcpy		  on
+	  MemcpyThreshold	  64
+	  PassReuseOutputArgsAs	  "Structure reference"
+	  PassReuseOutputArgsThreshold 12
+	  ExpressionDepthLimit	  2147483647
+	  LocalBlockOutputs	  on
+	  RollThreshold		  5
+	  StateBitsets		  off
+	  DataBitsets		  off
+	  ActiveStateOutputEnumStorageType "Native Integer"
+	  ZeroExternalMemoryAtStartup on
+	  ZeroInternalMemoryAtStartup on
+	  InitFltsAndDblsToZero	  off
+	  NoFixptDivByZeroProtection off
+	  EfficientFloat2IntCast  off
+	  EfficientMapNaN2IntZero on
+	  OptimizeModelRefInitCode off
+	  LifeSpan		  "inf"
+	  MaxStackSize		  "Inherit from target"
+	  BufferReusableBoundary  on
+	  SimCompilerOptimization "off"
+	  AccelVerboseBuild	  off
+	}
+	Simulink.DebuggingCC {
+	  $ObjectID		  11
+	  Version		  "1.15.0"
+	  RTPrefix		  "error"
+	  ConsistencyChecking	  "none"
+	  ArrayBoundsChecking	  "none"
+	  SignalInfNanChecking	  "none"
+	  SignalRangeChecking	  "none"
+	  ReadBeforeWriteMsg	  "UseLocalSettings"
+	  WriteAfterWriteMsg	  "UseLocalSettings"
+	  WriteAfterReadMsg	  "UseLocalSettings"
+	  AlgebraicLoopMsg	  "warning"
+	  ArtificialAlgebraicLoopMsg "warning"
+	  SaveWithDisabledLinksMsg "warning"
+	  SaveWithParameterizedLinksMsg	"warning"
+	  CheckSSInitialOutputMsg on
+	  UnderspecifiedInitializationDetection	"Classic"
+	  MergeDetectMultiDrivingBlocksExec "none"
+	  CheckExecutionContextPreStartOutputMsg off
+	  CheckExecutionContextRuntimeOutputMsg	off
+	  SignalResolutionControl "UseLocalSettings"
+	  BlockPriorityViolationMsg "warning"
+	  MinStepSizeMsg	  "warning"
+	  TimeAdjustmentMsg	  "none"
+	  MaxConsecutiveZCsMsg	  "error"
+	  MaskedZcDiagnostic	  "warning"
+	  IgnoredZcDiagnostic	  "warning"
+	  SolverPrmCheckMsg	  "warning"
+	  InheritedTsInSrcMsg	  "warning"
+	  DiscreteInheritContinuousMsg "warning"
+	  MultiTaskDSMMsg	  "error"
+	  MultiTaskCondExecSysMsg "error"
+	  MultiTaskRateTransMsg	  "error"
+	  SingleTaskRateTransMsg  "none"
+	  TasksWithSamePriorityMsg "warning"
+	  SigSpecEnsureSampleTimeMsg "warning"
+	  CheckMatrixSingularityMsg "none"
+	  IntegerOverflowMsg	  "warning"
+	  Int32ToFloatConvMsg	  "warning"
+	  ParameterDowncastMsg	  "error"
+	  ParameterOverflowMsg	  "error"
+	  ParameterUnderflowMsg	  "none"
+	  ParameterPrecisionLossMsg "warning"
+	  ParameterTunabilityLossMsg "warning"
+	  FixptConstUnderflowMsg  "none"
+	  FixptConstOverflowMsg	  "none"
+	  FixptConstPrecisionLossMsg "none"
+	  UnderSpecifiedDataTypeMsg "none"
+	  UnnecessaryDatatypeConvMsg "none"
+	  VectorMatrixConversionMsg "none"
+	  InvalidFcnCallConnMsg	  "error"
+	  FcnCallInpInsideContextMsg "EnableAllAsError"
+	  SignalLabelMismatchMsg  "none"
+	  UnconnectedInputMsg	  "warning"
+	  UnconnectedOutputMsg	  "warning"
+	  UnconnectedLineMsg	  "warning"
+	  SFcnCompatibilityMsg	  "none"
+	  FrameProcessingCompatibilityMsg "error"
+	  UniqueDataStoreMsg	  "none"
+	  BusObjectLabelMismatch  "warning"
+	  RootOutportRequireBusObject "warning"
+	  AssertControl		  "UseLocalSettings"
+	  ModelReferenceIOMsg	  "none"
+	  ModelReferenceMultiInstanceNormalModeStructChecksumCheck "error"
+	  ModelReferenceVersionMismatchMessage "none"
+	  ModelReferenceIOMismatchMessage "none"
+	  UnknownTsInhSupMsg	  "warning"
+	  ModelReferenceDataLoggingMessage "warning"
+	  ModelReferenceSymbolNameMessage "warning"
+	  ModelReferenceExtraNoncontSigs "error"
+	  StateNameClashWarn	  "warning"
+	  SimStateInterfaceChecksumMismatchMsg "warning"
+	  SimStateOlderReleaseMsg "error"
+	  InitInArrayFormatMsg	  "warning"
+	  StrictBusMsg		  "ErrorLevel1"
+	  BusNameAdapt		  "WarnAndRepair"
+	  NonBusSignalsTreatedAsBus "none"
+	  BlockIODiagnostic	  "none"
+	  SFUnusedDataAndEventsDiag "warning"
+	  SFUnexpectedBacktrackingDiag "warning"
+	  SFInvalidInputDataAccessInChartInitDiag "warning"
+	  SFNoUnconditionalDefaultTransitionDiag "warning"
+	  SFTransitionOutsideNaturalParentDiag "warning"
+	  SFUnconditionalTransitionShadowingDiag "warning"
+	  SFUndirectedBroadcastEventsDiag "warning"
+	  SFTransitionActionBeforeConditionDiag	"warning"
+	  SFOutputUsedAsStateInMooreChartDiag "error"
+	  IntegerSaturationMsg	  "warning"
+	}
+	Simulink.HardwareCC {
+	  $ObjectID		  12
+	  Version		  "1.15.0"
+	  ProdBitPerChar	  8
+	  ProdBitPerShort	  16
+	  ProdBitPerInt		  32
+	  ProdBitPerLong	  32
+	  ProdBitPerLongLong	  64
+	  ProdBitPerFloat	  32
+	  ProdBitPerDouble	  64
+	  ProdBitPerPointer	  32
+	  ProdLargestAtomicInteger "Char"
+	  ProdLargestAtomicFloat  "None"
+	  ProdIntDivRoundTo	  "Undefined"
+	  ProdEndianess		  "Unspecified"
+	  ProdWordSize		  32
+	  ProdShiftRightIntArith  on
+	  ProdLongLongMode	  off
+	  ProdHWDeviceType	  "32-bit Generic"
+	  TargetBitPerChar	  8
+	  TargetBitPerShort	  16
+	  TargetBitPerInt	  32
+	  TargetBitPerLong	  32
+	  TargetBitPerLongLong	  64
+	  TargetBitPerFloat	  32
+	  TargetBitPerDouble	  64
+	  TargetBitPerPointer	  32
+	  TargetLargestAtomicInteger "Char"
+	  TargetLargestAtomicFloat "None"
+	  TargetShiftRightIntArith on
+	  TargetLongLongMode	  off
+	  TargetIntDivRoundTo	  "Undefined"
+	  TargetEndianess	  "Unspecified"
+	  TargetWordSize	  32
+	  TargetPreprocMaxBitsSint 32
+	  TargetPreprocMaxBitsUint 32
+	  TargetHWDeviceType	  "Specified"
+	  TargetUnknown		  off
+	  ProdEqTarget		  on
+	}
+	Simulink.ModelReferenceCC {
+	  $ObjectID		  13
+	  Version		  "1.15.0"
+	  UpdateModelReferenceTargets "IfOutOfDateOrStructuralChange"
+	  CheckModelReferenceTargetMessage "error"
+	  EnableParallelModelReferenceBuilds off
+	  ParallelModelReferenceErrorOnInvalidPool on
+	  ParallelModelReferenceMATLABWorkerInit "None"
+	  ModelReferenceNumInstancesAllowed "Multi"
+	  PropagateVarSize	  "Infer from blocks in model"
+	  ModelReferencePassRootInputsByReference on
+	  ModelReferenceMinAlgLoopOccurrences off
+	  PropagateSignalLabelsOutOfModel off
+	  SupportModelReferenceSimTargetCustomCode off
+	}
+	Simulink.SFSimCC {
+	  $ObjectID		  14
+	  Version		  "1.15.0"
+	  SFSimOverflowDetection  on
+	  SFSimEcho		  on
+	  SimCtrlC		  on
+	  SimIntegrity		  on
+	  SimUseLocalCustomCode	  off
+	  SimParseCustomCode	  on
+	  SimBuildMode		  "sf_incremental_build"
+	  SimGenImportedTypeDefs  off
+	}
+	Simulink.RTWCC {
+	  $BackupClass		  "Simulink.RTWCC"
+	  $ObjectID		  15
+	  Version		  "1.15.0"
+	  Array {
+	    Type		    "Cell"
+	    Dimension		    15
+	    Cell		    "IncludeHyperlinkInReport"
+	    Cell		    "GenerateTraceInfo"
+	    Cell		    "GenerateTraceReport"
+	    Cell		    "GenerateTraceReportSl"
+	    Cell		    "GenerateTraceReportSf"
+	    Cell		    "GenerateTraceReportEml"
+	    Cell		    "PortableWordSizes"
+	    Cell		    "GenerateWebview"
+	    Cell		    "GenerateCodeMetricsReport"
+	    Cell		    "GenerateCodeReplacementReport"
+	    Cell		    "GenerateErtSFunction"
+	    Cell		    "CreateSILPILBlock"
+	    Cell		    "CodeExecutionProfiling"
+	    Cell		    "CodeProfilingSaveOptions"
+	    Cell		    "CodeProfilingInstrumentation"
+	    PropName		    "DisabledProps"
+	  }
+	  SystemTargetFile	  "grt.tlc"
+	  TLCOptions		  ""
+	  GenCodeOnly		  off
+	  MakeCommand		  "make_rtw"
+	  GenerateMakefile	  on
+	  PackageGeneratedCodeAndArtifacts off
+	  PackageName		  ""
+	  TemplateMakefile	  "grt_default_tmf"
+	  PostCodeGenCommand	  ""
+	  Description		  ""
+	  GenerateReport	  off
+	  SaveLog		  off
+	  RTWVerbose		  on
+	  RetainRTWFile		  off
+	  ProfileTLC		  off
+	  TLCDebug		  off
+	  TLCCoverage		  off
+	  TLCAssert		  off
+	  RTWUseLocalCustomCode	  off
+	  RTWUseSimCustomCode	  off
+	  CustomSourceCode	  ""
+	  CustomHeaderCode	  ""
+	  CustomInclude		  ""
+	  CustomSource		  ""
+	  CustomLibrary		  ""
+	  CustomInitializer	  ""
+	  CustomTerminator	  ""
+	  Toolchain		  "Automatically locate an installed toolchain"
+	  BuildConfiguration	  "Faster Builds"
+	  IncludeHyperlinkInReport off
+	  LaunchReport		  off
+	  PortableWordSizes	  off
+	  CreateSILPILBlock	  "None"
+	  CodeExecutionProfiling  off
+	  CodeExecutionProfileVariable "executionProfile"
+	  CodeProfilingSaveOptions "SummaryOnly"
+	  CodeProfilingInstrumentation off
+	  SILDebugging		  off
+	  TargetLang		  "C"
+	  IncludeBusHierarchyInRTWFileBlockHierarchyMap	off
+	  GenerateTraceInfo	  off
+	  GenerateTraceReport	  off
+	  GenerateTraceReportSl	  off
+	  GenerateTraceReportSf	  off
+	  GenerateTraceReportEml  off
+	  GenerateWebview	  off
+	  GenerateCodeMetricsReport off
+	  GenerateCodeReplacementReport	off
+	  GenerateMissedCodeReplacementReport off
+	  RTWCompilerOptimization "off"
+	  RTWCustomCompilerOptimizations ""
+	  CheckMdlBeforeBuild	  "Off"
+	  SharedConstantsCachingThreshold 1024
+	  Array {
+	    Type		    "Handle"
+	    Dimension		    2
+	    Simulink.CodeAppCC {
+	      $ObjectID		      16
+	      Version		      "1.15.0"
+	      Array {
+		Type			"Cell"
+		Dimension		22
+		Cell			"IgnoreCustomStorageClasses"
+		Cell			"IgnoreTestpoints"
+		Cell			"InsertBlockDesc"
+		Cell			"InsertPolySpaceComments"
+		Cell			"SFDataObjDesc"
+		Cell			"MATLABFcnDesc"
+		Cell			"SimulinkDataObjDesc"
+		Cell			"DefineNamingRule"
+		Cell			"SignalNamingRule"
+		Cell			"ParamNamingRule"
+		Cell			"InternalIdentifier"
+		Cell			"InlinedPrmAccess"
+		Cell			"CustomSymbolStr"
+		Cell			"CustomSymbolStrGlobalVar"
+		Cell			"CustomSymbolStrType"
+		Cell			"CustomSymbolStrField"
+		Cell			"CustomSymbolStrFcn"
+		Cell			"CustomSymbolStrFcnArg"
+		Cell			"CustomSymbolStrBlkIO"
+		Cell			"CustomSymbolStrTmpVar"
+		Cell			"CustomSymbolStrMacro"
+		Cell			"ReqsInCode"
+		PropName		"DisabledProps"
+	      }
+	      ForceParamTrailComments off
+	      GenerateComments	      on
+	      CommentStyle	      "Auto"
+	      IgnoreCustomStorageClasses on
+	      IgnoreTestpoints	      off
+	      IncHierarchyInIds	      off
+	      MaxIdLength	      31
+	      PreserveName	      off
+	      PreserveNameWithParent  off
+	      ShowEliminatedStatement off
+	      OperatorAnnotations     off
+	      IncAutoGenComments      off
+	      SimulinkDataObjDesc     off
+	      SFDataObjDesc	      off
+	      MATLABFcnDesc	      off
+	      IncDataTypeInIds	      off
+	      MangleLength	      1
+	      CustomSymbolStrGlobalVar "$R$N$M"
+	      CustomSymbolStrType     "$N$R$M_T"
+	      CustomSymbolStrField    "$N$M"
+	      CustomSymbolStrFcn      "$R$N$M$F"
+	      CustomSymbolStrFcnArg   "rt$I$N$M"
+	      CustomSymbolStrBlkIO    "rtb_$N$M"
+	      CustomSymbolStrTmpVar   "$N$M"
+	      CustomSymbolStrMacro    "$R$N$M"
+	      CustomSymbolStrUtil     "$N$C"
+	      DefineNamingRule	      "None"
+	      ParamNamingRule	      "None"
+	      SignalNamingRule	      "None"
+	      InsertBlockDesc	      off
+	      InsertPolySpaceComments off
+	      SimulinkBlockComments   on
+	      MATLABSourceComments    off
+	      EnableCustomComments    off
+	      InternalIdentifier      "Shortened"
+	      InlinedPrmAccess	      "Literals"
+	      ReqsInCode	      off
+	      UseSimReservedNames     off
+	    }
+	    Simulink.GRTTargetCC {
+	      $BackupClass	      "Simulink.TargetCC"
+	      $ObjectID		      17
+	      Version		      "1.15.0"
+	      Array {
+		Type			"Cell"
+		Dimension		14
+		Cell			"GeneratePreprocessorConditionals"
+		Cell			"IncludeMdlTerminateFcn"
+		Cell			"GenerateAllocFcn"
+		Cell			"SuppressErrorStatus"
+		Cell			"ERTCustomFileBanners"
+		Cell			"GenerateSampleERTMain"
+		Cell			"GenerateTestInterfaces"
+		Cell			"ModelStepFunctionPrototypeControlCompliant"
+		Cell			"CPPClassGenCompliant"
+		Cell			"SupportNonInlinedSFcns"
+		Cell			"PurelyIntegerCode"
+		Cell			"SupportComplex"
+		Cell			"SupportAbsoluteTime"
+		Cell			"SupportContinuousTime"
+		PropName		"DisabledProps"
+	      }
+	      TargetFcnLib	      "ansi_tfl_table_tmw.mat"
+	      TargetLibSuffix	      ""
+	      TargetPreCompLibLocation ""
+	      GenFloatMathFcnCalls    "NOT IN USE"
+	      TargetLangStandard      "C89/C90 (ANSI)"
+	      CodeReplacementLibrary  "None"
+	      UtilityFuncGeneration   "Auto"
+	      ERTMultiwordTypeDef     "System defined"
+	      ERTMultiwordLength      256
+	      MultiwordLength	      2048
+	      GenerateFullHeader      on
+	      InferredTypesCompatibility off
+	      GenerateSampleERTMain   off
+	      GenerateTestInterfaces  off
+	      ModelReferenceCompliant on
+	      ParMdlRefBuildCompliant on
+	      CompOptLevelCompliant   on
+	      ConcurrentExecutionCompliant on
+	      IncludeMdlTerminateFcn  on
+	      GeneratePreprocessorConditionals "Disable all"
+	      CombineOutputUpdateFcns on
+	      CombineSignalStateStructs	off
+	      SuppressErrorStatus     off
+	      ERTFirstTimeCompliant   off
+	      IncludeFileDelimiter    "Auto"
+	      ERTCustomFileBanners    off
+	      SupportAbsoluteTime     on
+	      LogVarNameModifier      "rt_"
+	      MatFileLogging	      on
+	      MultiInstanceERTCode    off
+	      CodeInterfacePackaging  "Nonreusable function"
+	      SupportNonFinite	      on
+	      SupportComplex	      on
+	      PurelyIntegerCode	      off
+	      SupportContinuousTime   on
+	      SupportNonInlinedSFcns  on
+	      SupportVariableSizeSignals off
+	      ParenthesesLevel	      "Nominal"
+	      CastingMode	      "Nominal"
+	      MATLABClassNameForMDSCustomization "Simulink.SoftwareTarget.GRTCustomization"
+	      ModelStepFunctionPrototypeControlCompliant off
+	      CPPClassGenCompliant    on
+	      AutosarCompliant	      off
+	      GRTInterface	      off
+	      GenerateAllocFcn	      off
+	      GenerateSharedConstants on
+	      UseMalloc		      off
+	      ExtMode		      off
+	      ExtModeStaticAlloc      off
+	      ExtModeTesting	      off
+	      ExtModeStaticAllocSize  1000000
+	      ExtModeTransport	      0
+	      ExtModeMexFile	      "ext_comm"
+	      ExtModeIntrfLevel	      "Level1"
+	      RTWCAPISignals	      off
+	      RTWCAPIParams	      off
+	      RTWCAPIStates	      off
+	      RTWCAPIRootIO	      off
+	      GenerateASAP2	      off
+	      MultiInstanceErrorCode  "Error"
+	    }
+	    PropName		    "Components"
+	  }
+	}
+	PropName		"Components"
+      }
+      Name		      "Configuration"
+      CurrentDlgPage	      "Solver"
+      ConfigPrmDlgPosition     [ 2129, 210, 2992, 848 ] 
+    }
+    PropName		    "ConfigurationSets"
+  }
+  Simulink.ConfigSet {
+    $PropName		    "ActiveConfigurationSet"
+    $ObjectID		    7
+  }
+  Object {
+    $PropName		    "DataTransfer"
+    $ObjectID		    18
+    $ClassName		    "Simulink.GlobalDataTransfer"
+    DefaultTransitionBetweenSyncTasks "Ensure deterministic transfer (maximum delay)"
+    DefaultTransitionBetweenAsyncTasks "Ensure data integrity only"
+    DefaultTransitionBetweenContTasks "Ensure deterministic transfer (minimum delay)"
+    DefaultExtrapolationMethodBetweenContTasks "None"
+    AutoInsertRateTranBlk   [0]
+  }
+  ExplicitPartitioning	  off
+  BlockDefaults {
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    NamePlacement	    "normal"
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    ShowName		    on
+    BlockRotation	    0
+    BlockMirror		    off
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    "center"
+    VerticalAlignment	    "middle"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    UseDisplayTextAsClickCallback off
+  }
+  LineDefaults {
+    FontName		    "Helvetica"
+    FontSize		    9
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+  }
+  MaskDefaults {
+    SelfModifiable	    "off"
+    IconFrame		    "on"
+    IconOpaque		    "on"
+    RunInitForIconRedraw    "off"
+    IconRotate		    "none"
+    PortRotate		    "default"
+    IconUnits		    "autoscale"
+  }
+  MaskParameterDefaults {
+    Evaluate		    "on"
+    Tunable		    "on"
+    NeverSave		    "off"
+    Internal		    "off"
+    ReadOnly		    "off"
+    Enabled		    "on"
+    Visible		    "on"
+    ToolTip		    "on"
+  }
+  BlockParameterDefaults {
+    Block {
+      BlockType		      BusCreator
+      Inputs		      "4"
+      DisplayOption	      "none"
+      OutDataTypeStr	      "Inherit: auto"
+      NonVirtualBus	      off
+      InheritFromInputs	      on
+    }
+    Block {
+      BlockType		      BusSelector
+      OutputSignals	      "signal1,signal2,signal3"
+      OutputAsBus	      off
+    }
+    Block {
+      BlockType		      Constant
+      Value		      "1"
+      VectorParams1D	      on
+      SamplingMode	      "Sample based"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: Inherit from 'Constant value'"
+      LockScale		      off
+      SampleTime	      "inf"
+      FramePeriod	      "inf"
+      PreserveConstantTs      off
+    }
+    Block {
+      BlockType		      Demux
+      Outputs		      "4"
+      DisplayOption	      "none"
+      BusSelectionMode	      off
+    }
+    Block {
+      BlockType		      Display
+      Format		      "short"
+      Decimation	      "10"
+      Floating		      off
+      Lockdown		      off
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      From
+      GotoTag		      "A"
+      IconDisplay	      "Tag"
+      TagVisibility	      "local"
+    }
+    Block {
+      BlockType		      Goto
+      GotoTag		      "A"
+      IconDisplay	      "Tag"
+      TagVisibility	      "local"
+    }
+    Block {
+      BlockType		      Mux
+      Inputs		      "4"
+      DisplayOption	      "none"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      NonVirtualBus	      off
+    }
+    Block {
+      BlockType		      Sum
+      IconShape		      "rectangular"
+      Inputs		      "++"
+      CollapseMode	      "All dimensions"
+      CollapseDim	      "1"
+      InputSameDT	      on
+      AccumDataTypeStr	      "Inherit: Inherit via internal rule"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: Same as first input"
+      LockScale		      off
+      RndMeth		      "Floor"
+      SaturateOnIntegerOverflow	on
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Terminator
+    }
+    Block {
+      BlockType		      ToWorkspace
+      VariableName	      "simulink_output"
+      MaxDataPoints	      "1000"
+      Decimation	      "1"
+      SaveFormat	      "Array"
+      Save2DSignal	      "Inherit from input (this choice will be removed - see release notes)"
+      FixptAsFi		      off
+      NumInputs		      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      ZeroOrderHold
+      SampleTime	      "1"
+    }
+  }
+  System {
+    Name		    "JT9D_SS_Cantera_Template"
+    Location		    [155, 67, 1496, 784]
+    Open		    on
+    ModelBrowserVisibility  off
+    ModelBrowserWidth	    200
+    ScreenColor		    "white"
+    PaperOrientation	    "landscape"
+    PaperPositionMode	    "auto"
+    PaperType		    "usletter"
+    PaperUnits		    "inches"
+    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
+    TiledPageScale	    1
+    ShowPageBoundaries	    off
+    ZoomFactor		    "29"
+    ReportName		    "simulink-default.rpt"
+    SIDHighWatermark	    "454"
+    Block {
+      BlockType		      Sum
+      Name		      "Add"
+      SID		      "152"
+      Ports		      [2, 1]
+      Position		      [1370, 2094, 1390, 2161]
+      ZOrder		      506
+      InputSameDT	      off
+      OutDataTypeStr	      "Inherit: Inherit via internal rule"
+      SaturateOnIntegerOverflow	off
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "Burner\n"
+      SID		      "368"
+      Ports		      [1, 3]
+      Position		      [2090, 771, 2190, 829]
+      ZOrder		      703
+      LibraryVersion	      "1.465"
+      SourceBlock	      "Lib_TurboC_Burner_TMATSC/C_Burner\n"
+      SourceType	      "TMATS: Burner Library Block, cantera"
+      FAR_M		      "0.0187"
+      hFuel_M		      "-1200"
+      dP_M		      ".055"
+    }
+    Block {
+      BlockType		      BusCreator
+      Name		      "Bus\nCreator"
+      SID		      "414"
+      Ports		      [13, 1]
+      Position		      [2265, 1717, 2270, 2063]
+      ZOrder		      740
+      ShowName		      off
+      Inputs		      "13"
+      DisplayOption	      "bar"
+      Port {
+	PortNumber		1
+	Name			"StationData"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      BusCreator
+      Name		      "Bus\nCreator1"
+      SID		      "415"
+      Ports		      [5, 1]
+      Position		      [2505, 1509, 2510, 1621]
+      ZOrder		      741
+      ShowName		      off
+      Inputs		      "5"
+      DisplayOption	      "bar"
+      Port {
+	PortNumber		1
+	Name			"Pwr"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      BusCreator
+      Name		      "Bus\nCreator2"
+      SID		      "416"
+      Ports		      [4, 1]
+      Position		      [2505, 1916, 2510, 1994]
+      ZOrder		      742
+      ShowName		      off
+      DisplayOption	      "bar"
+      Port {
+	PortNumber		1
+	Name			"Speed"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      BusCreator
+      Name		      "Bus\nCreator3"
+      SID		      "417"
+      Ports		      [8, 1]
+      Position		      [2660, 1832, 2665, 1963]
+      ZOrder		      743
+      ShowName		      off
+      Inputs		      "8"
+      DisplayOption	      "bar"
+      Port {
+	PortNumber		1
+	Name			"Output"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      BusCreator
+      Name		      "Bus\nCreator4"
+      SID		      "427"
+      Ports		      [7, 1]
+      Position		      [2505, 1636, 2510, 1764]
+      ZOrder		      753
+      ShowName		      off
+      Inputs		      "7"
+      DisplayOption	      "bar"
+      Port {
+	PortNumber		1
+	Name			"FlowError"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      BusCreator
+      Name		      "Bus\nCreator5"
+      SID		      "428"
+      Ports		      [3, 1]
+      Position		      [2505, 1786, 2510, 1844]
+      ZOrder		      754
+      ShowName		      off
+      Inputs		      "3"
+      DisplayOption	      "bar"
+      Port {
+	PortNumber		1
+	Name			"Thrust"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      BusCreator
+      Name		      "Bus\nCreator6"
+      SID		      "437"
+      Ports		      [7, 1]
+      Position		      [2505, 2013, 2510, 2177]
+      ZOrder		      763
+      ShowName		      off
+      Inputs		      "7"
+      DisplayOption	      "bar"
+      Port {
+	PortNumber		1
+	Name			"Independents"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      BusCreator
+      Name		      "Bus\nCreator7"
+      SID		      "440"
+      Ports		      [2, 1]
+      Position		      [1480, 1948, 1485, 1997]
+      ZOrder		      766
+      ShowName		      off
+      Inputs		      "2"
+      DisplayOption	      "bar"
+      Port {
+	PortNumber		1
+	Name			"Perf"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      BusSelector
+      Name		      "Bus\nSelector"
+      SID		      "413"
+      Ports		      [1, 1]
+      Position		      [1250, 1726, 1255, 1764]
+      ZOrder		      739
+      BlockMirror	      on
+      ShowName		      off
+      OutputSignals	      "Converged"
+      Port {
+	PortNumber		1
+	Name			"<Converged>"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "BypassNozzle"
+      SID		      "377"
+      Ports		      [2, 3]
+      Position		      [1610, 595, 1740, 705]
+      ZOrder		      712
+      LibraryVersion	      "1.466"
+      SourceBlock	      "Lib_TurboC_Nozzle_TMATSC/C_Nozzle"
+      SourceType	      "TMATS: Nozzle Library Block, cantera"
+      Ath_in_M		      "0"
+      Cfg_M		      ".9978"
+      IDes_M		      "0"
+      Wdes_M		      "562.61"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "C_Ambient"
+      SID		      "266"
+      Ports		      [1, 4]
+      Position		      [130, 793, 285, 917]
+      ZOrder		      601
+      LibraryVersion	      "1.465"
+      SourceBlock	      "Lib_TurboC_Ambient_TMATSC/C_Ambient"
+      SourceType	      "T-MATS: Ambient Library Block, cantera"
+      alt_M		      "100000"
+      MN_M		      "0.85"
+      dTs_M		      "0"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "C_Duct"
+      SID		      "364"
+      Ports		      [1, 2]
+      Position		      [3100, 778, 3185, 822]
+      ZOrder		      699
+      LibraryVersion	      "1.472"
+      SourceBlock	      "Lib_TurboC_Duct_TMATSC/C_Duct"
+      SourceType	      "TMATS: Duct Library Block, cantera"
+      dP_M		      ".01"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "C_Inlet"
+      SID		      "267"
+      Ports		      [1, 2]
+      Position		      [410, 791, 510, 829]
+      ZOrder		      602
+      LibraryVersion	      "1.463"
+      SourceBlock	      "Lib_TurboC_Inlet_TMATSC/C_Inlet"
+      SourceType	      "T-MATS: Inlet Library Block, cantera"
+      recovery_M	      ".995"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "C_Splitter"
+      SID		      "373"
+      Ports		      [2, 3]
+      Position		      [965, 779, 1110, 831]
+      ZOrder		      708
+      LibraryVersion	      "1.475"
+      SourceBlock	      "Lib_TurboC_Splitter_TMATSC/C_Splitter"
+      SourceType	      "TMATS: Splitter Library Block, cantera"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Constant"
+      SID		      "255"
+      Position		      [2715, 837, 2780, 853]
+      ZOrder		      589
+      ForegroundColor	      "blue"
+      ShowName		      off
+      Value		      "zeros(25,1)"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Constant1"
+      SID		      "258"
+      Position		      [2715, 882, 2780, 898]
+      ZOrder		      592
+      ForegroundColor	      "blue"
+      ShowName		      off
+      Value		      "zeros(25,1)"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Constant2"
+      SID		      "452"
+      Position		      [1450, 1705, 1480, 1725]
+      ZOrder		      776
+      BlockMirror	      on
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Constant3"
+      SID		      "453"
+      Position		      [1035, 1055, 1065, 1085]
+      ZOrder		      777
+      ShowName		      off
+      Value		      "0"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Constant4"
+      SID		      "454"
+      Position		      [1035, 1285, 1065, 1315]
+      ZOrder		      778
+      ShowName		      off
+      Value		      "0"
+    }
+    Block {
+      BlockType		      Display
+      Name		      "Converged"
+      SID		      "412"
+      Ports		      [1]
+      Position		      [1115, 1734, 1180, 1756]
+      ZOrder		      738
+      BlockMirror	      on
+      Decimation	      "1"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "CoreNozzle"
+      SID		      "363"
+      Ports		      [2, 3]
+      Position		      [3300, 760, 3430, 870]
+      ZOrder		      698
+      LibraryVersion	      "1.466"
+      SourceBlock	      "Lib_TurboC_Nozzle_TMATSC/C_Nozzle"
+      SourceType	      "TMATS: Nozzle Library Block, cantera"
+      Ath_in_M		      "0"
+      Cfg_M		      ".9978"
+      IDes_M		      "0"
+      Wdes_M		      "113.51"
+    }
+    Block {
+      BlockType		      Demux
+      Name		      "Demux"
+      SID		      "49"
+      Ports		      [1, 9]
+      Position		      [1020, 1630, 1025, 1800]
+      ZOrder		      392
+      BlockMirror	      on
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      Outputs		      "9"
+      DisplayOption	      "bar"
+    }
+    Block {
+      BlockType		      Display
+      Name		      "Dependents"
+      SID		      "74"
+      Ports		      [1]
+      Position		      [1840, 1657, 1910, 1853]
+      ZOrder		      429
+      Decimation	      "1"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "Duct11"
+      SID		      "372"
+      Ports		      [1, 2]
+      Position		      [1265, 825, 1350, 860]
+      ZOrder		      707
+      LibraryVersion	      "1.472"
+      SourceBlock	      "Lib_TurboC_Duct_TMATSC/C_Duct"
+      SourceType	      "TMATS: Duct Library Block, cantera"
+      dP_M		      ".0025"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "Duct12"
+      SID		      "370"
+      Ports		      [1, 2]
+      Position		      [1700, 808, 1785, 852]
+      ZOrder		      705
+      LibraryVersion	      "1.472"
+      SourceBlock	      "Lib_TurboC_Duct_TMATSC/C_Duct"
+      SourceType	      "TMATS: Duct Library Block, cantera"
+      dP_M		      ".0025"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "Duct13"
+      SID		      "366"
+      Ports		      [1, 2]
+      Position		      [2640, 788, 2725, 832]
+      ZOrder		      701
+      LibraryVersion	      "1.472"
+      SourceBlock	      "Lib_TurboC_Duct_TMATSC/C_Duct"
+      SourceType	      "TMATS: Duct Library Block, cantera"
+      dP_M		      ".005"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "Duct15"
+      SID		      "376"
+      Ports		      [1, 2]
+      Position		      [1405, 615, 1490, 650]
+      ZOrder		      711
+      LibraryVersion	      "1.472"
+      SourceBlock	      "Lib_TurboC_Duct_TMATSC/C_Duct"
+      SourceType	      "TMATS: Duct Library Block, cantera"
+      dP_M		      ".0075"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "Duct16"
+      SID		      "375"
+      Ports		      [1, 2]
+      Position		      [1260, 625, 1345, 660]
+      ZOrder		      710
+      LibraryVersion	      "1.472"
+      SourceBlock	      "Lib_TurboC_Duct_TMATSC/C_Duct"
+      SourceType	      "TMATS: Duct Library Block, cantera"
+      dP_M		      ".0025"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "Fan"
+      SID		      "374"
+      Ports		      [3, 6]
+      Position		      [655, 780, 745, 910]
+      ZOrder		      709
+      LibraryVersion	      "1.470"
+      SourceBlock	      "Lib_TurboC_Compressor_TMATSC/C_Compressor"
+      SourceType	      "T-MATS: Compressor Library Block, cantera"
+      MapFile_M		      "'FAN.map'"
+      s_C_Nc_in_M	      "0"
+      s_Wc_in_M		      "0"
+      s_PR_in_M		      "0"
+      s_eff_in_M	      "0"
+      Wfrac1_M		      "0"
+      hfrac1_M		      "1"
+      Pfrac1_M		      "1"
+      Wfrac2_M		      "0"
+      hfrac2_M		      "1"
+      Pfrac2_M		      "1"
+      IDes_M		      "0"
+      NcDes_M		      "100"
+      effDes_M		      ".867"
+      PRdes_M		      "1.645"
+      RlineDes_M	      "2.3706"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From"
+      SID		      "88"
+      Position		      [560, 881, 635, 899]
+      ZOrder		      442
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "RlineFan"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From1"
+      SID		      "90"
+      Position		      [1700, 1738, 1805, 1752]
+      ZOrder		      444
+      BlockMirror	      on
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorFan"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From10"
+      SID		      "123"
+      Position		      [1700, 1658, 1805, 1672]
+      ZOrder		      477
+      BlockMirror	      on
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorHPC"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From11"
+      SID		      "125"
+      Position		      [1700, 1678, 1805, 1692]
+      ZOrder		      479
+      BlockMirror	      on
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorHPT"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From12"
+      SID		      "128"
+      Position		      [1695, 1698, 1805, 1712]
+      ZOrder		      482
+      BlockMirror	      on
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorNozzle"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From13"
+      SID		      "130"
+      Position		      [1700, 1719, 1805, 1731]
+      ZOrder		      484
+      BlockMirror	      on
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "HPNdot"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From14"
+      SID		      "131"
+      Position		      [20, 846, 70, 864]
+      ZOrder		      485
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "WIN"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From15"
+      SID		      "133"
+      Position		      [1790, 1021, 1865, 1039]
+      ZOrder		      487
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "RlineHPC"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From16"
+      SID		      "135"
+      Position		      [2265, 993, 2335, 1007]
+      ZOrder		      489
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "PRHPT"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From17"
+      SID		      "138"
+      Position		      [815, 1128, 865, 1142]
+      ZOrder		      492
+      ForegroundColor	      "red"
+      ShowName		      off
+      GotoTag		      "NHP"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From18"
+      SID		      "140"
+      Position		      [3215, 836, 3275, 854]
+      ZOrder		      494
+      ShowName		      off
+      GotoTag		      "Pamb"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From19"
+      SID		      "141"
+      Position		      [1535, 673, 1590, 687]
+      ZOrder		      495
+      ShowName		      off
+      GotoTag		      "Pamb"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From2"
+      SID		      "91"
+      Position		      [1395, 918, 1465, 932]
+      ZOrder		      445
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "RlineLPC"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From20"
+      SID		      "154"
+      Position		      [1225, 1978, 1285, 1992]
+      ZOrder		      508
+      ShowName		      off
+      GotoTag		      "Fram"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From21"
+      SID		      "155"
+      Position		      [1225, 1948, 1280, 1962]
+      ZOrder		      509
+      ForegroundColor	      "orange"
+      ShowName		      off
+      GotoTag		      "Wfuel"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From22"
+      SID		      "156"
+      Position		      [1225, 1963, 1280, 1977]
+      ZOrder		      510
+      ShowName		      off
+      GotoTag		      "Fg"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From23"
+      SID		      "298"
+      Position		      [2335, 2036, 2410, 2054]
+      ZOrder		      633
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "RlineFan"
+      Port {
+	PortNumber		1
+	Name			"RlineFan"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "From24"
+      SID		      "301"
+      Position		      [2335, 2063, 2410, 2077]
+      ZOrder		      636
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "BPR"
+      Port {
+	PortNumber		1
+	Name			"BPR"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "From25"
+      SID		      "303"
+      Position		      [2335, 2088, 2410, 2102]
+      ZOrder		      638
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "RlineLPC"
+      Port {
+	PortNumber		1
+	Name			"RlineLPC"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "From26"
+      SID		      "309"
+      Position		      [2335, 2111, 2410, 2129]
+      ZOrder		      644
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "RlineHPC"
+      Port {
+	PortNumber		1
+	Name			"RlineHPC"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "From27"
+      SID		      "314"
+      Position		      [2335, 2138, 2410, 2152]
+      ZOrder		      649
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "PRHPT"
+      Port {
+	PortNumber		1
+	Name			"PRHPT"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "From28"
+      SID		      "318"
+      Position		      [2335, 2163, 2410, 2177]
+      ZOrder		      653
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "PRLPT"
+      Port {
+	PortNumber		1
+	Name			"PRLPT"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "From29"
+      SID		      "436"
+      Position		      [2335, 1979, 2405, 1991]
+      ZOrder		      762
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "HPNdot"
+      Port {
+	PortNumber		1
+	Name			"HPNdot"
+	PropagatedSignals	"Rotational Speed acceleration; Ndot[rpm/sec]"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "From3"
+      SID		      "93"
+      Position		      [1700, 1758, 1805, 1772]
+      ZOrder		      447
+      BlockMirror	      on
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorLPC"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From30"
+      SID		      "434"
+      Position		      [2335, 1958, 2405, 1972]
+      ZOrder		      760
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "LPNdot"
+      Port {
+	PortNumber		1
+	Name			"LPNdot"
+	PropagatedSignals	"Rotational Speed acceleration; Ndot[rpm/sec]"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "From4"
+      SID		      "181"
+      Position		      [2715, 973, 2775, 987]
+      ZOrder		      534
+      ShowName		      off
+      GotoTag		      "PRLPT"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From5"
+      SID		      "98"
+      Position		      [1700, 1778, 1805, 1792]
+      ZOrder		      452
+      BlockMirror	      on
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorLPT"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From6"
+      SID		      "99"
+      Position		      [795, 1373, 855, 1387]
+      ZOrder		      453
+      ForegroundColor	      "red"
+      ShowName		      off
+      GotoTag		      "NLP"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From7"
+      SID		      "101"
+      Position		      [1700, 1798, 1805, 1812]
+      ZOrder		      455
+      BlockMirror	      on
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "LPNdot"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From8"
+      SID		      "104"
+      Position		      [900, 813, 945, 827]
+      ZOrder		      458
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "BPR"
+    }
+    Block {
+      BlockType		      From
+      Name		      "From9"
+      SID		      "106"
+      Position		      [1700, 1818, 1805, 1832]
+      ZOrder		      460
+      BlockMirror	      on
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorBypNoz"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto"
+      SID		      "87"
+      Position		      [780, 847, 865, 863]
+      ZOrder		      441
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorFan"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto1"
+      SID		      "89"
+      Position		      [930, 1707, 985, 1723]
+      ZOrder		      443
+      BlockMirror	      on
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "RlineFan"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto10"
+      SID		      "124"
+      Position		      [2000, 942, 2090, 958]
+      ZOrder		      478
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorHPC"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto11"
+      SID		      "126"
+      Position		      [2545, 862, 2630, 878]
+      ZOrder		      480
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorHPT"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto12"
+      SID		      "127"
+      Position		      [3455, 772, 3560, 788]
+      ZOrder		      481
+      ForegroundColor	      "green"
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "FlowErrorNozzle"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto13"
+      SID		      "129"
+      Position		      [1230, 1122, 1310, 1138]
+      ZOrder		      483
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "HPNdot"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto14"
+      SID		      "132"
+      Position		      [930, 1627, 985, 1643]
+      ZOrder		      486
+      BlockMirror	      on
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "WIN"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto15"
+      SID		      "134"
+      Position		      [930, 1647, 985, 1663]
+      ZOrder		      488
+      BlockMirror	      on
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "RlineHPC"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto16"
+      SID		      "136"
+      Position		      [930, 1667, 985, 1683]
+      ZOrder		      490
+      BlockMirror	      on
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "PRHPT"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto17"
+      SID		      "137"
+      Position		      [930, 1687, 980, 1703]
+      ZOrder		      491
+      BlockMirror	      on
+      ForegroundColor	      "red"
+      ShowName		      off
+      GotoTag		      "NHP"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto18"
+      SID		      "139"
+      Position		      [330, 830, 380, 850]
+      ZOrder		      493
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "Pamb"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto19"
+      SID		      "142"
+      Position		      [330, 862, 380, 878]
+      ZOrder		      496
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "Fram"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto2"
+      SID		      "92"
+      Position		      [1605, 882, 1695, 898]
+      ZOrder		      446
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorLPC"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto20"
+      SID		      "150"
+      Position		      [2215, 792, 2260, 808]
+      ZOrder		      504
+      ForegroundColor	      "orange"
+      ShowName		      off
+      GotoTag		      "Wfuel"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto21"
+      SID		      "151"
+      Position		      [1420, 2122, 1460, 2138]
+      ZOrder		      505
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "Fg"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto22"
+      SID		      "221"
+      Position		      [1220, 1082, 1320, 1098]
+      ZOrder		      555
+      ForegroundColor	      "red"
+      ShowName		      off
+      GotoTag		      "HPSpeed"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto23"
+      SID		      "223"
+      Position		      [1790, 917, 1860, 933]
+      ZOrder		      557
+      ForegroundColor	      "red"
+      ShowName		      off
+      GotoTag		      "HPSpeed"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto24"
+      SID		      "225"
+      Position		      [2265, 942, 2335, 958]
+      ZOrder		      559
+      ForegroundColor	      "red"
+      ShowName		      off
+      GotoTag		      "HPSpeed"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto25"
+      SID		      "226"
+      Position		      [1220, 1312, 1320, 1328]
+      ZOrder		      560
+      ForegroundColor	      "red"
+      ShowName		      off
+      GotoTag		      "LPSpeed"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto26"
+      SID		      "228"
+      Position		      [1395, 872, 1465, 888]
+      ZOrder		      562
+      ForegroundColor	      "red"
+      ShowName		      off
+      GotoTag		      "LPSpeed"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto27"
+      SID		      "230"
+      Position		      [2715, 927, 2775, 943]
+      ZOrder		      564
+      ForegroundColor	      "red"
+      ShowName		      off
+      GotoTag		      "LPSpeed"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto28"
+      SID		      "231"
+      Position		      [565, 837, 635, 853]
+      ZOrder		      565
+      ForegroundColor	      "red"
+      ShowName		      off
+      GotoTag		      "LPSpeed"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto29"
+      SID		      "234"
+      Position		      [2000, 992, 2090, 1008]
+      ZOrder		      568
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "HPCPwr"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto3"
+      SID		      "94"
+      Position		      [930, 1727, 985, 1743]
+      ZOrder		      448
+      BlockMirror	      on
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "RlineLPC"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto30"
+      SID		      "235"
+      Position		      [2545, 922, 2635, 938]
+      ZOrder		      569
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "HPTPwr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto31"
+      SID		      "237"
+      Position		      [815, 1062, 905, 1078]
+      ZOrder		      571
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "HPCPwr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto32"
+      SID		      "239"
+      Position		      [815, 1087, 905, 1103]
+      ZOrder		      573
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "HPTPwr"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto33"
+      SID		      "240"
+      Position		      [1605, 902, 1695, 918]
+      ZOrder		      574
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "LPCPwr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto34"
+      SID		      "242"
+      Position		      [795, 1322, 885, 1338]
+      ZOrder		      576
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "LPCPwr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto35"
+      SID		      "243"
+      Position		      [795, 1302, 885, 1318]
+      ZOrder		      577
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "FanPwr"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto36"
+      SID		      "245"
+      Position		      [775, 867, 865, 883]
+      ZOrder		      579
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "FanPwr"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto37"
+      SID		      "246"
+      Position		      [3000, 912, 3090, 928]
+      ZOrder		      580
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "LPTPwr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto38"
+      SID		      "248"
+      Position		      [795, 1342, 885, 1358]
+      ZOrder		      582
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "LPTPwr"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto39"
+      SID		      "249"
+      Position		      [1775, 642, 1880, 658]
+      ZOrder		      583
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "BypFg"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto4"
+      SID		      "95"
+      Position		      [3000, 852, 3090, 868]
+      ZOrder		      449
+      ForegroundColor	      "green"
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "FlowErrorLPT"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto40"
+      SID		      "251"
+      Position		      [1285, 2102, 1335, 2118]
+      ZOrder		      585
+      ShowName		      off
+      GotoTag		      "BypFg"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto41"
+      SID		      "252"
+      Position		      [3465, 807, 3525, 823]
+      ZOrder		      586
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "MainFg"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto42"
+      SID		      "254"
+      Position		      [1285, 2137, 1345, 2153]
+      ZOrder		      588
+      ShowName		      off
+      GotoTag		      "MainFg"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto43"
+      SID		      "269"
+      Position		      [330, 782, 380, 798]
+      ZOrder		      604
+      ForegroundColor	      "blue"
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "S1"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto44"
+      SID		      "270"
+      Position		      [550, 772, 600, 788]
+      ZOrder		      605
+      ForegroundColor	      "blue"
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "S2"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto45"
+      SID		      "271"
+      Position		      [785, 767, 865, 783]
+      ZOrder		      606
+      ForegroundColor	      "blue"
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "S21"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto46"
+      SID		      "272"
+      Position		      [1190, 617, 1240, 633]
+      ZOrder		      607
+      ForegroundColor	      "blue"
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "S13"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto47"
+      SID		      "273"
+      Position		      [1525, 597, 1575, 613]
+      ZOrder		      608
+      ForegroundColor	      "blue"
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "S17"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto48"
+      SID		      "274"
+      Position		      [1380, 812, 1430, 828]
+      ZOrder		      609
+      ForegroundColor	      "blue"
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "S23"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto49"
+      SID		      "275"
+      Position		      [1625, 807, 1675, 823]
+      ZOrder		      610
+      ForegroundColor	      "blue"
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "S24"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto5"
+      SID		      "97"
+      Position		      [930, 1747, 980, 1763]
+      ZOrder		      451
+      BlockMirror	      on
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "PRLPT"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto50"
+      SID		      "276"
+      Position		      [2020, 767, 2070, 783]
+      ZOrder		      611
+      ForegroundColor	      "blue"
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "S3"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto51"
+      SID		      "277"
+      Position		      [2235, 757, 2285, 773]
+      ZOrder		      612
+      ForegroundColor	      "blue"
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "S4"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto52"
+      SID		      "278"
+      Position		      [2560, 787, 2610, 803]
+      ZOrder		      613
+      ForegroundColor	      "blue"
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "S45"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto53"
+      SID		      "279"
+      Position		      [3015, 777, 3065, 793]
+      ZOrder		      614
+      ForegroundColor	      "blue"
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "S5"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto54"
+      SID		      "280"
+      Position		      [3220, 767, 3270, 783]
+      ZOrder		      615
+      ForegroundColor	      "blue"
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "S7"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto55"
+      SID		      "340"
+      Position		      [2120, 2030, 2170, 2050]
+      ZOrder		      675
+      ForegroundColor	      "blue"
+      ShowName		      off
+      GotoTag		      "S17"
+      Port {
+	PortNumber		1
+	Name			"S17"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto56"
+      SID		      "339"
+      Position		      [2120, 2005, 2170, 2025]
+      ZOrder		      674
+      ForegroundColor	      "blue"
+      ShowName		      off
+      GotoTag		      "S7"
+      Port {
+	PortNumber		1
+	Name			"S7"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto57"
+      SID		      "338"
+      Position		      [2120, 1980, 2170, 2000]
+      ZOrder		      673
+      ForegroundColor	      "blue"
+      ShowName		      off
+      GotoTag		      "S5"
+      Port {
+	PortNumber		1
+	Name			"S5"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto58"
+      SID		      "337"
+      Position		      [2120, 1955, 2170, 1975]
+      ZOrder		      672
+      ForegroundColor	      "blue"
+      ShowName		      off
+      GotoTag		      "S45"
+      Port {
+	PortNumber		1
+	Name			"S45"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto59"
+      SID		      "336"
+      Position		      [2120, 1930, 2170, 1950]
+      ZOrder		      671
+      ForegroundColor	      "blue"
+      ShowName		      off
+      GotoTag		      "S4"
+      Port {
+	PortNumber		1
+	Name			"S4"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto6"
+      SID		      "100"
+      Position		      [1230, 1362, 1300, 1378]
+      ZOrder		      454
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "LPNdot"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto60"
+      SID		      "335"
+      Position		      [2120, 1905, 2170, 1925]
+      ZOrder		      670
+      ForegroundColor	      "blue"
+      ShowName		      off
+      GotoTag		      "S3"
+      Port {
+	PortNumber		1
+	Name			"S3"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto61"
+      SID		      "334"
+      Position		      [2120, 1880, 2170, 1900]
+      ZOrder		      669
+      ForegroundColor	      "blue"
+      ShowName		      off
+      GotoTag		      "S24"
+      Port {
+	PortNumber		1
+	Name			"S24"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto62"
+      SID		      "333"
+      Position		      [2120, 1855, 2170, 1875]
+      ZOrder		      668
+      ForegroundColor	      "blue"
+      ShowName		      off
+      GotoTag		      "S23"
+      Port {
+	PortNumber		1
+	Name			"S23"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto63"
+      SID		      "332"
+      Position		      [2120, 1830, 2170, 1850]
+      ZOrder		      667
+      ForegroundColor	      "blue"
+      ShowName		      off
+      GotoTag		      "S22"
+      Port {
+	PortNumber		1
+	Name			"S22"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto64"
+      SID		      "330"
+      Position		      [2120, 1780, 2170, 1800]
+      ZOrder		      665
+      ForegroundColor	      "blue"
+      ShowName		      off
+      GotoTag		      "S21"
+      Port {
+	PortNumber		1
+	Name			"S21"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto65"
+      SID		      "329"
+      Position		      [2120, 1755, 2170, 1775]
+      ZOrder		      664
+      ForegroundColor	      "blue"
+      ShowName		      off
+      GotoTag		      "S2"
+      Port {
+	PortNumber		1
+	Name			"S2"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto66"
+      SID		      "328"
+      Position		      [2120, 1730, 2170, 1750]
+      ZOrder		      663
+      ForegroundColor	      "blue"
+      ShowName		      off
+      GotoTag		      "S1"
+      Port {
+	PortNumber		1
+	Name			"S1"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto67"
+      SID		      "297"
+      Position		      [2335, 1917, 2405, 1933]
+      ZOrder		      632
+      ForegroundColor	      "red"
+      ShowName		      off
+      GotoTag		      "LPSpeed"
+      Port {
+	PortNumber		1
+	Name			"LPSpeed"
+	PropagatedSignals	"Actual Rotational Speed; N[rpm]"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto68"
+      SID		      "357"
+      Position		      [2305, 1632, 2410, 1648]
+      ZOrder		      692
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorFan"
+      Port {
+	PortNumber		1
+	Name			"Nerr_Fan"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto69"
+      SID		      "356"
+      Position		      [2320, 1517, 2410, 1533]
+      ZOrder		      691
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "FanPwr"
+      Port {
+	PortNumber		1
+	Name			"FanPwr"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto7"
+      SID		      "102"
+      Position		      [930, 1767, 980, 1783]
+      ZOrder		      456
+      BlockMirror	      on
+      ForegroundColor	      "red"
+      ShowName		      off
+      GotoTag		      "NLP"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto70"
+      SID		      "438"
+      Position		      [2335, 2212, 2410, 2228]
+      ZOrder		      764
+      ForegroundColor	      "orange"
+      ShowName		      off
+      GotoTag		      "Wfuel"
+      Port {
+	PortNumber		1
+	Name			"Wfuel"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto71"
+      SID		      "355"
+      Position		      [2305, 1752, 2410, 1768]
+      ZOrder		      690
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorBypNoz"
+      Port {
+	PortNumber		1
+	Name			"Nerr_NozByp"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto72"
+      SID		      "351"
+      Position		      [2350, 1787, 2410, 1803]
+      ZOrder		      686
+      ShowName		      off
+      GotoTag		      "BypFg"
+      Port {
+	PortNumber		1
+	Name			"BypFg"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto73"
+      SID		      "354"
+      Position		      [2305, 1652, 2410, 1668]
+      ZOrder		      689
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorLPC"
+      Port {
+	PortNumber		1
+	Name			"Nerr_LPC"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto74"
+      SID		      "353"
+      Position		      [2320, 1537, 2410, 1553]
+      ZOrder		      688
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "LPCPwr"
+      Port {
+	PortNumber		1
+	Name			"LPCPwr"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto76"
+      SID		      "352"
+      Position		      [2305, 1672, 2410, 1688]
+      ZOrder		      687
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorHPC"
+      Port {
+	PortNumber		1
+	Name			"Nerr_HPC"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto77"
+      SID		      "350"
+      Position		      [2320, 1557, 2410, 1573]
+      ZOrder		      685
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "HPCPwr"
+      Port {
+	PortNumber		1
+	Name			"HPCPwr"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto78"
+      SID		      "348"
+      Position		      [2335, 2012, 2410, 2028]
+      ZOrder		      683
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "WIN"
+      Port {
+	PortNumber		1
+	Name			"Win"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto79"
+      SID		      "313"
+      Position		      [2335, 1937, 2405, 1953]
+      ZOrder		      648
+      ForegroundColor	      "red"
+      ShowName		      off
+      GotoTag		      "HPSpeed"
+      Port {
+	PortNumber		1
+	Name			"HPSpeed"
+	PropagatedSignals	"Actual Rotational Speed; N[rpm]"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto8"
+      SID		      "103"
+      Position		      [930, 1787, 980, 1803]
+      ZOrder		      457
+      BlockMirror	      on
+      ForegroundColor	      "darkGreen"
+      ShowName		      off
+      GotoTag		      "BPR"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto80"
+      SID		      "349"
+      Position		      [2305, 1692, 2410, 1708]
+      ZOrder		      684
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorHPT"
+      Port {
+	PortNumber		1
+	Name			"Nerr_HPT"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto81"
+      SID		      "344"
+      Position		      [2320, 1577, 2410, 1593]
+      ZOrder		      679
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "HPTPwr"
+      Port {
+	PortNumber		1
+	Name			"HPTPwr"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto83"
+      SID		      "345"
+      Position		      [2305, 1712, 2410, 1728]
+      ZOrder		      680
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorLPT"
+      Port {
+	PortNumber		1
+	Name			"Nerr_LPT"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto84"
+      SID		      "346"
+      Position		      [2320, 1597, 2410, 1613]
+      ZOrder		      681
+      ForegroundColor	      "magenta"
+      ShowName		      off
+      GotoTag		      "LPTPwr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto85"
+      SID		      "347"
+      Position		      [2305, 1732, 2410, 1748]
+      ZOrder		      682
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorNozzle"
+      Port {
+	PortNumber		1
+	Name			"Nerr_NozCore"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto86"
+      SID		      "343"
+      Position		      [2350, 1807, 2410, 1823]
+      ZOrder		      678
+      ShowName		      off
+      GotoTag		      "MainFg"
+      Port {
+	PortNumber		1
+	Name			"MainFg"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto87"
+      SID		      "342"
+      Position		      [2350, 1827, 2410, 1843]
+      ZOrder		      677
+      ShowName		      off
+      GotoTag		      "Fg"
+      Port {
+	PortNumber		1
+	Name			"Fg"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto88"
+      SID		      "324"
+      Position		      [1545, 1967, 1585, 1983]
+      ZOrder		      659
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "Perf"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto89"
+      SID		      "341"
+      Position		      [2335, 2237, 2410, 2253]
+      ZOrder		      676
+      ShowName		      off
+      GotoTag		      "Perf"
+      Port {
+	PortNumber		1
+	Name			"Perf"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto9"
+      SID		      "105"
+      Position		      [1775, 605, 1880, 625]
+      ZOrder		      459
+      ForegroundColor	      "green"
+      ShowName		      off
+      GotoTag		      "FlowErrorBypNoz"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Goto90"
+      SID		      "326"
+      Position		      [1200, 852, 1250, 868]
+      ZOrder		      661
+      ForegroundColor	      "blue"
+      NamePlacement	      "alternate"
+      ShowName		      off
+      GotoTag		      "S22"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Goto91"
+      SID		      "331"
+      Position		      [2120, 1805, 2170, 1825]
+      ZOrder		      666
+      ForegroundColor	      "blue"
+      ShowName		      off
+      GotoTag		      "S13"
+      Port {
+	PortNumber		1
+	Name			"S13"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "HPC"
+      SID		      "369"
+      Ports		      [3, 6]
+      Position		      [1885, 767, 1975, 1083]
+      ZOrder		      704
+      LibraryVersion	      "1.470"
+      SourceBlock	      "Lib_TurboC_Compressor_TMATSC/C_Compressor"
+      SourceType	      "T-MATS: Compressor Library Block, cantera"
+      MapFile_M		      "'HPC.map'"
+      s_C_Nc_in_M	      "0"
+      s_Wc_in_M		      "0"
+      s_PR_in_M		      "0"
+      s_eff_in_M	      "0"
+      Wfrac1_M		      ".055"
+      hfrac1_M		      "1"
+      Pfrac1_M		      "1"
+      Wfrac2_M		      ".035"
+      hfrac2_M		      "1"
+      Pfrac2_M		      "1"
+      IDes_M		      "0"
+      NcDes_M		      "100"
+      effDes_M		      ".865"
+      PRdes_M		      "5.609"
+      RlineDes_M	      "2.0424"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "HPShaft"
+      SID		      "68"
+      Ports		      [3, 2]
+      Position		      [1100, 1071, 1195, 1149]
+      ZOrder		      421
+      LibraryVersion	      "1.461"
+      SourceBlock	      "Lib_Turbo_Shaft_TMATS/Shaft"
+      SourceType	      "T-MATS: Shaft Library Block"
+      ContentPreviewEnabled   off
+      Shaft_Inertia_M	      "1000"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "HPT"
+      SID		      "367"
+      Ports		      [5, 4]
+      Position		      [2360, 776, 2520, 1024]
+      ZOrder		      702
+      LibraryVersion	      "1.471"
+      SourceBlock	      "Lib_TurboC_Turbine_TMATSC/C_Turbine"
+      SourceType	      "T-MATS: Turbine Library Block, cantera"
+      MapFile_M		      "'HPT1.map'"
+      s_C_Nc_M		      "0"
+      s_Wc_M		      "0"
+      s_PR_M		      "0"
+      s_eff_M		      "0"
+      BSW1_M		      "1"
+      BSW2_M		      "0"
+      IDes_M		      "0"
+      Ndes_M		      "7499"
+      PRmapDes_M	      "4.9299"
+      effDes_M		      ".913"
+      NcDes_M		      "100"
+    }
+    Block {
+      BlockType		      Display
+      Name		      "Independents"
+      SID		      "109"
+      Ports		      [1]
+      Position		      [850, 1617, 925, 1803]
+      ZOrder		      463
+      Decimation	      "1"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "LPC"
+      SID		      "371"
+      Ports		      [3, 6]
+      Position		      [1495, 815, 1585, 945]
+      ZOrder		      706
+      LibraryVersion	      "1.470"
+      SourceBlock	      "Lib_TurboC_Compressor_TMATSC/C_Compressor"
+      SourceType	      "T-MATS: Compressor Library Block, cantera"
+      MapFile_M		      "'LPC.map'"
+      s_C_Nc_in_M	      "0"
+      s_Wc_in_M		      "0"
+      s_PR_in_M		      "0"
+      s_eff_in_M	      "0"
+      Wfrac1_M		      "0"
+      hfrac1_M		      "1"
+      Pfrac1_M		      "1"
+      Wfrac2_M		      "0"
+      hfrac2_M		      "1"
+      Pfrac2_M		      "1"
+      IDes_M		      "0"
+      NcDes_M		      "100"
+      effDes_M		      ".868"
+      PRdes_M		      "2.488"
+      RlineDes_M	      "1.7664"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "LPShaft"
+      SID		      "85"
+      Ports		      [3, 2]
+      Position		      [1100, 1293, 1200, 1397]
+      ZOrder		      439
+      LibraryVersion	      "1.461"
+      SourceBlock	      "Lib_Turbo_Shaft_TMATS/Shaft"
+      SourceType	      "T-MATS: Shaft Library Block"
+      ContentPreviewEnabled   off
+      Shaft_Inertia_M	      "1000"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "LPT"
+      SID		      "365"
+      Ports		      [5, 4]
+      Position		      [2805, 774, 2965, 1006]
+      ZOrder		      700
+      LibraryVersion	      "1.471"
+      SourceBlock	      "Lib_TurboC_Turbine_TMATSC/C_Turbine"
+      SourceType	      "T-MATS: Turbine Library Block, cantera"
+      MapFile_M		      "'LPT.map'"
+      s_C_Nc_M		      "0"
+      s_Wc_M		      "0"
+      s_PR_M		      "0"
+      s_eff_M		      "0"
+      BSW1_M		      "1"
+      BSW2_M		      "1"
+      IDes_M		      "0"
+      Ndes_M		      "3723"
+      PRmapDes_M	      "6.4203"
+      effDes_M		      ".93"
+      NcDes_M		      "100"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux"
+      SID		      "67"
+      Ports		      [2, 1]
+      Position		      [940, 1057, 945, 1108]
+      ZOrder		      422
+      ShowName		      off
+      Inputs		      "2"
+      DisplayOption	      "bar"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux1"
+      SID		      "48"
+      Ports		      [9, 1]
+      Position		      [1650, 1663, 1655, 1827]
+      ZOrder		      391
+      BlockMirror	      on
+      ForegroundColor	      "green"
+      ShowName		      off
+      Inputs		      "9"
+      DisplayOption	      "bar"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux2"
+      SID		      "86"
+      Ports		      [3, 1]
+      Position		      [920, 1301, 925, 1359]
+      ZOrder		      440
+      ShowName		      off
+      Inputs		      "3"
+      DisplayOption	      "bar"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "SFCCalc"
+      SID		      "378"
+      Ports		      [3, 2]
+      Position		      [1335, 1947, 1425, 1993]
+      ZOrder		      713
+      LibraryVersion	      "1.344"
+      SourceBlock	      "Lib_Turbo_SFCCalc_TMATS/SFCCalc"
+      SourceType	      "TMATS: SFC Calculation Library Block"
+      ContentPreviewEnabled   off
+      Port {
+	PortNumber		1
+	Name			"SFC"
+	PropagatedSignals	"Specific Fuel Consumption [(lbm/hr)/lbs]"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+      Port {
+	PortNumber		2
+	Name			"Fnet"
+	PropagatedSignals	"Net Thrust [lbf]"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "SS NR Solver w JacobianCalc1"
+      SID		      "218"
+      Ports		      [2, 2]
+      Position		      [1290, 1698, 1430, 1762]
+      ZOrder		      552
+      BlockMirror	      on
+      LibraryVersion	      "1.393"
+      SourceBlock	      "Lib_Solve_SSNRSolverJC_TMATS/SS NR Solver w JacobianCalc"
+      SourceType	      "T-MATS: SS NR Solver w Jacobian Calc Library Block"
+      ContentPreviewEnabled   off
+      SJac_Per_M	      "[1 .01 .01 10 .01 .01 .01 10 .01]"
+      SNR_IC_M		      "[6742 2 2 7500 2 2 2 4000 5]"
+      SNR_DX_M		      "10"
+      SNR_Mx_M		      "100000"
+      SNR_Mn_M		      "0.00001"
+      SJacobianAttempts_M     "5"
+      Cond_Limits_M	      ".1"
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator"
+      SID		      "219"
+      Position		      [770, 810, 780, 820]
+      ZOrder		      553
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator1"
+      SID		      "220"
+      Position		      [770, 830, 780, 840]
+      ZOrder		      554
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator10"
+      SID		      "387"
+      Position		      [770, 890, 780, 900]
+      ZOrder		      722
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator11"
+      SID		      "388"
+      Position		      [1125, 815, 1135, 825]
+      ZOrder		      723
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator12"
+      SID		      "389"
+      Position		      [1505, 635, 1515, 645]
+      ZOrder		      724
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator13"
+      SID		      "390"
+      Position		      [1360, 645, 1370, 655]
+      ZOrder		      725
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator14"
+      SID		      "391"
+      Position		      [1365, 845, 1375, 855]
+      ZOrder		      726
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator15"
+      SID		      "392"
+      Position		      [1615, 925, 1625, 935]
+      ZOrder		      727
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator16"
+      SID		      "393"
+      Position		      [1765, 680, 1775, 690]
+      ZOrder		      728
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator17"
+      SID		      "394"
+      Position		      [2000, 1045, 2010, 1055]
+      ZOrder		      729
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator18"
+      SID		      "397"
+      Position		      [2210, 815, 2220, 825]
+      ZOrder		      732
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator19"
+      SID		      "399"
+      Position		      [2745, 815, 2755, 825]
+      ZOrder		      734
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator2"
+      SID		      "232"
+      Position		      [1615, 845, 1625, 855]
+      ZOrder		      566
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator20"
+      SID		      "402"
+      Position		      [3465, 845, 3475, 855]
+      ZOrder		      737
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator3"
+      SID		      "233"
+      Position		      [1615, 865, 1625, 875]
+      ZOrder		      567
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator4"
+      SID		      "264"
+      Position		      [310, 895, 320, 905]
+      ZOrder		      599
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator5"
+      SID		      "268"
+      Position		      [535, 815, 545, 825]
+      ZOrder		      603
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator6"
+      SID		      "401"
+      Position		      [3200, 805, 3210, 815]
+      ZOrder		      736
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator7"
+      SID		      "398"
+      Position		      [2985, 975, 2995, 985]
+      ZOrder		      733
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator8"
+      SID		      "396"
+      Position		      [2545, 985, 2555, 995]
+      ZOrder		      731
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator9"
+      SID		      "395"
+      Position		      [1800, 835, 1810, 845]
+      ZOrder		      730
+      ShowName		      off
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace"
+      SID		      "362"
+      Ports		      [1]
+      Position		      [2725, 1892, 2895, 1908]
+      ZOrder		      697
+      VariableName	      "JT9D_SS_Cantera_Output"
+      MaxDataPoints	      "inf"
+      SaveFormat	      "Timeseries"
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      ZeroOrderHold
+      Name		      "Zero-Order Hold"
+      SID		      "259"
+      Position		      [1535, 1730, 1570, 1760]
+      ZOrder		      593
+      BlockMirror	      on
+      NamePlacement	      "alternate"
+      SampleTime	      "0.015"
+    }
+    Line {
+      ZOrder		      429
+      SrcBlock		      "HPC"
+      SrcPort		      1
+      Points		      [15, 0]
+      Branch {
+	ZOrder			825
+	Points			[0, -25]
+	DstBlock		"Goto50"
+	DstPort			1
+      }
+      Branch {
+	ZOrder			820
+	DstBlock		"Burner\n"
+	DstPort			1
+      }
+    }
+    Line {
+      ZOrder		      2
+      SrcBlock		      "Mux1"
+      SrcPort		      1
+      DstBlock		      "Zero-Order Hold"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      3
+      SrcBlock		      "SS NR Solver w JacobianCalc1"
+      SrcPort		      1
+      Points		      [-209, 0]
+      Branch {
+	ZOrder			844
+	Points			[0, -113; -241, 0]
+	DstBlock		"Independents"
+	DstPort			1
+      }
+      Branch {
+	ZOrder			839
+	DstBlock		"Demux"
+	DstPort			1
+      }
+    }
+    Line {
+      ZOrder		      9
+      SrcBlock		      "HPShaft"
+      SrcPort		      1
+      DstBlock		      "Goto22"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      452
+      SrcBlock		      "C_Splitter"
+      SrcPort		      1
+      Points		      [62, 0; 0, -145]
+      Branch {
+	ZOrder			469
+	DstBlock		"Duct16"
+	DstPort			1
+      }
+      Branch {
+	ZOrder			304
+	Points			[0, -20]
+	DstBlock		"Goto46"
+	DstPort			1
+      }
+    }
+    Line {
+      ZOrder		      197
+      SrcBlock		      "C_Inlet"
+      SrcPort		      1
+      Points		      [19, 0]
+      Branch {
+	ZOrder			788
+	DstBlock		"Fan"
+	DstPort			1
+      }
+      Branch {
+	ZOrder			300
+	Points			[0, -20]
+	DstBlock		"Goto44"
+	DstPort			1
+      }
+    }
+    Line {
+      ZOrder		      413
+      SrcBlock		      "HPT"
+      SrcPort		      1
+      Points		      [18, 0]
+      Branch {
+	ZOrder			817
+	DstBlock		"Duct13"
+	DstPort			1
+      }
+      Branch {
+	ZOrder			317
+	Points			[0, -15]
+	DstBlock		"Goto52"
+	DstPort			1
+      }
+    }
+    Line {
+      ZOrder		      407
+      SrcBlock		      "LPT"
+      SrcPort		      1
+      Points		      [27, 0]
+      Branch {
+	ZOrder			408
+	Points			[0, -15]
+	DstBlock		"Goto53"
+	DstPort			1
+      }
+      Branch {
+	ZOrder			396
+	DstBlock		"C_Duct"
+	DstPort			1
+      }
+    }
+    Line {
+      ZOrder		      1364
+      SrcBlock		      "Mux"
+      SrcPort		      1
+      Points		      [53, 0; 0, 25]
+      DstBlock		      "HPShaft"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      1366
+      SrcBlock		      "Mux2"
+      SrcPort		      1
+      Points		      [83, 0; 0, 15]
+      DstBlock		      "LPShaft"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      16
+      SrcBlock		      "LPShaft"
+      SrcPort		      1
+      DstBlock		      "Goto25"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      460
+      SrcBlock		      "Fan"
+      SrcPort		      4
+      DstBlock		      "Goto"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      466
+      SrcBlock		      "From"
+      SrcPort		      1
+      DstBlock		      "Fan"
+      DstPort		      3
+    }
+    Line {
+      ZOrder		      19
+      SrcBlock		      "Demux"
+      SrcPort		      5
+      DstBlock		      "Goto1"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      20
+      SrcBlock		      "From1"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      5
+    }
+    Line {
+      ZOrder		      446
+      SrcBlock		      "From2"
+      SrcPort		      1
+      DstBlock		      "LPC"
+      DstPort		      3
+    }
+    Line {
+      ZOrder		      22
+      SrcBlock		      "From3"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      6
+    }
+    Line {
+      ZOrder		      23
+      SrcBlock		      "Demux"
+      SrcPort		      6
+      DstBlock		      "Goto3"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      406
+      SrcBlock		      "LPT"
+      SrcPort		      2
+      DstBlock		      "Goto4"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      405
+      SrcBlock		      "From4"
+      SrcPort		      1
+      DstBlock		      "LPT"
+      DstPort		      5
+    }
+    Line {
+      ZOrder		      26
+      SrcBlock		      "Demux"
+      SrcPort		      7
+      DstBlock		      "Goto5"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      27
+      SrcBlock		      "From5"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      7
+    }
+    Line {
+      ZOrder		      1365
+      SrcBlock		      "From6"
+      SrcPort		      1
+      DstBlock		      "LPShaft"
+      DstPort		      3
+    }
+    Line {
+      ZOrder		      29
+      SrcBlock		      "LPShaft"
+      SrcPort		      2
+      DstBlock		      "Goto6"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      30
+      SrcBlock		      "From7"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      8
+    }
+    Line {
+      ZOrder		      31
+      SrcBlock		      "Demux"
+      SrcPort		      8
+      DstBlock		      "Goto7"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      32
+      SrcBlock		      "Demux"
+      SrcPort		      9
+      DstBlock		      "Goto8"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      33
+      SrcBlock		      "From9"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      9
+    }
+    Line {
+      ZOrder		      198
+      SrcBlock		      "C_Ambient"
+      SrcPort		      1
+      Points		      [27, 0]
+      Branch {
+	ZOrder			298
+	Points			[0, -20]
+	DstBlock		"Goto43"
+	DstPort			1
+      }
+      Branch {
+	ZOrder			297
+	DstBlock		"C_Inlet"
+	DstPort			1
+      }
+    }
+    Line {
+      ZOrder		      35
+      SrcBlock		      "From10"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      424
+      SrcBlock		      "HPC"
+      SrcPort		      4
+      DstBlock		      "Goto10"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      37
+      SrcBlock		      "From11"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      415
+      SrcBlock		      "HPT"
+      SrcPort		      2
+      DstBlock		      "Goto11"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      392
+      SrcBlock		      "CoreNozzle"
+      SrcPort		      1
+      DstBlock		      "Goto12"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      40
+      SrcBlock		      "From12"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      3
+    }
+    Line {
+      ZOrder		      41
+      SrcBlock		      "HPShaft"
+      SrcPort		      2
+      DstBlock		      "Goto13"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      42
+      SrcBlock		      "From13"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      4
+    }
+    Line {
+      ZOrder		      192
+      SrcBlock		      "From14"
+      SrcPort		      1
+      DstBlock		      "C_Ambient"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      44
+      SrcBlock		      "Demux"
+      SrcPort		      1
+      DstBlock		      "Goto14"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      431
+      SrcBlock		      "From15"
+      SrcPort		      1
+      DstBlock		      "HPC"
+      DstPort		      3
+    }
+    Line {
+      ZOrder		      46
+      SrcBlock		      "Demux"
+      SrcPort		      2
+      DstBlock		      "Goto15"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      418
+      SrcBlock		      "From16"
+      SrcPort		      1
+      DstBlock		      "HPT"
+      DstPort		      5
+    }
+    Line {
+      ZOrder		      48
+      SrcBlock		      "Demux"
+      SrcPort		      3
+      DstBlock		      "Goto16"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      49
+      SrcBlock		      "Demux"
+      SrcPort		      4
+      DstBlock		      "Goto17"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      1094
+      SrcBlock		      "From17"
+      SrcPort		      1
+      DstBlock		      "HPShaft"
+      DstPort		      3
+    }
+    Line {
+      ZOrder		      193
+      SrcBlock		      "C_Ambient"
+      SrcPort		      2
+      DstBlock		      "Goto18"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      394
+      SrcBlock		      "From18"
+      SrcPort		      1
+      DstBlock		      "CoreNozzle"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      194
+      SrcBlock		      "C_Ambient"
+      SrcPort		      3
+      DstBlock		      "Goto19"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      455
+      SrcBlock		      "From8"
+      SrcPort		      1
+      DstBlock		      "C_Splitter"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      422
+      SrcBlock		      "Burner\n"
+      SrcPort		      2
+      DstBlock		      "Goto20"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      56
+      SrcBlock		      "Goto42"
+      SrcPort		      1
+      DstBlock		      "Add"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      57
+      SrcBlock		      "Add"
+      SrcPort		      1
+      DstBlock		      "Goto21"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      646
+      SrcBlock		      "From20"
+      SrcPort		      1
+      DstBlock		      "SFCCalc"
+      DstPort		      3
+    }
+    Line {
+      ZOrder		      647
+      SrcBlock		      "From21"
+      SrcPort		      1
+      DstBlock		      "SFCCalc"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      648
+      SrcBlock		      "From22"
+      SrcPort		      1
+      DstBlock		      "SFCCalc"
+      DstPort		      2
+    }
+    Line {
+      Name		      "Perf"
+      ZOrder		      960
+      Labels		      [1, 1]
+      SrcBlock		      "Bus\nCreator7"
+      SrcPort		      1
+      DstBlock		      "Goto88"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      436
+      SrcBlock		      "LPC"
+      SrcPort		      4
+      DstBlock		      "Goto2"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      428
+      SrcBlock		      "HPC"
+      SrcPort		      3
+      DstBlock		      "HPT"
+      DstPort		      3
+    }
+    Line {
+      ZOrder		      423
+      SrcBlock		      "HPC"
+      SrcPort		      2
+      DstBlock		      "HPT"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      464
+      SrcBlock		      "Fan"
+      SrcPort		      1
+      Points		      [19, 0]
+      Branch {
+	ZOrder			791
+	DstBlock		"C_Splitter"
+	DstPort			1
+      }
+      Branch {
+	ZOrder			787
+	Points			[0, -20]
+	DstBlock		"Goto45"
+	DstPort			1
+      }
+    }
+    Line {
+      ZOrder		      453
+      SrcBlock		      "C_Splitter"
+      SrcPort		      2
+      Points		      [63, 0; 0, 40]
+      Branch {
+	ZOrder			795
+	DstBlock		"Duct11"
+	DstPort			1
+      }
+      Branch {
+	ZOrder			454
+	Points			[0, 15]
+	DstBlock		"Goto90"
+	DstPort			1
+      }
+    }
+    Line {
+      ZOrder		      449
+      SrcBlock		      "Duct11"
+      SrcPort		      1
+      Points		      [14, 0]
+      Branch {
+	ZOrder			800
+	DstBlock		"LPC"
+	DstPort			1
+      }
+      Branch {
+	ZOrder			450
+	Points			[0, -15]
+	DstBlock		"Goto48"
+	DstPort			1
+      }
+    }
+    Line {
+      ZOrder		      439
+      SrcBlock		      "LPC"
+      SrcPort		      1
+      Points		      [21, 0]
+      Branch {
+	ZOrder			447
+	DstBlock		"Duct12"
+	DstPort			1
+      }
+      Branch {
+	ZOrder			443
+	Points			[0, -15]
+	DstBlock		"Goto49"
+	DstPort			1
+      }
+    }
+    Line {
+      ZOrder		      433
+      SrcBlock		      "Duct12"
+      SrcPort		      1
+      DstBlock		      "HPC"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      411
+      SrcBlock		      "Duct13"
+      SrcPort		      1
+      DstBlock		      "LPT"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      397
+      SrcBlock		      "C_Duct"
+      SrcPort		      1
+      Points		      [4, 0]
+      Branch {
+	ZOrder			838
+	DstBlock		"CoreNozzle"
+	DstPort			1
+      }
+      Branch {
+	ZOrder			74
+	Points			[0, -15]
+	DstBlock		"Goto54"
+	DstPort			1
+      }
+    }
+    Line {
+      ZOrder		      471
+      SrcBlock		      "Duct16"
+      SrcPort		      1
+      DstBlock		      "Duct15"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      472
+      SrcBlock		      "Duct15"
+      SrcPort		      1
+      Points		      [14, 0]
+      Branch {
+	ZOrder			479
+	DstBlock		"BypassNozzle"
+	DstPort			1
+      }
+      Branch {
+	ZOrder			306
+	Points			[0, -20]
+	DstBlock		"Goto47"
+	DstPort			1
+      }
+    }
+    Line {
+      ZOrder		      476
+      SrcBlock		      "From19"
+      SrcPort		      1
+      DstBlock		      "BypassNozzle"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      477
+      SrcBlock		      "BypassNozzle"
+      SrcPort		      1
+      DstBlock		      "Goto9"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      80
+      SrcBlock		      "Goto40"
+      SrcPort		      1
+      DstBlock		      "Add"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      465
+      SrcBlock		      "Fan"
+      SrcPort		      2
+      DstBlock		      "Terminator"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      463
+      SrcBlock		      "Fan"
+      SrcPort		      3
+      DstBlock		      "Terminator1"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      427
+      SrcBlock		      "Goto23"
+      SrcPort		      1
+      DstBlock		      "HPC"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      417
+      SrcBlock		      "Goto24"
+      SrcPort		      1
+      DstBlock		      "HPT"
+      DstPort		      4
+    }
+    Line {
+      ZOrder		      435
+      SrcBlock		      "Goto26"
+      SrcPort		      1
+      DstBlock		      "LPC"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      404
+      SrcBlock		      "Goto27"
+      SrcPort		      1
+      DstBlock		      "LPT"
+      DstPort		      4
+    }
+    Line {
+      ZOrder		      459
+      SrcBlock		      "Goto28"
+      SrcPort		      1
+      DstBlock		      "Fan"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      440
+      SrcBlock		      "LPC"
+      SrcPort		      2
+      DstBlock		      "Terminator2"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      437
+      SrcBlock		      "LPC"
+      SrcPort		      3
+      DstBlock		      "Terminator3"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      414
+      SrcBlock		      "HPT"
+      SrcPort		      3
+      DstBlock		      "Goto30"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      425
+      SrcBlock		      "HPC"
+      SrcPort		      5
+      DstBlock		      "Goto29"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      92
+      SrcBlock		      "Goto32"
+      SrcPort		      1
+      DstBlock		      "Mux"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      93
+      SrcBlock		      "Goto31"
+      SrcPort		      1
+      DstBlock		      "Mux"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      438
+      SrcBlock		      "LPC"
+      SrcPort		      5
+      DstBlock		      "Goto33"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      95
+      SrcBlock		      "Goto34"
+      SrcPort		      1
+      DstBlock		      "Mux2"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      96
+      SrcBlock		      "Goto35"
+      SrcPort		      1
+      DstBlock		      "Mux2"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      462
+      SrcBlock		      "Fan"
+      SrcPort		      5
+      DstBlock		      "Goto36"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      409
+      SrcBlock		      "LPT"
+      SrcPort		      3
+      DstBlock		      "Goto37"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      99
+      SrcBlock		      "Goto38"
+      SrcPort		      1
+      DstBlock		      "Mux2"
+      DstPort		      3
+    }
+    Line {
+      ZOrder		      478
+      SrcBlock		      "BypassNozzle"
+      SrcPort		      2
+      DstBlock		      "Goto39"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      395
+      SrcBlock		      "CoreNozzle"
+      SrcPort		      2
+      DstBlock		      "Goto41"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      402
+      SrcBlock		      "Constant"
+      SrcPort		      1
+      DstBlock		      "LPT"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      403
+      SrcBlock		      "Constant1"
+      SrcPort		      1
+      DstBlock		      "LPT"
+      DstPort		      3
+    }
+    Line {
+      ZOrder		      104
+      SrcBlock		      "Zero-Order Hold"
+      SrcPort		      1
+      Points		      [-20, 0]
+      Branch {
+	ZOrder			1282
+	DstBlock		"SS NR Solver w JacobianCalc1"
+	DstPort			2
+      }
+      Branch {
+	ZOrder			106
+	Points			[0, -102; 313, 0; 0, 112]
+	DstBlock		"Dependents"
+	DstPort			1
+      }
+    }
+    Line {
+      ZOrder		      196
+      SrcBlock		      "C_Ambient"
+      SrcPort		      4
+      DstBlock		      "Terminator4"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      199
+      SrcBlock		      "C_Inlet"
+      SrcPort		      2
+      DstBlock		      "Terminator5"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      420
+      SrcBlock		      "Burner\n"
+      SrcPort		      1
+      Points		      [16, 0]
+      Branch {
+	ZOrder			830
+	Points			[0, -15]
+	DstBlock		"Goto51"
+	DstPort			1
+      }
+      Branch {
+	ZOrder			829
+	Points			[80, 0; 0, 20]
+	DstBlock		"HPT"
+	DstPort			1
+      }
+    }
+    Line {
+      Name		      "S23"
+      ZOrder		      861
+      Labels		      [1, 1]
+      SrcBlock		      "Goto62"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator"
+      DstPort		      6
+    }
+    Line {
+      Name		      "S22"
+      ZOrder		      856
+      Labels		      [1, 1]
+      SrcBlock		      "Goto63"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator"
+      DstPort		      5
+    }
+    Line {
+      Name		      "S24"
+      ZOrder		      860
+      Labels		      [1, 1]
+      SrcBlock		      "Goto61"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator"
+      DstPort		      7
+    }
+    Line {
+      Name		      "S3"
+      ZOrder		      853
+      Labels		      [1, 1]
+      SrcBlock		      "Goto60"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator"
+      DstPort		      8
+    }
+    Line {
+      Name		      "S13"
+      ZOrder		      857
+      Labels		      [1, 1]
+      SrcBlock		      "Goto91"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator"
+      DstPort		      4
+    }
+    Line {
+      Name		      "S4"
+      ZOrder		      858
+      Labels		      [1, 1]
+      SrcBlock		      "Goto59"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator"
+      DstPort		      9
+    }
+    Line {
+      Name		      "S21"
+      ZOrder		      859
+      Labels		      [1, 1]
+      SrcBlock		      "Goto64"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator"
+      DstPort		      3
+    }
+    Line {
+      Name		      "S45"
+      ZOrder		      851
+      Labels		      [1, 1]
+      SrcBlock		      "Goto58"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator"
+      DstPort		      10
+    }
+    Line {
+      Name		      "S2"
+      ZOrder		      863
+      Labels		      [1, 1]
+      SrcBlock		      "Goto65"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator"
+      DstPort		      2
+    }
+    Line {
+      Name		      "S1"
+      ZOrder		      862
+      Labels		      [1, 1]
+      SrcBlock		      "Goto66"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator"
+      DstPort		      1
+    }
+    Line {
+      Name		      "S5"
+      ZOrder		      854
+      Labels		      [1, 1]
+      SrcBlock		      "Goto57"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator"
+      DstPort		      11
+    }
+    Line {
+      Name		      "S7"
+      ZOrder		      855
+      Labels		      [1, 1]
+      SrcBlock		      "Goto56"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator"
+      DstPort		      12
+    }
+    Line {
+      Name		      "S17"
+      ZOrder		      852
+      Labels		      [1, 1]
+      SrcBlock		      "Goto55"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator"
+      DstPort		      13
+    }
+    Line {
+      Name		      "StationData"
+      ZOrder		      954
+      Labels		      [1, 0]
+      SrcBlock		      "Bus\nCreator"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator3"
+      DstPort		      4
+    }
+    Line {
+      Name		      "Speed"
+      ZOrder		      953
+      Labels		      [1, 0]
+      SrcBlock		      "Bus\nCreator2"
+      SrcPort		      1
+      Points		      [53, 0; 0, -50]
+      DstBlock		      "Bus\nCreator3"
+      DstPort		      5
+    }
+    Line {
+      Name		      "Pwr"
+      ZOrder		      897
+      Labels		      [1, 0]
+      SrcBlock		      "Bus\nCreator1"
+      SrcPort		      1
+      Points		      [62, 0; 0, 280]
+      DstBlock		      "Bus\nCreator3"
+      DstPort		      1
+    }
+    Line {
+      Name		      "Output"
+      ZOrder		      896
+      Labels		      [1, 1]
+      SrcBlock		      "Bus\nCreator3"
+      SrcPort		      1
+      DstBlock		      "To Workspace"
+      DstPort		      1
+    }
+    Line {
+      Name		      "SFC"
+      ZOrder		      959
+      Labels		      [1, 1]
+      SrcBlock		      "SFCCalc"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator7"
+      DstPort		      1
+    }
+    Line {
+      Name		      "Fnet"
+      ZOrder		      961
+      Labels		      [1, 1]
+      SrcBlock		      "SFCCalc"
+      SrcPort		      2
+      DstBlock		      "Bus\nCreator7"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      836
+      SrcBlock		      "CoreNozzle"
+      SrcPort		      3
+      DstBlock		      "Terminator20"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      803
+      SrcBlock		      "HPC"
+      SrcPort		      6
+      DstBlock		      "Terminator17"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      790
+      SrcBlock		      "Fan"
+      SrcPort		      6
+      DstBlock		      "Terminator10"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      792
+      SrcBlock		      "C_Splitter"
+      SrcPort		      3
+      DstBlock		      "Terminator11"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      794
+      SrcBlock		      "Duct15"
+      SrcPort		      2
+      DstBlock		      "Terminator12"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      798
+      SrcBlock		      "Duct16"
+      SrcPort		      2
+      DstBlock		      "Terminator13"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      799
+      SrcBlock		      "Duct11"
+      SrcPort		      2
+      DstBlock		      "Terminator14"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      801
+      SrcBlock		      "LPC"
+      SrcPort		      6
+      DstBlock		      "Terminator15"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      802
+      SrcBlock		      "BypassNozzle"
+      SrcPort		      3
+      DstBlock		      "Terminator16"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      804
+      SrcBlock		      "Duct12"
+      SrcPort		      2
+      DstBlock		      "Terminator9"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      826
+      SrcBlock		      "HPT"
+      SrcPort		      4
+      DstBlock		      "Terminator8"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      831
+      SrcBlock		      "Burner\n"
+      SrcPort		      3
+      DstBlock		      "Terminator18"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      832
+      SrcBlock		      "LPT"
+      SrcPort		      4
+      DstBlock		      "Terminator7"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      833
+      SrcBlock		      "Duct13"
+      SrcPort		      2
+      DstBlock		      "Terminator19"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      835
+      SrcBlock		      "C_Duct"
+      SrcPort		      2
+      DstBlock		      "Terminator6"
+      DstPort		      1
+    }
+    Line {
+      Name		      "<Converged>"
+      ZOrder		      847
+      Labels		      [0, 0]
+      SrcBlock		      "Bus\nSelector"
+      SrcPort		      1
+      DstBlock		      "Converged"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      846
+      SrcBlock		      "SS NR Solver w JacobianCalc1"
+      SrcPort		      2
+      DstBlock		      "Bus\nSelector"
+      DstPort		      1
+    }
+    Line {
+      Name		      "Nerr_Fan"
+      ZOrder		      915
+      Labels		      [1, 1]
+      SrcBlock		      "Goto68"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator4"
+      DstPort		      1
+    }
+    Line {
+      Name		      "Nerr_NozByp"
+      ZOrder		      916
+      Labels		      [1, 1]
+      SrcBlock		      "Goto71"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator4"
+      DstPort		      7
+    }
+    Line {
+      Name		      "Nerr_LPC"
+      ZOrder		      917
+      Labels		      [1, 1]
+      SrcBlock		      "Goto73"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator4"
+      DstPort		      2
+    }
+    Line {
+      Name		      "Nerr_HPC"
+      ZOrder		      918
+      Labels		      [1, 1]
+      SrcBlock		      "Goto76"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator4"
+      DstPort		      3
+    }
+    Line {
+      Name		      "Nerr_HPT"
+      ZOrder		      919
+      Labels		      [1, 1]
+      SrcBlock		      "Goto80"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator4"
+      DstPort		      4
+    }
+    Line {
+      Name		      "Nerr_LPT"
+      ZOrder		      920
+      Labels		      [1, 1]
+      SrcBlock		      "Goto83"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator4"
+      DstPort		      5
+    }
+    Line {
+      Name		      "Nerr_NozCore"
+      ZOrder		      921
+      Labels		      [1, 1]
+      SrcBlock		      "Goto85"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator4"
+      DstPort		      6
+    }
+    Line {
+      Name		      "FanPwr"
+      ZOrder		      931
+      Labels		      [1, 1]
+      SrcBlock		      "Goto69"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator1"
+      DstPort		      1
+    }
+    Line {
+      Name		      "LPCPwr"
+      ZOrder		      932
+      Labels		      [1, 1]
+      SrcBlock		      "Goto74"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator1"
+      DstPort		      2
+    }
+    Line {
+      Name		      "HPCPwr"
+      ZOrder		      933
+      Labels		      [1, 1]
+      SrcBlock		      "Goto77"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator1"
+      DstPort		      3
+    }
+    Line {
+      Name		      "HPTPwr"
+      ZOrder		      934
+      Labels		      [1, 1]
+      SrcBlock		      "Goto81"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator1"
+      DstPort		      4
+    }
+    Line {
+      ZOrder		      935
+      SrcBlock		      "Goto84"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator1"
+      DstPort		      5
+    }
+    Line {
+      Name		      "BypFg"
+      ZOrder		      937
+      Labels		      [1, 1]
+      SrcBlock		      "Goto72"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator5"
+      DstPort		      1
+    }
+    Line {
+      Name		      "MainFg"
+      ZOrder		      938
+      Labels		      [1, 1]
+      SrcBlock		      "Goto86"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator5"
+      DstPort		      2
+    }
+    Line {
+      Name		      "Fg"
+      ZOrder		      939
+      Labels		      [1, 1]
+      SrcBlock		      "Goto87"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator5"
+      DstPort		      3
+    }
+    Line {
+      Name		      "Perf"
+      ZOrder		      962
+      Labels		      [1, 0]
+      SrcBlock		      "Goto89"
+      SrcPort		      1
+      Points		      [220, 0; 0, -295]
+      DstBlock		      "Bus\nCreator3"
+      DstPort		      8
+    }
+    Line {
+      Name		      "LPSpeed"
+      ZOrder		      942
+      Labels		      [1, 1]
+      SrcBlock		      "Goto67"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator2"
+      DstPort		      1
+    }
+    Line {
+      Name		      "HPSpeed"
+      ZOrder		      943
+      Labels		      [1, 1]
+      SrcBlock		      "Goto79"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator2"
+      DstPort		      2
+    }
+    Line {
+      Name		      "LPNdot"
+      ZOrder		      944
+      Labels		      [1, 1]
+      SrcBlock		      "From30"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator2"
+      DstPort		      3
+    }
+    Line {
+      Name		      "HPNdot"
+      ZOrder		      945
+      Labels		      [1, 1]
+      SrcBlock		      "From29"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator2"
+      DstPort		      4
+    }
+    Line {
+      Name		      "PRHPT"
+      ZOrder		      946
+      Labels		      [1, 1]
+      SrcBlock		      "From27"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator6"
+      DstPort		      6
+    }
+    Line {
+      Name		      "RlineHPC"
+      ZOrder		      947
+      Labels		      [1, 1]
+      SrcBlock		      "From26"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator6"
+      DstPort		      5
+    }
+    Line {
+      Name		      "RlineFan"
+      ZOrder		      948
+      Labels		      [1, 1]
+      SrcBlock		      "From23"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator6"
+      DstPort		      2
+    }
+    Line {
+      Name		      "BPR"
+      ZOrder		      949
+      Labels		      [1, 1]
+      SrcBlock		      "From24"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator6"
+      DstPort		      3
+    }
+    Line {
+      Name		      "RlineLPC"
+      ZOrder		      950
+      Labels		      [1, 1]
+      SrcBlock		      "From25"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator6"
+      DstPort		      4
+    }
+    Line {
+      Name		      "PRLPT"
+      ZOrder		      951
+      Labels		      [1, 1]
+      SrcBlock		      "From28"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator6"
+      DstPort		      7
+    }
+    Line {
+      Name		      "Win"
+      ZOrder		      952
+      Labels		      [1, 1]
+      SrcBlock		      "Goto78"
+      SrcPort		      1
+      DstBlock		      "Bus\nCreator6"
+      DstPort		      1
+    }
+    Line {
+      Name		      "FlowError"
+      ZOrder		      955
+      Labels		      [1, 0]
+      SrcBlock		      "Bus\nCreator4"
+      SrcPort		      1
+      Points		      [50, 0; 0, 160]
+      DstBlock		      "Bus\nCreator3"
+      DstPort		      2
+    }
+    Line {
+      Name		      "Thrust"
+      ZOrder		      956
+      Labels		      [1, 0]
+      SrcBlock		      "Bus\nCreator5"
+      SrcPort		      1
+      Points		      [33, 0; 0, 60]
+      DstBlock		      "Bus\nCreator3"
+      DstPort		      3
+    }
+    Line {
+      Name		      "Independents"
+      ZOrder		      957
+      Labels		      [1, 0]
+      SrcBlock		      "Bus\nCreator6"
+      SrcPort		      1
+      Points		      [74, 0; 0, -175]
+      DstBlock		      "Bus\nCreator3"
+      DstPort		      6
+    }
+    Line {
+      Name		      "Wfuel"
+      ZOrder		      958
+      Labels		      [1, 0]
+      SrcBlock		      "Goto70"
+      SrcPort		      1
+      Points		      [196, 0; 0, -285]
+      DstBlock		      "Bus\nCreator3"
+      DstPort		      7
+    }
+    Line {
+      ZOrder		      1367
+      SrcBlock		      "Constant3"
+      SrcPort		      1
+      Points		      [9, 0; 0, 15]
+      DstBlock		      "HPShaft"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      1283
+      SrcBlock		      "Constant2"
+      SrcPort		      1
+      DstBlock		      "SS NR Solver w JacobianCalc1"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      1368
+      SrcBlock		      "Constant4"
+      SrcPort		      1
+      Points		      [13, 0; 0, 10]
+      DstBlock		      "LPShaft"
+      DstPort		      1
+    }
+    Annotation {
+      SID		      "403"
+      Name		      "Gross Thrust"
+      Position		      [1313, 2044, 1476, 2079]
+      InternalMargins	      [0, 0, 0, 0]
+      FixedHeight	      off
+      FixedWidth	      off
+      HorizontalAlignment     "left"
+      VerticalAlignment	      "top"
+      ZOrder		      -1
+      FontSize		      28
+    }
+    Annotation {
+      SID		      "404"
+      Name		      "Performance Variables"
+      Position		      [1273, 1894, 1554, 1929]
+      InternalMargins	      [0, 0, 0, 0]
+      FixedHeight	      off
+      FixedWidth	      off
+      HorizontalAlignment     "left"
+      VerticalAlignment	      "top"
+      ZOrder		      -1
+      FontSize		      28
+    }
+    Annotation {
+      SID		      "405"
+      Name		      "Solver"
+      Position		      [1328, 1554, 1407, 1589]
+      InternalMargins	      [0, 0, 0, 0]
+      FixedHeight	      off
+      FixedWidth	      off
+      HorizontalAlignment     "left"
+      VerticalAlignment	      "top"
+      ZOrder		      -2
+      FontSize		      28
+    }
+    Annotation {
+      SID		      "406"
+      Name		      "Shafts"
+      Position		      [1113, 994, 1194, 1029]
+      InternalMargins	      [0, 0, 0, 0]
+      FixedHeight	      off
+      FixedWidth	      off
+      HorizontalAlignment     "left"
+      VerticalAlignment	      "top"
+      ZOrder		      -3
+      FontSize		      28
+    }
+    Annotation {
+      SID		      "411"
+      Name		      "Output to Workspace"
+      Position		      [2263, 1404, 2530, 1439]
+      InternalMargins	      [0, 0, 0, 0]
+      FixedHeight	      off
+      FixedWidth	      off
+      HorizontalAlignment     "left"
+      VerticalAlignment	      "top"
+      ZOrder		      -8
+      FontSize		      28
+    }
+    Annotation {
+      SID		      "441"
+      Name		      "JT9D Gas Turbine Engine"
+      Position		      [1463, 469, 2015, 528]
+      InternalMargins	      [0, 0, 0, 0]
+      FixedHeight	      off
+      FixedWidth	      off
+      HorizontalAlignment     "left"
+      VerticalAlignment	      "top"
+      ZOrder		      -9
+      FontSize		      48
+    }
+  }
+}
+#Finite State Machines
+#
+#   Stateflow 80000005
+#
+#
+Stateflow {
+  machine {
+    id			    1
+    name		    "JT9D_SS_Cantera_Template"
+    created		    "21-Jun-2013 16:53:31"
+    isLibrary		    0
+    firstTarget		    2
+    sfVersion		    80000005
+  }
+  target {
+    id			    2
+    name		    "sfun"
+    description		    "Default Simulink S-Function Target."
+    machine		    1
+    linkNode		    [1 0 0]
+  }
+}
