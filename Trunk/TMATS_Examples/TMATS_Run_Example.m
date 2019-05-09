@@ -22,7 +22,8 @@ InpMsg{7} = '6) Steady State JT9D, Cantera';
 InpMsg{8} = '7) Cycle Model';
 InpMsg{9} = '8) Linearization Examples';
 InpMsg{10} = '9) Volume Example';
-InpMsg{11} = '10) Cancel Setup';
+InpMsg{11} = '10) Advanced Geared Turbofan';
+InpMsg{12} = '11) Cancel Setup';
 InpMsgFinal = '';
 
 for i = 1: length(InpMsg)
@@ -152,6 +153,12 @@ switch TMATS.S
         cd ..
         
     case '10'
+        cd AGTF30
+        if exist([pwd,TMATS.POp,'README.txt'],'file') == 2
+            uiopen('README.txt',1)
+        end
+        
+    case '11'
         disp('Example Setup Canceled');
     otherwise,
         disp('Selection Invalid')

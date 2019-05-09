@@ -1,0 +1,4775 @@
+Model {
+  Name			  "JT9D_Model_SS"
+  Version		  8.5
+  MdlSubVersion		  0
+  SavedCharacterEncoding  "windows-1252"
+  GraphicalInterface {
+    NumRootInports	    0
+    NumRootOutports	    0
+    ParameterArgumentNames  ""
+    ComputedModelVersion    "1.61"
+    NumModelReferences	    0
+    NumTestPointedSignals   0
+  }
+  ScopeRefreshTime	  0.035000
+  OverrideScopeRefreshTime off
+  DisableAllScopes	  off
+  DataTypeOverride	  "UseLocalSettings"
+  DataTypeOverrideAppliesTo "AllNumericTypes"
+  MinMaxOverflowLogging	  "UseLocalSettings"
+  MinMaxOverflowArchiveMode "Overwrite"
+  FPTRunName		  "Run 1"
+  MaxMDLFileLineLength	  120
+  Object {
+    $PropName		    "BdWindowsInfo"
+    $ObjectID		    1
+    $ClassName		    "Simulink.BDWindowsInfo"
+    Object {
+      $PropName		      "WindowsInfo"
+      $ObjectID		      2
+      $ClassName	      "Simulink.WindowInfo"
+      IsActive		      [1]
+      Location		      [485.0, 109.0, 1357.0, 815.0]
+      Object {
+	$PropName		"ModelBrowserInfo"
+	$ObjectID		3
+	$ClassName		"Simulink.ModelBrowserInfo"
+	Visible			[1]
+	DockPosition		"Left"
+	Width			[50]
+	Height			[50]
+	Filter			[9]
+      }
+      Object {
+	$PropName		"ExplorerBarInfo"
+	$ObjectID		4
+	$ClassName		"Simulink.ExplorerBarInfo"
+	Visible			[1]
+      }
+      Object {
+	$PropName		"EditorsInfo"
+	$ObjectID		5
+	$ClassName		"Simulink.EditorInfo"
+	IsActive		[1]
+	ViewObjType		"SimulinkTopLevel"
+	LoadSaveID		"0"
+	Extents			[1114.0, 641.0]
+	ZoomFactor		[0.57666980244590771]
+	Offset			[331.60929853181062, 176.72267536704726]
+      }
+    }
+  }
+  Created		  "Thu Dec 05 10:38:11 2013"
+  Creator		  "jwchapm2"
+  UpdateHistory		  "UpdateHistoryNever"
+  ModifiedByFormat	  "%<Auto>"
+  LastModifiedBy	  "jwchapm2"
+  ModifiedDateFormat	  "%<Auto>"
+  LastModifiedDate	  "Thu May 09 09:34:00 2019"
+  RTWModifiedTimeStamp	  479294302
+  ModelVersionFormat	  "1.%<AutoIncrement:61>"
+  ConfigurationManager	  "none"
+  SampleTimeColors	  off
+  SampleTimeAnnotations	  off
+  LibraryLinkDisplay	  "disabled"
+  WideLines		  off
+  ShowLineDimensions	  off
+  ShowPortDataTypes	  off
+  ShowDesignRanges	  off
+  ShowLoopsOnError	  on
+  IgnoreBidirectionalLines off
+  ShowStorageClass	  off
+  ShowTestPointIcons	  on
+  ShowSignalResolutionIcons on
+  ShowViewerIcons	  on
+  SortedOrder		  off
+  ExecutionContextIcon	  off
+  ShowLinearizationAnnotations on
+  ShowMarkup		  on
+  BlockNameDataTip	  off
+  BlockParametersDataTip  off
+  BlockDescriptionStringDataTip	off
+  ToolBar		  on
+  StatusBar		  on
+  BrowserShowLibraryLinks off
+  BrowserLookUnderMasks	  off
+  SimulationMode	  "normal"
+  PauseTimes		  "5"
+  NumberOfSteps		  1
+  SnapshotBufferSize	  10
+  SnapshotInterval	  10
+  NumberOfLastSnapshots	  0
+  LinearizationMsg	  "none"
+  Profile		  off
+  ParamWorkspaceSource	  "MATLABWorkspace"
+  AccelSystemTargetFile	  "accel.tlc"
+  AccelTemplateMakefile	  "accel_default_tmf"
+  AccelMakeCommand	  "make_rtw"
+  TryForcingSFcnDF	  off
+  Object {
+    $PropName		    "DataLoggingOverride"
+    $ObjectID		    6
+    $ClassName		    "Simulink.SimulationData.ModelLoggingInfo"
+    model_		    "Fan_Test"
+    overrideMode_	    [0U]
+    Array {
+      Type		      "Cell"
+      Dimension		      1
+      Cell		      "Fan_Test"
+      PropName		      "logAsSpecifiedByModels_"
+    }
+    Array {
+      Type		      "Cell"
+      Dimension		      1
+      Cell		      []
+      PropName		      "logAsSpecifiedByModelsSSIDs_"
+    }
+  }
+  RecordCoverage	  off
+  CovPath		  "/"
+  CovSaveName		  "covdata"
+  CovMetricSettings	  "dw"
+  CovNameIncrementing	  off
+  CovHtmlReporting	  on
+  CovForceBlockReductionOff on
+  CovEnableCumulative	  on
+  covSaveCumulativeToWorkspaceVar on
+  CovSaveSingleToWorkspaceVar on
+  CovCumulativeVarName	  "covCumulativeData"
+  CovCumulativeReport	  off
+  CovReportOnPause	  on
+  CovModelRefEnable	  "Off"
+  CovExternalEMLEnable	  off
+  CovSFcnEnable		  on
+  CovBoundaryAbsTol	  0.000010
+  CovBoundaryRelTol	  0.010000
+  CovUseTimeInterval	  off
+  CovStartTime		  0
+  CovStopTime		  0
+  ExtModeBatchMode	  off
+  ExtModeEnableFloating	  on
+  ExtModeTrigType	  "manual"
+  ExtModeTrigMode	  "normal"
+  ExtModeTrigPort	  "1"
+  ExtModeTrigElement	  "any"
+  ExtModeTrigDuration	  1000
+  ExtModeTrigDurationFloating "auto"
+  ExtModeTrigHoldOff	  0
+  ExtModeTrigDelay	  0
+  ExtModeTrigDirection	  "rising"
+  ExtModeTrigLevel	  0
+  ExtModeArchiveMode	  "off"
+  ExtModeAutoIncOneShot	  off
+  ExtModeIncDirWhenArm	  off
+  ExtModeAddSuffixToVar	  off
+  ExtModeWriteAllDataToWs off
+  ExtModeArmWhenConnect	  on
+  ExtModeSkipDownloadWhenConnect off
+  ExtModeLogAll		  on
+  ExtModeAutoUpdateStatusClock on
+  ShowModelReferenceBlockVersion off
+  ShowModelReferenceBlockIO off
+  Array {
+    Type		    "Handle"
+    Dimension		    1
+    Simulink.ConfigSet {
+      $ObjectID		      7
+      Version		      "1.15.0"
+      Array {
+	Type			"Handle"
+	Dimension		8
+	Simulink.SolverCC {
+	  $ObjectID		  8
+	  Version		  "1.15.0"
+	  StartTime		  "0.0"
+	  StopTime		  "10.0"
+	  AbsTol		  "auto"
+	  FixedStep		  "0.2"
+	  InitialStep		  "auto"
+	  MaxNumMinSteps	  "-1"
+	  MaxOrder		  5
+	  ZcThreshold		  "auto"
+	  ConsecutiveZCsStepRelTol "10*128*eps"
+	  MaxConsecutiveZCs	  "1000"
+	  ExtrapolationOrder	  4
+	  NumberNewtonIterations  1
+	  MaxStep		  "auto"
+	  MinStep		  "auto"
+	  MaxConsecutiveMinStep	  "1"
+	  RelTol		  "1e-3"
+	  SolverMode		  "Auto"
+	  EnableConcurrentExecution off
+	  ConcurrentTasks	  off
+	  Solver		  "FixedStepDiscrete"
+	  SolverName		  "FixedStepDiscrete"
+	  SolverJacobianMethodControl "auto"
+	  ShapePreserveControl	  "DisableAll"
+	  ZeroCrossControl	  "UseLocalSettings"
+	  ZeroCrossAlgorithm	  "Nonadaptive"
+	  AlgebraicLoopSolver	  "TrustRegion"
+	  SolverResetMethod	  "Fast"
+	  PositivePriorityOrder	  off
+	  AutoInsertRateTranBlk	  off
+	  SampleTimeConstraint	  "Unconstrained"
+	  InsertRTBMode		  "Whenever possible"
+	}
+	Simulink.DataIOCC {
+	  $ObjectID		  9
+	  Version		  "1.15.0"
+	  Decimation		  "1"
+	  ExternalInput		  "[t, u]"
+	  FinalStateName	  "xFinal"
+	  InitialState		  "xInitial"
+	  LimitDataPoints	  on
+	  MaxDataPoints		  "1000"
+	  LoadExternalInput	  off
+	  LoadInitialState	  off
+	  SaveFinalState	  off
+	  SaveCompleteFinalSimState off
+	  SaveFormat		  "Array"
+	  SignalLoggingSaveFormat "Dataset"
+	  SaveOutput		  on
+	  SaveState		  off
+	  SignalLogging		  on
+	  DSMLogging		  on
+	  InspectSignalLogs	  off
+	  VisualizeSimOutput	  on
+	  SaveTime		  on
+	  ReturnWorkspaceOutputs  off
+	  StateSaveName		  "xout"
+	  TimeSaveName		  "tout"
+	  OutputSaveName	  "yout"
+	  SignalLoggingName	  "logsout"
+	  DSMLoggingName	  "dsmout"
+	  OutputOption		  "RefineOutputTimes"
+	  OutputTimes		  "[]"
+	  ReturnWorkspaceOutputsName "out"
+	  Refine		  "1"
+	}
+	Simulink.OptimizationCC {
+	  $ObjectID		  10
+	  Version		  "1.15.0"
+	  Array {
+	    Type		    "Cell"
+	    Dimension		    8
+	    Cell		    "BooleansAsBitfields"
+	    Cell		    "PassReuseOutputArgsAs"
+	    Cell		    "PassReuseOutputArgsThreshold"
+	    Cell		    "ZeroExternalMemoryAtStartup"
+	    Cell		    "ZeroInternalMemoryAtStartup"
+	    Cell		    "OptimizeModelRefInitCode"
+	    Cell		    "NoFixptDivByZeroProtection"
+	    Cell		    "UseSpecifiedMinMax"
+	    PropName		    "DisabledProps"
+	  }
+	  BlockReduction	  on
+	  BooleanDataType	  on
+	  ConditionallyExecuteInputs on
+	  InlineParams		  off
+	  UseDivisionForNetSlopeComputation "off"
+	  UseFloatMulNetSlope	  off
+	  DefaultUnderspecifiedDataType	"double"
+	  UseSpecifiedMinMax	  off
+	  InlineInvariantSignals  off
+	  OptimizeBlockIOStorage  on
+	  BufferReuse		  on
+	  EnhancedBackFolding	  off
+	  CachingGlobalReferences off
+	  GlobalBufferReuse	  on
+	  StrengthReduction	  off
+	  ExpressionFolding	  on
+	  BooleansAsBitfields	  off
+	  BitfieldContainerType	  "uint_T"
+	  EnableMemcpy		  on
+	  MemcpyThreshold	  64
+	  PassReuseOutputArgsAs	  "Structure reference"
+	  PassReuseOutputArgsThreshold 12
+	  ExpressionDepthLimit	  2147483647
+	  LocalBlockOutputs	  on
+	  RollThreshold		  5
+	  StateBitsets		  off
+	  DataBitsets		  off
+	  ActiveStateOutputEnumStorageType "Native Integer"
+	  ZeroExternalMemoryAtStartup on
+	  ZeroInternalMemoryAtStartup on
+	  InitFltsAndDblsToZero	  off
+	  NoFixptDivByZeroProtection off
+	  EfficientFloat2IntCast  off
+	  EfficientMapNaN2IntZero on
+	  OptimizeModelRefInitCode off
+	  LifeSpan		  "inf"
+	  MaxStackSize		  "Inherit from target"
+	  BufferReusableBoundary  on
+	  SimCompilerOptimization "off"
+	  AccelVerboseBuild	  off
+	}
+	Simulink.DebuggingCC {
+	  $ObjectID		  11
+	  Version		  "1.15.0"
+	  RTPrefix		  "error"
+	  ConsistencyChecking	  "none"
+	  ArrayBoundsChecking	  "none"
+	  SignalInfNanChecking	  "none"
+	  SignalRangeChecking	  "none"
+	  ReadBeforeWriteMsg	  "UseLocalSettings"
+	  WriteAfterWriteMsg	  "UseLocalSettings"
+	  WriteAfterReadMsg	  "UseLocalSettings"
+	  AlgebraicLoopMsg	  "warning"
+	  ArtificialAlgebraicLoopMsg "warning"
+	  SaveWithDisabledLinksMsg "warning"
+	  SaveWithParameterizedLinksMsg	"warning"
+	  CheckSSInitialOutputMsg on
+	  UnderspecifiedInitializationDetection	"Classic"
+	  MergeDetectMultiDrivingBlocksExec "none"
+	  CheckExecutionContextPreStartOutputMsg off
+	  CheckExecutionContextRuntimeOutputMsg	off
+	  SignalResolutionControl "UseLocalSettings"
+	  BlockPriorityViolationMsg "warning"
+	  MinStepSizeMsg	  "warning"
+	  TimeAdjustmentMsg	  "none"
+	  MaxConsecutiveZCsMsg	  "error"
+	  MaskedZcDiagnostic	  "warning"
+	  IgnoredZcDiagnostic	  "warning"
+	  SolverPrmCheckMsg	  "warning"
+	  InheritedTsInSrcMsg	  "warning"
+	  DiscreteInheritContinuousMsg "warning"
+	  MultiTaskDSMMsg	  "error"
+	  MultiTaskCondExecSysMsg "error"
+	  MultiTaskRateTransMsg	  "error"
+	  SingleTaskRateTransMsg  "none"
+	  TasksWithSamePriorityMsg "warning"
+	  SigSpecEnsureSampleTimeMsg "warning"
+	  CheckMatrixSingularityMsg "none"
+	  IntegerOverflowMsg	  "warning"
+	  Int32ToFloatConvMsg	  "warning"
+	  ParameterDowncastMsg	  "error"
+	  ParameterOverflowMsg	  "error"
+	  ParameterUnderflowMsg	  "none"
+	  ParameterPrecisionLossMsg "warning"
+	  ParameterTunabilityLossMsg "warning"
+	  FixptConstUnderflowMsg  "none"
+	  FixptConstOverflowMsg	  "none"
+	  FixptConstPrecisionLossMsg "none"
+	  UnderSpecifiedDataTypeMsg "none"
+	  UnnecessaryDatatypeConvMsg "none"
+	  VectorMatrixConversionMsg "none"
+	  InvalidFcnCallConnMsg	  "error"
+	  FcnCallInpInsideContextMsg "EnableAllAsError"
+	  SignalLabelMismatchMsg  "none"
+	  UnconnectedInputMsg	  "warning"
+	  UnconnectedOutputMsg	  "warning"
+	  UnconnectedLineMsg	  "warning"
+	  SFcnCompatibilityMsg	  "none"
+	  FrameProcessingCompatibilityMsg "error"
+	  UniqueDataStoreMsg	  "none"
+	  BusObjectLabelMismatch  "warning"
+	  RootOutportRequireBusObject "warning"
+	  AssertControl		  "UseLocalSettings"
+	  ModelReferenceIOMsg	  "none"
+	  ModelReferenceMultiInstanceNormalModeStructChecksumCheck "error"
+	  ModelReferenceVersionMismatchMessage "none"
+	  ModelReferenceIOMismatchMessage "none"
+	  UnknownTsInhSupMsg	  "warning"
+	  ModelReferenceDataLoggingMessage "warning"
+	  ModelReferenceSymbolNameMessage "warning"
+	  ModelReferenceExtraNoncontSigs "error"
+	  StateNameClashWarn	  "warning"
+	  SimStateInterfaceChecksumMismatchMsg "warning"
+	  SimStateOlderReleaseMsg "error"
+	  InitInArrayFormatMsg	  "warning"
+	  StrictBusMsg		  "ErrorLevel1"
+	  BusNameAdapt		  "WarnAndRepair"
+	  NonBusSignalsTreatedAsBus "none"
+	  BlockIODiagnostic	  "none"
+	  SFUnusedDataAndEventsDiag "warning"
+	  SFUnexpectedBacktrackingDiag "warning"
+	  SFInvalidInputDataAccessInChartInitDiag "warning"
+	  SFNoUnconditionalDefaultTransitionDiag "warning"
+	  SFTransitionOutsideNaturalParentDiag "warning"
+	  SFUnconditionalTransitionShadowingDiag "warning"
+	  SFUndirectedBroadcastEventsDiag "warning"
+	  SFTransitionActionBeforeConditionDiag	"warning"
+	  SFOutputUsedAsStateInMooreChartDiag "error"
+	  IntegerSaturationMsg	  "warning"
+	}
+	Simulink.HardwareCC {
+	  $ObjectID		  12
+	  Version		  "1.15.0"
+	  ProdBitPerChar	  8
+	  ProdBitPerShort	  16
+	  ProdBitPerInt		  32
+	  ProdBitPerLong	  32
+	  ProdBitPerLongLong	  64
+	  ProdBitPerFloat	  32
+	  ProdBitPerDouble	  64
+	  ProdBitPerPointer	  32
+	  ProdLargestAtomicInteger "Char"
+	  ProdLargestAtomicFloat  "None"
+	  ProdIntDivRoundTo	  "Undefined"
+	  ProdEndianess		  "Unspecified"
+	  ProdWordSize		  32
+	  ProdShiftRightIntArith  on
+	  ProdLongLongMode	  off
+	  ProdHWDeviceType	  "32-bit Generic"
+	  TargetBitPerChar	  8
+	  TargetBitPerShort	  16
+	  TargetBitPerInt	  32
+	  TargetBitPerLong	  32
+	  TargetBitPerLongLong	  64
+	  TargetBitPerFloat	  32
+	  TargetBitPerDouble	  64
+	  TargetBitPerPointer	  32
+	  TargetLargestAtomicInteger "Char"
+	  TargetLargestAtomicFloat "None"
+	  TargetShiftRightIntArith on
+	  TargetLongLongMode	  off
+	  TargetIntDivRoundTo	  "Undefined"
+	  TargetEndianess	  "Unspecified"
+	  TargetWordSize	  32
+	  TargetPreprocMaxBitsSint 32
+	  TargetPreprocMaxBitsUint 32
+	  TargetHWDeviceType	  "Specified"
+	  TargetUnknown		  off
+	  ProdEqTarget		  on
+	}
+	Simulink.ModelReferenceCC {
+	  $ObjectID		  13
+	  Version		  "1.15.0"
+	  UpdateModelReferenceTargets "IfOutOfDateOrStructuralChange"
+	  CheckModelReferenceTargetMessage "error"
+	  EnableParallelModelReferenceBuilds off
+	  ParallelModelReferenceErrorOnInvalidPool on
+	  ParallelModelReferenceMATLABWorkerInit "None"
+	  ModelReferenceNumInstancesAllowed "Multi"
+	  PropagateVarSize	  "Infer from blocks in model"
+	  ModelReferencePassRootInputsByReference on
+	  ModelReferenceMinAlgLoopOccurrences off
+	  PropagateSignalLabelsOutOfModel off
+	  SupportModelReferenceSimTargetCustomCode off
+	}
+	Simulink.SFSimCC {
+	  $ObjectID		  14
+	  Version		  "1.15.0"
+	  SFSimOverflowDetection  on
+	  SFSimEcho		  on
+	  SimCtrlC		  on
+	  SimIntegrity		  on
+	  SimUseLocalCustomCode	  off
+	  SimParseCustomCode	  on
+	  SimBuildMode		  "sf_incremental_build"
+	  SimGenImportedTypeDefs  off
+	}
+	Simulink.RTWCC {
+	  $BackupClass		  "Simulink.RTWCC"
+	  $ObjectID		  15
+	  Version		  "1.15.0"
+	  Array {
+	    Type		    "Cell"
+	    Dimension		    16
+	    Cell		    "IncludeHyperlinkInReport"
+	    Cell		    "GenerateTraceInfo"
+	    Cell		    "GenerateTraceReport"
+	    Cell		    "GenerateTraceReportSl"
+	    Cell		    "GenerateTraceReportSf"
+	    Cell		    "GenerateTraceReportEml"
+	    Cell		    "PortableWordSizes"
+	    Cell		    "GenerateWebview"
+	    Cell		    "GenerateCodeMetricsReport"
+	    Cell		    "GenerateCodeReplacementReport"
+	    Cell		    "GenerateErtSFunction"
+	    Cell		    "CreateSILPILBlock"
+	    Cell		    "CodeExecutionProfiling"
+	    Cell		    "CodeProfilingSaveOptions"
+	    Cell		    "CodeProfilingInstrumentation"
+	    Cell		    "GenerateMissedCodeReplacementReport"
+	    PropName		    "DisabledProps"
+	  }
+	  SystemTargetFile	  "grt.tlc"
+	  TLCOptions		  ""
+	  GenCodeOnly		  off
+	  MakeCommand		  "make_rtw"
+	  GenerateMakefile	  on
+	  PackageGeneratedCodeAndArtifacts off
+	  PackageName		  ""
+	  TemplateMakefile	  "grt_default_tmf"
+	  PostCodeGenCommand	  ""
+	  Description		  ""
+	  GenerateReport	  off
+	  SaveLog		  off
+	  RTWVerbose		  on
+	  RetainRTWFile		  off
+	  ProfileTLC		  off
+	  TLCDebug		  off
+	  TLCCoverage		  off
+	  TLCAssert		  off
+	  RTWUseLocalCustomCode	  off
+	  RTWUseSimCustomCode	  off
+	  CustomSourceCode	  ""
+	  CustomHeaderCode	  ""
+	  CustomInclude		  ""
+	  CustomSource		  ""
+	  CustomLibrary		  ""
+	  CustomInitializer	  ""
+	  CustomTerminator	  ""
+	  Toolchain		  "Automatically locate an installed toolchain"
+	  BuildConfiguration	  "Faster Builds"
+	  IncludeHyperlinkInReport off
+	  LaunchReport		  off
+	  PortableWordSizes	  off
+	  CreateSILPILBlock	  "None"
+	  CodeExecutionProfiling  off
+	  CodeExecutionProfileVariable "executionProfile"
+	  CodeProfilingSaveOptions "SummaryOnly"
+	  CodeProfilingInstrumentation off
+	  SILDebugging		  off
+	  TargetLang		  "C"
+	  IncludeBusHierarchyInRTWFileBlockHierarchyMap	off
+	  GenerateTraceInfo	  off
+	  GenerateTraceReport	  off
+	  GenerateTraceReportSl	  off
+	  GenerateTraceReportSf	  off
+	  GenerateTraceReportEml  off
+	  GenerateWebview	  off
+	  GenerateCodeMetricsReport off
+	  GenerateCodeReplacementReport	off
+	  GenerateMissedCodeReplacementReport off
+	  RTWCompilerOptimization "off"
+	  RTWCustomCompilerOptimizations ""
+	  CheckMdlBeforeBuild	  "Off"
+	  SharedConstantsCachingThreshold 1024
+	  Array {
+	    Type		    "Handle"
+	    Dimension		    2
+	    Simulink.CodeAppCC {
+	      $ObjectID		      16
+	      Version		      "1.15.0"
+	      Array {
+		Type			"Cell"
+		Dimension		24
+		Cell			"IgnoreCustomStorageClasses"
+		Cell			"IgnoreTestpoints"
+		Cell			"InsertBlockDesc"
+		Cell			"InsertPolySpaceComments"
+		Cell			"SFDataObjDesc"
+		Cell			"MATLABFcnDesc"
+		Cell			"SimulinkDataObjDesc"
+		Cell			"DefineNamingRule"
+		Cell			"SignalNamingRule"
+		Cell			"ParamNamingRule"
+		Cell			"InternalIdentifier"
+		Cell			"InlinedPrmAccess"
+		Cell			"CustomSymbolStr"
+		Cell			"CustomSymbolStrGlobalVar"
+		Cell			"CustomSymbolStrType"
+		Cell			"CustomSymbolStrField"
+		Cell			"CustomSymbolStrFcn"
+		Cell			"CustomSymbolStrFcnArg"
+		Cell			"CustomSymbolStrBlkIO"
+		Cell			"CustomSymbolStrTmpVar"
+		Cell			"CustomSymbolStrMacro"
+		Cell			"ReqsInCode"
+		Cell			"ParameterTuningSideEffectCode"
+		Cell			"CustomSymbolStrUtil"
+		PropName		"DisabledProps"
+	      }
+	      ForceParamTrailComments off
+	      GenerateComments	      on
+	      CommentStyle	      "Auto"
+	      IgnoreCustomStorageClasses on
+	      IgnoreTestpoints	      off
+	      IncHierarchyInIds	      off
+	      MaxIdLength	      31
+	      PreserveName	      off
+	      PreserveNameWithParent  off
+	      ShowEliminatedStatement off
+	      OperatorAnnotations     off
+	      IncAutoGenComments      off
+	      SimulinkDataObjDesc     off
+	      SFDataObjDesc	      off
+	      MATLABFcnDesc	      off
+	      IncDataTypeInIds	      off
+	      MangleLength	      1
+	      CustomSymbolStrGlobalVar "$R$N$M"
+	      CustomSymbolStrType     "$N$R$M_T"
+	      CustomSymbolStrField    "$N$M"
+	      CustomSymbolStrFcn      "$R$N$M$F"
+	      CustomSymbolStrFcnArg   "rt$I$N$M"
+	      CustomSymbolStrBlkIO    "rtb_$N$M"
+	      CustomSymbolStrTmpVar   "$N$M"
+	      CustomSymbolStrMacro    "$R$N$M"
+	      CustomSymbolStrUtil     "$N$C"
+	      DefineNamingRule	      "None"
+	      ParamNamingRule	      "None"
+	      SignalNamingRule	      "None"
+	      InsertBlockDesc	      off
+	      InsertPolySpaceComments off
+	      SimulinkBlockComments   on
+	      MATLABSourceComments    off
+	      EnableCustomComments    off
+	      InternalIdentifier      "Shortened"
+	      InlinedPrmAccess	      "Literals"
+	      ReqsInCode	      off
+	      UseSimReservedNames     off
+	    }
+	    Simulink.GRTTargetCC {
+	      $BackupClass	      "Simulink.TargetCC"
+	      $ObjectID		      17
+	      Version		      "1.15.0"
+	      Array {
+		Type			"Cell"
+		Dimension		14
+		Cell			"GeneratePreprocessorConditionals"
+		Cell			"IncludeMdlTerminateFcn"
+		Cell			"GenerateAllocFcn"
+		Cell			"SuppressErrorStatus"
+		Cell			"ERTCustomFileBanners"
+		Cell			"GenerateSampleERTMain"
+		Cell			"GenerateTestInterfaces"
+		Cell			"ModelStepFunctionPrototypeControlCompliant"
+		Cell			"CPPClassGenCompliant"
+		Cell			"SupportNonInlinedSFcns"
+		Cell			"PurelyIntegerCode"
+		Cell			"SupportComplex"
+		Cell			"SupportAbsoluteTime"
+		Cell			"SupportContinuousTime"
+		PropName		"DisabledProps"
+	      }
+	      TargetFcnLib	      "ansi_tfl_table_tmw.mat"
+	      TargetLibSuffix	      ""
+	      TargetPreCompLibLocation ""
+	      GenFloatMathFcnCalls    "NOT IN USE"
+	      TargetLangStandard      "C89/C90 (ANSI)"
+	      CodeReplacementLibrary  "None"
+	      UtilityFuncGeneration   "Auto"
+	      ERTMultiwordTypeDef     "System defined"
+	      ERTMultiwordLength      256
+	      MultiwordLength	      2048
+	      GenerateFullHeader      on
+	      InferredTypesCompatibility off
+	      GenerateSampleERTMain   off
+	      GenerateTestInterfaces  off
+	      ModelReferenceCompliant on
+	      ParMdlRefBuildCompliant on
+	      CompOptLevelCompliant   on
+	      ConcurrentExecutionCompliant on
+	      IncludeMdlTerminateFcn  on
+	      GeneratePreprocessorConditionals "Disable all"
+	      CombineOutputUpdateFcns on
+	      CombineSignalStateStructs	off
+	      SuppressErrorStatus     off
+	      ERTFirstTimeCompliant   off
+	      IncludeFileDelimiter    "Auto"
+	      ERTCustomFileBanners    off
+	      SupportAbsoluteTime     on
+	      LogVarNameModifier      "rt_"
+	      MatFileLogging	      on
+	      MultiInstanceERTCode    off
+	      CodeInterfacePackaging  "Nonreusable function"
+	      SupportNonFinite	      on
+	      SupportComplex	      on
+	      PurelyIntegerCode	      off
+	      SupportContinuousTime   on
+	      SupportNonInlinedSFcns  on
+	      SupportVariableSizeSignals off
+	      ParenthesesLevel	      "Nominal"
+	      CastingMode	      "Nominal"
+	      MATLABClassNameForMDSCustomization "Simulink.SoftwareTarget.GRTCustomization"
+	      ModelStepFunctionPrototypeControlCompliant off
+	      CPPClassGenCompliant    on
+	      AutosarCompliant	      off
+	      GRTInterface	      off
+	      GenerateAllocFcn	      off
+	      GenerateSharedConstants on
+	      UseMalloc		      off
+	      ExtMode		      off
+	      ExtModeStaticAlloc      off
+	      ExtModeTesting	      off
+	      ExtModeStaticAllocSize  1000000
+	      ExtModeTransport	      0
+	      ExtModeMexFile	      "ext_comm"
+	      ExtModeIntrfLevel	      "Level1"
+	      RTWCAPISignals	      off
+	      RTWCAPIParams	      off
+	      RTWCAPIStates	      off
+	      RTWCAPIRootIO	      off
+	      GenerateASAP2	      off
+	      MultiInstanceErrorCode  "Error"
+	    }
+	    PropName		    "Components"
+	  }
+	}
+	PropName		"Components"
+      }
+      Name		      "Configuration"
+      ExtraOptions	      "-aGenerateTraceInfo=0 -aIgnoreTestpoints=0 "
+      CurrentDlgPage	      "Solver"
+      ConfigPrmDlgPosition     [ 344, 75, 1256, 781 ] 
+    }
+    PropName		    "ConfigurationSets"
+  }
+  Simulink.ConfigSet {
+    $PropName		    "ActiveConfigurationSet"
+    $ObjectID		    7
+  }
+  Object {
+    $PropName		    "DataTransfer"
+    $ObjectID		    18
+    $ClassName		    "Simulink.GlobalDataTransfer"
+    DefaultTransitionBetweenSyncTasks "Ensure deterministic transfer (maximum delay)"
+    DefaultTransitionBetweenAsyncTasks "Ensure data integrity only"
+    DefaultTransitionBetweenContTasks "Ensure deterministic transfer (minimum delay)"
+    DefaultExtrapolationMethodBetweenContTasks "None"
+    AutoInsertRateTranBlk   [0]
+  }
+  ExplicitPartitioning	  off
+  BlockDefaults {
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    NamePlacement	    "normal"
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    ShowName		    on
+    BlockRotation	    0
+    BlockMirror		    off
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    "center"
+    VerticalAlignment	    "middle"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    UseDisplayTextAsClickCallback off
+  }
+  LineDefaults {
+    FontName		    "Helvetica"
+    FontSize		    9
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+  }
+  MaskDefaults {
+    SelfModifiable	    "off"
+    IconFrame		    "on"
+    IconOpaque		    "on"
+    RunInitForIconRedraw    "off"
+    IconRotate		    "none"
+    PortRotate		    "default"
+    IconUnits		    "autoscale"
+  }
+  MaskParameterDefaults {
+    Evaluate		    "on"
+    Tunable		    "on"
+    NeverSave		    "off"
+    Internal		    "off"
+    ReadOnly		    "off"
+    Enabled		    "on"
+    Visible		    "on"
+    ToolTip		    "on"
+  }
+  BlockParameterDefaults {
+    Block {
+      BlockType		      BusSelector
+      OutputSignals	      "signal1,signal2,signal3"
+      OutputAsBus	      off
+    }
+    Block {
+      BlockType		      Constant
+      Value		      "1"
+      VectorParams1D	      on
+      SamplingMode	      "Sample based"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: Inherit from 'Constant value'"
+      LockScale		      off
+      SampleTime	      "inf"
+      FramePeriod	      "inf"
+      PreserveConstantTs      off
+    }
+    Block {
+      BlockType		      Demux
+      Outputs		      "4"
+      DisplayOption	      "none"
+      BusSelectionMode	      off
+    }
+    Block {
+      BlockType		      Display
+      Format		      "short"
+      Decimation	      "10"
+      Floating		      off
+      Lockdown		      off
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      From
+      GotoTag		      "A"
+      IconDisplay	      "Tag"
+      TagVisibility	      "local"
+    }
+    Block {
+      BlockType		      Goto
+      GotoTag		      "A"
+      IconDisplay	      "Tag"
+      TagVisibility	      "local"
+    }
+    Block {
+      BlockType		      Inport
+      Port		      "1"
+      OutputFunctionCall      off
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: auto"
+      LockScale		      off
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      VarSizeSig	      "Inherit"
+      SampleTime	      "-1"
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      LatchByDelayingOutsideSignal off
+      LatchInputForFeedbackSignals off
+      Interpolate	      on
+    }
+    Block {
+      BlockType		      Mux
+      Inputs		      "4"
+      DisplayOption	      "none"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      NonVirtualBus	      off
+    }
+    Block {
+      BlockType		      Outport
+      Port		      "1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: auto"
+      LockScale		      off
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      VarSizeSig	      "Inherit"
+      SampleTime	      "-1"
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      SourceOfInitialOutputValue "Dialog"
+      OutputWhenDisabled      "held"
+      InitialOutput	      "[]"
+    }
+    Block {
+      BlockType		      Product
+      Inputs		      "2"
+      Multiplication	      "Element-wise(.*)"
+      CollapseMode	      "All dimensions"
+      CollapseDim	      "1"
+      InputSameDT	      on
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: Same as first input"
+      LockScale		      off
+      RndMeth		      "Zero"
+      SaturateOnIntegerOverflow	on
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      SubSystem
+      ShowPortLabels	      "FromPortIcon"
+      Permissions	      "ReadWrite"
+      PermitHierarchicalResolution "All"
+      TreatAsAtomicUnit	      off
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      CheckFcnCallInpInsideContextMsg off
+      SystemSampleTime	      "-1"
+      RTWSystemCode	      "Auto"
+      RTWFcnNameOpts	      "Auto"
+      RTWFileNameOpts	      "Auto"
+      FunctionInterfaceSpec   "void_void"
+      FunctionWithSeparateData off
+      RTWMemSecFuncInitTerm   "Inherit from model"
+      RTWMemSecFuncExecute    "Inherit from model"
+      RTWMemSecDataConstants  "Inherit from model"
+      RTWMemSecDataInternal   "Inherit from model"
+      RTWMemSecDataParameters "Inherit from model"
+      SimViewingDevice	      off
+      DataTypeOverride	      "UseLocalSettings"
+      DataTypeOverrideAppliesTo	"AllNumericTypes"
+      MinMaxOverflowLogging   "UseLocalSettings"
+      Opaque		      off
+      MaskHideContents	      off
+      SFBlockType	      "NONE"
+      Variant		      off
+      GeneratePreprocessorConditionals off
+      ContentPreviewEnabled   off
+      IsWebBlock	      off
+    }
+    Block {
+      BlockType		      Terminator
+    }
+    Block {
+      BlockType		      ToWorkspace
+      VariableName	      "simulink_output"
+      MaxDataPoints	      "1000"
+      Decimation	      "1"
+      SaveFormat	      "Array"
+      Save2DSignal	      "Inherit from input (this choice will be removed - see release notes)"
+      FixptAsFi		      off
+      NumInputs		      "1"
+      SampleTime	      "0"
+    }
+  }
+  System {
+    Name		    "JT9D_Model_SS"
+    Location		    [485, 109, 1842, 924]
+    Open		    on
+    ModelBrowserVisibility  on
+    ModelBrowserWidth	    200
+    ScreenColor		    "white"
+    PaperOrientation	    "landscape"
+    PaperPositionMode	    "auto"
+    PaperType		    "usletter"
+    PaperUnits		    "inches"
+    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
+    TiledPageScale	    1
+    ShowPageBoundaries	    off
+    ZoomFactor		    "58"
+    ReportName		    "simulink-default.rpt"
+    SIDHighWatermark	    "468"
+    Block {
+      BlockType		      BusSelector
+      Name		      "Bus Selector"
+      SID		      "298"
+      Ports		      [1, 2]
+      Position		      [1170, 1036, 1175, 1074]
+      ZOrder		      577
+      ShowName		      off
+      OutputSignals	      "Converged,J"
+      Port {
+	PortNumber		1
+	Name			"<Converged>"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+      Port {
+	PortNumber		2
+	Name			"<J>"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Constant"
+      SID		      "413"
+      Position		      [945, 927, 980, 943]
+      ZOrder		      588
+      ShowName		      off
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Constant13"
+      SID		      "220"
+      Position		      [905, 357, 1005, 373]
+      ZOrder		      503
+      ShowName		      off
+      Value		      "MWS.Input.Pamb"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Constant14"
+      SID		      "221"
+      Position		      [845, 232, 900, 248]
+      ZOrder		      504
+      ShowName		      off
+      Value		      "130"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Constant15"
+      SID		      "222"
+      Position		      [820, 257, 900, 273]
+      ZOrder		      505
+      ShowName		      off
+      Value		      "MWS.Input.Tt"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Constant16"
+      SID		      "223"
+      Position		      [820, 282, 900, 298]
+      ZOrder		      506
+      ShowName		      off
+      Value		      "MWS.Input.Pt"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Constant17"
+      SID		      "224"
+      Position		      [845, 307, 900, 323]
+      ZOrder		      507
+      ShowName		      off
+      Value		      "0"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Constant2"
+      SID		      "350"
+      Position		      [905, 382, 1005, 398]
+      ZOrder		      587
+      ShowName		      off
+      Value		      "MWS.Input.FARin"
+    }
+    Block {
+      BlockType		      Demux
+      Name		      "Demux"
+      SID		      "292"
+      Ports		      [1, 9]
+      Position		      [1360, 727, 1365, 963]
+      ZOrder		      571
+      ShowName		      off
+      Outputs		      "9"
+      DisplayOption	      "bar"
+    }
+    Block {
+      BlockType		      Display
+      Name		      "Display"
+      SID		      "192"
+      Ports		      [1]
+      Position		      [1000, 742, 1070, 908]
+      ZOrder		      489
+      ShowName		      off
+      Decimation	      "1"
+    }
+    Block {
+      BlockType		      Display
+      Name		      "Display1"
+      SID		      "294"
+      Ports		      [1]
+      Position		      [1185, 739, 1260, 911]
+      ZOrder		      573
+      ShowName		      off
+      Decimation	      "1"
+    }
+    Block {
+      BlockType		      Display
+      Name		      "Display2"
+      SID		      "299"
+      Ports		      [1]
+      Position		      [1410, 1034, 1480, 1056]
+      ZOrder		      578
+      ShowName		      off
+      Decimation	      "1"
+    }
+    Block {
+      BlockType		      Display
+      Name		      "Display3"
+      SID		      "300"
+      Ports		      [1]
+      Position		      [1280, 1096, 1925, 1264]
+      ZOrder		      579
+      ShowName		      off
+      Decimation	      "1"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux"
+      SID		      "219"
+      Ports		      [5, 1]
+      Position		      [945, 201, 950, 329]
+      ZOrder		      502
+      ShowName		      off
+      Inputs		      "5"
+      DisplayOption	      "bar"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux1"
+      SID		      "291"
+      Ports		      [9, 1]
+      Position		      [890, 750, 895, 990]
+      ZOrder		      570
+      ShowName		      off
+      Inputs		      "9"
+      DisplayOption	      "bar"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Plant model"
+      SID		      "132"
+      Ports		      [11, 9]
+      Position		      [1075, 326, 1240, 604]
+      ZOrder		      467
+      RequestExecContextInheritance off
+      System {
+	Name			"Plant model"
+	Location		[209, 94, 1566, 909]
+	Open			off
+	ModelBrowserVisibility	on
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"27"
+	Block {
+	  BlockType		  Inport
+	  Name			  "Input GPC"
+	  SID			  "133"
+	  Position		  [615, 1278, 645, 1292]
+	  ZOrder		  467
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "Pamb"
+	  SID			  "134"
+	  Position		  [615, 1313, 645, 1327]
+	  ZOrder		  468
+	  Port			  "2"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "FAR_dmd"
+	  SID			  "153"
+	  Position		  [615, 1349, 645, 1361]
+	  ZOrder		  487
+	  ForegroundColor	  "orange"
+	  Port			  "3"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "Fan_Rline"
+	  SID			  "154"
+	  Position		  [615, 1384, 645, 1396]
+	  ZOrder		  488
+	  ForegroundColor	  "darkGreen"
+	  Port			  "4"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "Splitter_BPR"
+	  SID			  "155"
+	  Position		  [615, 1419, 645, 1431]
+	  ZOrder		  489
+	  ForegroundColor	  "darkGreen"
+	  Port			  "5"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "LPC_Rline"
+	  SID			  "156"
+	  Position		  [610, 1459, 640, 1471]
+	  ZOrder		  490
+	  ForegroundColor	  "darkGreen"
+	  Port			  "6"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "HPC_Rline"
+	  SID			  "157"
+	  Position		  [615, 1494, 645, 1506]
+	  ZOrder		  491
+	  ForegroundColor	  "darkGreen"
+	  Port			  "7"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "HPT_PRin"
+	  SID			  "158"
+	  Position		  [615, 1524, 645, 1536]
+	  ZOrder		  492
+	  ForegroundColor	  "darkGreen"
+	  Port			  "8"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "LPT_PRin"
+	  SID			  "159"
+	  Position		  [615, 1559, 645, 1571]
+	  ZOrder		  493
+	  ForegroundColor	  "darkGreen"
+	  Port			  "9"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "LPS_NmechIn"
+	  SID			  "160"
+	  Position		  [615, 1594, 645, 1606]
+	  ZOrder		  494
+	  ForegroundColor	  "red"
+	  Port			  "10"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "HPS_NmechIn"
+	  SID			  "161"
+	  Position		  [615, 1629, 645, 1641]
+	  ZOrder		  495
+	  ForegroundColor	  "red"
+	  Port			  "11"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Burner"
+	  SID			  "21"
+	  Ports			  [2, 2]
+	  Position		  [2420, 496, 2565, 594]
+	  ZOrder		  339
+	  LibraryVersion	  "1.462"
+	  SourceBlock		  "Lib_Turbo_Burner_TMATS/Burner"
+	  SourceType		  "T-MATS: Burner Library Block"
+	  ContentPreviewEnabled	  off
+	  LHVEn_M		  on
+	  LHV_M			  18400
+	  Eff_M			  0.994
+	  hFuel_M		  -1200
+	  dPnormBurner_M	  " MWS.Burn.dP"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Burner_Wf1"
+	  SID			  "85"
+	  Position		  [2225, 349, 2310, 361]
+	  ZOrder		  420
+	  ForegroundColor	  "orange"
+	  ShowName		  off
+	  GotoTag		  "Wf_FAR_dmd"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Burner_WfC"
+	  SID			  "86"
+	  Position		  [675, 1349, 835, 1361]
+	  ZOrder		  421
+	  ForegroundColor	  "orange"
+	  ShowName		  off
+	  GotoTag		  "Wf_FAR_dmd"
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "Burner_term1"
+	  SID			  "84"
+	  Position		  [2580, 565, 2590, 575]
+	  ZOrder		  419
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  BusSelector
+	  Name			  "Bus Selector5"
+	  SID			  "349"
+	  Ports			  [1, 1]
+	  Position		  [2290, 291, 2295, 329]
+	  ZOrder		  564
+	  ShowName		  off
+	  OutputSignals		  "W"
+	  Port {
+	    PortNumber		    1
+	    Name		    "<W>"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "Compressor_term2"
+	  SID			  "62"
+	  Position		  [2225, 515, 2235, 525]
+	  ZOrder		  397
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "Constant"
+	  SID			  "467"
+	  Position		  [765, 797, 785, 813]
+	  ZOrder		  651
+	  ShowName		  off
+	  Value			  "0"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "Constant1"
+	  SID			  "468"
+	  Position		  [2350, 817, 2370, 833]
+	  ZOrder		  652
+	  ShowName		  off
+	  Value			  "0"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Duct1"
+	  SID			  "126"
+	  Ports			  [1, 1]
+	  Position		  [920, 490, 1070, 510]
+	  ZOrder		  461
+	  LibraryVersion	  "1.462"
+	  SourceBlock		  "Lib_Turbo_Duct_TMATS/Duct"
+	  SourceType		  "T-MATS: Duct Library Block"
+	  ContentPreviewEnabled	  off
+	  dP_M			  "MWS.Duct.dP1"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Duct2"
+	  SID			  "128"
+	  Ports			  [1, 1]
+	  Position		  [1860, 525, 2010, 545]
+	  ZOrder		  463
+	  LibraryVersion	  "1.462"
+	  SourceBlock		  "Lib_Turbo_Duct_TMATS/Duct"
+	  SourceType		  "T-MATS: Duct Library Block"
+	  ContentPreviewEnabled	  off
+	  dP_M			  "MWS.Duct.dP2"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Duct3"
+	  SID			  "129"
+	  Ports			  [1, 1]
+	  Position		  [3280, 505, 3430, 525]
+	  ZOrder		  464
+	  LibraryVersion	  "1.462"
+	  SourceBlock		  "Lib_Turbo_Duct_TMATS/Duct"
+	  SourceType		  "T-MATS: Duct Library Block"
+	  ContentPreviewEnabled	  off
+	  dP_M			  "MWS.Duct.dP3"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Duct4"
+	  SID			  "130"
+	  Ports			  [1, 1]
+	  Position		  [3715, 475, 3865, 495]
+	  ZOrder		  465
+	  LibraryVersion	  "1.462"
+	  SourceBlock		  "Lib_Turbo_Duct_TMATS/Duct"
+	  SourceType		  "T-MATS: Duct Library Block"
+	  ContentPreviewEnabled	  off
+	  dP_M			  "MWS.Duct.dP4"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Duct5"
+	  SID			  "127"
+	  Ports			  [1, 1]
+	  Position		  [3705, 310, 3855, 330]
+	  ZOrder		  462
+	  LibraryVersion	  "1.462"
+	  SourceBlock		  "Lib_Turbo_Duct_TMATS/Duct"
+	  SourceType		  "T-MATS: Duct Library Block"
+	  ContentPreviewEnabled	  off
+	  dP_M			  "MWS.Duct.dP5"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Fan"
+	  SID			  "1"
+	  Ports			  [3, 6]
+	  Position		  [445, 420, 575, 565]
+	  ZOrder		  319
+	  LibraryVersion	  "1.531"
+	  SourceBlock		  "Lib_Turbo_Compressor_TMATS/Compressor"
+	  SourceType		  "T-MATS: Compressor Library Block"
+	  ContentPreviewEnabled	  off
+	  X_C_RlineVec_M	  "MWS.FAN.RlineVec"
+	  Z_C_AlphaVec_M	  1
+	  Y_C_Map_NcVec_M	  "MWS.FAN.NcVec"
+	  T_C_Map_WcArray_M	  "MWS.FAN.WcArray"
+	  T_C_Map_PRArray_M	  "MWS.FAN.PRArray"
+	  T_C_Map_EffArray_M	  "MWS.FAN.EffArray"
+	  s_C_Nc_M		  "MWS.FAN.s_Nc"
+	  s_C_Wc_M		  "MWS.FAN.s_Wc"
+	  s_C_PR_M		  "MWS.FAN.s_PR"
+	  s_C_Eff_M		  "MWS.FAN.s_eff"
+	  SL_M			  off
+	  Scale_M		  none
+	  CBLDEN_M		  off
+	  C_CBD_M		  0
+	  C_CBFht_M		  0.5
+	  C_CBFPt_M		  0.5
+	  FBLDEN_M		  off
+	  C_FBD_M		  0
+	  C_BFht_M		  0.5
+	  C_BFPt_M		  0.5
+	  DefSMEn_M		  on
+	  SRline_M		  1
+	  X_C_Map_WcSurgeVec_M	  [0 200]
+	  T_C_Map_PRSurgeVec_M	  [30 30]
+	  iDesign_M		  "MWS.iDes"
+	  NcDes_M		  1
+	  EffDes_M		  0.8675
+	  PRDes_M		  1.645
+	  RlineDes_M		  2.3706
+	  FVar_M		  "strcat('iDes_',stripchar_TMATS(gcb),'.bin')"
+	  BlkNm_M		  "double(gcb)"
+	  HP_M			  off
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Fan_NErr1"
+	  SID			  "29"
+	  Position		  [590, 499, 670, 511]
+	  ZOrder		  364
+	  ForegroundColor	  "green"
+	  ShowName		  off
+	  GotoTag		  "Fan_NErr"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Fan_NErrD"
+	  SID			  "34"
+	  Position		  [890, 1349, 1050, 1361]
+	  ZOrder		  369
+	  ForegroundColor	  "green"
+	  ShowName		  off
+	  GotoTag		  "Fan_NErr"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Fan_Rline1"
+	  SID			  "32"
+	  Position		  [345, 489, 420, 501]
+	  ZOrder		  367
+	  ForegroundColor	  "darkGreen"
+	  ShowName		  off
+	  GotoTag		  "Fan_Rline"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Fan_RlineI"
+	  SID			  "36"
+	  Position		  [675, 1384, 835, 1396]
+	  ZOrder		  371
+	  ForegroundColor	  "darkGreen"
+	  ShowName		  off
+	  GotoTag		  "Fan_Rline"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Fan_TrqOut1"
+	  SID			  "28"
+	  Position		  [590, 524, 680, 536]
+	  ZOrder		  363
+	  ForegroundColor	  "[1.000000, 0.333333, 0.498039]"
+	  ShowName		  off
+	  GotoTag		  "Fan_TrqOut"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Fan_TrqOutT"
+	  SID			  "33"
+	  Position		  [555, 729, 715, 741]
+	  ZOrder		  368
+	  ForegroundColor	  "[1.000000, 0.333333, 0.498039]"
+	  ShowName		  off
+	  GotoTag		  "Fan_TrqOut"
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "Fan_term2"
+	  SID			  "31"
+	  Position		  [590, 425, 600, 435]
+	  ZOrder		  366
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "Fan_term3"
+	  SID			  "57"
+	  Position		  [590, 450, 600, 460]
+	  ZOrder		  392
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "HPC"
+	  SID			  "20"
+	  Ports			  [3, 6]
+	  Position		  [2030, 510, 2185, 655]
+	  ZOrder		  338
+	  LibraryVersion	  "1.531"
+	  SourceBlock		  "Lib_Turbo_Compressor_TMATS/Compressor"
+	  SourceType		  "T-MATS: Compressor Library Block"
+	  ContentPreviewEnabled	  off
+	  X_C_RlineVec_M	  "MWS.HPC.RlineVec"
+	  Z_C_AlphaVec_M	  1
+	  Y_C_Map_NcVec_M	  "MWS.HPC.NcVec"
+	  T_C_Map_WcArray_M	  "MWS.HPC.WcArray"
+	  T_C_Map_PRArray_M	  "MWS.HPC.PRArray"
+	  T_C_Map_EffArray_M	  "MWS.HPC.EffArray"
+	  s_C_Nc_M		  "MWS.HPC.s_Nc"
+	  s_C_Wc_M		  "MWS.HPC.s_Wc"
+	  s_C_PR_M		  "MWS.HPC.s_PR"
+	  s_C_Eff_M		  "MWS.HPC.s_eff"
+	  SL_M			  off
+	  Scale_M		  none
+	  CBLDEN_M		  off
+	  C_CBD_M		  0
+	  C_CBFht_M		  0.5
+	  C_CBFPt_M		  0.5
+	  FBLDEN_M		  on
+	  C_FBD_M		  "MWS.HPC.Fbld"
+	  C_BFht_M		  "MWS.HPC.Fblde"
+	  C_BFPt_M		  "MWS.HPC.Fbldp"
+	  DefSMEn_M		  on
+	  SRline_M		  1
+	  X_C_Map_WcSurgeVec_M	  [0 200]
+	  T_C_Map_PRSurgeVec_M	  [30 30]
+	  iDesign_M		  "MWS.iDes"
+	  NcDes_M		  0.995
+	  EffDes_M		  ".8651"
+	  PRDes_M		  5.609
+	  RlineDes_M		  2.0424
+	  FVar_M		  "strcat('iDes_',stripchar_TMATS(gcb),'.bin')"
+	  BlkNm_M		  "double(gcb)"
+	  HP_M			  off
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "HPC_Fbld1"
+	  SID			  "77"
+	  Position		  [2210, 539, 2295, 551]
+	  ZOrder		  412
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  GotoTag		  "HPC_Fbld"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "HPC_FbldF"
+	  SID			  "82"
+	  Position		  [2610, 484, 2695, 496]
+	  ZOrder		  417
+	  ForegroundColor	  "blue"
+	  ShowName		  off
+	  GotoTag		  "HPC_Fbld"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "HPC_NErr1"
+	  SID			  "76"
+	  Position		  [2200, 589, 2280, 601]
+	  ZOrder		  411
+	  ForegroundColor	  "green"
+	  ShowName		  off
+	  GotoTag		  "HPC_NErr"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "HPC_NErrD"
+	  SID			  "81"
+	  Position		  [890, 1389, 1050, 1401]
+	  ZOrder		  416
+	  ForegroundColor	  "green"
+	  ShowName		  off
+	  GotoTag		  "HPC_NErr"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "HPC_Rline1"
+	  SID			  "79"
+	  Position		  [1935, 579, 2015, 591]
+	  ZOrder		  414
+	  ForegroundColor	  "darkGreen"
+	  ShowName		  off
+	  GotoTag		  "HPC_Rline"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "HPC_RlineI"
+	  SID			  "83"
+	  Position		  [675, 1494, 835, 1506]
+	  ZOrder		  418
+	  ForegroundColor	  "darkGreen"
+	  ShowName		  off
+	  GotoTag		  "HPC_Rline"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "HPC_TrqOut1"
+	  SID			  "75"
+	  Position		  [2200, 614, 2285, 626]
+	  ZOrder		  410
+	  ForegroundColor	  "[1.000000, 0.333333, 0.498039]"
+	  ShowName		  off
+	  GotoTag		  "HPC_TrqOut"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "HPC_TrqOutT"
+	  SID			  "80"
+	  Position		  [2145, 749, 2305, 761]
+	  ZOrder		  415
+	  ForegroundColor	  "[1.000000, 0.333333, 0.498039]"
+	  ShowName		  off
+	  GotoTag		  "HPC_TrqOut"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "HPS"
+	  SID			  "108"
+	  Ports			  [3, 2]
+	  Position		  [2390, 801, 2490, 849]
+	  ZOrder		  443
+	  LibraryVersion	  "1.461"
+	  SourceBlock		  "Lib_Turbo_Shaft_TMATS/Shaft"
+	  SourceType		  "T-MATS: Shaft Library Block"
+	  ContentPreviewEnabled	  off
+	  Shaft_Inertia_M	  1000
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "HPS_Ndot1"
+	  SID			  "119"
+	  Position		  [2505, 834, 2665, 846]
+	  ZOrder		  454
+	  ForegroundColor	  "magenta"
+	  ShowName		  off
+	  GotoTag		  "HPS_Ndot"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "HPS_NdotD"
+	  SID			  "122"
+	  Position		  [890, 1559, 1050, 1571]
+	  ZOrder		  457
+	  ForegroundColor	  "magenta"
+	  ShowName		  off
+	  GotoTag		  "HPS_Ndot"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "HPS_Nmech1"
+	  SID			  "120"
+	  Position		  [2505, 809, 2665, 821]
+	  ZOrder		  455
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  GotoTag		  "HPS_Nmech"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "HPS_NmechI"
+	  SID			  "123"
+	  Position		  [1915, 629, 2010, 641]
+	  ZOrder		  458
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  GotoTag		  "HPS_Nmech"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "HPS_NmechI1"
+	  SID			  "125"
+	  Position		  [2600, 574, 2695, 586]
+	  ZOrder		  460
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  GotoTag		  "HPS_Nmech"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "HPS_NmechIn1"
+	  SID			  "121"
+	  Position		  [2145, 834, 2305, 846]
+	  ZOrder		  456
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  GotoTag		  "HPS_NmechIn"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "HPS_NmechInI"
+	  SID			  "124"
+	  Position		  [675, 1629, 835, 1641]
+	  ZOrder		  459
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  GotoTag		  "HPS_NmechIn"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "HPT"
+	  SID			  "403"
+	  Ports			  [4, 4]
+	  Position		  [2715, 476, 2865, 594]
+	  ZOrder		  596
+	  LibraryVersion	  "1.492"
+	  SourceBlock		  "Lib_Turbo_TurbineNPSS_TMATS/Turbine_NPSS"
+	  SourceType		  "T-MATS: Turbine, NPSS Library Block"
+	  ContentPreviewEnabled	  off
+	  X_T_Map_PRVec_M	  "MWS.HPT.PRVec"
+	  Y_T_Map_NcVec_M	  "MWS.HPT.NcVec"
+	  T_T_Map_WcArray_M	  "MWS.HPT.WcArray"
+	  T_T_Map_EffArray_M	  "MWS.HPT.EffArray"
+	  s_T_Nc_M		  "MWS.HPT.s_Nc"
+	  s_T_Wc_M		  "MWS.HPT.s_Wc"
+	  s_T_PR_M		  "MWS.HPT.s_PR"
+	  s_T_Eff_M		  "MWS.HPT.s_eff"
+	  ConfigNPSS_M		  1
+	  Scale_M		  none
+	  CFlwEn_M		  on
+	  T_CoolFlwPos_M	  "MWS.HPT.Cool"
+	  iDesign_M		  "MWS.iDes"
+	  NcDes_M		  99.031
+	  EffDes_M		  ".9133"
+	  PRDes_M		  4.930
+	  NDes_M		  7390
+	  FVar_M		  "strcat('iDes_',stripchar_TMATS(gcb),'.bin')"
+	  BlkNm_M		  "double(gcb)"
+	  HP_M			  off
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "HPT_NErr1"
+	  SID			  "89"
+	  Position		  [2885, 514, 2965, 526]
+	  ZOrder		  424
+	  ForegroundColor	  "green"
+	  ShowName		  off
+	  GotoTag		  "HPT_NErr"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "HPT_NErrD"
+	  SID			  "92"
+	  Position		  [890, 1424, 1050, 1436]
+	  ZOrder		  427
+	  ForegroundColor	  "green"
+	  ShowName		  off
+	  GotoTag		  "HPT_NErr"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "HPT_PRin1"
+	  SID			  "90"
+	  Position		  [2630, 544, 2700, 556]
+	  ZOrder		  425
+	  ForegroundColor	  "darkGreen"
+	  ShowName		  off
+	  GotoTag		  "HPT_PRin"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "HPT_PRinI"
+	  SID			  "93"
+	  Position		  [675, 1524, 835, 1536]
+	  ZOrder		  428
+	  ForegroundColor	  "darkGreen"
+	  ShowName		  off
+	  GotoTag		  "HPT_PRin"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "HPT_TrqOut1"
+	  SID			  "88"
+	  Position		  [2885, 544, 2965, 556]
+	  ZOrder		  423
+	  ForegroundColor	  "[1.000000, 0.333333, 0.498039]"
+	  ShowName		  off
+	  GotoTag		  "HPT_TrqOut"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "HPT_TrqOutT"
+	  SID			  "91"
+	  Position		  [2145, 769, 2305, 781]
+	  ZOrder		  426
+	  ForegroundColor	  "[1.000000, 0.333333, 0.498039]"
+	  ShowName		  off
+	  GotoTag		  "HPT_TrqOut"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Inlet"
+	  SID			  "37"
+	  Ports			  [2, 1]
+	  Position		  [245, 417, 390, 468]
+	  ZOrder		  372
+	  LibraryVersion	  "1.468"
+	  SourceBlock		  "Lib_Turbo_Inlet_TMATS/Inlet"
+	  SourceType		  "T-MATS: Inlet Library Block"
+	  ContentPreviewEnabled	  off
+	  eRambase_M		  "MWS.Inlet.eRamBase"
+	  X_eRamVec_M		  "MWS.Inlet.eRamVec"
+	  T_eRamtbl_M		  "MWS.Inlet.eRamtbl"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "LPC"
+	  SID			  "19"
+	  Ports			  [3, 6]
+	  Position		  [1090, 475, 1245, 620]
+	  ZOrder		  337
+	  LibraryVersion	  "1.531"
+	  SourceBlock		  "Lib_Turbo_Compressor_TMATS/Compressor"
+	  SourceType		  "T-MATS: Compressor Library Block"
+	  ContentPreviewEnabled	  off
+	  X_C_RlineVec_M	  "MWS.LPC.RlineVec"
+	  Z_C_AlphaVec_M	  1
+	  Y_C_Map_NcVec_M	  "MWS.LPC.NcVec"
+	  T_C_Map_WcArray_M	  "MWS.LPC.WcArray"
+	  T_C_Map_PRArray_M	  "MWS.LPC.PRArray"
+	  T_C_Map_EffArray_M	  "MWS.LPC.EffArray"
+	  s_C_Nc_M		  "MWS.LPC.s_Nc"
+	  s_C_Wc_M		  "MWS.LPC.s_Wc"
+	  s_C_PR_M		  "MWS.LPC.s_PR"
+	  s_C_Eff_M		  "MWS.LPC.s_eff"
+	  SL_M			  off
+	  Scale_M		  none
+	  CBLDEN_M		  off
+	  C_CBD_M		  0
+	  C_CBFht_M		  0.5
+	  C_CBFPt_M		  0.5
+	  FBLDEN_M		  off
+	  C_FBD_M		  0
+	  C_BFht_M		  0.5
+	  C_BFPt_M		  0.5
+	  DefSMEn_M		  on
+	  SRline_M		  1
+	  X_C_Map_WcSurgeVec_M	  [0 200]
+	  T_C_Map_PRSurgeVec_M	  [30 30]
+	  iDesign_M		  "MWS.iDes"
+	  NcDes_M		  0.993
+	  EffDes_M		  ".8683"
+	  PRDes_M		  2.488
+	  RlineDes_M		  1.7664
+	  FVar_M		  "strcat('iDes_',stripchar_TMATS(gcb),'.bin')"
+	  BlkNm_M		  "double(gcb)"
+	  HP_M			  off
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "LPC_NErr1"
+	  SID			  "48"
+	  Position		  [1260, 554, 1330, 566]
+	  ZOrder		  383
+	  ForegroundColor	  "green"
+	  ShowName		  off
+	  GotoTag		  "LPC_NErr"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "LPC_NErrD"
+	  SID			  "53"
+	  Position		  [890, 1279, 1050, 1291]
+	  ZOrder		  388
+	  ForegroundColor	  "green"
+	  ShowName		  off
+	  GotoTag		  "LPC_NErr"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "LPC_Rline1"
+	  SID			  "51"
+	  Position		  [1000, 544, 1075, 556]
+	  ZOrder		  386
+	  ForegroundColor	  "darkGreen"
+	  ShowName		  off
+	  GotoTag		  "LPC_Rline"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "LPC_RlineI"
+	  SID			  "55"
+	  Position		  [670, 1459, 835, 1471]
+	  ZOrder		  390
+	  ForegroundColor	  "darkGreen"
+	  ShowName		  off
+	  GotoTag		  "LPC_Rline"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "LPC_TrqOut1"
+	  SID			  "47"
+	  Position		  [1260, 579, 1345, 591]
+	  ZOrder		  382
+	  ForegroundColor	  "[1.000000, 0.333333, 0.498039]"
+	  ShowName		  off
+	  GotoTag		  "LPC_TrqOut"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "LPC_TrqOutT"
+	  SID			  "52"
+	  Position		  [555, 749, 715, 761]
+	  ZOrder		  387
+	  ForegroundColor	  "[1.000000, 0.333333, 0.498039]"
+	  ShowName		  off
+	  GotoTag		  "LPC_TrqOut"
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "LPC_term2"
+	  SID			  "50"
+	  Position		  [1260, 480, 1270, 490]
+	  ZOrder		  385
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "LPC_term3"
+	  SID			  "56"
+	  Position		  [1260, 505, 1270, 515]
+	  ZOrder		  391
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "LPS"
+	  SID			  "107"
+	  Ports			  [3, 2]
+	  Position		  [800, 781, 900, 829]
+	  ZOrder		  442
+	  LibraryVersion	  "1.461"
+	  SourceBlock		  "Lib_Turbo_Shaft_TMATS/Shaft"
+	  SourceType		  "T-MATS: Shaft Library Block"
+	  ContentPreviewEnabled	  off
+	  Shaft_Inertia_M	  1000
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "LPS_Ndot1"
+	  SID			  "111"
+	  Position		  [915, 809, 1075, 821]
+	  ZOrder		  446
+	  ForegroundColor	  "magenta"
+	  ShowName		  off
+	  GotoTag		  "LPS_Ndot"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "LPS_NdotD"
+	  SID			  "114"
+	  Position		  [890, 1524, 1050, 1536]
+	  ZOrder		  449
+	  ForegroundColor	  "magenta"
+	  ShowName		  off
+	  GotoTag		  "LPS_Ndot"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "LPS_Nmech1"
+	  SID			  "112"
+	  Position		  [915, 784, 1075, 796]
+	  ZOrder		  447
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  GotoTag		  "LPS_Nmech"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "LPS_NmechI"
+	  SID			  "115"
+	  Position		  [335, 539, 425, 551]
+	  ZOrder		  450
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  GotoTag		  "LPS_Nmech"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "LPS_NmechI1"
+	  SID			  "117"
+	  Position		  [995, 594, 1080, 606]
+	  ZOrder		  452
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  GotoTag		  "LPS_Nmech"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "LPS_NmechI2"
+	  SID			  "118"
+	  Position		  [3415, 569, 3500, 581]
+	  ZOrder		  453
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  GotoTag		  "LPS_Nmech"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "LPS_NmechIn1"
+	  SID			  "113"
+	  Position		  [555, 814, 715, 826]
+	  ZOrder		  448
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  GotoTag		  "LPS_NmechIn"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "LPS_NmechInI"
+	  SID			  "116"
+	  Position		  [675, 1594, 835, 1606]
+	  ZOrder		  451
+	  ForegroundColor	  "red"
+	  ShowName		  off
+	  GotoTag		  "LPS_NmechIn"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "LPT"
+	  SID			  "404"
+	  Ports			  [4, 4]
+	  Position		  [3520, 471, 3670, 589]
+	  ZOrder		  597
+	  LibraryVersion	  "1.492"
+	  SourceBlock		  "Lib_Turbo_TurbineNPSS_TMATS/Turbine_NPSS"
+	  SourceType		  "T-MATS: Turbine, NPSS Library Block"
+	  ContentPreviewEnabled	  off
+	  X_T_Map_PRVec_M	  "MWS.LPT.PRVec"
+	  Y_T_Map_NcVec_M	  "MWS.LPT.NcVec"
+	  T_T_Map_WcArray_M	  "MWS.LPT.WcArray"
+	  T_T_Map_EffArray_M	  "MWS.LPT.EffArray"
+	  s_T_Nc_M		  "MWS.LPT.s_Nc"
+	  s_T_Wc_M		  "MWS.LPT.s_Wc"
+	  s_T_PR_M		  "MWS.LPT.s_PR"
+	  s_T_Eff_M		  "MWS.LPT.s_eff"
+	  ConfigNPSS_M		  1
+	  Scale_M		  none
+	  CFlwEn_M		  off
+	  T_CoolFlwPos_M	  0
+	  iDesign_M		  "MWS.iDes"
+	  NcDes_M		  105.038
+	  EffDes_M		  ".9323"
+	  PRDes_M		  6.420
+	  NDes_M		  3667.6
+	  FVar_M		  "strcat('iDes_',stripchar_TMATS(gcb),'.bin')"
+	  BlkNm_M		  "double(gcb)"
+	  HP_M			  off
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "LPT_NErr1"
+	  SID			  "96"
+	  Position		  [3685, 509, 3760, 521]
+	  ZOrder		  431
+	  ForegroundColor	  "green"
+	  ShowName		  off
+	  GotoTag		  "LPT_NErr"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "LPT_NErrD"
+	  SID			  "99"
+	  Position		  [890, 1454, 1050, 1466]
+	  ZOrder		  434
+	  ForegroundColor	  "green"
+	  ShowName		  off
+	  GotoTag		  "LPT_NErr"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "LPT_PRin1"
+	  SID			  "97"
+	  Position		  [3430, 539, 3505, 551]
+	  ZOrder		  432
+	  ForegroundColor	  "darkGreen"
+	  ShowName		  off
+	  GotoTag		  "LPT_PRin"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "LPT_PRinI"
+	  SID			  "100"
+	  Position		  [675, 1559, 835, 1571]
+	  ZOrder		  435
+	  ForegroundColor	  "darkGreen"
+	  ShowName		  off
+	  GotoTag		  "LPT_PRin"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "LPT_TrqOut1"
+	  SID			  "95"
+	  Position		  [3685, 539, 3775, 551]
+	  ZOrder		  430
+	  ForegroundColor	  "[1.000000, 0.333333, 0.498039]"
+	  ShowName		  off
+	  GotoTag		  "LPT_TrqOut"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "LPT_TrqOutT"
+	  SID			  "98"
+	  Position		  [555, 769, 715, 781]
+	  ZOrder		  433
+	  ForegroundColor	  "[1.000000, 0.333333, 0.498039]"
+	  ShowName		  off
+	  GotoTag		  "LPT_TrqOut"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux"
+	  SID			  "109"
+	  Ports			  [3, 1]
+	  Position		  [735, 721, 740, 789]
+	  ZOrder		  444
+	  ShowName		  off
+	  Inputs		  "3"
+	  DisplayOption		  "bar"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux1"
+	  SID			  "110"
+	  Ports			  [2, 1]
+	  Position		  [2335, 746, 2340, 784]
+	  ZOrder		  445
+	  ShowName		  off
+	  Inputs		  "2"
+	  DisplayOption		  "bar"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "NoFlow"
+	  SID			  "131"
+	  Position		  [3390, 415, 3485, 445]
+	  ZOrder		  466
+	  Value			  "[0 0 0 0 0]"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Noz_byp"
+	  SID			  "26"
+	  Ports			  [2, 4]
+	  Position		  [3890, 298, 3995, 382]
+	  ZOrder		  361
+	  LibraryVersion	  "1.504"
+	  SourceBlock		  "Lib_Turbo_Nozzle_TMATS/Nozzle"
+	  SourceType		  "T-MATS: Nozzle Library Block"
+	  ContentPreviewEnabled	  off
+	  SWType_M		  Convergent
+	  N_TArea_M		  "MWS.NozB.Ath"
+	  N_EArea_M		  110.7
+	  N_FL_M		  0.00
+	  X_N_TtVec2_M		  [300 2000]
+	  T_N_TGArray_M		  [1 1]
+	  X_N_PEQPaVec_M	  [0 10000]
+	  T_N_CdThArray_M	  [1 1]
+	  T_N_CvArray_M		  "MWS.NozB.CvArray"
+	  CfgEn_M		  off
+	  T_N_CfgArray_M	  [1 1]
+	  X_N_FARVec_M		  [0; 0.0050; 0.0100; 0.0150; 0.0200; 0.0250; 0.0300]
+	  T_N_RtArray_M		  [0.0686;    0.0686;    0.0686;    0.0686;    0.0686;    0.0686;    0.0686]
+	  Y_N_TtVec_M		  [300 2000]
+	  T_N_MAP_gammaArray_M	  [ 1.4 1.4 1.4 1.4 1.4 1.4 1.4; 1.4 1.4 1.4 1.4 1.4 1.4 1.4]
+	  iDesign_M		  "MWS.iDes"
+	  WDes_M		  562.61
+	  FVar_M		  "strcat('iDes_',stripchar_TMATS(gcb),'.bin')"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_NErr1"
+	  SID			  "69"
+	  Position		  [4010, 344, 4170, 356]
+	  ZOrder		  404
+	  ForegroundColor	  "green"
+	  ShowName		  off
+	  GotoTag		  "Noz_byp_NErr"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_NErrD"
+	  SID			  "73"
+	  Position		  [890, 1314, 1050, 1326]
+	  ZOrder		  408
+	  ForegroundColor	  "green"
+	  ShowName		  off
+	  GotoTag		  "Noz_byp_NErr"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb1"
+	  SID			  "72"
+	  Position		  [3805, 354, 3875, 366]
+	  ZOrder		  407
+	  ShowName		  off
+	  GotoTag		  "Pamb"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_Pamb10"
+	  SID			  "416"
+	  Position		  [2040, 479, 2080, 491]
+	  ZOrder		  600
+	  ShowName		  off
+	  GotoTag		  "S25"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_Pamb11"
+	  SID			  "417"
+	  Position		  [2335, 579, 2375, 591]
+	  ZOrder		  601
+	  ShowName		  off
+	  GotoTag		  "S3"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_Pamb12"
+	  SID			  "418"
+	  Position		  [2610, 524, 2650, 536]
+	  ZOrder		  602
+	  ShowName		  off
+	  GotoTag		  "S4"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_Pamb13"
+	  SID			  "419"
+	  Position		  [3455, 489, 3495, 501]
+	  ZOrder		  603
+	  ShowName		  off
+	  GotoTag		  "S45"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_Pamb14"
+	  SID			  "420"
+	  Position		  [3890, 434, 3930, 446]
+	  ZOrder		  604
+	  ShowName		  off
+	  GotoTag		  "S5"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_Pamb15"
+	  SID			  "421"
+	  Position		  [3890, 274, 3930, 286]
+	  ZOrder		  605
+	  ShowName		  off
+	  GotoTag		  "S15"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb16"
+	  SID			  "446"
+	  Position		  [3060, 709, 3100, 721]
+	  ZOrder		  630
+	  ShowName		  off
+	  GotoTag		  "S2"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb17"
+	  SID			  "445"
+	  Position		  [3060, 729, 3100, 741]
+	  ZOrder		  629
+	  ShowName		  off
+	  GotoTag		  "S21"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_Pamb18"
+	  SID			  "424"
+	  Position		  [590, 549, 630, 561]
+	  ZOrder		  608
+	  ShowName		  off
+	  GotoTag		  "FData"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_Pamb19"
+	  SID			  "425"
+	  Position		  [1265, 604, 1330, 616]
+	  ZOrder		  609
+	  ShowName		  off
+	  GotoTag		  "LPCData"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_Pamb2"
+	  SID			  "384"
+	  Position		  [1360, 529, 1450, 541]
+	  ZOrder		  587
+	  ShowName		  off
+	  GotoTag		  "LPCFlowOut"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb20"
+	  SID			  "447"
+	  Position		  [3060, 869, 3100, 881]
+	  ZOrder		  631
+	  ShowName		  off
+	  GotoTag		  "FData"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb21"
+	  SID			  "448"
+	  Position		  [3035, 889, 3100, 901]
+	  ZOrder		  632
+	  ShowName		  off
+	  GotoTag		  "LPCData"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_Pamb22"
+	  SID			  "428"
+	  Position		  [2210, 639, 2275, 651]
+	  ZOrder		  612
+	  ShowName		  off
+	  GotoTag		  "HPCData"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb23"
+	  SID			  "449"
+	  Position		  [3060, 749, 3100, 761]
+	  ZOrder		  633
+	  ShowName		  off
+	  GotoTag		  "S25"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb24"
+	  SID			  "450"
+	  Position		  [3035, 909, 3100, 921]
+	  ZOrder		  634
+	  ShowName		  off
+	  GotoTag		  "HPCData"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_Pamb25"
+	  SID			  "431"
+	  Position		  [2890, 574, 2955, 586]
+	  ZOrder		  615
+	  ShowName		  off
+	  GotoTag		  "HPTData"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb26"
+	  SID			  "440"
+	  Position		  [3035, 929, 3100, 941]
+	  ZOrder		  624
+	  ShowName		  off
+	  GotoTag		  "HPTData"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb27"
+	  SID			  "441"
+	  Position		  [3060, 789, 3100, 801]
+	  ZOrder		  625
+	  ShowName		  off
+	  GotoTag		  "S4"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb28"
+	  SID			  "442"
+	  Position		  [3060, 809, 3100, 821]
+	  ZOrder		  626
+	  ShowName		  off
+	  GotoTag		  "S45"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_Pamb29"
+	  SID			  "435"
+	  Position		  [3695, 569, 3760, 581]
+	  ZOrder		  619
+	  ShowName		  off
+	  GotoTag		  "LPTData"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb3"
+	  SID			  "387"
+	  Position		  [1740, 529, 1830, 541]
+	  ZOrder		  589
+	  ShowName		  off
+	  GotoTag		  "LPCFlowOut"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb30"
+	  SID			  "439"
+	  Position		  [3035, 949, 3100, 961]
+	  ZOrder		  623
+	  ShowName		  off
+	  GotoTag		  "LPTData"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb31"
+	  SID			  "444"
+	  Position		  [3060, 829, 3100, 841]
+	  ZOrder		  628
+	  ShowName		  off
+	  GotoTag		  "S5"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb32"
+	  SID			  "443"
+	  Position		  [3060, 849, 3100, 861]
+	  ZOrder		  627
+	  ShowName		  off
+	  GotoTag		  "S15"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb33"
+	  SID			  "452"
+	  Position		  [3060, 769, 3100, 781]
+	  ZOrder		  636
+	  ShowName		  off
+	  GotoTag		  "S3"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb4"
+	  SID			  "388"
+	  Position		  [3170, 509, 3260, 521]
+	  ZOrder		  590
+	  ShowName		  off
+	  GotoTag		  "HPTFlowOut"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_Pamb5"
+	  SID			  "390"
+	  Position		  [2980, 484, 3070, 496]
+	  ZOrder		  592
+	  ShowName		  off
+	  GotoTag		  "HPTFlowOut"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_Pamb6"
+	  SID			  "395"
+	  Position		  [1360, 424, 1450, 436]
+	  ZOrder		  593
+	  ShowName		  off
+	  GotoTag		  "BypassFlowOut"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_byp_Pamb7"
+	  SID			  "397"
+	  Position		  [3570, 314, 3660, 326]
+	  ZOrder		  595
+	  ShowName		  off
+	  GotoTag		  "BypassFlowOut"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_Pamb8"
+	  SID			  "414"
+	  Position		  [425, 399, 465, 411]
+	  ZOrder		  598
+	  ShowName		  off
+	  GotoTag		  "S2"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_byp_Pamb9"
+	  SID			  "415"
+	  Position		  [660, 434, 700, 446]
+	  ZOrder		  599
+	  ShowName		  off
+	  GotoTag		  "S21"
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "Noz_byp_term1"
+	  SID			  "68"
+	  Position		  [4010, 365, 4020, 375]
+	  ZOrder		  403
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "Noz_byp_term2"
+	  SID			  "380"
+	  Position		  [4010, 325, 4020, 335]
+	  ZOrder		  583
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "Noz_byp_term3"
+	  SID			  "382"
+	  Position		  [4010, 305, 4020, 315]
+	  ZOrder		  585
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Noz_core"
+	  SID			  "24"
+	  Ports			  [2, 4]
+	  Position		  [3890, 463, 3995, 547]
+	  ZOrder		  359
+	  LibraryVersion	  "1.504"
+	  SourceBlock		  "Lib_Turbo_Nozzle_TMATS/Nozzle"
+	  SourceType		  "T-MATS: Nozzle Library Block"
+	  ContentPreviewEnabled	  off
+	  SWType_M		  Convergent
+	  N_TArea_M		  "MWS.Noz.Ath"
+	  N_EArea_M		  110.7
+	  N_FL_M		  0.00
+	  X_N_TtVec2_M		  [300 2000]
+	  T_N_TGArray_M		  [1 1]
+	  X_N_PEQPaVec_M	  [0 10000]
+	  T_N_CdThArray_M	  [1 1]
+	  T_N_CvArray_M		  "MWS.Noz.CvArray"
+	  CfgEn_M		  off
+	  T_N_CfgArray_M	  [1 1]
+	  X_N_FARVec_M		  [0; 0.0050; 0.0100; 0.0150; 0.0200; 0.0250; 0.0300]
+	  T_N_RtArray_M		  [0.0686;    0.0686;    0.0686;    0.0686;    0.0686;    0.0686;    0.0686]
+	  Y_N_TtVec_M		  [300 2000]
+	  T_N_MAP_gammaArray_M	  [ 1.4 1.4 1.4 1.4 1.4 1.4 1.4; 1.4 1.4 1.4 1.4 1.4 1.4 1.4]
+	  iDesign_M		  "MWS.iDes"
+	  WDes_M		  113.51
+	  FVar_M		  "strcat('iDes_',stripchar_TMATS(gcb),'.bin')"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_core_NErr1"
+	  SID			  "102"
+	  Position		  [4010, 509, 4105, 521]
+	  ZOrder		  437
+	  ForegroundColor	  "green"
+	  ShowName		  off
+	  GotoTag		  "Noz_core_NErr"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_core_NErrD"
+	  SID			  "106"
+	  Position		  [890, 1489, 1050, 1501]
+	  ZOrder		  441
+	  ForegroundColor	  "green"
+	  ShowName		  off
+	  GotoTag		  "Noz_core_NErr"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_core_Pamb1"
+	  SID			  "105"
+	  Position		  [3815, 519, 3875, 531]
+	  ZOrder		  440
+	  ShowName		  off
+	  GotoTag		  "Pamb"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_core_Pamb2"
+	  SID			  "307"
+	  Position		  [675, 1314, 835, 1326]
+	  ZOrder		  525
+	  ShowName		  off
+	  GotoTag		  "Pamb"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_core_Pamb3"
+	  SID			  "359"
+	  Position		  [135, 449, 210, 461]
+	  ZOrder		  569
+	  ShowName		  off
+	  GotoTag		  "Pamb"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Noz_core_Pamb4"
+	  SID			  "360"
+	  Position		  [135, 424, 210, 436]
+	  ZOrder		  570
+	  ShowName		  off
+	  GotoTag		  "Input_GPC"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Noz_core_Pamb5"
+	  SID			  "362"
+	  Position		  [675, 1279, 835, 1291]
+	  ZOrder		  572
+	  ShowName		  off
+	  GotoTag		  "Input_GPC"
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "Noz_core_term1"
+	  SID			  "101"
+	  Position		  [4010, 530, 4020, 540]
+	  ZOrder		  436
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "Noz_core_term2"
+	  SID			  "377"
+	  Position		  [4010, 470, 4020, 480]
+	  ZOrder		  580
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  "Noz_core_term3"
+	  SID			  "378"
+	  Position		  [4010, 490, 4020, 500]
+	  ZOrder		  581
+	  ShowName		  off
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  SID			  "348"
+	  Ports			  [2, 1]
+	  Position		  [2345, 302, 2375, 333]
+	  ZOrder		  563
+	  InputSameDT		  off
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Splitter"
+	  SID			  "25"
+	  Ports			  [2, 2]
+	  Position		  [705, 470, 890, 510]
+	  ZOrder		  360
+	  LibraryVersion	  "1.467"
+	  SourceBlock		  "Lib_Turbo_Splitter_TMATS/Splitter"
+	  SourceType		  "T-MATS: Splitter Library Block"
+	  ContentPreviewEnabled	  off
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "Splitter_BPR1"
+	  SID			  "38"
+	  Position		  [580, 574, 680, 586]
+	  ZOrder		  373
+	  ForegroundColor	  "darkGreen"
+	  ShowName		  off
+	  GotoTag		  "Splitter_BPR"
+	}
+	Block {
+	  BlockType		  Goto
+	  Name			  "Splitter_BPRI"
+	  SID			  "39"
+	  Position		  [675, 1419, 835, 1431]
+	  ZOrder		  374
+	  ForegroundColor	  "darkGreen"
+	  ShowName		  off
+	  GotoTag		  "Splitter_BPR"
+	}
+	Block {
+	  BlockType		  ToWorkspace
+	  Name			  "To Workspace"
+	  SID			  "454"
+	  Ports			  [1]
+	  Position		  [3145, 710, 3205, 720]
+	  ZOrder		  638
+	  ShowName		  off
+	  VariableName		  "S2"
+	  MaxDataPoints		  "inf"
+	  SaveFormat		  "Timeseries"
+	  Save2DSignal		  "3-D array (concatenate along third dimension)"
+	  FixptAsFi		  on
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  ToWorkspace
+	  Name			  "To Workspace1"
+	  SID			  "455"
+	  Ports			  [1]
+	  Position		  [3145, 730, 3205, 740]
+	  ZOrder		  639
+	  ShowName		  off
+	  VariableName		  "S21"
+	  MaxDataPoints		  "inf"
+	  SaveFormat		  "Timeseries"
+	  Save2DSignal		  "3-D array (concatenate along third dimension)"
+	  FixptAsFi		  on
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  ToWorkspace
+	  Name			  "To Workspace10"
+	  SID			  "464"
+	  Ports			  [1]
+	  Position		  [3145, 910, 3205, 920]
+	  ZOrder		  648
+	  ShowName		  off
+	  VariableName		  "HPCData"
+	  MaxDataPoints		  "inf"
+	  SaveFormat		  "Timeseries"
+	  Save2DSignal		  "3-D array (concatenate along third dimension)"
+	  FixptAsFi		  on
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  ToWorkspace
+	  Name			  "To Workspace11"
+	  SID			  "465"
+	  Ports			  [1]
+	  Position		  [3145, 930, 3205, 940]
+	  ZOrder		  649
+	  ShowName		  off
+	  VariableName		  "HPTData"
+	  MaxDataPoints		  "inf"
+	  SaveFormat		  "Timeseries"
+	  Save2DSignal		  "3-D array (concatenate along third dimension)"
+	  FixptAsFi		  on
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  ToWorkspace
+	  Name			  "To Workspace12"
+	  SID			  "466"
+	  Ports			  [1]
+	  Position		  [3145, 950, 3205, 960]
+	  ZOrder		  650
+	  ShowName		  off
+	  VariableName		  "LPTData"
+	  MaxDataPoints		  "inf"
+	  SaveFormat		  "Timeseries"
+	  Save2DSignal		  "3-D array (concatenate along third dimension)"
+	  FixptAsFi		  on
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  ToWorkspace
+	  Name			  "To Workspace2"
+	  SID			  "456"
+	  Ports			  [1]
+	  Position		  [3145, 750, 3205, 760]
+	  ZOrder		  640
+	  ShowName		  off
+	  VariableName		  "S25"
+	  MaxDataPoints		  "inf"
+	  SaveFormat		  "Timeseries"
+	  Save2DSignal		  "3-D array (concatenate along third dimension)"
+	  FixptAsFi		  on
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  ToWorkspace
+	  Name			  "To Workspace3"
+	  SID			  "457"
+	  Ports			  [1]
+	  Position		  [3145, 770, 3205, 780]
+	  ZOrder		  641
+	  ShowName		  off
+	  VariableName		  "S3"
+	  MaxDataPoints		  "inf"
+	  SaveFormat		  "Timeseries"
+	  Save2DSignal		  "3-D array (concatenate along third dimension)"
+	  FixptAsFi		  on
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  ToWorkspace
+	  Name			  "To Workspace4"
+	  SID			  "458"
+	  Ports			  [1]
+	  Position		  [3145, 790, 3205, 800]
+	  ZOrder		  642
+	  ShowName		  off
+	  VariableName		  "S4"
+	  MaxDataPoints		  "inf"
+	  SaveFormat		  "Timeseries"
+	  Save2DSignal		  "3-D array (concatenate along third dimension)"
+	  FixptAsFi		  on
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  ToWorkspace
+	  Name			  "To Workspace5"
+	  SID			  "459"
+	  Ports			  [1]
+	  Position		  [3145, 810, 3205, 820]
+	  ZOrder		  643
+	  ShowName		  off
+	  VariableName		  "S45"
+	  MaxDataPoints		  "inf"
+	  SaveFormat		  "Timeseries"
+	  Save2DSignal		  "3-D array (concatenate along third dimension)"
+	  FixptAsFi		  on
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  ToWorkspace
+	  Name			  "To Workspace6"
+	  SID			  "460"
+	  Ports			  [1]
+	  Position		  [3145, 830, 3205, 840]
+	  ZOrder		  644
+	  ShowName		  off
+	  VariableName		  "S5"
+	  MaxDataPoints		  "inf"
+	  SaveFormat		  "Timeseries"
+	  Save2DSignal		  "3-D array (concatenate along third dimension)"
+	  FixptAsFi		  on
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  ToWorkspace
+	  Name			  "To Workspace7"
+	  SID			  "461"
+	  Ports			  [1]
+	  Position		  [3145, 850, 3205, 860]
+	  ZOrder		  645
+	  ShowName		  off
+	  VariableName		  "S15"
+	  MaxDataPoints		  "inf"
+	  SaveFormat		  "Timeseries"
+	  Save2DSignal		  "3-D array (concatenate along third dimension)"
+	  FixptAsFi		  on
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  ToWorkspace
+	  Name			  "To Workspace8"
+	  SID			  "462"
+	  Ports			  [1]
+	  Position		  [3145, 870, 3205, 880]
+	  ZOrder		  646
+	  ShowName		  off
+	  VariableName		  "FData"
+	  MaxDataPoints		  "inf"
+	  SaveFormat		  "Timeseries"
+	  Save2DSignal		  "3-D array (concatenate along third dimension)"
+	  FixptAsFi		  on
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  ToWorkspace
+	  Name			  "To Workspace9"
+	  SID			  "463"
+	  Ports			  [1]
+	  Position		  [3145, 890, 3205, 900]
+	  ZOrder		  647
+	  ShowName		  off
+	  VariableName		  "LPCData"
+	  MaxDataPoints		  "inf"
+	  SaveFormat		  "Timeseries"
+	  Save2DSignal		  "3-D array (concatenate along third dimension)"
+	  FixptAsFi		  on
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "LPC_NErr"
+	  SID			  "162"
+	  Position		  [1080, 1279, 1110, 1291]
+	  ZOrder		  496
+	  ForegroundColor	  "green"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Noz_byp_NErr"
+	  SID			  "163"
+	  Position		  [1080, 1314, 1110, 1326]
+	  ZOrder		  497
+	  ForegroundColor	  "green"
+	  Port			  "2"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Fan_NErr"
+	  SID			  "164"
+	  Position		  [1080, 1349, 1110, 1361]
+	  ZOrder		  498
+	  ForegroundColor	  "green"
+	  Port			  "3"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "HPC_NErr"
+	  SID			  "165"
+	  Position		  [1080, 1389, 1110, 1401]
+	  ZOrder		  499
+	  ForegroundColor	  "green"
+	  Port			  "4"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "HPT_NErr"
+	  SID			  "166"
+	  Position		  [1080, 1424, 1110, 1436]
+	  ZOrder		  500
+	  ForegroundColor	  "green"
+	  Port			  "5"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "LPT_NErr"
+	  SID			  "167"
+	  Position		  [1080, 1454, 1110, 1466]
+	  ZOrder		  501
+	  ForegroundColor	  "green"
+	  Port			  "6"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Noz_core_NErr"
+	  SID			  "168"
+	  Position		  [1080, 1489, 1110, 1501]
+	  ZOrder		  502
+	  ForegroundColor	  "green"
+	  Port			  "7"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "LPS_Ndot"
+	  SID			  "169"
+	  Position		  [1080, 1524, 1110, 1536]
+	  ZOrder		  503
+	  ForegroundColor	  "magenta"
+	  Port			  "8"
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "HPS_Ndot"
+	  SID			  "170"
+	  Position		  [1080, 1559, 1110, 1571]
+	  ZOrder		  504
+	  ForegroundColor	  "magenta"
+	  Port			  "9"
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  ZOrder		  1
+	  SrcBlock		  "Fan_Rline"
+	  SrcPort		  1
+	  DstBlock		  "Fan_RlineI"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  2
+	  SrcBlock		  "HPS_NmechIn"
+	  SrcPort		  1
+	  DstBlock		  "HPS_NmechInI"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  3
+	  SrcBlock		  "HPC_Rline"
+	  SrcPort		  1
+	  DstBlock		  "HPC_RlineI"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  4
+	  SrcBlock		  "LPT_PRin"
+	  SrcPort		  1
+	  DstBlock		  "LPT_PRinI"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  5
+	  SrcBlock		  "FAR_dmd"
+	  SrcPort		  1
+	  DstBlock		  "Burner_WfC"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  6
+	  SrcBlock		  "Splitter_BPR"
+	  SrcPort		  1
+	  DstBlock		  "Splitter_BPRI"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  7
+	  SrcBlock		  "LPC_Rline"
+	  SrcPort		  1
+	  DstBlock		  "LPC_RlineI"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  8
+	  SrcBlock		  "HPT_PRin"
+	  SrcPort		  1
+	  DstBlock		  "HPT_PRinI"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  9
+	  SrcBlock		  "LPS_NmechIn"
+	  SrcPort		  1
+	  DstBlock		  "LPS_NmechInI"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  10
+	  SrcBlock		  "Duct1"
+	  SrcPort		  1
+	  DstBlock		  "LPC"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  13
+	  SrcBlock		  "Duct4"
+	  SrcPort		  1
+	  Points		  [4, 0]
+	  Branch {
+	    ZOrder		    359
+	    Points		    [0, -45]
+	    DstBlock		    "Noz_byp_Pamb14"
+	    DstPort		    1
+	  }
+	  Branch {
+	    ZOrder		    358
+	    DstBlock		    "Noz_core"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  ZOrder		  364
+	  SrcBlock		  "HPC"
+	  SrcPort		  6
+	  DstBlock		  "Noz_byp_Pamb22"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  21
+	  SrcBlock		  "Noz_core"
+	  SrcPort		  4
+	  DstBlock		  "Noz_core_term1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  22
+	  SrcBlock		  "Noz_core_Pamb1"
+	  SrcPort		  1
+	  DstBlock		  "Noz_core"
+	  DstPort		  2
+	}
+	Line {
+	  ZOrder		  25
+	  SrcBlock		  "Noz_core"
+	  SrcPort		  3
+	  DstBlock		  "Noz_core_NErr1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  256
+	  SrcBlock		  "Duct3"
+	  SrcPort		  1
+	  Points		  [7, 0]
+	  Branch {
+	    ZOrder		    368
+	    Points		    [0, -20]
+	    DstBlock		    "Noz_byp_Pamb13"
+	    DstPort		    1
+	  }
+	  Branch {
+	    ZOrder		    367
+	    DstBlock		    "LPT"
+	    DstPort		    2
+	  }
+	}
+	Line {
+	  ZOrder		  169
+	  SrcBlock		  "Noz_core"
+	  SrcPort		  2
+	  DstBlock		  "Noz_core_term3"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  32
+	  SrcBlock		  "Mux"
+	  SrcPort		  1
+	  Points		  [25, 0; 0, 35]
+	  DstBlock		  "LPS"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  35
+	  SrcBlock		  "Mux1"
+	  SrcPort		  1
+	  Points		  [20, 0; 0, 45]
+	  DstBlock		  "HPS"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  38
+	  SrcBlock		  "LPT_TrqOutT"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  3
+	}
+	Line {
+	  ZOrder		  39
+	  SrcBlock		  "Fan_TrqOutT"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  40
+	  SrcBlock		  "HPT_TrqOutT"
+	  SrcPort		  1
+	  DstBlock		  "Mux1"
+	  DstPort		  2
+	}
+	Line {
+	  ZOrder		  41
+	  SrcBlock		  "HPC_TrqOutT"
+	  SrcPort		  1
+	  DstBlock		  "Mux1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  42
+	  SrcBlock		  "LPC_TrqOutT"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  2
+	}
+	Line {
+	  ZOrder		  43
+	  SrcBlock		  "HPS"
+	  SrcPort		  2
+	  DstBlock		  "HPS_Ndot1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  44
+	  SrcBlock		  "HPS"
+	  SrcPort		  1
+	  DstBlock		  "HPS_Nmech1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  45
+	  SrcBlock		  "LPS_NmechI"
+	  SrcPort		  1
+	  DstBlock		  "Fan"
+	  DstPort		  3
+	}
+	Line {
+	  ZOrder		  258
+	  SrcBlock		  "LPS_NmechI2"
+	  SrcPort		  1
+	  DstBlock		  "LPT"
+	  DstPort		  4
+	}
+	Line {
+	  ZOrder		  483
+	  SrcBlock		  "HPS_NmechIn1"
+	  SrcPort		  1
+	  DstBlock		  "HPS"
+	  DstPort		  3
+	}
+	Line {
+	  ZOrder		  48
+	  SrcBlock		  "HPS_NmechI"
+	  SrcPort		  1
+	  DstBlock		  "HPC"
+	  DstPort		  3
+	}
+	Line {
+	  ZOrder		  49
+	  SrcBlock		  "LPS_NmechI1"
+	  SrcPort		  1
+	  DstBlock		  "LPC"
+	  DstPort		  3
+	}
+	Line {
+	  ZOrder		  50
+	  SrcBlock		  "Duct2"
+	  SrcPort		  1
+	  Points		  [0, 0]
+	  Branch {
+	    ZOrder		    350
+	    Points		    [0, -50]
+	    DstBlock		    "Noz_byp_Pamb10"
+	    DstPort		    1
+	  }
+	  Branch {
+	    ZOrder		    349
+	    DstBlock		    "HPC"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  ZOrder		  53
+	  SrcBlock		  "Duct5"
+	  SrcPort		  1
+	  Points		  [7, 0]
+	  Branch {
+	    ZOrder		    361
+	    Points		    [0, -40]
+	    DstBlock		    "Noz_byp_Pamb15"
+	    DstPort		    1
+	  }
+	  Branch {
+	    ZOrder		    360
+	    DstBlock		    "Noz_byp"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  ZOrder		  260
+	  SrcBlock		  "LPT"
+	  SrcPort		  2
+	  DstBlock		  "LPT_NErr1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  257
+	  SrcBlock		  "LPT_PRin1"
+	  SrcPort		  1
+	  DstBlock		  "LPT"
+	  DstPort		  3
+	}
+	Line {
+	  ZOrder		  265
+	  SrcBlock		  "HPS_NmechI1"
+	  SrcPort		  1
+	  DstBlock		  "HPT"
+	  DstPort		  4
+	}
+	Line {
+	  ZOrder		  64
+	  SrcBlock		  "LPS"
+	  SrcPort		  2
+	  Points		  [0, -5]
+	  DstBlock		  "LPS_Ndot1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  65
+	  SrcBlock		  "LPS"
+	  SrcPort		  1
+	  Points		  [0, -5]
+	  DstBlock		  "LPS_Nmech1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  481
+	  SrcBlock		  "LPS_NmechIn1"
+	  SrcPort		  1
+	  DstBlock		  "LPS"
+	  DstPort		  3
+	}
+	Line {
+	  ZOrder		  72
+	  SrcBlock		  "Splitter"
+	  SrcPort		  2
+	  DstBlock		  "Duct1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  75
+	  SrcBlock		  "Fan"
+	  SrcPort		  3
+	  Points		  [55, 0]
+	  Branch {
+	    ZOrder		    346
+	    Points		    [0, -40]
+	    DstBlock		    "Noz_byp_Pamb9"
+	    DstPort		    1
+	  }
+	  Branch {
+	    ZOrder		    345
+	    DstBlock		    "Splitter"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  ZOrder		  183
+	  SrcBlock		  "Splitter"
+	  SrcPort		  1
+	  Points		  [30, 0; 0, -50]
+	  DstBlock		  "Noz_byp_Pamb6"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  269
+	  SrcBlock		  "Burner"
+	  SrcPort		  1
+	  Points		  [18, 0]
+	  Branch {
+	    ZOrder		    353
+	    Points		    [0, 10]
+	    DstBlock		    "Noz_byp_Pamb12"
+	    DstPort		    1
+	  }
+	  Branch {
+	    ZOrder		    352
+	    DstBlock		    "HPT"
+	    DstPort		    2
+	  }
+	}
+	Line {
+	  ZOrder		  259
+	  SrcBlock		  "LPT"
+	  SrcPort		  1
+	  DstBlock		  "Duct4"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  177
+	  SrcBlock		  "LPC"
+	  SrcPort		  3
+	  DstBlock		  "Noz_byp_Pamb2"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  264
+	  SrcBlock		  "HPT"
+	  SrcPort		  2
+	  DstBlock		  "HPT_NErr1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  270
+	  SrcBlock		  "HPT_PRin1"
+	  SrcPort		  1
+	  DstBlock		  "HPT"
+	  DstPort		  3
+	}
+	Line {
+	  ZOrder		  255
+	  SrcBlock		  "NoFlow"
+	  SrcPort		  1
+	  Points		  [12, 0; 0, 55]
+	  DstBlock		  "LPT"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  98
+	  SrcBlock		  "Inlet"
+	  SrcPort		  1
+	  Points		  [10, 0]
+	  Branch {
+	    ZOrder		    344
+	    Points		    [0, -40]
+	    DstBlock		    "Noz_byp_Pamb8"
+	    DstPort		    1
+	  }
+	  Branch {
+	    ZOrder		    343
+	    DstBlock		    "Fan"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  ZOrder		  261
+	  SrcBlock		  "LPT"
+	  SrcPort		  3
+	  DstBlock		  "LPT_TrqOut1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  102
+	  SrcBlock		  "HPC"
+	  SrcPort		  1
+	  DstBlock		  "Compressor_term2"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  105
+	  SrcBlock		  "Noz_byp"
+	  SrcPort		  3
+	  DstBlock		  "Noz_byp_NErr1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  106
+	  SrcBlock		  "Fan_Rline1"
+	  SrcPort		  1
+	  DstBlock		  "Fan"
+	  DstPort		  2
+	}
+	Line {
+	  ZOrder		  174
+	  SrcBlock		  "Noz_byp"
+	  SrcPort		  1
+	  DstBlock		  "Noz_byp_term3"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  267
+	  SrcBlock		  "HPT"
+	  SrcPort		  3
+	  DstBlock		  "HPT_TrqOut1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  109
+	  SrcBlock		  "Noz_byp"
+	  SrcPort		  4
+	  DstBlock		  "Noz_byp_term1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  110
+	  SrcBlock		  "Noz_byp_Pamb1"
+	  SrcPort		  1
+	  DstBlock		  "Noz_byp"
+	  DstPort		  2
+	}
+	Line {
+	  ZOrder		  172
+	  SrcBlock		  "Noz_byp"
+	  SrcPort		  2
+	  DstBlock		  "Noz_byp_term2"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  112
+	  SrcBlock		  "Burner"
+	  SrcPort		  2
+	  DstBlock		  "Burner_term1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  113
+	  SrcBlock		  "LPC"
+	  SrcPort		  2
+	  DstBlock		  "LPC_term3"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  114
+	  SrcBlock		  "LPC"
+	  SrcPort		  4
+	  DstBlock		  "LPC_NErr1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  115
+	  SrcBlock		  "LPC"
+	  SrcPort		  1
+	  DstBlock		  "LPC_term2"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  116
+	  SrcBlock		  "LPC"
+	  SrcPort		  5
+	  DstBlock		  "LPC_TrqOut1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  117
+	  SrcBlock		  "LPC_Rline1"
+	  SrcPort		  1
+	  DstBlock		  "LPC"
+	  DstPort		  2
+	}
+	Line {
+	  ZOrder		  118
+	  SrcBlock		  "Splitter_BPR1"
+	  SrcPort		  1
+	  Points		  [5, 0]
+	  DstBlock		  "Splitter"
+	  DstPort		  2
+	}
+	Line {
+	  ZOrder		  263
+	  SrcBlock		  "HPC_FbldF"
+	  SrcPort		  1
+	  DstBlock		  "HPT"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  120
+	  SrcBlock		  "Fan"
+	  SrcPort		  5
+	  DstBlock		  "Fan_TrqOut1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  121
+	  SrcBlock		  "Fan"
+	  SrcPort		  4
+	  DstBlock		  "Fan_NErr1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  122
+	  SrcBlock		  "Fan"
+	  SrcPort		  2
+	  DstBlock		  "Fan_term3"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  362
+	  SrcBlock		  "Fan"
+	  SrcPort		  6
+	  DstBlock		  "Noz_byp_Pamb18"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  124
+	  SrcBlock		  "Fan"
+	  SrcPort		  1
+	  DstBlock		  "Fan_term2"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  125
+	  SrcBlock		  "HPC"
+	  SrcPort		  5
+	  DstBlock		  "HPC_TrqOut1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  126
+	  SrcBlock		  "HPC_Rline1"
+	  SrcPort		  1
+	  DstBlock		  "HPC"
+	  DstPort		  2
+	}
+	Line {
+	  ZOrder		  127
+	  SrcBlock		  "HPC"
+	  SrcPort		  4
+	  DstBlock		  "HPC_NErr1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  128
+	  SrcBlock		  "HPC"
+	  SrcPort		  2
+	  DstBlock		  "HPC_Fbld1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  363
+	  SrcBlock		  "LPC"
+	  SrcPort		  6
+	  DstBlock		  "Noz_byp_Pamb19"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  132
+	  SrcBlock		  "LPC_NErrD"
+	  SrcPort		  1
+	  DstBlock		  "LPC_NErr"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  133
+	  SrcBlock		  "Noz_byp_NErrD"
+	  SrcPort		  1
+	  DstBlock		  "Noz_byp_NErr"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  134
+	  SrcBlock		  "Fan_NErrD"
+	  SrcPort		  1
+	  DstBlock		  "Fan_NErr"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  135
+	  SrcBlock		  "HPC_NErrD"
+	  SrcPort		  1
+	  DstBlock		  "HPC_NErr"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  136
+	  SrcBlock		  "HPT_NErrD"
+	  SrcPort		  1
+	  DstBlock		  "HPT_NErr"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  137
+	  SrcBlock		  "LPT_NErrD"
+	  SrcPort		  1
+	  DstBlock		  "LPT_NErr"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  138
+	  SrcBlock		  "Noz_core_NErrD"
+	  SrcPort		  1
+	  DstBlock		  "Noz_core_NErr"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  139
+	  SrcBlock		  "LPS_NdotD"
+	  SrcPort		  1
+	  DstBlock		  "LPS_Ndot"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  140
+	  SrcBlock		  "HPS_NdotD"
+	  SrcPort		  1
+	  DstBlock		  "HPS_Ndot"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  181
+	  SrcBlock		  "Noz_byp_Pamb4"
+	  SrcPort		  1
+	  DstBlock		  "Duct3"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  156
+	  SrcBlock		  "Burner_Wf1"
+	  SrcPort		  1
+	  Points		  [15, 0]
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+	Line {
+	  Name			  "<W>"
+	  ZOrder		  157
+	  Labels		  [0, 0]
+	  SrcBlock		  "Bus Selector5"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  158
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  Points		  [12, 0; 0, 200]
+	  DstBlock		  "Burner"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  161
+	  SrcBlock		  "Pamb"
+	  SrcPort		  1
+	  DstBlock		  "Noz_core_Pamb2"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  162
+	  SrcBlock		  "Noz_core_Pamb3"
+	  SrcPort		  1
+	  DstBlock		  "Inlet"
+	  DstPort		  2
+	}
+	Line {
+	  ZOrder		  163
+	  SrcBlock		  "Noz_core_Pamb4"
+	  SrcPort		  1
+	  DstBlock		  "Inlet"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  164
+	  SrcBlock		  "Input GPC"
+	  SrcPort		  1
+	  DstBlock		  "Noz_core_Pamb5"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  167
+	  SrcBlock		  "Noz_core"
+	  SrcPort		  1
+	  DstBlock		  "Noz_core_term2"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  178
+	  SrcBlock		  "Noz_byp_Pamb3"
+	  SrcPort		  1
+	  DstBlock		  "Duct2"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  266
+	  SrcBlock		  "HPT"
+	  SrcPort		  1
+	  DstBlock		  "Noz_byp_Pamb5"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  184
+	  SrcBlock		  "Noz_byp_Pamb7"
+	  SrcPort		  1
+	  DstBlock		  "Duct5"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  87
+	  SrcBlock		  "HPC"
+	  SrcPort		  3
+	  Points		  [123, 0]
+	  Branch {
+	    ZOrder		    351
+	    Points		    [0, 15]
+	    DstBlock		    "Noz_byp_Pamb11"
+	    DstPort		    1
+	  }
+	  Branch {
+	    ZOrder		    88
+	    Points		    [0, -134; -159, 0; 0, -126]
+	    DstBlock		    "Bus Selector5"
+	    DstPort		    1
+	  }
+	  Branch {
+	    ZOrder		    91
+	    DstBlock		    "Burner"
+	    DstPort		    2
+	  }
+	}
+	Line {
+	  ZOrder		  365
+	  SrcBlock		  "HPT"
+	  SrcPort		  4
+	  DstBlock		  "Noz_byp_Pamb25"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  366
+	  SrcBlock		  "LPT"
+	  SrcPort		  4
+	  DstBlock		  "Noz_byp_Pamb29"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  369
+	  SrcBlock		  "Noz_byp_Pamb16"
+	  SrcPort		  1
+	  DstBlock		  "To Workspace"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  370
+	  SrcBlock		  "Noz_byp_Pamb17"
+	  SrcPort		  1
+	  DstBlock		  "To Workspace1"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  371
+	  SrcBlock		  "Noz_byp_Pamb23"
+	  SrcPort		  1
+	  DstBlock		  "To Workspace2"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  372
+	  SrcBlock		  "Noz_byp_Pamb33"
+	  SrcPort		  1
+	  DstBlock		  "To Workspace3"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  373
+	  SrcBlock		  "Noz_byp_Pamb27"
+	  SrcPort		  1
+	  DstBlock		  "To Workspace4"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  374
+	  SrcBlock		  "Noz_byp_Pamb28"
+	  SrcPort		  1
+	  DstBlock		  "To Workspace5"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  375
+	  SrcBlock		  "Noz_byp_Pamb31"
+	  SrcPort		  1
+	  DstBlock		  "To Workspace6"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  376
+	  SrcBlock		  "Noz_byp_Pamb32"
+	  SrcPort		  1
+	  DstBlock		  "To Workspace7"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  377
+	  SrcBlock		  "Noz_byp_Pamb20"
+	  SrcPort		  1
+	  DstBlock		  "To Workspace8"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  378
+	  SrcBlock		  "Noz_byp_Pamb21"
+	  SrcPort		  1
+	  DstBlock		  "To Workspace9"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  379
+	  SrcBlock		  "Noz_byp_Pamb24"
+	  SrcPort		  1
+	  DstBlock		  "To Workspace10"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  380
+	  SrcBlock		  "Noz_byp_Pamb26"
+	  SrcPort		  1
+	  DstBlock		  "To Workspace11"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  381
+	  SrcBlock		  "Noz_byp_Pamb30"
+	  SrcPort		  1
+	  DstBlock		  "To Workspace12"
+	  DstPort		  1
+	}
+	Line {
+	  ZOrder		  482
+	  SrcBlock		  "Constant"
+	  SrcPort		  1
+	  DstBlock		  "LPS"
+	  DstPort		  2
+	}
+	Line {
+	  ZOrder		  484
+	  SrcBlock		  "Constant1"
+	  SrcPort		  1
+	  DstBlock		  "HPS"
+	  DstPort		  2
+	}
+	Annotation {
+	  SID			  "365"
+	  Name			  "LP Shaft Model"
+	  Position		  [815, 663, 1059, 707]
+	  InternalMargins	  [0, 0, 0, 0]
+	  FixedHeight		  off
+	  FixedWidth		  off
+	  ZOrder		  -1
+	  FontSize		  36
+	}
+	Annotation {
+	  SID			  "363"
+	  Name			  "Inputs"
+	  Position		  [699, 1238, 796, 1282]
+	  InternalMargins	  [0, 0, 0, 0]
+	  FixedHeight		  off
+	  FixedWidth		  off
+	  ZOrder		  -2
+	  FontSize		  36
+	}
+	Annotation {
+	  SID			  "364"
+	  Name			  "Outputs"
+	  Position		  [999, 1238, 1125, 1282]
+	  InternalMargins	  [0, 0, 0, 0]
+	  FixedHeight		  off
+	  FixedWidth		  off
+	  ZOrder		  -3
+	  FontSize		  36
+	}
+	Annotation {
+	  SID			  "391"
+	  Name			  "Engine Core"
+	  Position		  [2470, 248, 2669, 292]
+	  InternalMargins	  [0, 0, 0, 0]
+	  FixedHeight		  off
+	  FixedWidth		  off
+	  ZOrder		  -1
+	  FontSize		  36
+	}
+	Annotation {
+	  SID			  "392"
+	  Name			  "HP Shaft Model"
+	  Position		  [2460, 708, 2710, 752]
+	  InternalMargins	  [0, 0, 0, 0]
+	  FixedHeight		  off
+	  FixedWidth		  off
+	  ZOrder		  -2
+	  FontSize		  36
+	}
+	Annotation {
+	  SID			  "393"
+	  Name			  "Engine Back End"
+	  Position		  [3650, 248, 3925, 292]
+	  InternalMargins	  [0, 0, 0, 0]
+	  FixedHeight		  off
+	  FixedWidth		  off
+	  ZOrder		  -3
+	  FontSize		  36
+	}
+	Annotation {
+	  SID			  "394"
+	  Name			  "Engine Front End"
+	  Position		  [780, 263, 1057, 307]
+	  InternalMargins	  [0, 0, 0, 0]
+	  FixedHeight		  off
+	  FixedWidth		  off
+	  ZOrder		  -4
+	  FontSize		  36
+	}
+	Annotation {
+	  SID			  "398"
+	  Name			  "Fuel Flow demand as FAR"
+	  Position		  [2270, 388, 2482, 412]
+	  InternalMargins	  [0, 0, 0, 0]
+	  FixedHeight		  off
+	  FixedWidth		  off
+	  ZOrder		  -5
+	  FontSize		  18
+	}
+	Annotation {
+	  SID			  "399"
+	  Name			  "Inlet"
+	  Position		  [320, 378, 387, 422]
+	  InternalMargins	  [0, 0, 0, 0]
+	  FixedHeight		  off
+	  FixedWidth		  off
+	  ZOrder		  -6
+	  FontSize		  36
+	}
+	Annotation {
+	  SID			  "400"
+	  Name			  "Fan"
+	  Position		  [510, 378, 573, 422]
+	  InternalMargins	  [0, 0, 0, 0]
+	  FixedHeight		  off
+	  FixedWidth		  off
+	  ZOrder		  -7
+	  FontSize		  36
+	}
+	Annotation {
+	  SID			  "401"
+	  Name			  "Splitter"
+	  Position		  [795, 428, 907, 472]
+	  InternalMargins	  [0, 0, 0, 0]
+	  FixedHeight		  off
+	  FixedWidth		  off
+	  ZOrder		  -8
+	  FontSize		  36
+	}
+	Annotation {
+	  SID			  "402"
+	  Name			  "LPC"
+	  Position		  [1165, 398, 1237, 442]
+	  InternalMargins	  [0, 0, 0, 0]
+	  FixedHeight		  off
+	  FixedWidth		  off
+	  ZOrder		  -9
+	  FontSize		  36
+	}
+      }
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelFan_NErr"
+      SID		      "242"
+      Position		      [1255, 399, 1415, 411]
+      ZOrder		      521
+      ShowName		      off
+      GotoTag		      "Fan_NErr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelFan_NErr1"
+      SID		      "284"
+      Position		      [670, 814, 830, 826]
+      ZOrder		      563
+      ShowName		      off
+      GotoTag		      "Fan_NErr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelFan_Rline"
+      SID		      "232"
+      Position		      [900, 409, 1060, 421]
+      ZOrder		      511
+      ShowName		      off
+      GotoTag		      "Fan_Rline"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelFan_Rline1"
+      SID		      "265"
+      Position		      [1395, 764, 1555, 776]
+      ZOrder		      544
+      ShowName		      off
+      GotoTag		      "Fan_Rline"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelHPC_NErr"
+      SID		      "243"
+      Position		      [1255, 429, 1415, 441]
+      ZOrder		      522
+      ShowName		      off
+      GotoTag		      "HPC_NErr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelHPC_NErr1"
+      SID		      "285"
+      Position		      [670, 839, 830, 851]
+      ZOrder		      564
+      ShowName		      off
+      GotoTag		      "HPC_NErr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelHPC_Rline"
+      SID		      "235"
+      Position		      [900, 484, 1060, 496]
+      ZOrder		      514
+      ShowName		      off
+      GotoTag		      "HPC_Rline"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelHPC_Rline1"
+      SID		      "268"
+      Position		      [1395, 839, 1555, 851]
+      ZOrder		      547
+      ShowName		      off
+      GotoTag		      "HPC_Rline"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelHPS_Ndot"
+      SID		      "248"
+      Position		      [1255, 579, 1415, 591]
+      ZOrder		      527
+      ShowName		      off
+      GotoTag		      "HPS_Ndot"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelHPS_Ndot1"
+      SID		      "290"
+      Position		      [670, 964, 830, 976]
+      ZOrder		      569
+      ShowName		      off
+      GotoTag		      "HPS_Ndot"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelHPS_NmechIn"
+      SID		      "239"
+      Position		      [900, 584, 1060, 596]
+      ZOrder		      518
+      ShowName		      off
+      GotoTag		      "HPS_NmechIn"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelHPS_NmechIn1"
+      SID		      "272"
+      Position		      [1395, 939, 1555, 951]
+      ZOrder		      551
+      ShowName		      off
+      GotoTag		      "HPS_NmechIn"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelHPT_NErr"
+      SID		      "244"
+      Position		      [1255, 459, 1415, 471]
+      ZOrder		      523
+      ShowName		      off
+      GotoTag		      "HPT_NErr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelHPT_NErr1"
+      SID		      "286"
+      Position		      [670, 864, 830, 876]
+      ZOrder		      565
+      ShowName		      off
+      GotoTag		      "HPT_NErr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelHPT_PRin"
+      SID		      "236"
+      Position		      [900, 509, 1060, 521]
+      ZOrder		      515
+      ShowName		      off
+      GotoTag		      "HPT_PRin"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelHPT_PRin1"
+      SID		      "269"
+      Position		      [1395, 864, 1555, 876]
+      ZOrder		      548
+      ShowName		      off
+      GotoTag		      "HPT_PRin"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelLPC_NErr"
+      SID		      "240"
+      Position		      [1255, 339, 1415, 351]
+      ZOrder		      519
+      ShowName		      off
+      GotoTag		      "LPC_NErr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelLPC_NErr1"
+      SID		      "282"
+      Position		      [670, 764, 830, 776]
+      ZOrder		      561
+      ShowName		      off
+      GotoTag		      "LPC_NErr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelLPC_Rline"
+      SID		      "234"
+      Position		      [900, 459, 1060, 471]
+      ZOrder		      513
+      ShowName		      off
+      GotoTag		      "LPC_Rline"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelLPC_Rline1"
+      SID		      "267"
+      Position		      [1395, 814, 1555, 826]
+      ZOrder		      546
+      ShowName		      off
+      GotoTag		      "LPC_Rline"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelLPS_Ndot"
+      SID		      "247"
+      Position		      [1255, 549, 1415, 561]
+      ZOrder		      526
+      ShowName		      off
+      GotoTag		      "LPS_Ndot"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelLPS_Ndot1"
+      SID		      "289"
+      Position		      [670, 939, 830, 951]
+      ZOrder		      568
+      ShowName		      off
+      GotoTag		      "LPS_Ndot"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelLPS_NmechIn"
+      SID		      "238"
+      Position		      [900, 559, 1060, 571]
+      ZOrder		      517
+      ShowName		      off
+      GotoTag		      "LPS_NmechIn"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelLPS_NmechIn1"
+      SID		      "271"
+      Position		      [1395, 914, 1555, 926]
+      ZOrder		      550
+      ShowName		      off
+      GotoTag		      "LPS_NmechIn"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelLPT_NErr"
+      SID		      "245"
+      Position		      [1255, 489, 1415, 501]
+      ZOrder		      524
+      ShowName		      off
+      GotoTag		      "LPT_NErr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelLPT_NErr1"
+      SID		      "287"
+      Position		      [670, 889, 830, 901]
+      ZOrder		      566
+      ShowName		      off
+      GotoTag		      "LPT_NErr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelLPT_PRin"
+      SID		      "237"
+      Position		      [900, 534, 1060, 546]
+      ZOrder		      516
+      ShowName		      off
+      GotoTag		      "LPT_PRin"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelLPT_PRin1"
+      SID		      "270"
+      Position		      [1395, 889, 1555, 901]
+      ZOrder		      549
+      ShowName		      off
+      GotoTag		      "LPT_PRin"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelNoz_byp_NErr"
+      SID		      "241"
+      Position		      [1255, 369, 1415, 381]
+      ZOrder		      520
+      ShowName		      off
+      GotoTag		      "Noz_byp_NErr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelNoz_byp_NErr1"
+      SID		      "283"
+      Position		      [670, 789, 830, 801]
+      ZOrder		      562
+      ShowName		      off
+      GotoTag		      "Noz_byp_NErr"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelNoz_core_NErr"
+      SID		      "246"
+      Position		      [1255, 519, 1415, 531]
+      ZOrder		      525
+      ShowName		      off
+      GotoTag		      "Noz_core_NErr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelNoz_core_NErr1"
+      SID		      "288"
+      Position		      [670, 914, 830, 926]
+      ZOrder		      567
+      ShowName		      off
+      GotoTag		      "Noz_core_NErr"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelPamb1"
+      SID		      "249"
+      Position		      [845, 209, 925, 221]
+      ZOrder		      528
+      ShowName		      off
+      GotoTag		      "W"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelPamb3"
+      SID		      "264"
+      Position		      [1395, 739, 1555, 751]
+      ZOrder		      543
+      ShowName		      off
+      GotoTag		      "W"
+    }
+    Block {
+      BlockType		      From
+      Name		      "Plant modelSplitter_BPR"
+      SID		      "233"
+      Position		      [900, 434, 1060, 446]
+      ZOrder		      512
+      ShowName		      off
+      GotoTag		      "Splitter_BPR"
+    }
+    Block {
+      BlockType		      Goto
+      Name		      "Plant modelSplitter_BPR1"
+      SID		      "266"
+      Position		      [1395, 789, 1555, 801]
+      ZOrder		      545
+      ShowName		      off
+      GotoTag		      "Splitter_BPR"
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "SS NR Solver w JacobianCalc"
+      SID		      "228"
+      Ports		      [2, 2]
+      Position		      [1000, 918, 1140, 982]
+      ZOrder		      508
+      LibraryVersion	      "1.393"
+      SourceBlock	      "Lib_Solve_SSNRSolverJC_TMATS/SS NR Solver w JacobianCalc"
+      SourceType	      "T-MATS: SS NR Solver w Jacobian Calc Library Block"
+      ContentPreviewEnabled   off
+      SJac_Per_M	      "0.01*[ones(size(MWS.Input.NRIC,2),1)'; -ones(size(MWS.Input.NRIC,2),1)']"
+      SNR_IC_M		      "MWS.Input.NRIC"
+      SNR_DX_M		      "1"
+      SNR_Mx_M		      "100000"
+      SNR_Mn_M		      "0.00001"
+      SJacobianAttempts_M     "20"
+      Cond_Limits_M	      "0.005"
+    }
+    Line {
+      ZOrder		      1
+      SrcBlock		      "Mux"
+      SrcPort		      1
+      Points		      [57, 0; 0, 75]
+      DstBlock		      "Plant model"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      2
+      SrcBlock		      "Constant17"
+      SrcPort		      1
+      DstBlock		      "Mux"
+      DstPort		      5
+    }
+    Line {
+      ZOrder		      3
+      SrcBlock		      "Constant15"
+      SrcPort		      1
+      DstBlock		      "Mux"
+      DstPort		      3
+    }
+    Line {
+      ZOrder		      4
+      SrcBlock		      "Constant16"
+      SrcPort		      1
+      DstBlock		      "Mux"
+      DstPort		      4
+    }
+    Line {
+      ZOrder		      5
+      SrcBlock		      "Constant14"
+      SrcPort		      1
+      DstBlock		      "Mux"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      6
+      SrcBlock		      "Constant13"
+      SrcPort		      1
+      DstBlock		      "Plant model"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      7
+      SrcBlock		      "Constant2"
+      SrcPort		      1
+      DstBlock		      "Plant model"
+      DstPort		      3
+    }
+    Line {
+      ZOrder		      8
+      SrcBlock		      "Plant modelFan_Rline"
+      SrcPort		      1
+      DstBlock		      "Plant model"
+      DstPort		      4
+    }
+    Line {
+      ZOrder		      9
+      SrcBlock		      "Plant modelSplitter_BPR"
+      SrcPort		      1
+      DstBlock		      "Plant model"
+      DstPort		      5
+    }
+    Line {
+      ZOrder		      10
+      SrcBlock		      "Plant modelLPC_Rline"
+      SrcPort		      1
+      DstBlock		      "Plant model"
+      DstPort		      6
+    }
+    Line {
+      ZOrder		      11
+      SrcBlock		      "Plant modelHPC_Rline"
+      SrcPort		      1
+      DstBlock		      "Plant model"
+      DstPort		      7
+    }
+    Line {
+      ZOrder		      12
+      SrcBlock		      "Plant modelHPT_PRin"
+      SrcPort		      1
+      DstBlock		      "Plant model"
+      DstPort		      8
+    }
+    Line {
+      ZOrder		      13
+      SrcBlock		      "Plant modelLPT_PRin"
+      SrcPort		      1
+      DstBlock		      "Plant model"
+      DstPort		      9
+    }
+    Line {
+      ZOrder		      14
+      SrcBlock		      "Plant modelLPS_NmechIn"
+      SrcPort		      1
+      DstBlock		      "Plant model"
+      DstPort		      10
+    }
+    Line {
+      ZOrder		      15
+      SrcBlock		      "Plant modelHPS_NmechIn"
+      SrcPort		      1
+      DstBlock		      "Plant model"
+      DstPort		      11
+    }
+    Line {
+      ZOrder		      16
+      SrcBlock		      "Plant model"
+      SrcPort		      1
+      DstBlock		      "Plant modelLPC_NErr"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      17
+      SrcBlock		      "Plant model"
+      SrcPort		      2
+      DstBlock		      "Plant modelNoz_byp_NErr"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      18
+      SrcBlock		      "Plant model"
+      SrcPort		      3
+      DstBlock		      "Plant modelFan_NErr"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      19
+      SrcBlock		      "Plant model"
+      SrcPort		      4
+      DstBlock		      "Plant modelHPC_NErr"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      20
+      SrcBlock		      "Plant model"
+      SrcPort		      5
+      DstBlock		      "Plant modelHPT_NErr"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      21
+      SrcBlock		      "Plant model"
+      SrcPort		      6
+      DstBlock		      "Plant modelLPT_NErr"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      22
+      SrcBlock		      "Plant model"
+      SrcPort		      7
+      DstBlock		      "Plant modelNoz_core_NErr"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      23
+      SrcBlock		      "Plant model"
+      SrcPort		      8
+      DstBlock		      "Plant modelLPS_Ndot"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      24
+      SrcBlock		      "Plant model"
+      SrcPort		      9
+      DstBlock		      "Plant modelHPS_Ndot"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      25
+      SrcBlock		      "Plant modelPamb1"
+      SrcPort		      1
+      DstBlock		      "Mux"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      26
+      SrcBlock		      "Demux"
+      SrcPort		      1
+      DstBlock		      "Plant modelPamb3"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      27
+      SrcBlock		      "Demux"
+      SrcPort		      7
+      DstBlock		      "Plant modelLPT_PRin1"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      28
+      SrcBlock		      "Demux"
+      SrcPort		      5
+      DstBlock		      "Plant modelHPC_Rline1"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      29
+      SrcBlock		      "Demux"
+      SrcPort		      6
+      DstBlock		      "Plant modelHPT_PRin1"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      30
+      SrcBlock		      "Demux"
+      SrcPort		      4
+      DstBlock		      "Plant modelLPC_Rline1"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      31
+      SrcBlock		      "Demux"
+      SrcPort		      8
+      DstBlock		      "Plant modelLPS_NmechIn1"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      32
+      SrcBlock		      "Demux"
+      SrcPort		      9
+      DstBlock		      "Plant modelHPS_NmechIn1"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      33
+      SrcBlock		      "Demux"
+      SrcPort		      2
+      DstBlock		      "Plant modelFan_Rline1"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      34
+      SrcBlock		      "Demux"
+      SrcPort		      3
+      DstBlock		      "Plant modelSplitter_BPR1"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      35
+      SrcBlock		      "Plant modelFan_NErr1"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      3
+    }
+    Line {
+      ZOrder		      36
+      SrcBlock		      "Plant modelHPC_NErr1"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      4
+    }
+    Line {
+      ZOrder		      37
+      SrcBlock		      "Plant modelNoz_byp_NErr1"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      38
+      SrcBlock		      "Plant modelHPT_NErr1"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      5
+    }
+    Line {
+      ZOrder		      39
+      SrcBlock		      "Plant modelLPC_NErr1"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      40
+      SrcBlock		      "Plant modelLPT_NErr1"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      6
+    }
+    Line {
+      ZOrder		      41
+      SrcBlock		      "Plant modelNoz_core_NErr1"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      7
+    }
+    Line {
+      ZOrder		      42
+      SrcBlock		      "SS NR Solver w JacobianCalc"
+      SrcPort		      2
+      Points		      [10, 0]
+      DstBlock		      "Bus Selector"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      43
+      SrcBlock		      "Mux1"
+      SrcPort		      1
+      Points		      [17, 0]
+      Branch {
+	ZOrder			55
+	Points			[0, 95]
+	DstBlock		"SS NR Solver w JacobianCalc"
+	DstPort			2
+      }
+      Branch {
+	ZOrder			45
+	Points			[0, -45]
+	DstBlock		"Display"
+	DstPort			1
+      }
+    }
+    Line {
+      Name		      "<Converged>"
+      ZOrder		      46
+      Labels		      [0, 0]
+      SrcBlock		      "Bus Selector"
+      SrcPort		      1
+      DstBlock		      "Display2"
+      DstPort		      1
+    }
+    Line {
+      Name		      "<J>"
+      ZOrder		      47
+      Labels		      [0, 0]
+      SrcBlock		      "Bus Selector"
+      SrcPort		      2
+      Points		      [32, 0; 0, 115]
+      DstBlock		      "Display3"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      48
+      SrcBlock		      "Plant modelLPS_Ndot1"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      8
+    }
+    Line {
+      ZOrder		      49
+      SrcBlock		      "Plant modelHPS_Ndot1"
+      SrcPort		      1
+      DstBlock		      "Mux1"
+      DstPort		      9
+    }
+    Line {
+      ZOrder		      50
+      SrcBlock		      "SS NR Solver w JacobianCalc"
+      SrcPort		      1
+      Points		      [24, 0]
+      Branch {
+	ZOrder			51
+	Points			[168, 0; 0, -90]
+	DstBlock		"Demux"
+	DstPort			1
+      }
+      Branch {
+	ZOrder			52
+	Points			[0, -110]
+	DstBlock		"Display1"
+	DstPort			1
+      }
+    }
+    Line {
+      ZOrder		      56
+      SrcBlock		      "Constant"
+      SrcPort		      1
+      DstBlock		      "SS NR Solver w JacobianCalc"
+      DstPort		      1
+    }
+    Annotation {
+      SID		      "354"
+      Name		      "Jacobian Matrix- 9x9"
+      Position		      [1448, 1082, 1578, 1100]
+      InternalMargins	      [0, 0, 0, 0]
+      FixedHeight	      off
+      FixedWidth	      off
+      ZOrder		      -1
+      FontSize		      14
+    }
+    Annotation {
+      SID		      "352"
+      Name		      "Dependents"
+      Position		      [911, 721, 998, 742]
+      InternalMargins	      [0, 0, 0, 0]
+      FixedHeight	      off
+      FixedWidth	      off
+      ZOrder		      -2
+      FontSize		      16
+    }
+    Annotation {
+      SID		      "353"
+      Name		      "Independents"
+      Position		      [1331, 701, 1426, 722]
+      InternalMargins	      [0, 0, 0, 0]
+      FixedHeight	      off
+      FixedWidth	      off
+      ZOrder		      -3
+      FontSize		      16
+    }
+    Annotation {
+      SID		      "355"
+      Name		      "Convergance Boolean - 1- system is converged"
+      Position		      [1448, 1012, 1750, 1030]
+      InternalMargins	      [0, 0, 0, 0]
+      FixedHeight	      off
+      FixedWidth	      off
+      ZOrder		      -4
+      FontSize		      14
+    }
+  }
+}
+#Finite State Machines
+#
+#   Stateflow 80000005
+#
+#
+Stateflow {
+  machine {
+    id			    1
+    name		    "JT9D_Model_SS"
+    created		    "10-Jan-2014 12:21:30"
+    isLibrary		    0
+    firstTarget		    2
+    sfVersion		    80000005
+  }
+  target {
+    id			    2
+    name		    "sfun"
+    description		    "Default Simulink S-Function Target."
+    machine		    1
+    linkNode		    [1 0 3]
+  }
+  target {
+    id			    3
+    name		    "rtw"
+    machine		    1
+    linkNode		    [1 2 0]
+  }
+}
