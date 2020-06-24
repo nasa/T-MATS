@@ -3,24 +3,39 @@ function Install_TMATS()
 
 % TMATSver and date must remain in the listed form for the ver command to work
 % properly.
-TMATSver = '1.2.2';
-TMATSdate = 'Apr-07-2020';
+TMATSver = '1.3.1';
+TMATSdate = 'Jun-24-2020';
 
 error = 0;
-TMATSInstallmsg = 'Install T-MATS matlab toolbox? Note: Installation will add MATLAB paths and generate MEX files.';
+InpMsg{1} = 'Install T-MATS matlab toolbox? Note: Installation will add MATLAB paths and generate MEX files.';
+InpMsg{2} = '1) Temporary Install';
+InpMsg{3} = '2) Permanant Install (may require execute privileges)';
+InpMsg{4} = '3) Cancel Install';
+InpMsgFinal = '';
+
+for i = 1: length(InpMsg)
+    InpMsgFinal = strcat(InpMsgFinal,InpMsg{i},'\n');
+end
+
 POp = filesep;
 
-switch questdlg(TMATSInstallmsg, 'T-MATS Library','Temporary Install', 'Install', 'Cancel', 'Cancel');
-    case 'Temporary Install'
+InpVal = input(InpMsgFinal,'s');
+
+switch InpVal
+    case '1'
         InstallType = 'Install';
         PermInstall = 0;
-    case 'Install'
+    case '2'
         InstallType = 'Install';
         PermInstall = 1;
-    case 'Cancel'
+    case '3'
         InstallType = 'Cancel';
         PermInstall = 0;
+    otherwise,
+        disp('Selection invalid, expecting a number 1-3. Installation Canceled');
+        return
 end
+
 % check if T-MATS_Library is in the path
 switch InstallType
     case 'Install',
