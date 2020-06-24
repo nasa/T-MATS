@@ -46,7 +46,7 @@ if(nargout == 0)
 end
 
 % open template
-open_system('JT9D_Model_PWLin.slx');
+open_system('JT9D_Model_PWLin.mdl');
 
 % loading complete
 disp('** JT9D_Lin example ready to execute **')
