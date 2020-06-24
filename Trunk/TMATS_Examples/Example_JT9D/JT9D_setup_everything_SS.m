@@ -46,7 +46,7 @@ if(nargout == 0)
 end
 
 % open template
-open_system('JT9D_Model_SS.slx');
+open_system('JT9D_Model_SS.mdl');
 
 % loading complete
 disp('** JT9D_SS example ready to execute **')

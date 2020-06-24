@@ -43,7 +43,7 @@ if(nargout == 0)
 end
 
 % open template
-open_system('GasTurbine_SS_Template.slx');
+open_system('GasTurbine_SS_Template.mdl');
 
 % loading complete
 disp('** GasTurbine_SS example ready to execute **')

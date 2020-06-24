@@ -38,7 +38,7 @@ if(nargout == 0)
 end
 
 % open template
-open_system('JT9D_SS_Cantera_Template.slx');
+open_system('JT9D_SS_Cantera_Template.mdl');
 
 % loading complete
 disp('** GasTurbine_SS example ready to execute **')

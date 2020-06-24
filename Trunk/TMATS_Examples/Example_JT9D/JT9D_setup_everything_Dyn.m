@@ -46,7 +46,7 @@ if(nargout == 0)
 end
 
 % open template
-open_system('JT9D_Model_Dyn.slx');
+open_system('JT9D_Model_Dyn.mdl');
 
 % loading complete
 disp('** JT9D_Dyn example ready to execute **')

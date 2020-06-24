@@ -43,7 +43,7 @@ if(nargout == 0)
 end
 
 % open template
-open_system('GasTurbine_Dyn_Template.slx');
+open_system('GasTurbine_Dyn_Template.mdl');
 
 % loading complete
 disp('** GasTurbine_Dyn example ready to execute **')
