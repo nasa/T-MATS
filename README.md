@@ -8,7 +8,6 @@ Toolbox for the Modeling and Analysis of Thermodynamic Systems <br>
 For questions, comments, and general support see the <b> <a href= "https://groups.google.com/forum/#!forum/t-mats-user-group" >T-MATS user's forum</a></b>. <br>
 Please take a moment and fill out our <b> <a href= "https://docs.google.com/forms/d/1cjcCyOKZpV49-gsdGGaKHUsZ2c2fKX5mwkKrntt60Eo/viewform?usp=send_form" >Survey</a></b>, user interest and feedback allows us to continue working on this package.<br><br>
 
-<b>Introduction</b> <br>
 The Toolbox for the Modeling and Analysis of Thermodynamic Systems (T-MATS) 
 is a Simulink toolbox intended for use in the modeling and simulation of thermodynamic 
 systems and their controls. T-MATS contains generic thermodynamic and controls 
