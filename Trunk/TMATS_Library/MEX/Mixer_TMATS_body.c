@@ -19,14 +19,18 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
     double Tt2In	= u[7];     /* Temperature Input 1 [degR]             */
     double Pt2In	= u[8];     /* Pressure Input 1 [psia]                */
     double FARc2In  = u[9];     /* Combusted Fuel to Air Ratio 1 [frac]   */
+    //added inputs
+    double MN1guess = u[10];   /* Guess for MN in flow path 1 */
+    double MN2guess = u[11];   /* Guess for MN in flow path 2 */
+    double MNoutguess = u[12];    /* Guess for the output MN */
     
     /*--------Define Constants-------*/
     double WOut, FARcOut, TtOut, Aphyout, PtOut;
     double E1, E2, Eout1, Eout2, A1calc, A2calc, Aoutcalc, Ps1g, Ps2g, Psoutg;
-    double Rt1, ht1in, Ps1, S1in, Ts1, hs1, rhos1, V1, Ps1g_new, Ps1g_old, E1_old, MN1g, gammat1g, Ts1g;
-    double Rt2, ht2in, Ps2, S2in, Ts2, hs2, rhos2, V2, Ps2g_new, Ps2g_old, E2_old, MN2g, gammat2g, Ts2g;
+    double Rt1, ht1in, Ps1, S1in, Ts1, hs1, rhos1, V1, Ps1g_new, Ps1g_old, E1_old, MN1g, gammat1g, Ts1g, MN1calc;
+    double Rt2, ht2in, Ps2, S2in, Ts2, hs2, rhos2, V2, Ps2g_new, Ps2g_old, E2_old, MN2g, gammat2g, Ts2g, MN2calc;
     double erthr, gammatg, gammasg, TsMNg, PsMNg,PsMNg_new, PsMNg_old, erMN, erMN_old;
-    double Rtout, htOut, Psout, Sout, Tsout, hsout, rhosout, Vout, Psoutg_new, Psoutg_old, Eout1_old, Eout2_old, MNoutg, gammatoutg, Tsoutg;
+    double Rtout, htOut, Psout, Sout, Tsout, hsout, rhosout, Vout, Psoutg_new, Psoutg_old, Eout1_old, Eout2_old, MNoutg, gammatoutg, Tsoutg, MNoutcalc;
     double E1thr, E2thr, Eout1thr, Eout2thr, Ptoutg, Ptoutg_old, Ptoutg_new, Impulseoutputg, ImpulseMixed, NErr;
     double Aphy1, Aphy2;
     double Psp, Pss, Ttp, Tts, Ptp, Pts, Tsp, Tss, rhosp, rhoss, Vp, Vs, Ap, As, hsp, hss, htp, hts;
@@ -74,7 +78,7 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
     /* calculate total output temperature */
     TtOut = h2tc(htOut, FARcOut);
     
-    maxiter = 20;
+    maxiter = 20; //1000 20;
     if (prm->IDes < 0.5){
         
         /* set primary and secondary definition via switch primary-secondary */
@@ -228,7 +232,7 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
         Aphy2 = prm->Aphy2In;
         /* start iteration to find Ps1in */
         /* guess Ps1 and calculate an initial Area error */
-        MN1g = 0.3;
+        MN1g = MN1guess; //<----- Changed to use result from prior step
         gammat1g = 1.4;
         Ts1g = Tt1In*divby(1+MN1g*MN1g*(gammat1g-1)/2);
         Ps1g = Pt1In*powT((Ts1g*divby(Tt1In)),(gammat1g*divby(gammat1g-1)));
@@ -239,7 +243,7 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
         /* iterate to find static pressure, calculated area should be close to actual area */
         iter1 = 0;
         Ps1g_new = Ps1g + 0.05;
-        E1thr = 0.001;
+        E1thr = 0.00001;
         while ( fabs(E1) > E1thr && iter1 < maxiter) {
             E1_old = E1;
             Ps1g_old = Ps1g;
@@ -287,10 +291,11 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
             *(prm->IWork+Er10) = 1;
         }
         /* end Ps1in iteration */
+        MN1calc = powT((powT(Pt1In*divby(Ps1),(gammat1g-1)*divby(gammat1g))-1)*2*divby(gammat1g-1),0.5); //<-- added to improve guess in next time-step
         
         /* start iteration to find Ps2in */
         /* guess Ps2 and calculate an initial Area error */
-        MN2g = 0.3;
+        MN2g = MN2guess; //<----- Changed to use result from prior step
         gammat2g = 1.4;
         Ts2g = Tt2In*divby(1+MN2g*MN2g*(gammat2g-1)/2);
         Ps2g = Pt2In*powT((Ts2g*divby(Tt2In)),(gammat2g*divby(gammat2g-1)));
@@ -348,6 +353,7 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
             *(prm->IWork+Er12) = 1;
         }
         /* end Ps2 iteration */
+	MN2calc = powT((powT(Pt2In*divby(Ps2),(gammat2g-1)*divby(gammat2g))-1)*2*divby(gammat2g-1),0.5); //<-- added to improve guess in next time-step
         
         
     } /* end off-Design caulcation of Ps1, Ps2, Aphy1, Aphy2 ,V1, and V2 */
@@ -367,7 +373,7 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
     /* guess a Ptout */
     Ptoutg = (W1In* Pt1In + W2In * Pt2In)*divby(WOut);
     /* guess Psout and calculate an initial Area error */
-    MNoutg = 0.3;
+    MNoutg = MNoutguess; //<----- Changed to use result from prior step
     gammatoutg = 1.4;
     Tsoutg = TtOut*divby(1+MNoutg*MNoutg*(gammatoutg-1)/2);
     Psoutg = Ptoutg*powT((Tsoutg*divby(TtOut)),(gammatoutg*divby(gammatoutg-1)));
@@ -472,6 +478,7 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
     /* end PtOut iteration */
     Psout = Psoutg;
     PtOut = Ptoutg;
+    MNoutcalc = powT((powT(PtOut*divby(Psout),(gammatoutg-1)*divby(gammatoutg))-1)*2*divby(gammatoutg-1),0.5); //<-- added to improve guess in next time-step
     
     if (iter3a >= maxiter && *(prm->IWork+Er16)==0){
         #ifdef MATLAB_MEX_FILE
@@ -482,7 +489,7 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
     
     if (iter3b >= maxiter && *(prm->IWork+Er17)==0){
         #ifdef MATLAB_MEX_FILE
-        printf("Warning in %s, unable to caluclate PsOut, PtOut may contain high error\n", prm->BlkNm);
+        printf("Warning in %s, unable to calculate PsOut, PtOut may contain high error\n", prm->BlkNm);
         #endif
         *(prm->IWork+Er17) = 1;
     }
@@ -502,5 +509,8 @@ void Mixer_TMATS_body(double* y, const double* u, const MixerStruct* prm)
     y[5] = NErr;      /* Normalized Static Pressure Error           */
     y[6] = Aphy1;     /* Area of input 1 [in^2]                     */
     y[7] = Aphy2;     /* Area of input 2 [in^2]                     */
+    y[8] = MN1calc;	/* Mach number in flow path 1 */
+    y[9] = MN2calc;  	/* Mach number in flow path 2 */
+    y[10] = MNoutcalc; 	/* Mach number at outlet */
     
 }
