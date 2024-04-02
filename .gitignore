@@ -1,0 +1,5 @@
+*.mexw64
+*.mex
+*.bak
+*.slxc
+slprj/

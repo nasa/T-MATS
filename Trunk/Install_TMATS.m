@@ -3,8 +3,8 @@ function Install_TMATS()
 
 % TMATSver and date must remain in the listed form for the ver command to work
 % properly.
-TMATSver = '1.3.1';
-TMATSdate = 'Jun-24-2020';
+TMATSver = '1.3.2';
+TMATSdate = 'Apr-02-2024';
 
 error = 0;
 InpMsg{1} = 'Install T-MATS matlab toolbox? Note: Installation will add MATLAB paths and generate MEX files.';
@@ -88,11 +88,11 @@ switch InstallType
             make_file_TMATS;
             
             % return to the root directory
-            eval(['cd ' CurrDir]);
+            cd(CurrDir);
             disp('All mex files generated');
         catch ME
             % return to the root directory
-            eval(['cd ' CurrDir]);
+            cd(CurrDir);
             error = 1;
             % rethrow exception to generate error on screen
             throw(ME);
@@ -106,7 +106,7 @@ switch InstallType
             fprintf(fid,'%%   Install_TMATS   - This subroutine installs T-MATS\n');
             fprintf(fid,'%%   Uninstall_TMATS - This subroutine uninstalls T-MATS\n');
             fclose(fid);
-            eval(['cd ' CurrDir]);
+            cd(CurrDir);
         end
         
                 

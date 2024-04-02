@@ -51,7 +51,7 @@ void ValvePHY_TMATS_body(double *y, const double *u, const ValvePHYStruct* prm)
             #endif
             *(prm->IWork+Er2) = 1;
         }
-        gamb = interp2Ac(prm->X_V_FAR_vec,prm->Y_V_Tt_vec,prm->T_V_gamma_array,FARcmfpIn,TtmfpIn,prm->A1,prm->B1,&interpErr);
+        gamb = interp2Ac(prm->X_V_FAR_vec,prm->Y_V_Tt_vec,prm->T_V_gamma_array,FARcmfpIn,TtmfpIn,prm->A1,prm->BB,&interpErr);
         if (interpErr == 1 && *(prm->IWork+Er3)==0){
             #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating gamb. Vector definitions may need to be expanded.\n", prm->BlkNm);
@@ -62,7 +62,7 @@ void ValvePHY_TMATS_body(double *y, const double *u, const ValvePHYStruct* prm)
 
         /* determine static pressure at the exit plane (entering fan); */
         /* assume bypass flow >> bleed flow */
-        Pe = calc_Pstatic(PtbyIn,TtbyIn,WbyIn,prm->s_V_Ae_byp,prm->X_V_FAR_vec,prm->T_V_Rt_vec,prm->Y_V_Tt_vec,prm->T_V_gamma_array,FARcbyIn,prm->A1,prm->B1);
+        Pe = calc_Pstatic(PtbyIn,TtbyIn,WbyIn,prm->s_V_Ae_byp,prm->X_V_FAR_vec,prm->T_V_Rt_vec,prm->Y_V_Tt_vec,prm->T_V_gamma_array,FARcbyIn,prm->A1,prm->BB);
 
         /* compute exit to critical area ratio */
         Me = sqrtT(2*divby(gamb-1)*(powT(Pe*divby(PtmfpIn), (1-gamb)*divby(gamb))-1));

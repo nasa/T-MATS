@@ -113,7 +113,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     valvePHYStruct.T_V_gamma_array           = mxGetPr(T_V_gamma_array_p(S));
     /* Dimensions of parameter arrays */
     valvePHYStruct.A1  = mxGetNumberOfElements(X_V_FAR_vec_p(S));
-    valvePHYStruct.B1  = mxGetNumberOfElements(Y_V_Tt_vec_p(S));
+    valvePHYStruct.BB  = mxGetNumberOfElements(Y_V_Tt_vec_p(S));
 
     valvePHYStruct.IWork      = ssGetIWork(S);
 

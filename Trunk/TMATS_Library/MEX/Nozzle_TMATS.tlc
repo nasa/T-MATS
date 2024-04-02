@@ -56,7 +56,7 @@
     nozzleStruct.X_N_TtVecTG         = (double*)(%<LibBlockParameterBaseAddr(X_N_TtVecTG)>);
     nozzleStruct.A                   = %<LibBlockParameterSize(Y_N_FARVec)[1]>;
     nozzleStruct.B                   = %<LibBlockParameterSize(X_N_TtVec)[1]>;
-    nozzleStruct.B1                  = %<LibBlockParameterSize(X_N_PEQPaVec)[1]>;
+    nozzleStruct.BB                  = %<LibBlockParameterSize(X_N_PEQPaVec)[1]>;
     nozzleStruct.C                   = %<LibBlockParameterSize(X_N_TtVecTG)[1]>;
 
     nozzleStruct.IWork               = &%<LibBlockIWork(Errors,"","",0)>;

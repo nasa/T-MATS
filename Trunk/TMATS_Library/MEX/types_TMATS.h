@@ -74,7 +74,7 @@ struct NozzleStruct {
 	/* Dimensions of parameter arrays */
     int A;
     int B;
-    int B1;
+    int BB;
     int C;
 };
 typedef struct NozzleStruct NozzleStruct;
@@ -265,7 +265,7 @@ struct ValvePHYStruct{
     
     /* Dimensions of parameter arrays */
     int A1;
-    int B1;
+    int BB;
 
 };
 typedef struct ValvePHYStruct ValvePHYStruct;

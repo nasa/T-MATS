@@ -205,7 +205,7 @@ void Nozzle_TMATS_body(double* y, const double* u, const NozzleStruct* prm)
     PQPaMap = PQPa;
     
     /* look up Flow Coefficient */
-    CdTh = interp1Ac(prm->X_N_PEQPaVec,prm->T_N_CdThArray,PQPaMap,prm->B1,&interpErr);
+    CdTh = interp1Ac(prm->X_N_PEQPaVec,prm->T_N_CdThArray,PQPaMap,prm->BB,&interpErr);
     if (interpErr == 1 && *(prm->IWork+Er9)==0){
 #ifdef MATLAB_MEX_FILE
         printf("Warning in %s, Error calculating CdTh. Vector definitions may need to be expanded.\n", prm->BlkNm);
@@ -348,7 +348,7 @@ void Nozzle_TMATS_body(double* y, const double* u, const NozzleStruct* prm)
     
     /* look up Thrust and velocity coefficients */
     if (prm->CfgEn < 0.5){
-        Cv = interp1Ac(prm->X_N_PEQPaVec,prm->T_N_CvArray,PQPaMap,prm->B1,&interpErr);
+        Cv = interp1Ac(prm->X_N_PEQPaVec,prm->T_N_CvArray,PQPaMap,prm->BB,&interpErr);
         if (interpErr == 1 && *(prm->IWork+Er15)==0){
 #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating Cv. Vector definitions may need to be expanded.\n", prm->BlkNm);
@@ -358,7 +358,7 @@ void Nozzle_TMATS_body(double* y, const double* u, const NozzleStruct* prm)
         Cfg = 1;
     }
     else {
-        Cfg = interp1Ac(prm->X_N_PEQPaVec,prm->T_N_CfgArray,PQPaMap,prm->B1,&interpErr);
+        Cfg = interp1Ac(prm->X_N_PEQPaVec,prm->T_N_CfgArray,PQPaMap,prm->BB,&interpErr);
         if (interpErr == 1 && *(prm->IWork+Er16)==0){
 #ifdef MATLAB_MEX_FILE
             printf("Warning in %s, Error calculating Cfg. Vector definitions may need to be expanded.\n", prm->BlkNm);
