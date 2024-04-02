@@ -150,7 +150,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     /* Dimensions of parameter arrays */
     nozzleStruct.A   = mxGetNumberOfElements(Y_N_FARVec_p(S));
     nozzleStruct.B   = mxGetNumberOfElements(X_N_TtVec_p(S));
-    nozzleStruct.B1  = mxGetNumberOfElements(X_N_PEQPaVec_p(S));
+    nozzleStruct.BB  = mxGetNumberOfElements(X_N_PEQPaVec_p(S));
     nozzleStruct.C   = mxGetNumberOfElements(X_N_TtVecTG_p(S));
 
     nozzleStruct.IWork      = ssGetIWork(S);    

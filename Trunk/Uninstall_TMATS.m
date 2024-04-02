@@ -60,7 +60,7 @@ switch questdlg(TMATSRemovemsg, 'T-MATS Library', 'Yes', 'No', 'No')
                 fid = fopen('Contents.m');
                 fclose(fid);
                 delete('Contents.m');
-                eval(['cd ' CurrDir]);
+                cd(CurrDir);
             end
             
             disp('T-MATS path removal complete.');

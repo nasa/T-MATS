@@ -47,7 +47,7 @@
     valvePHYStruct.Y_V_Tt_vec          = (double*)(%<LibBlockParameterBaseAddr(Y_V_Tt_vec)>);
     valvePHYStruct.T_V_gamma_array     = (double*)(%<LibBlockParameterBaseAddr(T_V_gamma_array)>);
     valvePHYStruct.A1                  = %<LibBlockParameterSize(X_V_FAR_vec)[1]>;
-    valvePHYStruct.B1                  = %<LibBlockParameterSize(Y_V_Tt_vec)[1]>;
+    valvePHYStruct.BB                  = %<LibBlockParameterSize(Y_V_Tt_vec)[1]>;
 
     valvePHYStruct.IWork               = &%<LibBlockIWork(Errors,"","",0)>;
     valvePHYStruct.BlkNm               = "%<LibGetFormattedBlockPath(block)>";
