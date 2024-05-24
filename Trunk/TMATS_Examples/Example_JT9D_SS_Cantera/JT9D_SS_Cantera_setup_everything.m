@@ -11,7 +11,7 @@ function MWS = JT9D_SS_Cantera_setup_everything(varargin)
 
 %Create Cantera flow structure
 global fs;
-fs = importPhase('gri30.xml');
+fs = Solution('gri30.yaml');
 assignin('base','fs',fs);
 
 
