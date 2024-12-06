@@ -11,7 +11,7 @@
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <title>
-    T-MATS: Help for Iterative Newton Raphson Solver with Jacobian Calculator
+    T-MATS: Help for Iterative Newton Raphson Solver with Jacobian Calculator and Broyden Update Method
         Library Block
 </title>
 
@@ -19,7 +19,7 @@
 
 <body>
     <h1>
-      T-MATS: Iterative Newton Raphson Solver with Jacobian Calculator Library Block
+      T-MATS: Iterative Newton Raphson Solver with Jacobian Calculator and Broyden Update Method Library Block
     </h1>
 <hr>
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -32,7 +32,7 @@
     This block is used to supply the inputs to iteratively drive the outputs
     of a system to zero by using a <a href="TMATS_Library/TMATS_Support/NumMthd_TMATS_NRS.html">
     Newton Raphson Solver block</a> in combination with a <a href="TMATS_Library/TMATS_Support/NumMthd_TMATS_JC.html">
-    Jacobian Calculator block</a>.
+    Jacobian Calculator block</a> and a block that updates the inverse of the Jacobian at each iteration using the Sherman Morrison (Good) Broyden Update Method.
 </p>
 
 <br>
@@ -47,9 +47,10 @@
 
     <ol>
         <li>Jacobian Calculator sends perturbations to the plant and then
-        calculates the plant Jacboian based on the system response.
+        calculates the initial plant Jacboian based on the system response.
         <li>Newton Raphson Solver will use the inverse of the Jacobian to
         iteratively step the system towards the solution.
+		<li> At each step, the differences between current and previous iterations for the dependents and independents are used to update the inverse of the Jacobian using the Sherman-Morrison (Good) Broyden Updade Method.
         <li>Once the solution has satisfied the conditions, the Newton
         Raphson Solver is shut off.<br>
     </ol>
@@ -60,6 +61,21 @@ with a "do... while" block in Simulink. The "do...while" block and this one
 should both be located in the same subsystem as the plant that is to be
 solved for.
 </p>
+
+The block contains the following equations:
+    <ol>
+        <li>Newton-Raphson Method with Damping Term<br>
+		\begin{equation}
+			x_{n_{i+1}} = x_{n_i} - \frac{\lambda}{100}J^{-1}_if(x)_i
+		\end{equation}
+		\(i\) is the iteration number, subscript \(n\) denotes a term normalized with respect to the absolute value of its initial condition, \(x_{n_i}\) is the normalized independent at the current time step, \(\lambda\) is the damping factor, \(J^{-1}_i\) is the inverse of the Jacobian at the current time step, \(f(x)_i\) are the dependents at the current time step, and \(x_{n_{i+1}}\) are the normalized independents at the next time step.
+		The Jacobian is a matrix of partial derivatives that describes the changes in the <u>normalized</u> independents with respect to the full scale dependents (\(x_n = \frac{x}{abs(x_o)}\) where \(x_o\) are the initial, full scale independents specified by the user in the mask and \(x\) are the full scale independents).
+		<li>Sherman Morrison (Good) Broyden Update Method<br>
+		\begin{equation}
+			J^{-1}_i = J^{-1}_{i-1} + \frac{\Delta x_{n} - J^{-1}_{i-1} \Delta f(x)}{\Delta x_{n}^T J^{-1}_{i-1} \Delta f(x)} \Delta x_{n}^T J^{-1}_{i-1}
+		\end{equation}
+		\(J^{-1}_{i-1}\) is the inverse of the Jacobian at the previous time step, \( \Delta x_{n} = x_{n} - x_{n_{i-1}}\) is the change in the normalized independents between the current and previous time steps, suberscript \(T\) represents the transpose of an array, and  \( \Delta f(x) = f(x)_i - f(x)_{i-1}\) is the change in the dependents between the current and previous time steps.
+    </ol>
 
 <br>
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -88,9 +104,8 @@ solved for.
         <ul>
             <li>Jacobian perturbation size
             <li>Newton Raphson initial conditions
-            <li>Newton Raphson step size limits
+            <li>Newton Raphson dampening term where 100 and 50 indicate a 100% and 50% usage of the calculated change to the independent terms, respectively. This parameter modifies the convergence time and simulation robustness.
             <li>Newton Raphson max/min limits
-            <li>Newton Raphson attempts before Jacobian recalculation
             <li>Iteration condition limits
         </ul>
     </ul>
@@ -104,13 +119,11 @@ solved for.
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <div class="inputs">
-        Iterative Newton Raphson Solver w Jacobian Calculator Inputs
+        Iterative Newton Raphson Solver w Jacobian Calculator and Broyden Update Method Inputs
 </div>
 
 <table>
     <tr><th> Input </th><th>Description</th></tr>
-    <tr><td>Iterations</td><td>Number of times the do.. while block has
-    re-run the subsystem.</td></tr>
 	<tr><td>Enable</td><td>Enable Solver</td></tr>
     <tr><td>f(x)</td><td>Output of plant to be solved for, (mx1 vector
     consisting of all plant outputs)</td></tr>
@@ -120,7 +133,7 @@ solved for.
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <div class="outputs">
-        Iterative Newton Raphson Solver w Jacobian Calculator Outputs
+        Iterative Newton Raphson Solver w Jacobian Calculator and Broyden Update Method Outputs
 </div>
 
 <table>
@@ -138,7 +151,7 @@ solved for.
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <div class="maskvars">
-        Iterative Newton Raphson Solver w Jacobian Calculator Mask Variables
+        Iterative Newton Raphson Solver w Jacobian Calculator and Broyden Update Method Mask Variables
 </div>
 
 <table>
@@ -147,11 +160,9 @@ solved for.
         the number of inputs and n is the number of times each input is
         perturbed</td></tr>
     <tr><td>SNR_IC_M</td><td>Newton Raphson Initial Conditions (mx1)</td></tr>
-    <tr><td>SNR_DX_M</td><td>Newton Raphson step size (dx) limiter (%)(1x1)</td></tr>
+    <tr><td>SNR_DX_M</td><td>Newton Raphson step size dampener. Percentage of calculated dx to use for each step (%) (1x1)</td></tr>
     <tr><td>SNR_Mx_M</td><td>Newton Raphson max value limit(1x1 or mx1)</td></tr>
     <tr><td>SNR_Mn_M</td><td>Newton Raphson min value limit (1x1 or mx1)</td></tr>
-    <tr><td>SJacobianAttempts_M</td><td>Newton Raphson attempts before the
-        Jacobian recalculation (1x1)</td></tr>
     <tr><td>Cond_Limits_M</td><td>Iteration Conditions Limits (mx1 or 1x1)</td></tr>
 </table>
 
