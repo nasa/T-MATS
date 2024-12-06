@@ -1,0 +1,1594 @@
+# MathWorks OPC Text Package
+Model {
+  Version  10.4
+  Description "Simulink model exported from R2024a to R2021b format"
+}
+__MWOPC_PACKAGE_BEGIN__ R2024a
+__MWOPC_PART_BEGIN__ /[Content_Types].xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default ContentType="application/vnd.mathworks.matlab.mxarray+binary" Extension="mxarray"/>
+  <Default ContentType="application/vnd.openxmlformats-package.relationships+xml" Extension="rels"/>
+  <Default ContentType="image/svg+xml" Extension="svg"/>
+  <Default ContentType="application/vnd.mathworks.simulink.mdl+xml" Extension="xml"/>
+  <Override ContentType="application/vnd.openxmlformats-package.core-properties+xml" PartName="/metadata/coreProperties.xml"/>
+  <Override ContentType="application/vnd.mathworks.package.coreProperties+xml" PartName="/metadata/mwcoreProperties.xml"/>
+  <Override ContentType="application/vnd.mathworks.package.corePropertiesExtension+xml" PartName="/metadata/mwcorePropertiesExtension.xml"/>
+  <Override ContentType="application/vnd.mathworks.simulink.configSet+xml" PartName="/simulink/configSet0.xml"/>
+  <Override ContentType="application/vnd.mathworks.simulink.configSetInfo+xml" PartName="/simulink/configSetInfo.xml"/>
+  <Override ContentType="application/vnd.mathworks.simulink.libraryBrowserRepository+xml" PartName="/simulink/libraryBrowser/slLibraryBrowser.xml"/>
+  <Override ContentType="application/vnd.mathworks.simulink.mf0+xml" PartName="/simulink/modelDictionary.xml"/>
+  <Override ContentType="application/vnd.mathworks.simulink.blockDiagram+xml" PartName="/simulink/windowsInfo.xml"/>
+</Types>
+
+__MWOPC_PART_BEGIN__ /_rels/.rels
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="blockDiagram" Target="simulink/blockdiagram.xml" Type="http://schemas.mathworks.com/simulink/2010/relationships/blockDiagram"/>
+  <Relationship Id="blockDiagramDefaults" Target="simulink/bddefaults.xml" Type="http://schemas.mathworks.com/simulink/2017/relationships/blockDiagramDefaults"/>
+  <Relationship Id="configSetInfo" Target="simulink/configSetInfo.xml" Type="http://schemas.mathworks.com/simulink/2014/relationships/configSetInfo"/>
+  <Relationship Id="modelDictionary" Target="simulink/modelDictionary.xml" Type="http://schemas.mathworks.com/simulinkModel/2016/relationships/modelDictionary"/>
+  <Relationship Id="rId1" Target="metadata/mwcoreProperties.xml" Type="http://schemas.mathworks.com/package/2012/relationships/coreProperties"/>
+  <Relationship Id="rId2" Target="metadata/mwcorePropertiesExtension.xml" Type="http://schemas.mathworks.com/package/2014/relationships/corePropertiesExtension"/>
+  <Relationship Id="rId3" Target="metadata/coreProperties.xml" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties"/>
+</Relationships>
+
+__MWOPC_PART_BEGIN__ /metadata/coreProperties.xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <cp:category>library</cp:category>
+  <dcterms:created xsi:type="dcterms:W3CDTF">2012-12-03T13:06:24Z</dcterms:created>
+  <dc:creator>jwchapm2</dc:creator>
+  <dc:description>Thomas Modules</dc:description>
+  <cp:lastModifiedBy>jwchapm2</cp:lastModifiedBy>
+  <dcterms:modified xsi:type="dcterms:W3CDTF">2024-12-06T16:31:58Z</dcterms:modified>
+  <cp:revision>19.1</cp:revision>
+  <cp:version>R2021b</cp:version>
+</cp:coreProperties>
+
+__MWOPC_PART_BEGIN__ /metadata/mwcoreProperties.xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<mwcoreProperties xmlns="http://schemas.mathworks.com/package/2012/coreProperties">
+  <contentType>application/vnd.mathworks.simulink.model</contentType>
+  <contentTypeFriendlyName>Simulink Model</contentTypeFriendlyName>
+  <matlabRelease>R2021b</matlabRelease>
+</mwcoreProperties>
+
+__MWOPC_PART_BEGIN__ /metadata/mwcorePropertiesExtension.xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<mwcoreProperties xmlns="http://schemas.mathworks.com/package/2014/corePropertiesExtension">
+  <uuid>931b9dce-a650-4402-87a1-ee8f7a6d775a</uuid>
+</mwcoreProperties>
+
+__MWOPC_PART_BEGIN__ /simulink/_rels/blockdiagram.xml.rels
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="LibraryBase_bd" Target="bdmxdata/LibraryBase_bd.mxarray" Type="http://schemas.mathworks.com/simulinkModel/2015/relationships/modelMxArray"/>
+  <Relationship Id="slLibraryBrowser" Target="libraryBrowser/slLibraryBrowser.xml" Type="http://schemas.mathworks.com/simulink/2015/relationships/slLibraryBrowser"/>
+  <Relationship Id="system_root" Target="systems/system_root.xml" Type="http://schemas.mathworks.com/simulink/2010/relationships/system"/>
+  <Relationship Id="windowsInfo" Target="windowsInfo.xml" Type="http://schemas.mathworks.com/simulinkModel/2019/relationships/windowsInfo"/>
+</Relationships>
+
+__MWOPC_PART_BEGIN__ /simulink/_rels/configSetInfo.xml.rels
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="configSet0" Target="configSet0.xml" Type="http://schemas.mathworks.com/simulink/2014/relationships/configSet"/>
+</Relationships>
+
+__MWOPC_PART_BEGIN__ /simulink/bddefaults.xml
+<?xml version="1.0" encoding="utf-8"?>
+<BlockDiagramDefaults>
+  <AnnotationDefaults>
+    <P Name="HorizontalAlignment">center</P>
+    <P Name="VerticalAlignment">middle</P>
+  </AnnotationDefaults>
+  <MaskDefaults SelfModifiable="off">
+    <Display IconFrame="on" IconOpaque="opaque" RunInitForIconRedraw="analyze" IconRotate="none" PortRotate="default" IconUnits="autoscale"/>
+    <MaskParameter Evaluate="on" Tunable="on" NeverSave="off" Internal="off" ReadOnly="off" Enabled="on" Visible="on" ToolTip="on"/>
+    <DialogControl>
+      <ControlOptions Visible="on" Enabled="on" Row="new" HorizontalStretch="on" PromptLocation="top" Orientation="horizontal" Scale="linear" TextType="Plain Text" Expand="off" ShowFilter="on" ShowParameterName="on" WordWrap="on" AlignPrompts="off"/>
+    </DialogControl>
+  </MaskDefaults>
+  <BlockParameterDefaults/>
+</BlockDiagramDefaults>
+
+__MWOPC_PART_BEGIN__ /simulink/bdmxdata/LibraryBase_bd.mxarray BASE64
+AAFJTQAAAAAOAAAAMAAAAAYAAAAIAAAABAAAAAAAAAAFAAAACAAAAAEAAAADAAAAAQAAAAAAAAAQ
+AAMAAHx8AA==
+__MWOPC_PART_BEGIN__ /simulink/blockdiagram.xml
+<?xml version="1.0" encoding="utf-8"?>
+<ModelInformation Version="1.0">
+  <Library>
+    <P Name="ModelUUID">6a861e26-338f-47fb-a7fc-e60b33bd6467</P>
+    <P Name="LibraryType">BlockLibrary</P>
+    <P Name="OverrideScopeRefreshTime">off</P>
+    <P Name="LastSavedArchitecture">win64</P>
+    <ConfigManagerSettings>
+      <P Name="ModifiedByFormat">%&lt;Auto&gt;</P>
+      <P Name="ModifiedDateFormat">%&lt;Auto&gt;</P>
+      <P Name="ModelVersionFormat">%&lt;AutoIncrement:14.0&gt;</P>
+    </ConfigManagerSettings>
+    <EditorSettings>
+      <P Name="LibraryLinkDisplay">all</P>
+      <P Name="BrowserShowLibraryLinks">on</P>
+      <P Name="BrowserLookUnderMasks">on</P>
+    </EditorSettings>
+    <SimulationSettings>
+      <P Name="SimulationMode">normal</P>
+    </SimulationSettings>
+    <EngineSettings>
+      <P Name="ConfigurableSubsystemUsage">warning</P>
+    </EngineSettings>
+    <System Ref="system_root"/>
+  </Library>
+</ModelInformation>
+
+__MWOPC_PART_BEGIN__ /simulink/configSet0.xml
+<?xml version="1.0" encoding="utf-8"?>
+<ConfigSet>
+  <Object Version="21.1.0" ClassName="Simulink.ConfigSet">
+    <P Name="DisabledProps" Class="double">[]</P>
+    <P Name="Description"/>
+    <Array PropName="Components" Type="Handle" Dimension="1*9">
+      <Object ObjectID="2" Version="21.1.0" ClassName="Simulink.SolverCC">
+        <P Name="DisabledProps" Class="double">[]</P>
+        <P Name="Description"/>
+        <P Name="Components" Class="double">[]</P>
+        <P Name="StartTime">0.0</P>
+        <P Name="StopTime">10.0</P>
+        <P Name="AbsTol">auto</P>
+        <P Name="AutoScaleAbsTol">on</P>
+        <P Name="FixedStep">auto</P>
+        <P Name="InitialStep">auto</P>
+        <P Name="MaxOrder">5</P>
+        <P Name="ZcThreshold">auto</P>
+        <P Name="ConsecutiveZCsStepRelTol">10*128*eps</P>
+        <P Name="MaxConsecutiveZCs">1000</P>
+        <P Name="ExtrapolationOrder">4</P>
+        <P Name="NumberNewtonIterations">1</P>
+        <P Name="MaxStep">auto</P>
+        <P Name="MinStep">auto</P>
+        <P Name="MaxConsecutiveMinStep">1</P>
+        <P Name="RelTol">1e-3</P>
+        <P Name="EnableMultiTasking">on</P>
+        <P Name="AllowMultiTaskInputOutput">off</P>
+        <P Name="ConcurrentTasks">off</P>
+        <P Name="SolverName">ode45</P>
+        <P Name="SolverJacobianMethodControl">auto</P>
+        <P Name="DaesscMode">auto</P>
+        <P Name="ShapePreserveControl">DisableAll</P>
+        <P Name="ZeroCrossControl">UseLocalSettings</P>
+        <P Name="ZeroCrossAlgorithm">Nonadaptive</P>
+        <P Name="AlgebraicLoopSolver">TrustRegion</P>
+        <P Name="SolverInfoToggleStatus">off</P>
+        <P Name="IsAutoAppliedInSIP">off</P>
+        <P Name="SolverResetMethod">Fast</P>
+        <P Name="PositivePriorityOrder">off</P>
+        <P Name="AutoInsertRateTranBlk">off</P>
+        <P Name="SampleTimeConstraint">Unconstrained</P>
+        <P Name="InsertRTBMode">Whenever possible</P>
+        <P Name="SampleTimeProperty" Class="double">[]</P>
+        <P Name="DecoupledContinuousIntegration">off</P>
+        <P Name="MinimalZcImpactIntegration">off</P>
+        <P Name="ODENIntegrationMethod">ode3</P>
+      </Object>
+      <Object ObjectID="3" Version="21.1.0" ClassName="Simulink.DataIOCC">
+        <P Name="DisabledProps" Class="double">[]</P>
+        <P Name="Description"/>
+        <P Name="Components" Class="double">[]</P>
+        <P Name="Decimation">1</P>
+        <P Name="ExternalInput">[t, u]</P>
+        <P Name="FinalStateName">xFinal</P>
+        <P Name="InitialState">xInitial</P>
+        <P Name="LimitDataPoints">on</P>
+        <P Name="MaxDataPoints">1000</P>
+        <P Name="LoadExternalInput">off</P>
+        <P Name="LoadInitialState">off</P>
+        <P Name="SaveFinalState">off</P>
+        <P Name="SaveOperatingPoint">off</P>
+        <P Name="SaveFormat">Array</P>
+        <P Name="SignalLoggingSaveFormat">Dataset</P>
+        <P Name="SaveOutput">on</P>
+        <P Name="SaveState">off</P>
+        <P Name="SignalLogging">on</P>
+        <P Name="DSMLogging">on</P>
+        <P Name="InspectSignalLogs">off</P>
+        <P Name="VisualizeSimOutput">on</P>
+        <P Name="StreamToWorkspace">off</P>
+        <P Name="StreamVariableName">streamout</P>
+        <P Name="SaveTime">on</P>
+        <P Name="ReturnWorkspaceOutputs">off</P>
+        <P Name="StateSaveName">xout</P>
+        <P Name="TimeSaveName">tout</P>
+        <P Name="OutputSaveName">yout</P>
+        <P Name="SignalLoggingName">logsout</P>
+        <P Name="DSMLoggingName">dsmout</P>
+        <P Name="OutputOption">RefineOutputTimes</P>
+        <P Name="OutputTimes">[]</P>
+        <P Name="ReturnWorkspaceOutputsName">out</P>
+        <P Name="Refine">1</P>
+        <P Name="LoggingToFile">off</P>
+        <P Name="DatasetSignalFormat">timeseries</P>
+        <P Name="LoggingFileName">out.mat</P>
+        <P Name="LoggingIntervals">[-inf, inf]</P>
+      </Object>
+      <Object ObjectID="4" Version="21.1.0" ClassName="Simulink.OptimizationCC">
+        <Array PropName="DisabledProps" Type="Cell" Dimension="1*9">
+          <Cell Class="char">BooleansAsBitfields</Cell>
+          <Cell Class="char">PassReuseOutputArgsAs</Cell>
+          <Cell Class="char">PassReuseOutputArgsThreshold</Cell>
+          <Cell Class="char">ZeroExternalMemoryAtStartup</Cell>
+          <Cell Class="char">ZeroInternalMemoryAtStartup</Cell>
+          <Cell Class="char">OptimizeModelRefInitCode</Cell>
+          <Cell Class="char">NoFixptDivByZeroProtection</Cell>
+          <Cell Class="char">UseSpecifiedMinMax</Cell>
+          <Cell Class="char">EfficientTunableParamExpr</Cell>
+        </Array>
+        <P Name="Description"/>
+        <P Name="Components" Class="double">[]</P>
+        <P Name="BlockReduction">on</P>
+        <P Name="BooleanDataType">on</P>
+        <P Name="ConditionallyExecuteInputs">on</P>
+        <P Name="DefaultParameterBehavior">Tunable</P>
+        <P Name="UseDivisionForNetSlopeComputation">off</P>
+        <P Name="GainParamInheritBuiltInType">off</P>
+        <P Name="UseFloatMulNetSlope">off</P>
+        <P Name="InheritOutputTypeSmallerThanSingle">off</P>
+        <P Name="DefaultUnderspecifiedDataType">double</P>
+        <P Name="UseSpecifiedMinMax">off</P>
+        <P Name="InlineInvariantSignals">off</P>
+        <P Name="OptimizeBlockIOStorage">on</P>
+        <P Name="BufferReuse">on</P>
+        <P Name="EnhancedBackFolding">off</P>
+        <P Name="CachingGlobalReferences">off</P>
+        <P Name="GlobalBufferReuse">on</P>
+        <P Name="StrengthReduction">off</P>
+        <P Name="AdvancedOptControl"/>
+        <P Name="ExpressionFolding">on</P>
+        <P Name="BooleansAsBitfields">off</P>
+        <P Name="BitfieldContainerType">uint_T</P>
+        <P Name="BitwiseOrLogicalOp">Same as modeled</P>
+        <P Name="EnableMemcpy">on</P>
+        <P Name="MemcpyThreshold">64</P>
+        <P Name="PassReuseOutputArgsAs">Structure reference</P>
+        <P Name="PassReuseOutputArgsThreshold">12</P>
+        <P Name="ExpressionDepthLimit">2147483647</P>
+        <P Name="LocalBlockOutputs">on</P>
+        <P Name="RollThreshold">5</P>
+        <P Name="StateBitsets">off</P>
+        <P Name="DataBitsets">off</P>
+        <P Name="ActiveStateOutputEnumStorageType">Native Integer</P>
+        <P Name="ZeroExternalMemoryAtStartup">on</P>
+        <P Name="ZeroInternalMemoryAtStartup">on</P>
+        <P Name="InitFltsAndDblsToZero">off</P>
+        <P Name="NoFixptDivByZeroProtection">off</P>
+        <P Name="EfficientFloat2IntCast">off</P>
+        <P Name="EfficientMapNaN2IntZero">on</P>
+        <P Name="LifeSpan">inf</P>
+        <P Name="MaxStackSize">Inherit from target</P>
+        <P Name="BufferReusableBoundary">on</P>
+        <P Name="SimCompilerOptimization">off</P>
+        <P Name="AccelVerboseBuild">off</P>
+        <P Name="OptimizeBlockOrder">off</P>
+        <P Name="OptimizeDataStoreBuffers">on</P>
+        <P Name="BusAssignmentInplaceUpdate">on</P>
+        <P Name="DifferentSizesBufferReuse">off</P>
+        <P Name="UseRowMajorAlgorithm">off</P>
+        <P Name="OptimizationLevel">level2</P>
+        <P Name="OptimizationPriority">Balanced</P>
+        <P Name="OptimizationCustomize">on</P>
+        <P Name="LabelGuidedReuse">off</P>
+        <P Name="MultiThreadedLoops">off</P>
+        <P Name="DenormalBehavior">GradualUnderflow</P>
+        <P Name="EfficientTunableParamExpr">off</P>
+      </Object>
+      <Object ObjectID="5" Version="21.1.0" ClassName="Simulink.DebuggingCC">
+        <Array PropName="DisabledProps" Type="Cell" Dimension="1*1">
+          <Cell Class="char">UseOnlyExistingSharedCode</Cell>
+        </Array>
+        <P Name="Description"/>
+        <P Name="Components" Class="double">[]</P>
+        <P Name="RTPrefix">error</P>
+        <P Name="ConsistencyChecking">none</P>
+        <P Name="ArrayBoundsChecking">none</P>
+        <P Name="SignalInfNanChecking">none</P>
+        <P Name="StringTruncationChecking">error</P>
+        <P Name="SignalRangeChecking">none</P>
+        <P Name="ReadBeforeWriteMsg">UseLocalSettings</P>
+        <P Name="WriteAfterWriteMsg">UseLocalSettings</P>
+        <P Name="WriteAfterReadMsg">UseLocalSettings</P>
+        <P Name="AlgebraicLoopMsg">warning</P>
+        <P Name="ArtificialAlgebraicLoopMsg">warning</P>
+        <P Name="SaveWithDisabledLinksMsg">warning</P>
+        <P Name="SaveWithParameterizedLinksMsg">warning</P>
+        <P Name="CheckSSInitialOutputMsg">on</P>
+        <P Name="UnderspecifiedInitializationDetection">Classic</P>
+        <P Name="MergeDetectMultiDrivingBlocksExec">none</P>
+        <P Name="CheckExecutionContextPreStartOutputMsg">off</P>
+        <P Name="SignalResolutionControl">UseLocalSettings</P>
+        <P Name="BlockPriorityViolationMsg">warning</P>
+        <P Name="MinStepSizeMsg">warning</P>
+        <P Name="TimeAdjustmentMsg">none</P>
+        <P Name="MaxConsecutiveZCsMsg">error</P>
+        <P Name="MaskedZcDiagnostic">warning</P>
+        <P Name="IgnoredZcDiagnostic">warning</P>
+        <P Name="SolverPrmCheckMsg">warning</P>
+        <P Name="InheritedTsInSrcMsg">warning</P>
+        <P Name="MultiTaskDSMMsg">error</P>
+        <P Name="MultiTaskCondExecSysMsg">error</P>
+        <P Name="MultiTaskRateTransMsg">error</P>
+        <P Name="SingleTaskRateTransMsg">none</P>
+        <P Name="TasksWithSamePriorityMsg">warning</P>
+        <P Name="ExportedTasksRateTransMsg">none</P>
+        <P Name="SigSpecEnsureSampleTimeMsg">warning</P>
+        <P Name="CheckMatrixSingularityMsg">none</P>
+        <P Name="IntegerOverflowMsg">warning</P>
+        <P Name="Int32ToFloatConvMsg">warning</P>
+        <P Name="ParameterDowncastMsg">error</P>
+        <P Name="ParameterOverflowMsg">error</P>
+        <P Name="ParameterUnderflowMsg">none</P>
+        <P Name="ParameterPrecisionLossMsg">warning</P>
+        <P Name="ParameterTunabilityLossMsg">warning</P>
+        <P Name="FixptConstUnderflowMsg">none</P>
+        <P Name="FixptConstOverflowMsg">none</P>
+        <P Name="FixptConstPrecisionLossMsg">none</P>
+        <P Name="UnderSpecifiedDataTypeMsg">none</P>
+        <P Name="UnnecessaryDatatypeConvMsg">none</P>
+        <P Name="VectorMatrixConversionMsg">none</P>
+        <P Name="FcnCallInpInsideContextMsg">error</P>
+        <P Name="SignalLabelMismatchMsg">none</P>
+        <P Name="UnconnectedInputMsg">warning</P>
+        <P Name="UnconnectedOutputMsg">warning</P>
+        <P Name="UnconnectedLineMsg">warning</P>
+        <P Name="UseOnlyExistingSharedCode">error</P>
+        <P Name="SFcnCompatibilityMsg">none</P>
+        <P Name="FrameProcessingCompatibilityMsg">error</P>
+        <P Name="UniqueDataStoreMsg">none</P>
+        <P Name="BusObjectLabelMismatch">warning</P>
+        <P Name="RootOutportRequireBusObject">warning</P>
+        <P Name="AssertControl">UseLocalSettings</P>
+        <P Name="AllowSymbolicDim">on</P>
+        <P Name="RowMajorDimensionSupport">off</P>
+        <P Name="ModelReferenceMultiInstanceNormalModeStructChecksumCheck">error</P>
+        <P Name="ModelReferenceVersionMismatchMessage">none</P>
+        <P Name="ModelReferenceIOMismatchMessage">none</P>
+        <P Name="UnknownTsInhSupMsg">warning</P>
+        <P Name="ModelReferenceDataLoggingMessage">warning</P>
+        <P Name="ModelReferenceNoExplicitFinalValueMsg">none</P>
+        <P Name="ModelReferenceSymbolNameMessage">warning</P>
+        <P Name="StateNameClashWarn">warning</P>
+        <P Name="OperatingPointInterfaceChecksumMismatchMsg">warning</P>
+        <P Name="NonCurrentReleaseOperatingPointMsg">error</P>
+        <P Name="PregeneratedLibrarySubsystemCodeDiagnostic">warning</P>
+        <P Name="MatchCodeGenerationContextForUpdateDiagram">none</P>
+        <P Name="InitInArrayFormatMsg">warning</P>
+        <P Name="StrictBusMsg">ErrorLevel1</P>
+        <P Name="BusNameAdapt">WarnAndRepair</P>
+        <P Name="NonBusSignalsTreatedAsBus">none</P>
+        <P Name="SymbolicDimMinMaxWarning">warning</P>
+        <P Name="LossOfSymbolicDimsSimulationWarning">warning</P>
+        <P Name="LossOfSymbolicDimsCodeGenerationWarning">error</P>
+        <P Name="SymbolicDimsDataTypeCodeGenerationDiagnostic">error</P>
+        <P Name="BlockIODiagnostic">none</P>
+        <P Name="SFUnusedDataAndEventsDiag">warning</P>
+        <P Name="SFUnexpectedBacktrackingDiag">warning</P>
+        <P Name="SFInvalidInputDataAccessInChartInitDiag">warning</P>
+        <P Name="SFNoUnconditionalDefaultTransitionDiag">warning</P>
+        <P Name="SFTransitionOutsideNaturalParentDiag">warning</P>
+        <P Name="SFUnreachableExecutionPathDiag">warning</P>
+        <P Name="SFUndirectedBroadcastEventsDiag">warning</P>
+        <P Name="SFTransitionActionBeforeConditionDiag">warning</P>
+        <P Name="SFOutputUsedAsStateInMooreChartDiag">error</P>
+        <P Name="SFTemporalDelaySmallerThanSampleTimeDiag">warning</P>
+        <P Name="SFSelfTransitionDiag">warning</P>
+        <P Name="SFExecutionAtInitializationDiag">none</P>
+        <P Name="IntegerSaturationMsg">warning</P>
+        <P Name="AllowedUnitSystems">all</P>
+        <P Name="UnitsInconsistencyMsg">warning</P>
+        <P Name="AllowAutomaticUnitConversions">on</P>
+        <P Name="RCSCRenamedMsg">warning</P>
+        <P Name="RCSCObservableMsg">warning</P>
+        <P Name="ForceCombineOutputUpdateInSim">off</P>
+        <P Name="UnitDatabase"/>
+        <P Name="UnderSpecifiedDimensionMsg">none</P>
+        <P Name="DebugExecutionForFMUViaOutOfProcess">off</P>
+        <P Name="ArithmeticOperatorsInVariantConditions">warning</P>
+        <P Name="VariantConditionMismatch">none</P>
+      </Object>
+      <Object ObjectID="6" Version="21.1.0" ClassName="Simulink.HardwareCC">
+        <P Name="DisabledProps" Class="double">[]</P>
+        <P Name="Description"/>
+        <P Name="Components" Class="double">[]</P>
+        <P Name="ProdBitPerChar">8</P>
+        <P Name="ProdBitPerShort">16</P>
+        <P Name="ProdBitPerInt">32</P>
+        <P Name="ProdBitPerLong">32</P>
+        <P Name="ProdBitPerLongLong">64</P>
+        <P Name="ProdBitPerFloat">32</P>
+        <P Name="ProdBitPerDouble">64</P>
+        <P Name="ProdBitPerPointer">32</P>
+        <P Name="ProdBitPerSizeT">32</P>
+        <P Name="ProdBitPerPtrDiffT">32</P>
+        <P Name="ProdLargestAtomicInteger">Char</P>
+        <P Name="ProdLargestAtomicFloat">None</P>
+        <P Name="ProdIntDivRoundTo">Undefined</P>
+        <P Name="ProdEndianess">Unspecified</P>
+        <P Name="ProdWordSize">32</P>
+        <P Name="ProdShiftRightIntArith">on</P>
+        <P Name="ProdLongLongMode">off</P>
+        <P Name="ProdHWDeviceType">32-bit Generic</P>
+        <P Name="TargetBitPerChar">8</P>
+        <P Name="TargetBitPerShort">16</P>
+        <P Name="TargetBitPerInt">32</P>
+        <P Name="TargetBitPerLong">32</P>
+        <P Name="TargetBitPerLongLong">64</P>
+        <P Name="TargetBitPerFloat">32</P>
+        <P Name="TargetBitPerDouble">64</P>
+        <P Name="TargetBitPerPointer">32</P>
+        <P Name="TargetBitPerSizeT">32</P>
+        <P Name="TargetBitPerPtrDiffT">32</P>
+        <P Name="TargetLargestAtomicInteger">Char</P>
+        <P Name="TargetLargestAtomicFloat">None</P>
+        <P Name="TargetShiftRightIntArith">on</P>
+        <P Name="TargetLongLongMode">off</P>
+        <P Name="TargetIntDivRoundTo">Undefined</P>
+        <P Name="TargetEndianess">Unspecified</P>
+        <P Name="TargetWordSize">32</P>
+        <P Name="TargetPreprocMaxBitsSint">32</P>
+        <P Name="TargetPreprocMaxBitsUint">32</P>
+        <P Name="TargetHWDeviceType">Specified</P>
+        <P Name="TargetUnknown">off</P>
+        <P Name="ProdEqTarget">on</P>
+        <P Name="UseEmbeddedCoderFeatures">on</P>
+        <P Name="UseSimulinkCoderFeatures">on</P>
+        <P Name="HardwareBoardFeatureSet">EmbeddedCoderHSP</P>
+      </Object>
+      <Object ObjectID="7" Version="21.1.0" ClassName="Simulink.ModelReferenceCC">
+        <P Name="DisabledProps" Class="double">[]</P>
+        <P Name="Description"/>
+        <P Name="Components" Class="double">[]</P>
+        <P Name="UpdateModelReferenceTargets">IfOutOfDateOrStructuralChange</P>
+        <P Name="EnableRefExpFcnMdlSchedulingChecks">off</P>
+        <P Name="CheckModelReferenceTargetMessage">error</P>
+        <P Name="EnableParallelModelReferenceBuilds">off</P>
+        <P Name="ParallelModelReferenceErrorOnInvalidPool">on</P>
+        <P Name="ParallelModelReferenceMATLABWorkerInit">None</P>
+        <P Name="ModelReferenceNumInstancesAllowed">Multi</P>
+        <P Name="PropagateVarSize">Infer from blocks in model</P>
+        <P Name="ModelDependencies"/>
+        <P Name="ModelReferencePassRootInputsByReference">on</P>
+        <P Name="ModelReferenceMinAlgLoopOccurrences">off</P>
+        <P Name="PropagateSignalLabelsOutOfModel">off</P>
+        <P Name="SupportModelReferenceSimTargetCustomCode">off</P>
+      </Object>
+      <Object ObjectID="8" Version="21.1.0" ClassName="Simulink.SFSimCC">
+        <P Name="DisabledProps" Class="double">[]</P>
+        <P Name="Description"/>
+        <P Name="Components" Class="double">[]</P>
+        <P Name="SimCustomSourceCode"/>
+        <P Name="SimCustomHeaderCode"/>
+        <P Name="SimCustomInitializer"/>
+        <P Name="SimCustomTerminator"/>
+        <P Name="SimReservedNameArray" Class="double">[]</P>
+        <P Name="SimUserSources"/>
+        <P Name="SimUserIncludeDirs"/>
+        <P Name="SimUserLibraries"/>
+        <P Name="SimUserDefines"/>
+        <P Name="SimCustomCompilerFlags"/>
+        <P Name="SimCustomLinkerFlags"/>
+        <P Name="SFSimEcho">on</P>
+        <P Name="SimCtrlC">on</P>
+        <P Name="SimIntegrity">on</P>
+        <P Name="SimUseLocalCustomCode">off</P>
+        <P Name="SimParseCustomCode">on</P>
+        <P Name="SimAnalyzeCustomCode">off</P>
+        <P Name="SimDebugExecutionForCustomCode">off</P>
+        <P Name="SimGenImportedTypeDefs">off</P>
+        <P Name="ModelFunctionsGlobalVisibility">on</P>
+        <P Name="CompileTimeRecursionLimit">50</P>
+        <P Name="EnableRuntimeRecursion">on</P>
+        <P Name="EnableImplicitExpansion">on</P>
+        <P Name="MATLABDynamicMemAlloc">on</P>
+        <P Name="MATLABDynamicMemAllocThreshold">65536</P>
+        <P Name="LegacyBehaviorForPersistentVarInContinuousTime">off</P>
+        <P Name="CustomCodeFunctionArrayLayout" Class="double">[]</P>
+        <P Name="DefaultCustomCodeFunctionArrayLayout">NotSpecified</P>
+        <P Name="CustomCodeUndefinedFunction">UseInterfaceOnly</P>
+        <P Name="CustomCodeGlobalsAsFunctionIO">off</P>
+        <P Name="DefaultCustomCodeDeterministicFunctions">None</P>
+        <P Name="CustomCodeDeterministicFunctions"/>
+        <P Name="SimHardwareAcceleration">generic</P>
+        <P Name="SimTargetLang">C</P>
+        <P Name="GPUAcceleration">off</P>
+        <P Name="SimGPUMallocThreshold">200</P>
+        <P Name="SimGPUStackLimitPerThread">1024</P>
+        <P Name="SimGPUErrorChecks">off</P>
+        <P Name="SimGPUCustomComputeCapability"/>
+        <P Name="SimGPUCompilerFlags"/>
+        <P Name="SimDLTargetLibrary">mkl-dnn</P>
+        <P Name="SimDLAutoTuning">on</P>
+      </Object>
+      <Object BackupClass="Simulink.RTWCC" ObjectID="9" Version="21.1.0" ClassName="Simulink.RTWCC">
+        <Array PropName="DisabledProps" Type="Cell" Dimension="1*16">
+          <Cell Class="char">IncludeHyperlinkInReport</Cell>
+          <Cell Class="char">GenerateTraceInfo</Cell>
+          <Cell Class="char">GenerateTraceReport</Cell>
+          <Cell Class="char">GenerateTraceReportSl</Cell>
+          <Cell Class="char">GenerateTraceReportSf</Cell>
+          <Cell Class="char">GenerateTraceReportEml</Cell>
+          <Cell Class="char">PortableWordSizes</Cell>
+          <Cell Class="char">GenerateWebview</Cell>
+          <Cell Class="char">GenerateCodeMetricsReport</Cell>
+          <Cell Class="char">GenerateCodeReplacementReport</Cell>
+          <Cell Class="char">GenerateErtSFunction</Cell>
+          <Cell Class="char">CreateSILPILBlock</Cell>
+          <Cell Class="char">CodeProfilingInstrumentation</Cell>
+          <Cell Class="char">GenerateMissedCodeReplacementReport</Cell>
+          <Cell Class="char">CodeStackProfiling</Cell>
+          <Cell Class="char">EmbeddedCoderDictionary</Cell>
+        </Array>
+        <P Name="Description"/>
+        <P Name="SystemTargetFile">grt.tlc</P>
+        <P Name="HardwareBoard">None</P>
+        <P Name="ShowCustomHardwareApp">off</P>
+        <P Name="ShowEmbeddedHardwareApp">off</P>
+        <P Name="TLCOptions"/>
+        <P Name="GenCodeOnly">off</P>
+        <P Name="MakeCommand">make_rtw</P>
+        <P Name="GenerateMakefile">on</P>
+        <P Name="PackageGeneratedCodeAndArtifacts">off</P>
+        <P Name="PackageName"/>
+        <P Name="TemplateMakefile">grt_default_tmf</P>
+        <P Name="PostCodeGenCommand"/>
+        <P Name="GenerateReport">off</P>
+        <P Name="RTWVerbose">on</P>
+        <P Name="RetainRTWFile">off</P>
+        <P Name="RTWBuildHooks" Class="double">[]</P>
+        <P Name="ProfileTLC">off</P>
+        <P Name="TLCDebug">off</P>
+        <P Name="TLCCoverage">off</P>
+        <P Name="TLCAssert">off</P>
+        <P Name="RTWUseLocalCustomCode">off</P>
+        <P Name="RTWUseSimCustomCode">off</P>
+        <P Name="CustomSourceCode"/>
+        <P Name="CustomHeaderCode"/>
+        <P Name="CustomInclude"/>
+        <P Name="CustomSource"/>
+        <P Name="CustomLibrary"/>
+        <P Name="CustomDefine"/>
+        <P Name="CustomBLASCallback"/>
+        <P Name="CustomLAPACKCallback"/>
+        <P Name="CustomFFTCallback"/>
+        <P Name="CustomInitializer"/>
+        <P Name="CustomTerminator"/>
+        <P Name="Toolchain">Automatically locate an installed toolchain</P>
+        <P Name="BuildConfiguration">Faster Builds</P>
+        <P Name="CustomToolchainOptions" Class="double">[]</P>
+        <P Name="IncludeHyperlinkInReport">off</P>
+        <P Name="LaunchReport">off</P>
+        <P Name="PortableWordSizes">off</P>
+        <P Name="CreateSILPILBlock">None</P>
+        <P Name="CodeExecutionProfiling">off</P>
+        <P Name="CodeExecutionProfileVariable">executionProfile</P>
+        <P Name="CodeProfilingSaveOptions">SummaryOnly</P>
+        <P Name="CodeProfilingInstrumentation">off</P>
+        <P Name="SILDebugging">off</P>
+        <P Name="TargetLang">C</P>
+        <P Name="GenerateGPUCode">None</P>
+        <P Name="IncludeBusHierarchyInRTWFileBlockHierarchyMap">off</P>
+        <P Name="GenerateTraceInfo">off</P>
+        <P Name="GenerateTraceReport">off</P>
+        <P Name="GenerateTraceReportSl">off</P>
+        <P Name="GenerateTraceReportSf">off</P>
+        <P Name="GenerateTraceReportEml">off</P>
+        <P Name="GenerateWebview">off</P>
+        <P Name="GenerateCodeMetricsReport">off</P>
+        <P Name="GenerateCodeReplacementReport">off</P>
+        <P Name="GenerateMissedCodeReplacementReport">off</P>
+        <P Name="RTWCompilerOptimization">off</P>
+        <P Name="ObjectivePriorities" Class="double">[]</P>
+        <P Name="RTWCustomCompilerOptimizations"/>
+        <P Name="CheckMdlBeforeBuild">Off</P>
+        <P Name="SharedConstantsCachingThreshold">1024</P>
+        <P Name="GPUKernelNamePrefix"/>
+        <P Name="GPUDeviceID">-1</P>
+        <P Name="GPUMallocMode">discrete</P>
+        <P Name="GPUMallocThreshold">200</P>
+        <P Name="GPUEnableMemoryManager">off</P>
+        <P Name="GPUStackLimitPerThread">1024</P>
+        <P Name="GPUcuBLAS">on</P>
+        <P Name="GPUcuSOLVER">on</P>
+        <P Name="GPUcuFFT">on</P>
+        <P Name="GPUErrorChecks">off</P>
+        <P Name="GPUComputeCapability">3.5</P>
+        <P Name="GPUCustomComputeCapability"/>
+        <P Name="GPUCompilerFlags"/>
+        <P Name="GPUMaximumBlocksPerKernel">0</P>
+        <P Name="DLTargetLibrary">none</P>
+        <P Name="DLAutoTuning">on</P>
+        <P Name="DLArmComputeVersion">20.02.1</P>
+        <P Name="DLArmComputeArch">unspecified</P>
+        <Array PropName="Components" Type="Handle" Dimension="1*2">
+          <Object ObjectID="10" Version="21.1.0" ClassName="Simulink.CodeAppCC">
+            <Array PropName="DisabledProps" Type="Cell" Dimension="1*29">
+              <Cell Class="char">IgnoreCustomStorageClasses</Cell>
+              <Cell Class="char">IgnoreTestpoints</Cell>
+              <Cell Class="char">InsertBlockDesc</Cell>
+              <Cell Class="char">InsertPolySpaceComments</Cell>
+              <Cell Class="char">SFDataObjDesc</Cell>
+              <Cell Class="char">MATLABFcnDesc</Cell>
+              <Cell Class="char">SimulinkDataObjDesc</Cell>
+              <Cell Class="char">DefineNamingRule</Cell>
+              <Cell Class="char">SignalNamingRule</Cell>
+              <Cell Class="char">ParamNamingRule</Cell>
+              <Cell Class="char">InternalIdentifier</Cell>
+              <Cell Class="char">InlinedPrmAccess</Cell>
+              <Cell Class="char">CustomSymbolStr</Cell>
+              <Cell Class="char">CustomSymbolStrGlobalVar</Cell>
+              <Cell Class="char">CustomSymbolStrType</Cell>
+              <Cell Class="char">CustomSymbolStrField</Cell>
+              <Cell Class="char">CustomSymbolStrFcn</Cell>
+              <Cell Class="char">CustomSymbolStrFcnArg</Cell>
+              <Cell Class="char">CustomSymbolStrBlkIO</Cell>
+              <Cell Class="char">CustomSymbolStrTmpVar</Cell>
+              <Cell Class="char">CustomSymbolStrMacro</Cell>
+              <Cell Class="char">ReqsInCode</Cell>
+              <Cell Class="char">BlockCommentType</Cell>
+              <Cell Class="char">CustomSymbolStrModelFcn</Cell>
+              <Cell Class="char">CustomSymbolStrUtil</Cell>
+              <Cell Class="char">CustomSymbolStrEmxType</Cell>
+              <Cell Class="char">CustomSymbolStrEmxFcn</Cell>
+              <Cell Class="char">CustomUserTokenString</Cell>
+              <Cell Class="char">AnnotationsInComments</Cell>
+            </Array>
+            <P Name="Description"/>
+            <P Name="Components" Class="double">[]</P>
+            <P Name="Comment"/>
+            <P Name="ForceParamTrailComments">off</P>
+            <P Name="GenerateComments">on</P>
+            <P Name="CommentStyle">Auto</P>
+            <P Name="IgnoreCustomStorageClasses">on</P>
+            <P Name="IgnoreTestpoints">off</P>
+            <P Name="MaxIdLength">31</P>
+            <P Name="PreserveName">off</P>
+            <P Name="PreserveNameWithParent">off</P>
+            <P Name="ShowEliminatedStatement">off</P>
+            <P Name="OperatorAnnotations">off</P>
+            <P Name="SimulinkDataObjDesc">off</P>
+            <P Name="SFDataObjDesc">off</P>
+            <P Name="MATLABFcnDesc">off</P>
+            <P Name="MangleLength">1</P>
+            <P Name="SharedChecksumLength">8</P>
+            <P Name="CustomSymbolStrGlobalVar">$R$N$M</P>
+            <P Name="CustomSymbolStrType">$N$R$M_T</P>
+            <P Name="CustomSymbolStrField">$N$M</P>
+            <P Name="CustomSymbolStrFcn">$R$N$M$F</P>
+            <P Name="CustomSymbolStrModelFcn">$R$N</P>
+            <P Name="CustomSymbolStrFcnArg">rt$I$N$M</P>
+            <P Name="CustomSymbolStrBlkIO">rtb_$N$M</P>
+            <P Name="CustomSymbolStrTmpVar">$N$M</P>
+            <P Name="CustomSymbolStrMacro">$R$N$M</P>
+            <P Name="CustomSymbolStrUtil">$N$C</P>
+            <P Name="CustomSymbolStrEmxType">emxArray_$M$N</P>
+            <P Name="CustomSymbolStrEmxFcn">emx$M$N</P>
+            <P Name="CustomUserTokenString"/>
+            <P Name="CustomCommentsFcn"/>
+            <P Name="DefineNamingRule">None</P>
+            <P Name="DefineNamingFcn"/>
+            <P Name="ParamNamingRule">None</P>
+            <P Name="ParamNamingFcn"/>
+            <P Name="SignalNamingRule">None</P>
+            <P Name="SignalNamingFcn"/>
+            <P Name="InsertBlockDesc">off</P>
+            <P Name="InsertPolySpaceComments">off</P>
+            <P Name="SimulinkBlockComments">on</P>
+            <P Name="BlockCommentType">BlockPathComment</P>
+            <P Name="StateflowObjectComments">on</P>
+            <P Name="MATLABSourceComments">off</P>
+            <P Name="EnableCustomComments">off</P>
+            <P Name="InternalIdentifierFile"/>
+            <P Name="InternalIdentifier">Shortened</P>
+            <P Name="InlinedPrmAccess">Literals</P>
+            <P Name="ReqsInCode">off</P>
+            <P Name="UseSimReservedNames">off</P>
+            <P Name="ReservedNameArray" Class="double">[]</P>
+            <P Name="EnumMemberNameClash">error</P>
+          </Object>
+          <Object BackupClass="Simulink.TargetCC" ObjectID="11" Version="21.1.0" ClassName="Simulink.GRTTargetCC">
+            <Array PropName="DisabledProps" Type="Cell" Dimension="1*21">
+              <Cell Class="char">GeneratePreprocessorConditionals</Cell>
+              <Cell Class="char">IncludeMdlTerminateFcn</Cell>
+              <Cell Class="char">SupportNonInlinedSFcns</Cell>
+              <Cell Class="char">SuppressErrorStatus</Cell>
+              <Cell Class="char">ERTCustomFileBanners</Cell>
+              <Cell Class="char">GenerateSampleERTMain</Cell>
+              <Cell Class="char">GenerateTestInterfaces</Cell>
+              <Cell Class="char">ModelStepFunctionPrototypeControlCompliant</Cell>
+              <Cell Class="char">CPPClassGenCompliant</Cell>
+              <Cell Class="char">SupportContinuousTime</Cell>
+              <Cell Class="char">PurelyIntegerCode</Cell>
+              <Cell Class="char">SupportComplex</Cell>
+              <Cell Class="char">SupportAbsoluteTime</Cell>
+              <Cell Class="char">GenerateAllocFcn</Cell>
+              <Cell Class="char">ExistingSharedCode</Cell>
+              <Cell Class="char">ParenthesesLevel</Cell>
+              <Cell Class="char">ERTMultiwordTypeDef</Cell>
+              <Cell Class="char">MultiwordTypeDef</Cell>
+              <Cell Class="char">RemoveDisableFunc</Cell>
+              <Cell Class="char">RemoveResetFunc</Cell>
+              <Cell Class="char">PreserveStateflowLocalDataDimensions</Cell>
+            </Array>
+            <P Name="Description"/>
+            <P Name="Components" Class="double">[]</P>
+            <P Name="TargetFcnLib">ansi_tfl_table_tmw.mat</P>
+            <P Name="TargetLibSuffix"/>
+            <P Name="TargetPreCompLibLocation"/>
+            <P Name="GenFloatMathFcnCalls">NOT IN USE</P>
+            <P Name="TargetLangStandard">C89/C90 (ANSI)</P>
+            <P Name="CodeReplacementLibrary">None</P>
+            <P Name="UtilityFuncGeneration">Auto</P>
+            <P Name="MultiwordTypeDef">System defined</P>
+            <P Name="MultiwordLength">2048</P>
+            <P Name="DynamicStringBufferSize">256</P>
+            <P Name="GenerateFullHeader">on</P>
+            <P Name="InferredTypesCompatibility">off</P>
+            <P Name="ExistingSharedCode"/>
+            <P Name="GenerateSampleERTMain">off</P>
+            <P Name="GenerateTestInterfaces">off</P>
+            <P Name="ModelReferenceCompliant">on</P>
+            <P Name="ParMdlRefBuildCompliant">on</P>
+            <P Name="CompOptLevelCompliant">on</P>
+            <P Name="ConcurrentExecutionCompliant">on</P>
+            <P Name="IncludeMdlTerminateFcn">on</P>
+            <P Name="CombineOutputUpdateFcns">on</P>
+            <P Name="CombineSignalStateStructs">off</P>
+            <P Name="GroupInternalDataByFunction">off</P>
+            <P Name="SuppressErrorStatus">off</P>
+            <P Name="IncludeFileDelimiter">Auto</P>
+            <P Name="ERTCustomFileBanners">off</P>
+            <P Name="SupportAbsoluteTime">on</P>
+            <P Name="LogVarNameModifier">rt_</P>
+            <P Name="MatFileLogging">on</P>
+            <P Name="CodeInterfacePackaging">Nonreusable function</P>
+            <P Name="PurelyIntegerCode">off</P>
+            <P Name="SupportNonFinite">on</P>
+            <P Name="SupportComplex">on</P>
+            <P Name="SupportContinuousTime">on</P>
+            <P Name="SupportNonInlinedSFcns">on</P>
+            <P Name="RemoveDisableFunc">off</P>
+            <P Name="RemoveResetFunc">off</P>
+            <P Name="SupportVariableSizeSignals">off</P>
+            <P Name="ParenthesesLevel">Nominal</P>
+            <P Name="CastingMode">Nominal</P>
+            <P Name="MATLABClassNameForMDSCustomization">Simulink.SoftwareTarget.GRTCustomization</P>
+            <P Name="ModelStepFunctionPrototypeControlCompliant">off</P>
+            <P Name="CPPClassGenCompliant">on</P>
+            <P Name="AutosarCompliant">off</P>
+            <P Name="MDXCompliant">off</P>
+            <P Name="GRTInterface">off</P>
+            <P Name="GenerateAllocFcn">off</P>
+            <P Name="UseToolchainInfoCompliant">on</P>
+            <P Name="GenerateSharedConstants">on</P>
+            <P Name="CoderGroups" Class="double">[]</P>
+            <P Name="AccessMethods" Class="double">[]</P>
+            <P Name="LookupTableObjectStructAxisOrder">1,2,3,4,...</P>
+            <P Name="LUTObjectStructOrderExplicitValues">Size,Breakpoints,Table</P>
+            <P Name="LUTObjectStructOrderEvenSpacing">Size,Breakpoints,Table</P>
+            <P Name="ArrayLayout">Column-major</P>
+            <P Name="UnsupportedSFcnMsg">error</P>
+            <P Name="ERTHeaderFileRootName">$R$E</P>
+            <P Name="ERTSourceFileRootName">$R$E</P>
+            <P Name="ERTDataFileRootName">$R_data</P>
+            <Array PropName="InstructionSetExtensions" Type="Cell" Dimension="1*1">
+              <Cell Class="char">None</Cell>
+            </Array>
+            <P Name="UseMalloc">off</P>
+            <P Name="ExtMode">off</P>
+            <P Name="ExtModeStaticAlloc">off</P>
+            <P Name="ExtModeTesting">off</P>
+            <P Name="ExtModeStaticAllocSize">1000000</P>
+            <P Name="ExtModeTransport">0</P>
+            <P Name="ExtModeMexFile">ext_comm</P>
+            <P Name="ExtModeMexArgs"/>
+            <P Name="ExtModeIntrfLevel">Level1</P>
+            <P Name="RTWCAPISignals">off</P>
+            <P Name="RTWCAPIParams">off</P>
+            <P Name="RTWCAPIStates">off</P>
+            <P Name="RTWCAPIRootIO">off</P>
+            <P Name="GenerateASAP2">off</P>
+            <P Name="MultiInstanceErrorCode">Error</P>
+          </Object>
+        </Array>
+      </Object>
+      <Object ObjectID="12" Version="21.1.0" ClassName="SlCovCC.ConfigComp">
+        <P Name="DisabledProps" Class="double">[]</P>
+        <P Name="Description">Simulink Coverage Configuration Component</P>
+        <P Name="Components" Class="double">[]</P>
+        <P Name="Name">Simulink Coverage</P>
+        <P Name="CovEnable">off</P>
+        <P Name="CovScope">EntireSystem</P>
+        <P Name="CovIncludeTopModel">on</P>
+        <P Name="RecordCoverage">off</P>
+        <P Name="CovPath">/</P>
+        <P Name="CovSaveName">covdata</P>
+        <P Name="CovCompData"/>
+        <P Name="CovMetricSettings">dw</P>
+        <P Name="CovFilter"/>
+        <P Name="CovHTMLOptions"/>
+        <P Name="CovNameIncrementing">off</P>
+        <P Name="CovForceBlockReductionOff">on</P>
+        <P Name="CovEnableCumulative">on</P>
+        <P Name="CovSaveCumulativeToWorkspaceVar">on</P>
+        <P Name="CovSaveSingleToWorkspaceVar">on</P>
+        <P Name="CovCumulativeVarName">covCumulativeData</P>
+        <P Name="CovCumulativeReport">off</P>
+        <P Name="CovSaveOutputData">on</P>
+        <P Name="CovOutputDir">slcov_output/$ModelName$</P>
+        <P Name="CovDataFileName">$ModelName$_cvdata</P>
+        <P Name="CovReportOnPause">on</P>
+        <P Name="CovModelRefEnable">off</P>
+        <P Name="CovModelRefExcluded"/>
+        <P Name="CovExternalEMLEnable">off</P>
+        <P Name="CovSFcnEnable">off</P>
+        <P Name="CovBoundaryAbsTol">1e-05</P>
+        <P Name="CovBoundaryRelTol">0.01</P>
+        <P Name="CovUseTimeInterval">off</P>
+        <P Name="CovStartTime">0</P>
+        <P Name="CovStopTime">0</P>
+        <P Name="CovMcdcMode">Masking</P>
+      </Object>
+    </Array>
+    <P Name="Name">Configuration</P>
+    <P Name="CurrentDlgPage">Solver</P>
+    <P Name="ConfigPrmDlgPosition">[ 360, 135, 1240, 765 ]</P>
+    <P Name="ExtraOptions"/>
+  </Object>
+</ConfigSet>
+
+__MWOPC_PART_BEGIN__ /simulink/configSetInfo.xml
+<?xml version="1.0" encoding="utf-8"?>
+<ConfigSetInfo>
+  <ConfigSet PartName="/simulink/configSet0.xml" Active="true">Configuration</ConfigSet>
+</ConfigSetInfo>
+
+__MWOPC_PART_BEGIN__ /simulink/libraryBrowser/4D@5F@PwStateSpace.svg
+<?xml version="1.0" encoding="UTF-8"?><svg width="35.4542mm" height="21.1667mm" viewBox="0 0 134 80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel"><g clip-path="none" fill="none" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,0,0)"><path d="M0,0 L134,0 L134,80 L0,80 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip3"><path d="M-127,-20 L7,-20 L7,60 L-127,60 L-127,-20 z"/></clipPath></defs><g clip-path="url(#clip3)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,127,20)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip6"><path d="M7,70 L-127,70 L-127,-10 L7,-10 L7,70 z"/></clipPath></defs><g clip-path="url(#clip6)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,70)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip9"><path d="M7,55 L-127,55 L-127,-25 L7,-25 L7,55 z"/></clipPath></defs><g clip-path="url(#clip9)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,55)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip12"><path d="M7,40 L-127,40 L-127,-40 L7,-40 L7,40 z"/></clipPath></defs><g clip-path="url(#clip12)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,40)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip15"><path d="M-127,-60 L7,-60 L7,20 L-127,20 L-127,-60 z"/></clipPath></defs><g clip-path="url(#clip15)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,127,60)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip18"><path d="M7,25 L-127,25 L-127,-55 L7,-55 L7,25 z"/></clipPath></defs><g clip-path="url(#clip18)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,25)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip21"><path d="M7,10 L-127,10 L-127,-70 L7,-70 L7,10 z"/></clipPath></defs><g clip-path="url(#clip21)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,10)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip24"><path d="M-7,-2 L127,-2 L127,78 L-7,78 L-7,-2 z"/></clipPath></defs><g clip-path="url(#clip24)" fill="#ffffff" fill-opacity="1" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,7,2)"><path d="M0,0 L120,0 L120,76 L0,76 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip28"><path d="M-5,-10 L119,-10 L119,70 L-5,70 L-5,-10 z"/></clipPath></defs><g clip-path="url(#clip28)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,10)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="6.48438" x="0" xml:space="preserve" y="3.5">U</text></g><defs><clipPath id="clip29"><path d="M-5,-25 L119,-25 L119,55 L-5,55 L-5,-25 z"/></clipPath></defs><g clip-path="url(#clip29)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,25)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="20.5" x="0" xml:space="preserve" y="3.5">Env1</text></g><defs><clipPath id="clip30"><path d="M-5,-40 L119,-40 L119,40 L-5,40 L-5,-40 z"/></clipPath></defs><g clip-path="url(#clip30)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,40)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="20.5" x="0" xml:space="preserve" y="3.5">Env2</text></g><defs><clipPath id="clip31"><path d="M-5,-55 L119,-55 L119,25 L-5,25 L-5,-55 z"/></clipPath></defs><g clip-path="url(#clip31)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,55)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="20.5" x="0" xml:space="preserve" y="3.5">Env3</text></g><defs><clipPath id="clip32"><path d="M-5,-70 L119,-70 L119,10 L-5,10 L-5,-70 z"/></clipPath></defs><g clip-path="url(#clip32)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,70)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="31.2656" x="0" xml:space="preserve" y="3.5">CntrlVal</text></g><defs><clipPath id="clip33"><path d="M-119,-20 L5,-20 L5,60 L-119,60 L-119,-20 z"/></clipPath></defs><g clip-path="url(#clip33)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,124,20)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="6" x="-6" xml:space="preserve" y="3.5">Y</text></g><defs><clipPath id="clip34"><path d="M-119,-60 L5,-60 L5,20 L-119,20 L-119,-60 z"/></clipPath></defs><g clip-path="url(#clip34)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,124,60)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="38.4688" x="-38.4688" xml:space="preserve" y="3.5">PW_Data</text></g><defs><clipPath id="clip39"><path d="M-7.5,-2.5 L126.5,-2.5 L126.5,77.5 L-7.5,77.5 L-7.5,-2.5 z"/></clipPath></defs><g clip-path="url(#clip39)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,7.5,2.5)"><path d="M0,0 L120,0 L120,76 L0,76 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g></g><!--generated on windows @ 2024-12-06 11:31:58 Eastern Standard Time--></svg>
+
+__MWOPC_PART_BEGIN__ /simulink/libraryBrowser/_rels/slLibraryBrowser.xml.rels
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Target="Model@20@Source.svg" Type="http://schemas.mathworks.com/simulink/2015/relationships/slLibraryBrowserImage"/>
+  <Relationship Id="rId10" Target="Parameter@5F@Ramp.svg" Type="http://schemas.mathworks.com/simulink/2015/relationships/slLibraryBrowserImage"/>
+  <Relationship Id="rId11" Target="Normalized@20@Error.svg" Type="http://schemas.mathworks.com/simulink/2015/relationships/slLibraryBrowserImage"/>
+  <Relationship Id="rId12" Target="SS@20@NR@20@Solver@20@w@20@Initial@20@Jacobian@20@Calc@20@@26@@20@Broyden@20@Update.svg" Type="http://schemas.mathworks.com/simulink/2015/relationships/slLibraryBrowserImage"/>
+  <Relationship Id="rId13" Target="DataOutput.svg" Type="http://schemas.mathworks.com/simulink/2015/relationships/slLibraryBrowserImage"/>
+  <Relationship Id="rId14" Target="Iterative@20@NR@20@Solver@20@w@20@Initial@20@Jacobian@20@Calc@20@@26@@20@Broyden@20@Update.svg" Type="http://schemas.mathworks.com/simulink/2015/relationships/slLibraryBrowserImage"/>
+  <Relationship Id="rId2" Target="Iterative@20@NR@20@Solver@20@w@20@JacobianCalc.svg" Type="http://schemas.mathworks.com/simulink/2015/relationships/slLibraryBrowserImage"/>
+  <Relationship Id="rId3" Target="PwLinModGen.svg" Type="http://schemas.mathworks.com/simulink/2015/relationships/slLibraryBrowserImage"/>
+  <Relationship Id="rId4" Target="Vector@20@Condition.svg" Type="http://schemas.mathworks.com/simulink/2015/relationships/slLibraryBrowserImage"/>
+  <Relationship Id="rId5" Target="OuterLoop@20@integrator.svg" Type="http://schemas.mathworks.com/simulink/2015/relationships/slLibraryBrowserImage"/>
+  <Relationship Id="rId6" Target="SS@20@NR@20@Solver@20@w@20@JacobianCalc.svg" Type="http://schemas.mathworks.com/simulink/2015/relationships/slLibraryBrowserImage"/>
+  <Relationship Id="rId7" Target="Linearize.svg" Type="http://schemas.mathworks.com/simulink/2015/relationships/slLibraryBrowserImage"/>
+  <Relationship Id="rId8" Target="4D@5F@PwStateSpace.svg" Type="http://schemas.mathworks.com/simulink/2015/relationships/slLibraryBrowserImage"/>
+  <Relationship Id="rId9" Target="Parameter@5F@Step.svg" Type="http://schemas.mathworks.com/simulink/2015/relationships/slLibraryBrowserImage"/>
+</Relationships>
+
+__MWOPC_PART_BEGIN__ /simulink/libraryBrowser/DataOutput.svg
+<?xml version="1.0" encoding="UTF-8"?><svg width="11.6417mm" height="10.0542mm" viewBox="0 0 44 38" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel"><g clip-path="none" fill="none" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,0,0)"><path d="M0,0 L44,0 L44,38 L0,38 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip3"><path d="M7,19 L-37,19 L-37,-19 L7,-19 L7,19 z"/></clipPath></defs><g clip-path="url(#clip3)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,19)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip6"><path d="M-7,-2 L37,-2 L37,36 L-7,36 L-7,-2 z"/></clipPath></defs><g clip-path="url(#clip6)" fill="#ffffff" fill-opacity="1" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,7,2)"><path d="M0,0 L35,0 L35,34 L0,34 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip10"><path d="M-5,-19 L34,-19 L34,19 L-5,19 L-5,-19 z"/></clipPath></defs><g clip-path="url(#clip10)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,19)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="13.3125" x="0" xml:space="preserve" y="3.5">Var</text></g><defs><clipPath id="clip15"><path d="M-7.5,-2.5 L36.5,-2.5 L36.5,35.5 L-7.5,35.5 L-7.5,-2.5 z"/></clipPath></defs><g clip-path="url(#clip15)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,7.5,2.5)"><path d="M0,0 L35,0 L35,34 L0,34 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g></g><!--generated on windows @ 2024-12-06 11:31:58 Eastern Standard Time--></svg>
+
+__MWOPC_PART_BEGIN__ /simulink/libraryBrowser/Iterative@20@NR@20@Solver@20@w@20@Initial@20@Jacobian@20@Calc@20@@26@@20@Broyden@20@Update.svg
+<?xml version="1.0" encoding="UTF-8"?><svg width="38.1mm" height="18.5208mm" viewBox="0 0 144 70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel"><g clip-path="none" fill="none" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,0,0)"><path d="M0,0 L144,0 L144,70 L0,70 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip3"><path d="M-137,-55 L7,-55 L7,15 L-137,15 L-137,-55 z"/></clipPath></defs><g clip-path="url(#clip3)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,137,55)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip6"><path d="M-137,-35 L7,-35 L7,35 L-137,35 L-137,-35 z"/></clipPath></defs><g clip-path="url(#clip6)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,137,35)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip9"><path d="M-137,-15 L7,-15 L7,55 L-137,55 L-137,-15 z"/></clipPath></defs><g clip-path="url(#clip9)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,137,15)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip12"><path d="M7,55 L-137,55 L-137,-15 L7,-15 L7,55 z"/></clipPath></defs><g clip-path="url(#clip12)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,55)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip15"><path d="M7,20 L-137,20 L-137,-50 L7,-50 L7,20 z"/></clipPath></defs><g clip-path="url(#clip15)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,20)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip18"><path d="M-7,-2 L137,-2 L137,68 L-7,68 L-7,-2 z"/></clipPath></defs><g clip-path="url(#clip18)" fill="#ffffff" fill-opacity="1" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,7,2)"><path d="M0,0 L130,0 L130,66 L0,66 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip22"><path d="M-5,-20 L129,-20 L129,50 L-5,50 L-5,-20 z"/></clipPath></defs><g clip-path="url(#clip22)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,20)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="27.9844" x="0" xml:space="preserve" y="3.5">Enable</text></g><defs><clipPath id="clip23"><path d="M-5,-55 L129,-55 L129,15 L-5,15 L-5,-55 z"/></clipPath></defs><g clip-path="url(#clip23)" fill="none" opacity="1" stroke="#00d100" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,55)"><text fill="#00d100" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="12.9688" x="0" xml:space="preserve" y="3.5">f(x)</text></g><defs><clipPath id="clip24"><path d="M-129,-15 L5,-15 L5,55 L-129,55 L-129,-15 z"/></clipPath></defs><g clip-path="url(#clip24)" fill="none" opacity="1" stroke="#000000" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,134,15)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="75.9063" x="-75.9063" xml:space="preserve" y="3.5">do_while Condition</text></g><defs><clipPath id="clip25"><path d="M-129,-35 L5,-35 L5,35 L-129,35 L-129,-35 z"/></clipPath></defs><g clip-path="url(#clip25)" fill="none" opacity="1" stroke="#6b963d" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,134,35)"><text fill="#6b963d" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="6" x="-6" xml:space="preserve" y="3.5">X</text></g><defs><clipPath id="clip26"><path d="M-129,-55 L5,-55 L5,15 L-129,15 L-129,-55 z"/></clipPath></defs><g clip-path="url(#clip26)" fill="none" opacity="1" stroke="#000000" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,134,55)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="29.9844" x="-29.9844" xml:space="preserve" y="3.5">S_Data</text></g><defs><clipPath id="clip31"><path d="M-7.5,-2.5 L136.5,-2.5 L136.5,67.5 L-7.5,67.5 L-7.5,-2.5 z"/></clipPath></defs><g clip-path="url(#clip31)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,7.5,2.5)"><path d="M0,0 L130,0 L130,66 L0,66 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g></g><!--generated on windows @ 2024-12-06 11:31:58 Eastern Standard Time--></svg>
+
+__MWOPC_PART_BEGIN__ /simulink/libraryBrowser/Iterative@20@NR@20@Solver@20@w@20@JacobianCalc.svg
+<?xml version="1.0" encoding="UTF-8"?><svg width="40.7458mm" height="17.4625mm" viewBox="0 0 154 66" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel"><g clip-path="none" fill="none" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,0,0)"><path d="M0,0 L154,0 L154,66 L0,66 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip3"><path d="M-147,-13 L7,-13 L7,53 L-147,53 L-147,-13 z"/></clipPath></defs><g clip-path="url(#clip3)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,147,13)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip6"><path d="M-147,-53 L7,-53 L7,13 L-147,13 L-147,-53 z"/></clipPath></defs><g clip-path="url(#clip6)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,147,53)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip9"><path d="M-147,-33 L7,-33 L7,33 L-147,33 L-147,-33 z"/></clipPath></defs><g clip-path="url(#clip9)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,147,33)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip12"><path d="M7,33 L-147,33 L-147,-33 L7,-33 L7,33 z"/></clipPath></defs><g clip-path="url(#clip12)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,33)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip15"><path d="M7,53 L-147,53 L-147,-13 L7,-13 L7,53 z"/></clipPath></defs><g clip-path="url(#clip15)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,53)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip18"><path d="M7,13 L-147,13 L-147,-53 L7,-53 L7,13 z"/></clipPath></defs><g clip-path="url(#clip18)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,13)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip21"><path d="M-7,-2 L147,-2 L147,64 L-7,64 L-7,-2 z"/></clipPath></defs><g clip-path="url(#clip21)" fill="#ffffff" fill-opacity="1" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,7,2)"><path d="M0,0 L140,0 L140,62 L0,62 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip25"><path d="M-5,-13 L139,-13 L139,53 L-5,53 L-5,-13 z"/></clipPath></defs><g clip-path="url(#clip25)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,13)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="36.9688" x="0" xml:space="preserve" y="3.5">Iterations</text></g><defs><clipPath id="clip26"><path d="M-5,-33 L139,-33 L139,33 L-5,33 L-5,-33 z"/></clipPath></defs><g clip-path="url(#clip26)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,33)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="27.9844" x="0" xml:space="preserve" y="3.5">Enable</text></g><defs><clipPath id="clip27"><path d="M-5,-53 L139,-53 L139,13 L-5,13 L-5,-53 z"/></clipPath></defs><g clip-path="url(#clip27)" fill="none" opacity="1" stroke="#00d100" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,53)"><text fill="#00d100" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="12.9688" x="0" xml:space="preserve" y="3.5">f(x)</text></g><defs><clipPath id="clip28"><path d="M-139,-13 L5,-13 L5,53 L-139,53 L-139,-13 z"/></clipPath></defs><g clip-path="url(#clip28)" fill="none" opacity="1" stroke="#000000" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,144,13)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="75.9063" x="-75.9063" xml:space="preserve" y="3.5">do_while Condition</text></g><defs><clipPath id="clip29"><path d="M-139,-33 L5,-33 L5,33 L-139,33 L-139,-33 z"/></clipPath></defs><g clip-path="url(#clip29)" fill="none" opacity="1" stroke="#6b963d" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,144,33)"><text fill="#6b963d" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="6" x="-6" xml:space="preserve" y="3.5">X</text></g><defs><clipPath id="clip30"><path d="M-139,-53 L5,-53 L5,13 L-139,13 L-139,-53 z"/></clipPath></defs><g clip-path="url(#clip30)" fill="none" opacity="1" stroke="#6b963d" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,144,53)"><text fill="#6b963d" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="29.9844" x="-29.9844" xml:space="preserve" y="3.5">S_Data</text></g><defs><clipPath id="clip35"><path d="M-7.5,-2.5 L146.5,-2.5 L146.5,63.5 L-7.5,63.5 L-7.5,-2.5 z"/></clipPath></defs><g clip-path="url(#clip35)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,7.5,2.5)"><path d="M0,0 L140,0 L140,62 L0,62 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g></g><!--generated on windows @ 2024-12-06 11:31:58 Eastern Standard Time--></svg>
+
+__MWOPC_PART_BEGIN__ /simulink/libraryBrowser/Linearize.svg
+<?xml version="1.0" encoding="UTF-8"?><svg width="36.7771mm" height="52.9167mm" viewBox="0 0 139 200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel"><g clip-path="none" fill="none" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,0,0)"><path d="M0,0 L139,0 L139,200 L0,200 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip3"><path d="M-132,-160 L7,-160 L7,40 L-132,40 L-132,-160 z"/></clipPath></defs><g clip-path="url(#clip3)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,132,160)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip6"><path d="M-132,-130 L7,-130 L7,70 L-132,70 L-132,-130 z"/></clipPath></defs><g clip-path="url(#clip6)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,132,130)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip9"><path d="M-132,-100 L7,-100 L7,100 L-132,100 L-132,-100 z"/></clipPath></defs><g clip-path="url(#clip9)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,132,100)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip12"><path d="M-132,-70 L7,-70 L7,130 L-132,130 L-132,-70 z"/></clipPath></defs><g clip-path="url(#clip12)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,132,70)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip15"><path d="M-132,-10 L7,-10 L7,190 L-132,190 L-132,-10 z"/></clipPath></defs><g clip-path="url(#clip15)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,132,10)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip18"><path d="M7,175 L-132,175 L-132,-25 L7,-25 L7,175 z"/></clipPath></defs><g clip-path="url(#clip18)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,175)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip21"><path d="M7,115 L-132,115 L-132,-85 L7,-85 L7,115 z"/></clipPath></defs><g clip-path="url(#clip21)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,115)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip24"><path d="M-132,-190 L7,-190 L7,10 L-132,10 L-132,-190 z"/></clipPath></defs><g clip-path="url(#clip24)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,132,190)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip27"><path d="M7,85 L-132,85 L-132,-115 L7,-115 L7,85 z"/></clipPath></defs><g clip-path="url(#clip27)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,85)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip30"><path d="M-132,-40 L7,-40 L7,160 L-132,160 L-132,-40 z"/></clipPath></defs><g clip-path="url(#clip30)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,132,40)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip33"><path d="M7,145 L-132,145 L-132,-55 L7,-55 L7,145 z"/></clipPath></defs><g clip-path="url(#clip33)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,145)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip36"><path d="M7,55 L-132,55 L-132,-145 L7,-145 L7,55 z"/></clipPath></defs><g clip-path="url(#clip36)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,55)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip39"><path d="M7,25 L-132,25 L-132,-175 L7,-175 L7,25 z"/></clipPath></defs><g clip-path="url(#clip39)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,25)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip42"><path d="M-7,-2 L132,-2 L132,198 L-7,198 L-7,-2 z"/></clipPath></defs><g clip-path="url(#clip42)" fill="#ffffff" fill-opacity="1" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,7,2)"><path d="M0,0 L125,0 L125,196 L0,196 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip46"><path d="M-5,-25 L124,-25 L124,175 L-5,175 L-5,-25 z"/></clipPath></defs><g clip-path="url(#clip46)" fill="none" opacity="1" stroke="#6b963d" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,25)"><text fill="#6b963d" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="9.5" x="0" xml:space="preserve" y="3.5">x0</text></g><defs><clipPath id="clip47"><path d="M-5,-55 L124,-55 L124,145 L-5,145 L-5,-55 z"/></clipPath></defs><g clip-path="url(#clip47)" fill="none" opacity="1" stroke="#6b963d" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,55)"><text fill="#6b963d" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="10" x="0" xml:space="preserve" y="3.5">u0</text></g><defs><clipPath id="clip48"><path d="M-5,-85 L124,-85 L124,115 L-5,115 L-5,-85 z"/></clipPath></defs><g clip-path="url(#clip48)" fill="none" opacity="1" stroke="#00d100" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,85)"><text fill="#00d100" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="17" x="0" xml:space="preserve" y="3.5">xdot</text></g><defs><clipPath id="clip49"><path d="M-5,-115 L124,-115 L124,85 L-5,85 L-5,-115 z"/></clipPath></defs><g clip-path="url(#clip49)" fill="none" opacity="1" stroke="#00d100" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,115)"><text fill="#00d100" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="4.5" x="0" xml:space="preserve" y="3.5">y</text></g><defs><clipPath id="clip50"><path d="M-5,-145 L124,-145 L124,55 L-5,55 L-5,-145 z"/></clipPath></defs><g clip-path="url(#clip50)" fill="none" opacity="1" stroke="#000000" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,145)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="27.9844" x="0" xml:space="preserve" y="3.5">Enable</text></g><defs><clipPath id="clip51"><path d="M-5,-175 L124,-175 L124,25 L-5,25 L-5,-175 z"/></clipPath></defs><g clip-path="url(#clip51)" fill="none" opacity="1" stroke="#000000" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,175)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="23.4844" x="0" xml:space="preserve" y="3.5">Reset</text></g><defs><clipPath id="clip52"><path d="M-124,-10 L5,-10 L5,190 L-124,190 L-124,-10 z"/></clipPath></defs><g clip-path="url(#clip52)" fill="none" opacity="1" stroke="#000000" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,129,10)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="65.9063" x="-65.9063" xml:space="preserve" y="3.5">ABCD_matricies</text></g><defs><clipPath id="clip53"><path d="M-124,-40 L5,-40 L5,160 L-124,160 L-124,-40 z"/></clipPath></defs><g clip-path="url(#clip53)" fill="none" opacity="1" stroke="#6b963d" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,129,40)"><text fill="#6b963d" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="4.5" x="-4.5" xml:space="preserve" y="3.5">x</text></g><defs><clipPath id="clip54"><path d="M-124,-70 L5,-70 L5,130 L-124,130 L-124,-70 z"/></clipPath></defs><g clip-path="url(#clip54)" fill="none" opacity="1" stroke="#6b963d" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,129,70)"><text fill="#6b963d" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="5" x="-5" xml:space="preserve" y="3.5">u</text></g><defs><clipPath id="clip55"><path d="M-124,-100 L5,-100 L5,100 L-124,100 L-124,-100 z"/></clipPath></defs><g clip-path="url(#clip55)" fill="none" opacity="1" stroke="#000000" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,129,100)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="27" x="-27" xml:space="preserve" y="3.5">xdot_0</text></g><defs><clipPath id="clip56"><path d="M-124,-130 L5,-130 L5,70 L-124,70 L-124,-130 z"/></clipPath></defs><g clip-path="url(#clip56)" fill="none" opacity="1" stroke="#000000" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,129,130)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="9.5" x="-9.5" xml:space="preserve" y="3.5">y0</text></g><defs><clipPath id="clip57"><path d="M-124,-160 L5,-160 L5,40 L-124,40 L-124,-160 z"/></clipPath></defs><g clip-path="url(#clip57)" fill="none" opacity="1" stroke="#000000" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,129,160)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="12.9844" x="-12.9844" xml:space="preserve" y="3.5">Iter</text></g><defs><clipPath id="clip58"><path d="M-124,-190 L5,-190 L5,10 L-124,10 L-124,-190 z"/></clipPath></defs><g clip-path="url(#clip58)" fill="none" opacity="1" stroke="#000000" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,129,190)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="24.4844" x="-24.4844" xml:space="preserve" y="3.5">Active</text></g><defs><clipPath id="clip63"><path d="M-7,-2 L132,-2 L132,198 L-7,198 L-7,-2 z"/></clipPath></defs><g clip-path="url(#clip63)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,7,2)"><path d="M0,0 L125,0 L125,196 L0,196 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g></g><!--generated on windows @ 2024-12-06 11:31:58 Eastern Standard Time--></svg>
+
+__MWOPC_PART_BEGIN__ /simulink/libraryBrowser/Model@20@Source.svg
+<?xml version="1.0" encoding="UTF-8"?><svg width="26.1937mm" height="10.5833mm" viewBox="0 0 99 40" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel"><g clip-path="none" fill="none" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,0,0)"><path d="M0,0 L99,0 L99,40 L0,40 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip3"><path d="M-92,-20 L7,-20 L7,20 L-92,20 L-92,-20 z"/></clipPath></defs><g clip-path="url(#clip3)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,92,20)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip6"><path d="M-2,-2 L97,-2 L97,38 L-2,38 L-2,-2 z"/></clipPath></defs><g clip-path="url(#clip6)" fill="#ffffff" fill-opacity="1" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,2,2)"><path d="M0,0 L90,0 L90,36 L0,36 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip10"><path d="M-89,-20 L5,-20 L5,20 L-89,20 L-89,-20 z"/></clipPath></defs><g clip-path="url(#clip10)" fill="none" opacity="1" stroke="#ff00ff" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,89,20)"><text fill="#ff00ff" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="49.4688" x="-49.4688" xml:space="preserve" y="3.5">Model_Input</text></g><defs><clipPath id="clip15"><path d="M-2.5,-2.5 L96.5,-2.5 L96.5,37.5 L-2.5,37.5 L-2.5,-2.5 z"/></clipPath></defs><g clip-path="url(#clip15)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,2.5,2.5)"><path d="M0,0 L90,0 L90,36 L0,36 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g></g><!--generated on windows @ 2024-12-06 11:31:58 Eastern Standard Time--></svg>
+
+__MWOPC_PART_BEGIN__ /simulink/libraryBrowser/Normalized@20@Error.svg
+<?xml version="1.0" encoding="UTF-8"?><svg width="27.5167mm" height="10.5833mm" viewBox="0 0 104 40" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel"><g clip-path="none" fill="none" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,0,0)"><path d="M0,0 L104,0 L104,40 L0,40 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip3"><path d="M-97,-20 L7,-20 L7,20 L-97,20 L-97,-20 z"/></clipPath></defs><g clip-path="url(#clip3)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,97,20)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip6"><path d="M7,30 L-97,30 L-97,-10 L7,-10 L7,30 z"/></clipPath></defs><g clip-path="url(#clip6)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,30)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip9"><path d="M7,10 L-97,10 L-97,-30 L7,-30 L7,10 z"/></clipPath></defs><g clip-path="url(#clip9)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,10)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip12"><path d="M-7,-2 L97,-2 L97,38 L-7,38 L-7,-2 z"/></clipPath></defs><g clip-path="url(#clip12)" fill="#ffffff" fill-opacity="1" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,7,2)"><path d="M0,0 L90,0 L90,36 L0,36 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip16"><path d="M-5,-10 L89,-10 L89,30 L-5,30 L-5,-10 z"/></clipPath></defs><g clip-path="url(#clip16)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,10)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="11" x="0" xml:space="preserve" y="3.5">X1</text></g><defs><clipPath id="clip17"><path d="M-5,-30 L89,-30 L89,10 L-5,10 L-5,-30 z"/></clipPath></defs><g clip-path="url(#clip17)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,30)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="11" x="0" xml:space="preserve" y="3.5">X2</text></g><defs><clipPath id="clip18"><path d="M-89,-20 L5,-20 L5,20 L-89,20 L-89,-20 z"/></clipPath></defs><g clip-path="url(#clip18)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,94,20)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="15.4688" x="-15.4688" xml:space="preserve" y="3.5">NEr</text></g><defs><clipPath id="clip23"><path d="M-7.5,-2.5 L96.5,-2.5 L96.5,37.5 L-7.5,37.5 L-7.5,-2.5 z"/></clipPath></defs><g clip-path="url(#clip23)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,7.5,2.5)"><path d="M0,0 L90,0 L90,36 L0,36 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g></g><!--generated on windows @ 2024-12-06 11:31:58 Eastern Standard Time--></svg>
+
+__MWOPC_PART_BEGIN__ /simulink/libraryBrowser/OuterLoop@20@integrator.svg
+<?xml version="1.0" encoding="UTF-8"?><svg width="30.1625mm" height="10.5833mm" viewBox="0 0 114 40" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel"><g clip-path="none" fill="none" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,0,0)"><path d="M0,0 L114,0 L114,40 L0,40 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip3"><path d="M-107,-20 L7,-20 L7,20 L-107,20 L-107,-20 z"/></clipPath></defs><g clip-path="url(#clip3)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,107,20)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip6"><path d="M7,20 L-107,20 L-107,-20 L7,-20 L7,20 z"/></clipPath></defs><g clip-path="url(#clip6)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,20)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip9"><path d="M-7,-2 L107,-2 L107,38 L-7,38 L-7,-2 z"/></clipPath></defs><g clip-path="url(#clip9)" fill="#ffffff" fill-opacity="1" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,7,2)"><path d="M0,0 L100,0 L100,36 L0,36 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip13"><path d="M-5,-20 L99,-20 L99,20 L-5,20 L-5,-20 z"/></clipPath></defs><g clip-path="url(#clip13)" fill="none" opacity="1" stroke="#ff42d1" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,20)"><text fill="#ff42d1" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="18.5" x="0" xml:space="preserve" y="3.5">Xdot</text></g><defs><clipPath id="clip14"><path d="M-99,-20 L5,-20 L5,20 L-99,20 L-99,-20 z"/></clipPath></defs><g clip-path="url(#clip14)" fill="none" opacity="1" stroke="#e60000" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,104,20)"><text fill="#e60000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="6" x="-6" xml:space="preserve" y="3.5">X</text></g><defs><clipPath id="clip19"><path d="M-7.5,-2.5 L106.5,-2.5 L106.5,37.5 L-7.5,37.5 L-7.5,-2.5 z"/></clipPath></defs><g clip-path="url(#clip19)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,7.5,2.5)"><path d="M0,0 L100,0 L100,36 L0,36 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g></g><!--generated on windows @ 2024-12-06 11:31:58 Eastern Standard Time--></svg>
+
+__MWOPC_PART_BEGIN__ /simulink/libraryBrowser/Parameter@5F@Ramp.svg
+<?xml version="1.0" encoding="UTF-8"?><svg width="39.4229mm" height="21.1667mm" viewBox="0 0 149 80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel"><g clip-path="none" fill="none" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,0,0)"><path d="M0,0 L149,0 L149,80 L0,80 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip3"><path d="M-2,-2 L147,-2 L147,78 L-2,78 L-2,-2 z"/></clipPath></defs><g clip-path="url(#clip3)" fill="#ffffff" fill-opacity="1" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,2,2)"><path d="M0,0 L145,0 L145,76 L0,76 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip7"><path d="M-74,-16 L75,-16 L75,64 L-74,64 L-74,-16 z"/></clipPath></defs><g clip-path="url(#clip7)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,74,16)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="10" font-style="normal" font-weight="400" stroke="none" textLength="76" x="-38" xml:space="preserve" y="3.5">Parameter Ramp</text></g><defs><clipPath id="clip8"><path d="M-74,-28 L75,-28 L75,52 L-74,52 L-74,-28 z"/></clipPath></defs><g clip-path="url(#clip8)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,74,28)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="10" font-style="normal" font-weight="400" stroke="none" textLength="59.3594" x="-29.6719" xml:space="preserve" y="3.5"> Block Name:</text></g><defs><clipPath id="clip9"><path d="M-74,-40 L75,-40 L75,40 L-74,40 L-74,-40 z"/></clipPath></defs><g clip-path="url(#clip9)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,74,40)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="10" font-style="normal" font-weight="400" stroke="none" textLength="130.141" x="-65.0625" xml:space="preserve" y="3.5"> Testing_Output/Subsystem1 </text></g><defs><clipPath id="clip10"><path d="M-74,-52 L75,-52 L75,28 L-74,28 L-74,-52 z"/></clipPath></defs><g clip-path="url(#clip10)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,74,52)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="10" font-style="normal" font-weight="400" stroke="none" textLength="81.5313" x="-40.7656" xml:space="preserve" y="3.5">Parameter Name: </text></g><defs><clipPath id="clip11"><path d="M-74,-64 L75,-64 L75,16 L-74,16 L-74,-64 z"/></clipPath></defs><g clip-path="url(#clip11)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,74,64)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="10" font-style="normal" font-weight="400" stroke="none" textLength="34.75" x="-17.375" xml:space="preserve" y="3.5"> Test_M</text></g><defs><clipPath id="clip16"><path d="M-2.5,-2.5 L146.5,-2.5 L146.5,77.5 L-2.5,77.5 L-2.5,-2.5 z"/></clipPath></defs><g clip-path="url(#clip16)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,2.5,2.5)"><path d="M0,0 L145,0 L145,76 L0,76 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g></g><!--generated on windows @ 2024-12-06 11:31:58 Eastern Standard Time--></svg>
+
+__MWOPC_PART_BEGIN__ /simulink/libraryBrowser/Parameter@5F@Step.svg
+<?xml version="1.0" encoding="UTF-8"?><svg width="39.4229mm" height="23.8125mm" viewBox="0 0 149 90" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel"><g clip-path="none" fill="none" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,0,0)"><path d="M0,0 L149,0 L149,90 L0,90 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip3"><path d="M-2,-2 L147,-2 L147,88 L-2,88 L-2,-2 z"/></clipPath></defs><g clip-path="url(#clip3)" fill="#ffffff" fill-opacity="1" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,2,2)"><path d="M0,0 L145,0 L145,86 L0,86 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip7"><path d="M-74,-21 L75,-21 L75,69 L-74,69 L-74,-21 z"/></clipPath></defs><g clip-path="url(#clip7)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,74,21)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="10" font-style="normal" font-weight="400" stroke="none" textLength="69.875" x="-34.9375" xml:space="preserve" y="3.5">Parameter Step</text></g><defs><clipPath id="clip8"><path d="M-74,-33 L75,-33 L75,57 L-74,57 L-74,-33 z"/></clipPath></defs><g clip-path="url(#clip8)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,74,33)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="10" font-style="normal" font-weight="400" stroke="none" textLength="59.3594" x="-29.6719" xml:space="preserve" y="3.5"> Block Name:</text></g><defs><clipPath id="clip9"><path d="M-74,-45 L75,-45 L75,45 L-74,45 L-74,-45 z"/></clipPath></defs><g clip-path="url(#clip9)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,74,45)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="10" font-style="normal" font-weight="400" stroke="none" textLength="130.141" x="-65.0625" xml:space="preserve" y="3.5"> Testing_Output/Subsystem1 </text></g><defs><clipPath id="clip10"><path d="M-74,-57 L75,-57 L75,33 L-74,33 L-74,-57 z"/></clipPath></defs><g clip-path="url(#clip10)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,74,57)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="10" font-style="normal" font-weight="400" stroke="none" textLength="81.5313" x="-40.7656" xml:space="preserve" y="3.5">Parameter Name: </text></g><defs><clipPath id="clip11"><path d="M-74,-69 L75,-69 L75,21 L-74,21 L-74,-69 z"/></clipPath></defs><g clip-path="url(#clip11)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,74,69)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="10" font-style="normal" font-weight="400" stroke="none" textLength="34.75" x="-17.375" xml:space="preserve" y="3.5"> Test_M</text></g><defs><clipPath id="clip16"><path d="M-2.5,-2.5 L146.5,-2.5 L146.5,87.5 L-2.5,87.5 L-2.5,-2.5 z"/></clipPath></defs><g clip-path="url(#clip16)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,2.5,2.5)"><path d="M0,0 L145,0 L145,86 L0,86 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g></g><!--generated on windows @ 2024-12-06 11:31:58 Eastern Standard Time--></svg>
+
+__MWOPC_PART_BEGIN__ /simulink/libraryBrowser/PwLinModGen.svg
+<?xml version="1.0" encoding="UTF-8"?><svg width="35.4542mm" height="19.5792mm" viewBox="0 0 134 74" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel"><g clip-path="none" fill="none" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,0,0)"><path d="M0,0 L134,0 L134,74 L0,74 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip3"><path d="M-127,-67 L7,-67 L7,7 L-127,7 L-127,-67 z"/></clipPath></defs><g clip-path="url(#clip3)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,127,67)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip6"><path d="M-127,-37 L7,-37 L7,37 L-127,37 L-127,-37 z"/></clipPath></defs><g clip-path="url(#clip6)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,127,37)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip9"><path d="M-127,-52 L7,-52 L7,22 L-127,22 L-127,-52 z"/></clipPath></defs><g clip-path="url(#clip9)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,127,52)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip12"><path d="M7,62 L-127,62 L-127,-12 L7,-12 L7,62 z"/></clipPath></defs><g clip-path="url(#clip12)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,62)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip15"><path d="M7,47 L-127,47 L-127,-27 L7,-27 L7,47 z"/></clipPath></defs><g clip-path="url(#clip15)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,47)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip18"><path d="M-127,-7 L7,-7 L7,67 L-127,67 L-127,-7 z"/></clipPath></defs><g clip-path="url(#clip18)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,127,7)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip21"><path d="M7,32 L-127,32 L-127,-42 L7,-42 L7,32 z"/></clipPath></defs><g clip-path="url(#clip21)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,32)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip24"><path d="M-127,-22 L7,-22 L7,52 L-127,52 L-127,-22 z"/></clipPath></defs><g clip-path="url(#clip24)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,127,22)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip27"><path d="M7,17 L-127,17 L-127,-57 L7,-57 L7,17 z"/></clipPath></defs><g clip-path="url(#clip27)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,17)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip30"><path d="M-7,-3 L127,-3 L127,71 L-7,71 L-7,-3 z"/></clipPath></defs><g clip-path="url(#clip30)" fill="#ffffff" fill-opacity="1" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,7,3)"><path d="M0,0 L120,0 L120,68 L0,68 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip34"><path d="M-5,-16 L119,-16 L119,56 L-5,56 L-5,-16 z"/></clipPath></defs><g clip-path="url(#clip34)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,17)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="33.4531" x="0" xml:space="preserve" y="3.5">Cntrlsen</text></g><defs><clipPath id="clip35"><path d="M-5,-31 L119,-31 L119,41 L-5,41 L-5,-31 z"/></clipPath></defs><g clip-path="url(#clip35)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,32)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="37" x="0" xml:space="preserve" y="3.5">SysGood</text></g><defs><clipPath id="clip36"><path d="M-5,-46 L119,-46 L119,26 L-5,26 L-5,-46 z"/></clipPath></defs><g clip-path="url(#clip36)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,47)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="11" x="0" xml:space="preserve" y="3.5">dX</text></g><defs><clipPath id="clip37"><path d="M-5,-61 L119,-61 L119,11 L-5,11 L-5,-61 z"/></clipPath></defs><g clip-path="url(#clip37)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,62)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="6" x="0" xml:space="preserve" y="3.5">Y</text></g><defs><clipPath id="clip38"><path d="M-119,-7 L5,-7 L5,65 L-119,65 L-119,-7 z"/></clipPath></defs><g clip-path="url(#clip38)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,124,8)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="15.5" x="-15.5" xml:space="preserve" y="3.5">Env</text></g><defs><clipPath id="clip39"><path d="M-119,-21 L5,-21 L5,51 L-119,51 L-119,-21 z"/></clipPath></defs><g clip-path="url(#clip39)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,124,22)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="6" x="-6" xml:space="preserve" y="3.5">X</text></g><defs><clipPath id="clip40"><path d="M-119,-36 L5,-36 L5,36 L-119,36 L-119,-36 z"/></clipPath></defs><g clip-path="url(#clip40)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,124,37)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="6.48438" x="-6.48438" xml:space="preserve" y="3.5">U</text></g><defs><clipPath id="clip41"><path d="M-119,-51 L5,-51 L5,21 L-119,21 L-119,-51 z"/></clipPath></defs><g clip-path="url(#clip41)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,124,52)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="24.4844" x="-24.4844" xml:space="preserve" y="3.5">Active</text></g><defs><clipPath id="clip42"><path d="M-119,-65 L5,-65 L5,7 L-119,7 L-119,-65 z"/></clipPath></defs><g clip-path="url(#clip42)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,124,66)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="38.4688" x="-38.4688" xml:space="preserve" y="3.5">PW_Data</text></g><defs><clipPath id="clip47"><path d="M-7.5,-3.5 L126.5,-3.5 L126.5,70.5 L-7.5,70.5 L-7.5,-3.5 z"/></clipPath></defs><g clip-path="url(#clip47)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,7.5,3.5)"><path d="M0,0 L120,0 L120,68 L0,68 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g></g><!--generated on windows @ 2024-12-06 11:31:58 Eastern Standard Time--></svg>
+
+__MWOPC_PART_BEGIN__ /simulink/libraryBrowser/slLibraryBrowser.xml
+<?xml version="1.0" encoding="utf-8"?>
+<library hasTree="0" revision="R2021b">
+  <block_node SID="508" hasTree="0">
+    <block_name>Model Source</block_name>
+    <block_class>T-MATS: Model Source Library Block</block_class>
+    <block_desc>This block sets up the interface to change simulation variable dynamically.
+Enter an input vector and time vector to allocate when each element 
+of the intput vector will occur.</block_desc>
+    <block_path>$bdroot/Model Source</block_path>
+    <block_open>$bdroot/Model Source</block_open>
+    <block_isNotLeafBlk>0</block_isNotLeafBlk>
+    <block_position>45   97  135  133</block_position>
+    <block_icon>Model@20@Source.svg</block_icon>
+    <keywords/>
+    <port_domains>signal.out_signal:1</port_domains>
+    <block_type>SubSystem</block_type>
+    <block_reference>Lib_Solve_ModelSource_TMATS/Model Source</block_reference>
+  </block_node>
+  <block_node SID="519" hasTree="0">
+    <block_name>Iterative NR Solver w JacobianCalc</block_name>
+    <block_class>T-MATS: Iterative NR Solver w Jacobian Calc Library Block</block_class>
+    <block_desc>The Iterative Newton Raphson Solver with Jacobian Calculator block will 
+supply the inputs to iteratively drive the outputs of a system to zero.
+ 
+This will be performed in three steps. 
+1) Jabobian calculator sends Perturbations to the plant then calculates the plant
+Jacboian based on the system response 
+2) The Newton Raphson will use the inverse of the Jacobian to iteratively step the
+system toward solution.
+3) Once the solution has satisfied the conditions the Newton Raphson is shut off.
+ 
+This module is designed for dynamic systems and should be paired with 
+a &quot;do... while&quot; block in Simulink. The &quot;do...while&quot; block and this module 
+should both be located in the same subsystem as the plant that is to be solved for.</block_desc>
+    <block_path>$bdroot/Iterative NR Solver w JacobianCalc</block_path>
+    <block_open>$bdroot/Iterative NR Solver w JacobianCalc</block_open>
+    <block_isNotLeafBlk>0</block_isNotLeafBlk>
+    <block_position>260   69  400  131</block_position>
+    <block_icon>Iterative@20@NR@20@Solver@20@w@20@JacobianCalc.svg</block_icon>
+    <keywords/>
+    <port_domains>signal.in_signal:3,signal.out_signal:3</port_domains>
+    <block_type>SubSystem</block_type>
+    <block_reference>Lib_Solve_IterNRSolverJC_TMATS/Iterative NR Solver w JacobianCalc</block_reference>
+  </block_node>
+  <block_node SID="521" hasTree="0">
+    <block_name>PwLinModGen</block_name>
+    <block_class>T-MATS: Piecewise Linear Model Generator Library Block</block_class>
+    <block_desc>This block is meant to automatically create a piecewise linear model of a system.
+ 
+This model will be of the form:
+(xdot - xdot_0) = A*(x - x0) + B*(u - u0)
+(y - y0) = C*(x - x0) + D*(u - u0)
+ 
+Where x is the system state, u is the system input, and y is the plant output.
+0 values are the trim point values.
+ 
+This block should only be used when U is a 1x1 and the system states are external.
+ 
+During operation, the block will dynamically move or &quot;slew&quot; the system input and various environmental inputs to the defined operational points. At these points the block will wait for the system to reach steady state, then freeze the state integrators while the system is linearized using the perturbation method (see the T-MATS linearization block). As points are linearized, the block will output the linear models to the file &quot;LinPW_TMATS.mat&quot;. Control of u slew rates can be managed in two ways. First with a direct dynamic slew of u (check box DCntrlEn_M) and second with by using u as an effector to meet a desired control value. The control value can be input into the Cntrlsen input and u is adjusted via a proportional integral (PI) controller to move the system to the desired control value.
+For more information click on the help button. 
+ 
+ </block_desc>
+    <block_path>$bdroot/PwLinModGen</block_path>
+    <block_open>$bdroot/PwLinModGen</block_open>
+    <block_isNotLeafBlk>0</block_isNotLeafBlk>
+    <block_position>625   91  745  159</block_position>
+    <block_icon>PwLinModGen.svg</block_icon>
+    <keywords/>
+    <port_domains>signal.in_signal:4,signal.out_signal:5</port_domains>
+    <block_type>SubSystem</block_type>
+    <block_reference>Lib_Solve_PWLinearize_TMATS/PwLinModGen</block_reference>
+  </block_node>
+  <block_node SID="509" hasTree="0">
+    <block_name>Vector Condition</block_name>
+    <block_class>T-MATS: Vector Condition Library Block</block_class>
+    <block_desc>Determines if the absolute value of each element in a vector is greater then a condition.
+abs(V) &gt; Cond_Limits
+where V (nx1)and Cond_Limits (nx1 or 1x1)
+</block_desc>
+    <block_path>$bdroot/Vector Condition</block_path>
+    <block_open>$bdroot/Vector Condition</block_open>
+    <block_isNotLeafBlk>0</block_isNotLeafBlk>
+    <block_position>45  168  150  202</block_position>
+    <block_icon>Vector@20@Condition.svg</block_icon>
+    <keywords/>
+    <port_domains>signal.in_signal:1,signal.out_signal:1</port_domains>
+    <block_type>SubSystem</block_type>
+    <block_reference>Lib_Solve_VectorCondition_TMATS/Vector Condition</block_reference>
+  </block_node>
+  <block_node SID="510" hasTree="0">
+    <block_name>OuterLoop integrator</block_name>
+    <block_class>T-MATS: OuterLoop Integrator Library Block</block_class>
+    <block_desc>Continuous-time integration of the input signal. To be used in the simulations outer, time based, loop.</block_desc>
+    <block_path>$bdroot/OuterLoop integrator</block_path>
+    <block_open>$bdroot/OuterLoop integrator</block_open>
+    <block_isNotLeafBlk>0</block_isNotLeafBlk>
+    <block_position>45  237  145  273</block_position>
+    <block_icon>OuterLoop@20@integrator.svg</block_icon>
+    <keywords/>
+    <port_domains>signal.in_signal:1,signal.out_signal:1</port_domains>
+    <block_type>SubSystem</block_type>
+    <block_reference>Lib_Solve_OuterLoopIntegrator_TMATS/OuterLoop integrator</block_reference>
+  </block_node>
+  <block_node SID="520" hasTree="0">
+    <block_name>SS NR Solver w JacobianCalc</block_name>
+    <block_class>T-MATS: SS NR Solver w Jacobian Calc Library Block</block_class>
+    <block_desc>The Steady State Newton Raphson Solver with Jacobian Calculator block will 
+supply the inputs to iteratively drive the outputs of a system to zero.
+ 
+This will be performed in three steps. 
+1) Jabobian calculator sends Perturbations to the plant then calculates the plant
+Jacboian based on the system response 
+2) The Newton Raphson will use the inverse of the Jacobian to iteratively step the
+system toward solution.
+3) Once the solution has satisfied the conditions the Newton Raphson is shut off.
+ 
+Simulation run time length should be selected as to give the Newton Raphson solver adequate time to develop a solution.
+</block_desc>
+    <block_path>$bdroot/SS NR Solver w JacobianCalc</block_path>
+    <block_open>$bdroot/SS NR Solver w JacobianCalc</block_open>
+    <block_isNotLeafBlk>0</block_isNotLeafBlk>
+    <block_position>260  178  400  242</block_position>
+    <block_icon>SS@20@NR@20@Solver@20@w@20@JacobianCalc.svg</block_icon>
+    <keywords/>
+    <port_domains>signal.in_signal:2,signal.out_signal:2</port_domains>
+    <block_type>SubSystem</block_type>
+    <block_reference>Lib_Solve_SSNRSolverJC_TMATS/SS NR Solver w JacobianCalc</block_reference>
+  </block_node>
+  <block_node SID="517" hasTree="0">
+    <block_name>Linearize</block_name>
+    <block_class>T-MATS: Linearize Library Block</block_class>
+    <block_desc>Determine State-space equation for a given system where:
+
+(xdot - xdot_0) = A*(x - x0) + B*(u - u0)
+(y - y0) = C*(x - x0) + D*(u - u0)
+
+During operation each plant state (x) and input (u) will be set to an initial condition then perturbed separately. Perturbed inputs and system effects are compared against the baseline to determine the A,B,C, and D matricies. Perturbation sized are specified below. x0, u0, xdot_0, and y0 values are initial conditions. r is the number of perturbation per xdot or y.
+Matrix sizes are specified as:
+xdot and x : mx1
+y : px1
+u : nx1
+A : mxm
+B : mxn
+C : pxm
+D : pxn</block_desc>
+    <block_path>$bdroot/Linearize</block_path>
+    <block_open>$bdroot/Linearize</block_open>
+    <block_isNotLeafBlk>0</block_isNotLeafBlk>
+    <block_position>450   67  575  263</block_position>
+    <block_icon>Linearize.svg</block_icon>
+    <keywords/>
+    <port_domains>signal.in_signal:6,signal.out_signal:7</port_domains>
+    <block_type>SubSystem</block_type>
+    <block_reference>Lib_Solve_Linearize_TMATS/Linearize</block_reference>
+  </block_node>
+  <block_node SID="525" hasTree="0">
+    <block_name>4D_PwStateSpace</block_name>
+    <block_class>T-MATS: 4D Piecewise State Space Model Library Block</block_class>
+    <block_desc>This block represents a 4D state-space model.
+ 
+This model will be of the form:
+(xdot - xdot_0) = A*(x - x0) + B*(u - u0)
+(y - y0) = C*(x - x0) + D*(u - u0)
+ 
+Where x is the system state, u is the system input (assumed to be 1x1), and y is the plant output.
+0 values are the trim point values.
+
+The 4 dimensions are represented as up to 3 &quot;Environmental&quot; parameters and 1 control parameter that may or may not be u. Note, if NumEnv_M is set to a value less than 3, tables must still be defined as 4D and unused Env values will be set to 0.</block_desc>
+    <block_path>$bdroot/4D_PwStateSpace</block_path>
+    <block_open>$bdroot/4D_PwStateSpace</block_open>
+    <block_isNotLeafBlk>0</block_isNotLeafBlk>
+    <block_position>625  187  745  263</block_position>
+    <block_icon>4D@5F@PwStateSpace.svg</block_icon>
+    <keywords/>
+    <port_domains>signal.in_signal:5,signal.out_signal:2</port_domains>
+    <block_type>SubSystem</block_type>
+    <block_reference>Lib_Solve_PWStateSpace_TMATS/4D_PwStateSpace</block_reference>
+  </block_node>
+  <block_node SID="515" hasTree="0">
+    <block_name>Parameter_Step</block_name>
+    <block_class>T-MATS: Parameter Step Library Block</block_class>
+    <block_desc>The parameter step block will step another block&apos;s input parameter from an initial condition to a final postion.</block_desc>
+    <block_path>$bdroot/Parameter_Step</block_path>
+    <block_open>$bdroot/Parameter_Step</block_open>
+    <block_isNotLeafBlk>0</block_isNotLeafBlk>
+    <block_position>35  317  180  403</block_position>
+    <block_icon>Parameter@5F@Step.svg</block_icon>
+    <keywords/>
+    <port_domains>NA.NA:0</port_domains>
+    <block_type>SubSystem</block_type>
+    <block_reference>Lib_Solve_ParameterStep_TMATS/Parameter_Step</block_reference>
+  </block_node>
+  <block_node SID="514" hasTree="0">
+    <block_name>Parameter_Ramp</block_name>
+    <block_class>T-MATS: Parameter Ramp Library Block</block_class>
+    <block_desc>Parameter Ramp:
+
+The parameter ramp block will ramp another block&apos;s input parameter from an initial condition to a final postion.</block_desc>
+    <block_path>$bdroot/Parameter_Ramp</block_path>
+    <block_open>$bdroot/Parameter_Ramp</block_open>
+    <block_isNotLeafBlk>0</block_isNotLeafBlk>
+    <block_position>255  312  400  388</block_position>
+    <block_icon>Parameter@5F@Ramp.svg</block_icon>
+    <keywords/>
+    <port_domains>NA.NA:0</port_domains>
+    <block_type>SubSystem</block_type>
+    <block_reference>Lib_Solve_ParameterRamp_TMATS/Parameter_Ramp</block_reference>
+  </block_node>
+  <block_node SID="518" hasTree="0">
+    <block_name>Normalized Error</block_name>
+    <block_class>T-MATS: Normalized Error Library Block</block_class>
+    <block_desc>This block offers an easy way to add a normalized error to be used with the solvers.
+
+(X1 - X2)/X1 = NEr</block_desc>
+    <block_path>$bdroot/Normalized Error</block_path>
+    <block_open>$bdroot/Normalized Error</block_open>
+    <block_isNotLeafBlk>0</block_isNotLeafBlk>
+    <block_position>465  332  555  368</block_position>
+    <block_icon>Normalized@20@Error.svg</block_icon>
+    <keywords/>
+    <port_domains>signal.in_signal:2,signal.out_signal:1</port_domains>
+    <block_type>SubSystem</block_type>
+    <block_reference>Lib_Solve_NormErr_TMATS/Normalized Error</block_reference>
+  </block_node>
+  <block_node SID="527" hasTree="0">
+    <block_name>SS NR Solver w Initial Jacobian Calc &amp; Broyden Update</block_name>
+    <block_class>T-MATS: SS NR Solver w Initial Jacobian Calc and Broyden Update Library Block</block_class>
+    <block_desc>The Steady State Newton Raphson Solver with Initial Jacobian Calculator and Broyden Update Method block will 
+supply the inputs to iteratively drive the outputs of a system to zero.
+ 
+This will be performed in three steps. 
+1) Jabobian calculator sends Perturbations to the plant then calculates the initial plant
+Jacboian based on the system response.
+2) The Newton Raphson Solver will use the inverse of the Jacobian to iteratively step the
+system toward solution.
+3) The inverse of the Jacobian will be updated at each iteration via the Sherman-Morrison (Good) Broyden Update Method.
+3) Once the solution has satisfied the conditions the Newton Raphson Solver is shut off.
+ 
+Simulation run time length should be selected as to give the Newton Raphson Solver adequate time to develop a solution.
+</block_desc>
+    <block_path>$bdroot/SS NR Solver w Initial Jacobian Calc &amp; Broyden Update</block_path>
+    <block_open>$bdroot/SS NR Solver w Initial Jacobian Calc &amp; Broyden Update</block_open>
+    <block_isNotLeafBlk>0</block_isNotLeafBlk>
+    <block_position>635  313  765  382</block_position>
+    <block_icon>SS@20@NR@20@Solver@20@w@20@Initial@20@Jacobian@20@Calc@20@@26@@20@Broyden@20@Update.svg</block_icon>
+    <keywords/>
+    <port_domains>signal.in_signal:2,signal.out_signal:2</port_domains>
+    <block_type>SubSystem</block_type>
+    <block_reference>Lib_Solve_SSNRSolverBroydUpdate_TMATS/SS NR Solver w Initial Jacobian Calc &amp; Broyden Update</block_reference>
+  </block_node>
+  <block_node SID="516" hasTree="0">
+    <block_name>DataOutput</block_name>
+    <block_class>T-MATS: Data Output Library Block</block_class>
+    <block_desc>This Block saves the input variable to a file at each time step. Note, this will overwrite the previous value.</block_desc>
+    <block_path>$bdroot/DataOutput</block_path>
+    <block_open>$bdroot/DataOutput</block_open>
+    <block_isNotLeafBlk>0</block_isNotLeafBlk>
+    <block_position>315  428  350  462</block_position>
+    <block_icon>DataOutput.svg</block_icon>
+    <keywords/>
+    <port_domains>signal.in_signal:1</port_domains>
+    <block_type>SubSystem</block_type>
+    <block_reference>Lib_Solve_DataOut_TMATS/DataOutput</block_reference>
+  </block_node>
+  <block_node SID="528" hasTree="0">
+    <block_name>Iterative NR Solver w Initial Jacobian Calc &amp; Broyden Update</block_name>
+    <block_class>T-MATS: Iterative NR Solver w Initial Jacobian Calc and Broyden Update Library Block</block_class>
+    <block_desc>The Iterative Newton Raphson Solver with Initial Jacobian Calculator and Broyden Update block will 
+supply the inputs to iteratively drive the outputs of a system to zero.
+ 
+This will be performed in three steps. 
+1) Jabobian calculator sends Perturbations to the plant then calculates the initial plant
+Jacboian based on the system response.
+2) The Newton Raphson Solver will use the inverse of the Jacobian to iteratively step the
+system toward solution.
+3) The inverse of the Jacobian will be updated at each iteration via the Sherman-Morrison (Good) Broyden Update Method.
+3) Once the solution has satisfied the conditions the Newton Raphson Solver is shut off.
+ 
+Simulation run time length should be selected as to give the Newton Raphson Solver adequate time to develop a solution.
+</block_desc>
+    <block_path>$bdroot/Iterative NR Solver w Initial Jacobian Calc &amp; Broyden Update</block_path>
+    <block_open>$bdroot/Iterative NR Solver w Initial Jacobian Calc &amp; Broyden Update</block_open>
+    <block_isNotLeafBlk>0</block_isNotLeafBlk>
+    <block_position>635  432  765  498</block_position>
+    <block_icon>Iterative@20@NR@20@Solver@20@w@20@Initial@20@Jacobian@20@Calc@20@@26@@20@Broyden@20@Update.svg</block_icon>
+    <keywords/>
+    <port_domains>signal.in_signal:2,signal.out_signal:3</port_domains>
+    <block_type>SubSystem</block_type>
+    <block_reference>Lib_Solve_IterNRSolverBroydUpdate_TMATS/Iterative NR Solver w Initial Jacobian Calc &amp; Broyden Update</block_reference>
+  </block_node>
+</library>
+
+__MWOPC_PART_BEGIN__ /simulink/libraryBrowser/SS@20@NR@20@Solver@20@w@20@Initial@20@Jacobian@20@Calc@20@@26@@20@Broyden@20@Update.svg
+<?xml version="1.0" encoding="UTF-8"?><svg width="38.1mm" height="19.3146mm" viewBox="0 0 144 73" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel"><g clip-path="none" fill="none" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,0,0)"><path d="M0,0 L144,0 L144,73 L0,73 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip3"><path d="M7,54 L-137,54 L-137,-19 L7,-19 L7,54 z"/></clipPath></defs><g clip-path="url(#clip3)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,54)"><path d="M-0.5,-5.5 L4.5,-0.5 L-0.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip6"><path d="M7,19 L-137,19 L-137,-54 L7,-54 L7,19 z"/></clipPath></defs><g clip-path="url(#clip6)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,19)"><path d="M-0.5,-5.5 L4.5,-0.5 L-0.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip9"><path d="M-137,-54 L7,-54 L7,19 L-137,19 L-137,-54 z"/></clipPath></defs><g clip-path="url(#clip9)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,137,54)"><path d="M5.5,-4.5 L0.5,0.5 L5.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip12"><path d="M-137,-19 L7,-19 L7,54 L-137,54 L-137,-19 z"/></clipPath></defs><g clip-path="url(#clip12)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,137,19)"><path d="M5.5,-4.5 L0.5,0.5 L5.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip15"><path d="M-7,-2 L137,-2 L137,71 L-7,71 L-7,-2 z"/></clipPath></defs><g clip-path="url(#clip15)" fill="#ffffff" fill-opacity="1" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,7,2)"><path d="M0,0 L130,0 L130,69 L0,69 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip19"><path d="M-129,-19 L5,-19 L5,54 L-129,54 L-129,-19 z"/></clipPath></defs><g clip-path="url(#clip19)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,134,19)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="27.9844" x="-27.9844" xml:space="preserve" y="3.5">Enable</text></g><defs><clipPath id="clip20"><path d="M-129,-54 L5,-54 L5,19 L-129,19 L-129,-54 z"/></clipPath></defs><g clip-path="url(#clip20)" fill="none" opacity="1" stroke="#00d100" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,134,54)"><text fill="#00d100" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="12.9688" x="-12.9688" xml:space="preserve" y="3.5">f(x)</text></g><defs><clipPath id="clip21"><path d="M-5,-19 L129,-19 L129,54 L-5,54 L-5,-19 z"/></clipPath></defs><g clip-path="url(#clip21)" fill="none" opacity="1" stroke="#6b963d" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,19)"><text fill="#6b963d" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="6" x="0" xml:space="preserve" y="3.5">X</text></g><defs><clipPath id="clip22"><path d="M-5,-54 L129,-54 L129,19 L-5,19 L-5,-54 z"/></clipPath></defs><g clip-path="url(#clip22)" fill="none" opacity="1" stroke="#000000" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,54)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="29.9844" x="0" xml:space="preserve" y="3.5">S_Data</text></g><defs><clipPath id="clip27"><path d="M-7.5,-2.5 L136.5,-2.5 L136.5,70.5 L-7.5,70.5 L-7.5,-2.5 z"/></clipPath></defs><g clip-path="url(#clip27)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,7.5,2.5)"><path d="M0,0 L130,0 L130,69 L0,69 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g></g><!--generated on windows @ 2024-12-06 11:31:58 Eastern Standard Time--></svg>
+
+__MWOPC_PART_BEGIN__ /simulink/libraryBrowser/SS@20@NR@20@Solver@20@w@20@JacobianCalc.svg
+<?xml version="1.0" encoding="UTF-8"?><svg width="40.7458mm" height="17.9917mm" viewBox="0 0 154 68" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel"><g clip-path="none" fill="none" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,0,0)"><path d="M0,0 L154,0 L154,68 L0,68 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip3"><path d="M-147,-49 L7,-49 L7,19 L-147,19 L-147,-49 z"/></clipPath></defs><g clip-path="url(#clip3)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,147,49)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip6"><path d="M-147,-19 L7,-19 L7,49 L-147,49 L-147,-19 z"/></clipPath></defs><g clip-path="url(#clip6)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,147,19)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip9"><path d="M7,49 L-147,49 L-147,-19 L7,-19 L7,49 z"/></clipPath></defs><g clip-path="url(#clip9)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,49)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip12"><path d="M7,19 L-147,19 L-147,-49 L7,-49 L7,19 z"/></clipPath></defs><g clip-path="url(#clip12)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,19)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip15"><path d="M-7,-2 L147,-2 L147,66 L-7,66 L-7,-2 z"/></clipPath></defs><g clip-path="url(#clip15)" fill="#ffffff" fill-opacity="1" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,7,2)"><path d="M0,0 L140,0 L140,64 L0,64 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip19"><path d="M-5,-19 L139,-19 L139,49 L-5,49 L-5,-19 z"/></clipPath></defs><g clip-path="url(#clip19)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,19)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="27.9844" x="0" xml:space="preserve" y="3.5">Enable</text></g><defs><clipPath id="clip20"><path d="M-5,-49 L139,-49 L139,19 L-5,19 L-5,-49 z"/></clipPath></defs><g clip-path="url(#clip20)" fill="none" opacity="1" stroke="#00d100" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,49)"><text fill="#00d100" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="12.9688" x="0" xml:space="preserve" y="3.5">f(x)</text></g><defs><clipPath id="clip21"><path d="M-139,-19 L5,-19 L5,49 L-139,49 L-139,-19 z"/></clipPath></defs><g clip-path="url(#clip21)" fill="none" opacity="1" stroke="#6b963d" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,144,19)"><text fill="#6b963d" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="6" x="-6" xml:space="preserve" y="3.5">X</text></g><defs><clipPath id="clip22"><path d="M-139,-49 L5,-49 L5,19 L-139,19 L-139,-49 z"/></clipPath></defs><g clip-path="url(#clip22)" fill="none" opacity="1" stroke="#000000" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,144,49)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="29.9844" x="-29.9844" xml:space="preserve" y="3.5">S_Data</text></g><defs><clipPath id="clip27"><path d="M-7.5,-2.5 L146.5,-2.5 L146.5,65.5 L-7.5,65.5 L-7.5,-2.5 z"/></clipPath></defs><g clip-path="url(#clip27)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,7.5,2.5)"><path d="M0,0 L140,0 L140,64 L0,64 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g></g><!--generated on windows @ 2024-12-06 11:31:58 Eastern Standard Time--></svg>
+
+__MWOPC_PART_BEGIN__ /simulink/libraryBrowser/Vector@20@Condition.svg
+<?xml version="1.0" encoding="UTF-8"?><svg width="31.4854mm" height="10.0542mm" viewBox="0 0 119 38" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel"><g clip-path="none" fill="none" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,0,0)"><path d="M0,0 L119,0 L119,38 L0,38 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip3"><path d="M7,19 L-112,19 L-112,-19 L7,-19 L7,19 z"/></clipPath></defs><g clip-path="url(#clip3)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(-1,0,0,-1,7,19)"><path d="M4.5,-5.5 L-0.5,-0.5 L4.5,4.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip6"><path d="M-112,-19 L7,-19 L7,19 L-112,19 L-112,-19 z"/></clipPath></defs><g clip-path="url(#clip6)" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="2" transform="matrix(1,0,0,1,112,19)"><path d="M0.5,-4.5 L5.5,0.5 L0.5,5.5" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip9"><path d="M-7,-2 L112,-2 L112,36 L-7,36 L-7,-2 z"/></clipPath></defs><g clip-path="url(#clip9)" fill="#ffffff" fill-opacity="1" opacity="1" stroke="none" stroke-opacity="0" transform="matrix(1,0,0,1,7,2)"><path d="M0,0 L105,0 L105,34 L0,34 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g><defs><clipPath id="clip13"><path d="M-5,-19 L104,-19 L104,19 L-5,19 L-5,-19 z"/></clipPath></defs><g clip-path="url(#clip13)" fill="none" opacity="1" stroke="#00d100" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,10,19)"><text fill="#00d100" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="12.9688" x="0" xml:space="preserve" y="3.5">f(x)</text></g><defs><clipPath id="clip14"><path d="M-104,-19 L5,-19 L5,19 L-104,19 L-104,-19 z"/></clipPath></defs><g clip-path="url(#clip14)" fill="none" opacity="1" stroke="#000000" stroke-linecap="square" stroke-linejoin="bevel" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,109,19)"><text fill="#000000" fill-opacity="1" font-family="Arial" font-size="9" font-style="normal" font-weight="400" stroke="none" textLength="37.9531" x="-37.9531" xml:space="preserve" y="3.5">Condition</text></g><defs><clipPath id="clip19"><path d="M-7.5,-2.5 L111.5,-2.5 L111.5,35.5 L-7.5,35.5 L-7.5,-2.5 z"/></clipPath></defs><g clip-path="url(#clip19)" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="2" stroke-opacity="1" stroke-width="1" transform="matrix(1,0,0,1,7.5,2.5)"><path d="M0,0 L105,0 L105,34 L0,34 L0,0 z" fill-rule="evenodd" vector-effect="none"/></g></g><!--generated on windows @ 2024-12-06 11:31:58 Eastern Standard Time--></svg>
+
+__MWOPC_PART_BEGIN__ /simulink/modelDictionary.xml
+<?xml version="1.0" encoding="utf-8"?>
+<MF0 version="1.1" defaultPackage="slid" packageUris="http://schema.mathworks.com/mf0/slid/R2020b_20191110">
+  <System type="System" uuid="866abefc-eaac-438b-8d0f-d29a526e1b01">
+    <Interface type="Interface" uuid="5b60e30a-01d0-402b-a742-92c90221743e"/>
+  </System>
+</MF0>
+
+__MWOPC_PART_BEGIN__ /simulink/systems/system_root.xml
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-1623, 163, -264, 1114]</P>
+  <P Name="ZoomFactor">125</P>
+  <P Name="ReportName">simulink-default.rpt</P>
+  <P Name="SIDHighWatermark">528</P>
+  <Block BlockType="Reference" Name="4D_PwStateSpace" SID="525">
+    <P Name="Ports">[5, 2]</P>
+    <P Name="Position">[625, 187, 745, 263]</P>
+    <P Name="ZOrder">2208</P>
+    <P Name="LibraryVersion">1.497</P>
+    <P Name="SourceBlock">Lib_Solve_PWStateSpace_TMATS/4D_PwStateSpace</P>
+    <P Name="SourceType">T-MATS: 4D Piecewise State Space Model Library Block</P>
+    <InstanceData>
+      <P Name="RTWMemSecFuncInitTerm">Inherit from model</P>
+      <P Name="RTWMemSecFuncExecute">Inherit from model</P>
+      <P Name="RTWMemSecDataConstants">Inherit from model</P>
+      <P Name="RTWMemSecDataInternal">Inherit from model</P>
+      <P Name="RTWMemSecDataParameters">Inherit from model</P>
+      <P Name="ContentPreviewEnabled">off</P>
+      <P Name="UisCntrl_M">off</P>
+      <P Name="NumEnv_M">three</P>
+      <P Name="XIC_M">[1 1]</P>
+      <P Name="BN_M">double(gcb)</P>
+      <P Name="ManDefLM_M">off</P>
+      <P Name="Env1_M">[0 0]</P>
+      <P Name="Env2_M">[0 0]</P>
+      <P Name="Env3_M">[0 0]</P>
+      <P Name="CSVec_M">[0 0]</P>
+      <P Name="Xsz_M">2</P>
+      <P Name="Ysz_M">3</P>
+      <P Name="Atbl_M">Atbl</P>
+      <P Name="Btbl_M">Btbl</P>
+      <P Name="Ctbl_M">Ctbl</P>
+      <P Name="Dtbl_M">Dtbl</P>
+      <P Name="Xo_M">Xo</P>
+      <P Name="Uo_M">Uo</P>
+      <P Name="Yo_M">Yo</P>
+      <P Name="SortEn_M">on</P>
+      <P Name="PLM_M">LinSys</P>
+    </InstanceData>
+  </Block>
+  <Block BlockType="Reference" Name="DataOutput" SID="516">
+    <P Name="Ports">[1]</P>
+    <P Name="Position">[315, 428, 350, 462]</P>
+    <P Name="ZOrder">370</P>
+    <P Name="LibraryVersion">1.377</P>
+    <P Name="SourceBlock">Lib_Solve_DataOut_TMATS/DataOutput</P>
+    <P Name="SourceType">T-MATS: Data Output Library Block</P>
+    <InstanceData>
+      <P Name="RTWMemSecFuncInitTerm">Inherit from model</P>
+      <P Name="RTWMemSecFuncExecute">Inherit from model</P>
+      <P Name="RTWMemSecDataConstants">Inherit from model</P>
+      <P Name="RTWMemSecDataInternal">Inherit from model</P>
+      <P Name="RTWMemSecDataParameters">Inherit from model</P>
+      <P Name="ContentPreviewEnabled">off</P>
+      <P Name="FVar_M">0</P>
+    </InstanceData>
+  </Block>
+  <Block BlockType="Reference" Name="Iterative NR Solver w Initial Jacobian Calc &amp; Broyden Update" SID="528">
+    <P Name="Ports">[2, 3]</P>
+    <P Name="Position">[635, 432, 765, 498]</P>
+    <P Name="ZOrder">2210</P>
+    <P Name="LibraryVersion">9.0</P>
+    <P Name="SourceBlock">Lib_Solve_IterNRSolverBroydUpdate_TMATS/Iterative NR Solver w Initial Jacobian Calc &amp; Broyden Update</P>
+    <P Name="SourceType">T-MATS: Iterative NR Solver w Initial Jacobian Calc and Broyden Update Library Block</P>
+    <InstanceData>
+      <P Name="RTWMemSecFuncInitTerm">Inherit from model</P>
+      <P Name="RTWMemSecFuncExecute">Inherit from model</P>
+      <P Name="RTWMemSecDataConstants">Inherit from model</P>
+      <P Name="RTWMemSecDataInternal">Inherit from model</P>
+      <P Name="RTWMemSecDataParameters">Inherit from model</P>
+      <P Name="ContentPreviewEnabled">off</P>
+      <P Name="SJac_Per_M">[0.01 0.01 0.01;-0.01 -0.01 -0.01]</P>
+      <P Name="SNR_IC_M">[1; 2; 3]</P>
+      <P Name="SNR_DX_M">100</P>
+      <P Name="SNR_Mx_M">100000</P>
+      <P Name="SNR_Mn_M">-100000</P>
+      <P Name="Cond_Limits_M">0.0001</P>
+    </InstanceData>
+  </Block>
+  <Block BlockType="Reference" Name="Iterative NR Solver w JacobianCalc" SID="519">
+    <P Name="Ports">[3, 3]</P>
+    <P Name="Position">[260, 69, 400, 131]</P>
+    <P Name="ZOrder">381</P>
+    <P Name="LibraryVersion">9.0</P>
+    <P Name="SourceBlock">Lib_Solve_IterNRSolverJC_TMATS/Iterative NR Solver w JacobianCalc</P>
+    <P Name="SourceType">T-MATS: Iterative NR Solver w Jacobian Calc Library Block</P>
+    <InstanceData>
+      <P Name="RTWMemSecFuncInitTerm">Inherit from model</P>
+      <P Name="RTWMemSecFuncExecute">Inherit from model</P>
+      <P Name="RTWMemSecDataConstants">Inherit from model</P>
+      <P Name="RTWMemSecDataInternal">Inherit from model</P>
+      <P Name="RTWMemSecDataParameters">Inherit from model</P>
+      <P Name="ContentPreviewEnabled">off</P>
+      <P Name="SJac_Per_M">[0.01 0.01 0.01;-0.01 -0.01 -0.01]</P>
+      <P Name="SNR_IC_M">[1; 2; 3]</P>
+      <P Name="SNR_DX_M">5</P>
+      <P Name="SNR_Mx_M">100000</P>
+      <P Name="SNR_Mn_M">0.0001</P>
+      <P Name="SJacobianAttempts_M">20</P>
+      <P Name="Cond_Limits_M">0.0001</P>
+    </InstanceData>
+  </Block>
+  <Block BlockType="Reference" Name="Linearize" SID="517">
+    <P Name="Ports">[6, 7]</P>
+    <P Name="Position">[450, 67, 575, 263]</P>
+    <P Name="ZOrder">379</P>
+    <P Name="LibraryVersion">1.378</P>
+    <P Name="SourceBlock">Lib_Solve_Linearize_TMATS/Linearize</P>
+    <P Name="SourceType">T-MATS: Linearize Library Block</P>
+    <InstanceData>
+      <P Name="RTWMemSecFuncInitTerm">Inherit from model</P>
+      <P Name="RTWMemSecFuncExecute">Inherit from model</P>
+      <P Name="RTWMemSecDataConstants">Inherit from model</P>
+      <P Name="RTWMemSecDataInternal">Inherit from model</P>
+      <P Name="RTWMemSecDataParameters">Inherit from model</P>
+      <P Name="ContentPreviewEnabled">off</P>
+      <P Name="N_XPer_M">[0.001 0.001]</P>
+      <P Name="N_UPer_M">[0.001 0.001 0.001]</P>
+      <P Name="N_Y_M">4</P>
+    </InstanceData>
+  </Block>
+  <Block BlockType="Reference" Name="Model Source" SID="508">
+    <P Name="Ports">[0, 1]</P>
+    <P Name="Position">[45, 97, 135, 133]</P>
+    <P Name="ZOrder">342</P>
+    <P Name="LibraryVersion">1.353</P>
+    <P Name="SourceBlock">Lib_Solve_ModelSource_TMATS/Model Source</P>
+    <P Name="SourceType">T-MATS: Model Source Library Block</P>
+    <InstanceData>
+      <P Name="RTWMemSecFuncInitTerm">Inherit from model</P>
+      <P Name="RTWMemSecFuncExecute">Inherit from model</P>
+      <P Name="RTWMemSecDataConstants">Inherit from model</P>
+      <P Name="RTWMemSecDataInternal">Inherit from model</P>
+      <P Name="RTWMemSecDataParameters">Inherit from model</P>
+      <P Name="ContentPreviewEnabled">off</P>
+      <P Name="T_vec_M">[0 5 10 100]</P>
+      <P Name="input_array_M">[10000 10000 12000 12000]</P>
+    </InstanceData>
+  </Block>
+  <Block BlockType="Reference" Name="Normalized Error" SID="518">
+    <P Name="Ports">[2, 1]</P>
+    <P Name="Position">[465, 332, 555, 368]</P>
+    <P Name="ZOrder">380</P>
+    <P Name="LibraryVersion">1.357</P>
+    <P Name="SourceBlock">Lib_Solve_NormErr_TMATS/Normalized Error</P>
+    <P Name="SourceType">T-MATS: Normalized Error Library Block</P>
+    <InstanceData>
+      <P Name="RTWMemSecFuncInitTerm">Inherit from model</P>
+      <P Name="RTWMemSecFuncExecute">Inherit from model</P>
+      <P Name="RTWMemSecDataConstants">Inherit from model</P>
+      <P Name="RTWMemSecDataInternal">Inherit from model</P>
+      <P Name="RTWMemSecDataParameters">Inherit from model</P>
+      <P Name="ContentPreviewEnabled">off</P>
+    </InstanceData>
+  </Block>
+  <Block BlockType="Reference" Name="OuterLoop integrator" SID="510">
+    <P Name="Ports">[1, 1]</P>
+    <P Name="Position">[45, 237, 145, 273]</P>
+    <P Name="ZOrder">344</P>
+    <P Name="LibraryVersion">1.352</P>
+    <P Name="SourceBlock">Lib_Solve_OuterLoopIntegrator_TMATS/OuterLoop integrator</P>
+    <P Name="SourceType">T-MATS: OuterLoop Integrator Library Block</P>
+    <InstanceData>
+      <P Name="RTWMemSecFuncInitTerm">Inherit from model</P>
+      <P Name="RTWMemSecFuncExecute">Inherit from model</P>
+      <P Name="RTWMemSecDataConstants">Inherit from model</P>
+      <P Name="RTWMemSecDataInternal">Inherit from model</P>
+      <P Name="RTWMemSecDataParameters">Inherit from model</P>
+      <P Name="ContentPreviewEnabled">off</P>
+      <P Name="OL_IC_M">10000</P>
+    </InstanceData>
+  </Block>
+  <Block BlockType="Reference" Name="Parameter_Ramp" SID="514">
+    <P Name="Ports">[]</P>
+    <P Name="Position">[255, 312, 400, 388]</P>
+    <P Name="ZOrder">368</P>
+    <P Name="LibraryVersion">1.362</P>
+    <P Name="SourceBlock">Lib_Solve_ParameterRamp_TMATS/Parameter_Ramp</P>
+    <P Name="SourceType">T-MATS: Parameter Ramp Library Block</P>
+    <InstanceData>
+      <P Name="RTWMemSecFuncInitTerm">Inherit from model</P>
+      <P Name="RTWMemSecFuncExecute">Inherit from model</P>
+      <P Name="RTWMemSecDataConstants">Inherit from model</P>
+      <P Name="RTWMemSecDataInternal">Inherit from model</P>
+      <P Name="RTWMemSecDataParameters">Inherit from model</P>
+      <P Name="ContentPreviewEnabled">off</P>
+      <P Name="BN_M">&apos;Testing_Output/Subsystem1&apos;</P>
+      <P Name="PN_M">&apos;Test_M&apos;</P>
+      <P Name="IV_M">&apos;[1]&apos;</P>
+      <P Name="FV_M">&apos;[5]&apos;</P>
+      <P Name="ST_M">3</P>
+      <P Name="ET_M">6</P>
+    </InstanceData>
+  </Block>
+  <Block BlockType="Reference" Name="Parameter_Step" SID="515">
+    <P Name="Ports">[]</P>
+    <P Name="Position">[35, 317, 180, 403]</P>
+    <P Name="ZOrder">369</P>
+    <P Name="LibraryVersion">1.366</P>
+    <P Name="SourceBlock">Lib_Solve_ParameterStep_TMATS/Parameter_Step</P>
+    <P Name="SourceType">T-MATS: Parameter Step Library Block</P>
+    <InstanceData>
+      <P Name="RTWMemSecFuncInitTerm">Inherit from model</P>
+      <P Name="RTWMemSecFuncExecute">Inherit from model</P>
+      <P Name="RTWMemSecDataConstants">Inherit from model</P>
+      <P Name="RTWMemSecDataInternal">Inherit from model</P>
+      <P Name="RTWMemSecDataParameters">Inherit from model</P>
+      <P Name="ContentPreviewEnabled">off</P>
+      <P Name="BN_M">&apos;Testing_Output/Subsystem1&apos;</P>
+      <P Name="PN_M">&apos;Test_M&apos;</P>
+      <P Name="IV_M">&apos;[3 4; 5 6]&apos;</P>
+      <P Name="FV_M">&apos;[5 6; 3 4]&apos;</P>
+      <P Name="ST_M">3</P>
+    </InstanceData>
+  </Block>
+  <Block BlockType="Reference" Name="PwLinModGen" SID="521">
+    <P Name="Ports">[4, 5]</P>
+    <P Name="Position">[625, 91, 745, 159]</P>
+    <P Name="ZOrder">2204</P>
+    <P Name="LibraryVersion">1.455</P>
+    <P Name="SourceBlock">Lib_Solve_PWLinearize_TMATS/PwLinModGen</P>
+    <P Name="SourceType">T-MATS: Piecewise Linear Model Generator Library Block</P>
+    <InstanceData>
+      <P Name="RTWMemSecFuncInitTerm">Inherit from model</P>
+      <P Name="RTWMemSecFuncExecute">Inherit from model</P>
+      <P Name="RTWMemSecDataConstants">Inherit from model</P>
+      <P Name="RTWMemSecDataInternal">Inherit from model</P>
+      <P Name="RTWMemSecDataParameters">Inherit from model</P>
+      <P Name="ContentPreviewEnabled">off</P>
+      <P Name="Env_M">[0 100 1000;0 0.05 0.1]</P>
+      <P Name="DCntrlEn_M">off</P>
+      <P Name="TVec_M">0: 50: 100</P>
+      <P Name="XIC_M">[7000; 10000]</P>
+      <P Name="UIC_M">10000</P>
+      <P Name="Ts_M">0.015</P>
+      <P Name="Kp_M">0.001</P>
+      <P Name="Ki_M">0.001</P>
+      <P Name="ER_M">[100; 0.001]</P>
+      <P Name="UR_M">2</P>
+      <P Name="dXC_M">0.001</P>
+      <P Name="Fail_M">2</P>
+      <P Name="XPer_M">[0.01;-0.01]</P>
+      <P Name="UPer_M">[0.01;-0.01]</P>
+      <P Name="NY_M">8</P>
+      <P Name="BN_M">double(gcb)</P>
+    </InstanceData>
+  </Block>
+  <Block BlockType="Reference" Name="SS NR Solver w Initial Jacobian Calc &amp; Broyden Update" SID="527">
+    <P Name="Ports">[2, 2]</P>
+    <P Name="Position">[635, 313, 765, 382]</P>
+    <P Name="ZOrder">2209</P>
+    <P Name="BlockMirror">on</P>
+    <P Name="LibraryVersion">9.0</P>
+    <P Name="SourceBlock">Lib_Solve_SSNRSolverBroydUpdate_TMATS/SS NR Solver w Initial Jacobian Calc &amp; Broyden Update</P>
+    <P Name="SourceType">T-MATS: SS NR Solver w Initial Jacobian Calc and Broyden Update Library Block</P>
+    <InstanceData>
+      <P Name="RTWMemSecFuncInitTerm">Inherit from model</P>
+      <P Name="RTWMemSecFuncExecute">Inherit from model</P>
+      <P Name="RTWMemSecDataConstants">Inherit from model</P>
+      <P Name="RTWMemSecDataInternal">Inherit from model</P>
+      <P Name="RTWMemSecDataParameters">Inherit from model</P>
+      <P Name="ContentPreviewEnabled">off</P>
+      <P Name="SJac_Per_M">[0.01 0.01 0.01;-0.01 -0.01,-0.01]</P>
+      <P Name="SNR_IC_M">[1; 2; 3]</P>
+      <P Name="SNR_DX_M">100</P>
+      <P Name="SNR_Mx_M">1000000</P>
+      <P Name="SNR_Mn_M">-1000000</P>
+      <P Name="Cond_Limits_M">0.0001</P>
+    </InstanceData>
+  </Block>
+  <Block BlockType="Reference" Name="SS NR Solver w JacobianCalc" SID="520">
+    <P Name="Ports">[2, 2]</P>
+    <P Name="Position">[260, 178, 400, 242]</P>
+    <P Name="ZOrder">382</P>
+    <P Name="LibraryVersion">9.0</P>
+    <P Name="SourceBlock">Lib_Solve_SSNRSolverJC_TMATS/SS NR Solver w JacobianCalc</P>
+    <P Name="SourceType">T-MATS: SS NR Solver w Jacobian Calc Library Block</P>
+    <InstanceData>
+      <P Name="RTWMemSecFuncInitTerm">Inherit from model</P>
+      <P Name="RTWMemSecFuncExecute">Inherit from model</P>
+      <P Name="RTWMemSecDataConstants">Inherit from model</P>
+      <P Name="RTWMemSecDataInternal">Inherit from model</P>
+      <P Name="RTWMemSecDataParameters">Inherit from model</P>
+      <P Name="ContentPreviewEnabled">off</P>
+      <P Name="SJac_Per_M">[0.01 0.01 0.01;-0.01 -0.01,-0.01]</P>
+      <P Name="SNR_IC_M">[1; 2; 3]</P>
+      <P Name="SNR_DX_M">5</P>
+      <P Name="SNR_Mx_M">100000</P>
+      <P Name="SNR_Mn_M">0.00001</P>
+      <P Name="SJacobianAttempts_M">20</P>
+      <P Name="Cond_Limits_M">0.0001</P>
+    </InstanceData>
+  </Block>
+  <Block BlockType="Reference" Name="Vector Condition" SID="509">
+    <P Name="Ports">[1, 1]</P>
+    <P Name="Position">[45, 168, 150, 202]</P>
+    <P Name="ZOrder">343</P>
+    <P Name="LibraryVersion">1.352</P>
+    <P Name="SourceBlock">Lib_Solve_VectorCondition_TMATS/Vector Condition</P>
+    <P Name="SourceType">T-MATS: Vector Condition Library Block</P>
+    <InstanceData>
+      <P Name="RTWMemSecFuncInitTerm">Inherit from model</P>
+      <P Name="RTWMemSecFuncExecute">Inherit from model</P>
+      <P Name="RTWMemSecDataConstants">Inherit from model</P>
+      <P Name="RTWMemSecDataInternal">Inherit from model</P>
+      <P Name="RTWMemSecDataParameters">Inherit from model</P>
+      <P Name="ContentPreviewEnabled">off</P>
+      <P Name="Cond_Limits_M">0.01</P>
+    </InstanceData>
+  </Block>
+</System>
+
+__MWOPC_PART_BEGIN__ /simulink/windowsInfo.xml
+<?xml version="1.0" encoding="utf-8"?>
+<WindowsInfo>
+  <Object PropName="BdWindowsInfo" ObjectID="1" ClassName="Simulink.BDWindowsInfo">
+    <Object PropName="WindowsInfo" ObjectID="2" ClassName="Simulink.WindowInfo">
+      <P Name="IsActive" Class="logical">1</P>
+      <P Name="Location" Class="double">[-1623.0, 163.0, 1359.0, 951.0]</P>
+      <Object PropName="ModelBrowserInfo" ObjectID="3" ClassName="Simulink.ModelBrowserInfo">
+        <P Name="Visible" Class="logical">1</P>
+        <P Name="DockPosition" Class="char">Left</P>
+        <P Name="Width" Class="int32">50</P>
+        <P Name="Height" Class="int32">50</P>
+        <P Name="Filter" Class="int32">59</P>
+        <P Name="Minimized" Class="char">Off</P>
+      </Object>
+      <Object PropName="ExplorerBarInfo" ObjectID="4" ClassName="Simulink.ExplorerBarInfo">
+        <P Name="Visible" Class="logical">1</P>
+      </Object>
+      <Object PropName="EditorsInfo" ObjectID="5" ClassName="Simulink.EditorInfo">
+        <P Name="IsActive" Class="logical">1</P>
+        <P Name="IsTabbed" Class="logical">1</P>
+        <P Name="ViewObjType" Class="char">SimulinkTopLevel</P>
+        <P Name="LoadSaveID" Class="char">0</P>
+        <P Name="Extents" Class="double">[1455.0, 900.0]</P>
+        <P Name="ZoomFactor" Class="double">1.25</P>
+        <P Name="Offset" Class="double">[0.0, 0.0]</P>
+        <P Name="SceneRectInView" Class="double">[0.0, 0.0, 931.2, 576.0]</P>
+      </Object>
+      <Array PropName="DockComponentsInfo" Type="Simulink.DockComponentInfo" Dimension="1*2">
+        <Object ObjectID="6">
+          <P Name="Type" Class="char">Simulink:Editor:ReferencedFiles</P>
+          <P Name="ID" Class="char">Referenced Files</P>
+          <P Name="Visible" Class="logical">0</P>
+          <P Name="CreateCallback" Class="char"/>
+          <P Name="UserData" Class="char">{&quot;filterShowRefModels&quot;:&quot;true&quot;,&quot;filterShowRefSubs&quot;:&quot;true&quot;,&quot;filterShowOnlyDirtyFiles&quot;:&quot;false&quot;}
+</P>
+          <P Name="Floating" Class="logical">0</P>
+          <P Name="DockPosition" Class="char">Left</P>
+          <P Name="Width" Class="int32">512</P>
+          <P Name="Height" Class="int32">384</P>
+          <P Name="Minimized" Class="char">Unset</P>
+        </Object>
+        <Object ObjectID="7">
+          <P Name="Type" Class="char">GLUE2:PropertyInspector</P>
+          <P Name="ID" Class="char">Property Inspector</P>
+          <P Name="Visible" Class="logical">0</P>
+          <P Name="CreateCallback" Class="char"/>
+          <P Name="UserData" Class="char"/>
+          <P Name="Floating" Class="logical">0</P>
+          <P Name="DockPosition" Class="char">Right</P>
+          <P Name="Width" Class="int32">512</P>
+          <P Name="Height" Class="int32">384</P>
+          <P Name="Minimized" Class="char">Unset</P>
+        </Object>
+      </Array>
+      <P Name="WindowState" Class="char">AAAA/wAAAAD9AAAAAwAAAAAAAADAAAADy/wCAAAABPsAAAAWAEQAbwBjAGsAVwBpAGQAZwBlAHQAMwEAAAAxAAAB+AAAAAAAAAAA+wAAABYARABvAGMAawBXAGkAZABnAGUAdAA0AAAAAAD/////AAAAAAAAAAD7AAAAUgBHAEwAVQBFADIAIAB0AHIAZQBlACAAYwBvAG0AcABvAG4AZQBuAHQALwBHAEwAVQBFADIAIAB0AHIAZQBlACAAYwBvAG0AcABvAG4AZQBuAHQBAAAAlwAAA8sAAAB5AP////sAAABgAFMAaQBtAHUAbABpAG4AawA6AEUAZABpAHQAbwByADoAUgBlAGYAZQByAGUAbgBjAGUAZABGAGkAbABlAHMALwBSAGUAZgBlAHIAZQBuAGMAZQBkACAARgBpAGwAZQBzAAAAAAD/////AAAApwD///8AAAABAAAAAAAAAAD8AgAAAAH7AAAAVABHAEwAVQBFADIAOgBQAHIAbwBwAGUAcgB0AHkASQBuAHMAcABlAGMAdABvAHIALwBQAHIAbwBwAGUAcgB0AHkAIABJAG4AcwBwAGUAYwB0AG8AcgAAAAAA/////wAAAhYA////AAAAAwAAAAAAAAAA/AEAAAAB+/////8AAAAAAP////8AAAMWAP///wAABdwAAAPLAAAAAQAAAAIAAAABAAAAAvwAAAAA</P>
+      <Array PropName="PersistedApps" Type="Cell" Dimension="0*1"/>
+      <P Name="WindowUuid" Class="char">ae9b259c-b4c8-47ba-9942-6bd411614122</P>
+    </Object>
+    <P Name="BDUuid" Class="char">c75989d2-b4b5-4678-8065-9444c7ff949c</P>
+  </Object>
+</WindowsInfo>
+
+__MWOPC_PACKAGE_END__
