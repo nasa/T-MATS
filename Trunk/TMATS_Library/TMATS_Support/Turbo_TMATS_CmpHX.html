@@ -1,0 +1,871 @@
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Compressor HX Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Compressor HX Library Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the performance of a compressor using basic
+thermodynamic equations, properties, and table-lookups. This block is a modified version
+of the standard T-MATS Compressor library block that adds-in features for modeling the non-adiabatic
+effects heat soak and tip clearances. Heat soak refers to the bulk heat transfer between the gaspath
+and surrounding structure of the compressor. Tip clearance refers to the gap between the blade tips and
+outer containment structure/seal, which is impacted by thermal expansion of the compressor parts. The
+tip clearance model approximates the impacts by modeling the compressor as a single stage.
+Both heat soak and tip clearances have impact on compressor performance and operabilty which are 
+accounted for through performance map adjustments 
+</p>
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    This block models a compressor with the effects of heat soak and tip clearances.
+	It leverages a modified version of the standard T-MATS Compressor library block to compute the outputs of the
+	compressor under adiabatic conditions without tip clearance variations impacts. The modifications to the standard T-MATS compressor block enable the 
+	compressor performance map scalers and the location of the stall line to be adjusted based on computed performance
+	impacts relative to heat soak and tip clearance effects. The block utilizes the <i>Compressor_SLmod_TMATS.c</i> script to 
+	compute the adiabatic output gas characteristics and other variables.
+</p>	
+<p>
+	The adiabatic outputs are modified through a heat soak model that updates the output enthalpy and temperature 
+	based on the computed heat transfer with the surrounding engine structure and any additional heat transfer that is
+	prescribed. In addition, the current engine operating conditions and thermal state is utilized to approximate the 
+	tip clearance. Outputs of the heat soak model and tip clearance model are used to predict performance impacts that 
+	are applied through modificaiton of the compressor map scalers. These scalers feed back into the standard T-MATS 
+	Compressor library block creating an implicit mathematical problem. Thus, the T-MATS Newton-Raphson solver block
+	is used to iterate the solution until the output temperature of the compressor converges. 
+</p>
+<p>
+	<b><i>Adiabatic Compressor Performance Model</i></b>
+</p>
+<p>
+    To compute the input enthalpy and entropy, <i>Compressor_SLmod_TMATS.c</i> uses a table-lookup
+    method using the input temperature, pressure, and fuel to air ratio
+    as reference values.
+</p>
+<p>
+    A couple of values related to the fluid flow are then calculated using
+    the following equations:
+
+    $$\delta = \frac{Pt_{In}}{\textit{C_PSTD}}$$
+    $$\Theta = \frac{Tt_{In}}{\textit{C_TSTD}}$$
+
+    In the equations above, <i>C_PSTD</i> and <i>C_TSTD</i> are standard day
+    conditions for pressure and temperature, respectively.
+    Using the calculated values from these equations, the corrected flow
+    can be determined by the following:
+
+    $$Wc_{In} = W_{In}*\frac{\sqrt{\Theta}}{\delta}$$
+
+    Likewise, the corrected shaft speed is determined by:
+
+    $$Nc = \frac{Nmech}{\sqrt{\Theta}}$$
+</p>
+
+<p>
+    General compressor performance is dictated by a compressor map that relates
+    corrected shaft speed and an arbitrarily defined monotonically increasing Rline
+    to corrected mass flow, pressure ratio, and efficiency. Values in this map may be scaled
+    (for example 100% shaft speed might correlate to 20,000 rpm), so in this discussion all values
+    taken from the map will be refered to as Map parameters. <br>
+    The compressor speed map is determined by using the corrected shaft speed
+    and the user-specified corrected speed scalar constant (<i>C_Nc</i>), as
+    seen in the following equation:
+
+    $$ NcMap = \frac{Nc}{\textit{C_Nc}} $$
+
+    The value of <i>C_Nc</i> is dependant upon which iDesign (iDes) option
+    is used.
+
+</p>
+<p>
+    The iDes option can be accessed by double clicking the block, navigating
+    to the iDesign tab, and entering 0, 1, or 2 for the option of <i>iDesign_M</i>.
+    <ul>
+        <li>If 0 is input, iDes will be enabled and the compressor map scalars (such as
+        <i>C_Nc</i>) will be based on design variables specified by the user in
+        the iDesign tab. These values are output to a specified file (<i>FVar_M</i>).
+        <li>If 1 is input, the scalars will be determined from a specified
+        file (<i>FVar_M</i>) that is uploaded by the user and specified in the iDesign tab.
+        <li>If 2 is input, the scalars will be determined by the scalars specified in
+        the C-Map tab (such as <i>s_C_Nc_M</i>); no values from the iDesign tab
+        will be used.
+    </ul>
+    For more information on how to enable iDes and the different
+    options for how to use it, see the Mask Variables table at the bottom of this page.
+
+</p>
+<p>
+    To compute the total flow input, the script utilizes the user-specified compressor map,
+    interpolates the results, and then scales the results using the user-specified
+    flow scalar constant according to the following equation:
+
+    $$ WcCalc_{In} = WcMap * \textit{C_Wc}$$
+
+    The value of the flow scalar constant <i>C_Wc</i> is dependant
+    upon which iDes option is used, as previously described and as detailed
+    in the Mask Variable table at the bottom of this page.
+
+</p>
+<p>
+    In order to determine the output total pressure, the pressure ratio that
+    the compressor is operating at must first be determined. The pressure ratio is
+    determined by the following equation:
+
+    $$ PR = \textit{C_PR} * (PRMap - 1) +1 $$
+
+    in which <i>PRMap</i> is determined by interpolating the compressor map
+    and <i>C_PR</i> is dependant upon which iDes option is used.
+
+    Once the pressure ratio is calculated, the total output pressure can be
+    calculated using the following equation:
+
+    $$Pt_{Out} = Pt_{In}*PR$$
+
+</p>
+<p>
+    The overall efficiency of the compressor can be determined by the following
+    equation:
+
+    $$Eff = EffMap * \textit{C_Eff} $$
+
+    in which <i>EffMap</i> is determined by interpolating the compressor map
+    and <i>C_Eff</i> is dependant upon which iDes option is used.
+
+</p>
+<p>
+    To compute the output total enthalpy, the script assumes that the compressor
+    is isentropic such that input entropy is equal to output entropy. This allows
+    for a table-lookup of the ideal total temperature using the entropy, pressure, and
+    fuel to air ratio. An additional table-lookup is then done to determine the
+    ideal total enthalpy using the ideal total temperature and fuel to air ratio.
+
+    The final total enthalpy output is then determined using the following:
+
+    $$ ht_{Out} = \frac{htIdeal_{Out} - ht_{In}}{Eff} +  ht_{In} $$
+
+    The actual temperature output is then determined via a table-lookup using
+    the actual total enthalpy and fuel to air ratio.
+
+</p>
+<p>
+    The output flow is determined by the following equation:
+
+    $$ W_{Out} = W_{In} - Wbleeds $$
+
+    In the above equation, <i>Wbleeds</i> is the amount of flow that has left
+    the system and can be determined in two ways. First,
+    <i>Wbleeds</i> can be calculated based on user-specified customer bleeds (constant bleed value)
+    and/or it can be calculated based on user-specified fractional bleeds.
+    Multipule or none of these bleed flows can be specified by enabling or disabling these options.
+</p>
+<p>
+    These two types of bleeds are determined by the following equations.
+    In the code, the customer bleeds are evaluated first and then the
+    fractional bleeds are evaluated and added to the customer bleed in order
+    to determine the total flow that is bled off.
+</p>
+<p>
+    Total bleed flow for the compressor is calculated by summing the specified flows:
+
+    $$Wbleeds = \sum Wfrac + \sum Wcust$$
+
+    In the above equation, <i>Wcust</i> are the values <i>C_CBD_M</i> (mask variable).
+    The <i>Wfrac</i> values are the values <i>C_FBD_M</i> (mask variable) multiplied by input flow, <i>Win</i>.
+</p>
+<p>
+    While computing the bleed, the script also calculates the total
+    enthalpy and pressure that is lost due to each bleed. These values are
+    determined by the following equations, respectively:
+
+    $$htcust_{Out} = ht_{In} + FracBldht*(ht_{Out} - ht_{In})$$
+    $$Ptcust_{Out} = Pt_{In} + FracBldPt*(Pt_{Out} -Pt_{In})$$
+
+    In the above equations, <i>FracBldht</i> and <i>FracBldPt</i> refer
+    to the fractional enthalpy and pressure gains by the flow before the bleed occurs.
+    Although imperfect, these factional values are meant to simulate bleed at an internal stage.
+    So, for example, if bleed occurs at stage 4 of an 8 stage compressor these fractional values might be 0.5.
+    In addition to calculating the total enthalpy and total pressure for the
+    bleed, the total temperature is determined by a table-lookup method using
+    the total enthalpy as the search criteria.
+</p>
+
+<p>
+    The output power is determined in a similar manner as the output flow.
+    Like the output flow, the output power depends on both the input power
+    and the amount of power bled off; the equation used to solve for the
+    output power is below.
+
+    $$Pwr_{Out} = Pwrb4bleed - PwrBld$$
+
+    The ideal power stored in the system (<i>Pwrb4bleed</i>) is given by:
+
+    $$ Pwrb4bleed = W_{In}*(ht_{in} - ht_{out})*\textit{C_BTU_PER_SECtoHP}$$
+
+    in which <i>C_BTU_PER_SECtoHP</i> is the constant to convert BTU/s to HP.
+</p>
+<p>
+    The power that bleeds from the system (<i>PwrBld</i>) is determined
+    by sumation of the power that is bled off.
+
+    $$PwrBld = \sum Wbld*(htbld_{Out}-ht_{Out})*\textit{C_BTU_PER_SECtoHP}$$
+where <i>bld</i> variables are fractional and/or customer bleed values.
+</p>
+<p>
+    The output torque to the shaft is determined by the output power and
+    the shaft speed, as seen in the following equation:
+
+    $$Torque_{Out} = \textit{C_HP_PER_RPMtoFT_LBF} * \frac{Pwr_{Out}}{Nmech}$$
+
+    in which <i>C_HP_PER_RPMtoFT_LBF</i> is a constant used to convert the units.
+
+</p>
+<p>
+    The computation of the normalized flow error depends on if iDes is enabled
+    or not. If iDes is enabled, <i>NErrorOut</i> is determined by the following:
+
+    $$NErrorOut = \frac{(Rline - RlineDes)}{Rline}$$
+
+    In the above equation, the <i>Rline</i> values are determined from the
+    user-specified compressor map. If iDes is disabled, <i>NErrorOut</i> is
+    determined by:
+
+    $$NErrorOut = \frac{(Wc_{In} - WcCalc_{In})}{Wc_{In}}$$
+
+    <em>Note:</em> Divide by zero protection is implmented on these equations and if <i>Rline</i> is equal
+    to zero, <i>NErrorOut</i> will be equal to 100. This will also occur if
+    <i>Wc<sub>In</sub></i> is equal to zero.
+</p>
+<p>
+    To determine the available stall margin, the following equation was used:
+
+    $$SMavail = \frac{SPR - PR}{PR} * 100 $$
+
+    in which
+
+    $$SPR = \textit{C_PR}*(SPRMap -1)+1$$
+
+    where <i>SPRMap</i> is determined by interpolating values on the compressor
+    map and <i>C_PR</i> is dependant upon which iDes option is used. The stall margin map is then determined using the following:
+
+    $$SMMap = \frac{SPRMap - PRMap}{PRMap} * 100$$
+</p>
+<p>
+    For information on which output values are contained within the block outputs,
+    see the Compressor Output table shown later in this file.
+</p>
+<p>
+	<b><i>Heat Soak Model</i></b>
+</p>
+<p>
+	The heat transfer due to heat soak is calculated by:
+	
+	$$qHS = CH*A*(T_m - Tgp)$$
+	
+	where qHS is the heat, T<sub>m</sub> is the metal/structure temperature of the bulk component, Tgp is the average temperature of the gaspath 
+	(Tgb = 0.5*(Tin + Tout) where Tin and Tout are the compressor inlet and exit total temperatures respectively), A is the effective 
+	surface area associated with the bulk mass of the compressor structure, and CH is the convective heat transfer coefficient. CH is 
+	computed with the equation below:
+	
+	$$CH = CHdes*(W_{in}/Wdes)^{0.8}$$
+	
+	W<sub>in</sub> is the mass flow rate entering the compressor and Wdes is the inlet mass flow rate at the design point, which corresponds to
+	the design convective heat transfer coefficiencet CHdes. The bulk temperature of the component structure is dynamic and its rate of
+	change is calcuated with:
+	
+	$$\frac{dT_m}{dt} = \frac{qHS}{Mm*Cpm}$$
+	
+	where Mm is the mass of the bulk mass used to model the thermal inertia of the compressor, and Cpm is the specific heat at constant
+	pressure for the bulk mass. dT<sub>m</sub>/dt is integrated outside of this block to get T<sub>m</sub> (similar to how shaft acceleration is integrated to
+	get the shaft speed). The block allows for a generic heat injection/removal (qext) to be added to the heat related to heat soak. 
+	
+	$$q = qHS + qext$$
+	
+	The enthalpy is adjusted with 
+	
+	$$ht_{out} = ht_{out,ad} - q/W_{in}$$
+	
+	where ht<sub>out,ad</sub> is the adiabatic output enthalpy. The output temperature, Tt<sub>out</sub>, is computed with a T-MATS thermodynamic
+	subroutine. Any bleed outputs must also be updated. For each bleed the enthalpy is re-calculated with:
+	
+	$$htBld_{out} = ht_{in} + FracBldht*(ht_{out} - ht_{in})$$
+	
+	and the shaft power as also updates with:
+	
+	$$Pwr_{Out} = W_{in}*(ht_{in}-ht_{out}) - \sum W_{bld}*(htBld_{out}-ht_{out})$$
+	
+	The shaft torque is updated utilizing the new shaft power value.
+	
+</p>
+<p>
+	<b><i>Tip Clearance Model</i></b>
+</p>
+<p>
+	The tip clearance model attempts to approximate axisymmetric tip clearance variations due to thermal expansion and centrifugal forces. The 
+	compressor is partitioned into 3 subcomponents: the blade (of which there are many), the rotor disk (to which the blades are attached), and 
+	the casing. A one-dimensional thermal expansion model is applied for each subcomponent. The change in subcomponent radius (for rotor and casing)
+	or length (for the blades) was determined with:
+	
+	$$\Delta r = r_o*(1+\alpha *\Delta T)$$
+	
+	Note that r<sub>o</sub> is a reference radius or length, &Delta;T is the temperatue difference of the component relative to the reference temperature 
+	corresponding the the reference radius or length, and &alpha; is the linear thermal expansion coefficient. 
+</p>
+<p>
+	Since the thermal expansion utilized the temperature of the subcomponents, it is necessary for the model to capture their temperature variation. 
+	The blade temperature utilizes a lumped mass model similar to the heat soak model. The rate of change in blade temperature is computed with:
+	
+	$$\frac {dT_b}{dt} = \frac{CHb*Ab}{Cpb*Mb}(Tgp - T_b)$$
+	
+	where T<sub>b</sub> is the blade temperature, Ab is the surface area of the blade, Mb is the mass of the blade, Cpb is the specific heat of the blade, CHb is
+	the coeffiicent of convective heat transfer acting on the blade, and Tgp is the average temperatue of the gaspath, and T<sub>ref</sub> is
+	
+	$$T_{ref} = Tgp + \varsigma * (Tgb - T_{cool,b})$$
+	
+	where T<sub>cool,b</sub> is the temperature of the cooling air, &varsigma; is the film cooling coeffient and has a value between 0 and 1. This is a reminant from 
+	a turbine application and it should be noted that compressor blades are not typically (if ever) cooled. Thus, assigning &varsigma; = 0 is recommended. The coefficient of heat transfer 
+	is determined with an equation of the same form as was presented for the heat soak model. The rate of change in blade temperature should be integrated 
+	outside of this block to update the blade temperature each timestep.
+</p>
+<p>
+	The casing temperature must be computed outside of this block. It is suggested that a 1-D thermal conduction T-MATS block be used to compute the radial 
+	variation of the temperature though the casing thickness and to compute the average temperature to represent the subcomponent temperature. The inner surface
+	boundary condition is set with the gaspath on the inner surface. The outer surface is likely subjected to undercowl air bled from the bypass. 
+</p>
+<p>
+	The rotor has the most thermal mass of the subcomponents and is expected to be well coordinated with the bulk component temperature. To maintain consistency
+	with the bulk temperature of the compressor from the heat soak model, the rate a change in rotor temperature is a scaled version of the bulk component temperature.
+	
+	$$\frac {dT_r}{dt} = \frac {dT_m}{dt} \frac{T_{cool,r}-T_r}{Tgp-T_m}$$
+	
+	Logic was added to prevent division by zero. It is assumed the rotor is cooled with the compressor exit air and thus T<sub>cool,r</sub> is set accordingly.
+</p>
+<p>
+	The strain models are applied after thermal expansion. The equations used in the computations are given below.
+	
+	$$r_r = \rho *\frac{1-\nu}{4*E}*{(\frac{2*\pi}{60}N)}^2*r_{r,u}^2$$
+	
+	$$L_b = \rho *\frac{1}{E}{(\frac{2*\pi}{60}N)}^2*L_{b,u}^2(r_r+L_{b,u})$$
+	
+	Note that &rho; is the density of the subcomponent, E is Young's Modulus of Elasticity, &nu; is Poisson's ratio, N is the shaft speed in rpm, r<sub>r,u</sub>
+	is the unstrainted rotor radius, and L<sub>b,u</sub> is the unstrained blade length. The tip clearance, TC, is the gap between the rotating components 
+	and the inner radius of the stationary containment structure and is thus computed as
+	
+	$$TC = r_{c} - (r_{r} + L_{b})$$
+	
+	The performance modifications are based on differences in tip clearance as compared to nominal tip clearance for which the base performance map (scalers) are 
+	assumed to be consistent. The user must specify the nominal tip clearance, which should correspond to the nominal performance. The nominal tip clearance is 
+	an input to the block and could be prescribed a number of ways. For instance, for a notional engine system where such data is not provided, one can use steady-state data 
+	to guide the formulation of a look-up table that covers the range of operation.
+	
+</p>
+<p>
+	<b><i>Performance Impact Model</i></b>
+</p>
+<p>
+	The compressor perforamnce and operability is adjusted through scaling of the corrected speed, scaling of the efficiency, and shifing of the stall line. The 
+	speed and efficiency map scalers are multiplied by a speed scaler modifier C<sub>c,N</sub> and efficiency scaler modifier C<sub>c,&eta;</sub> respectively. Below 
+	is the expression for the speed scaler modifier
+	
+	$$C_{c,N} = 1 + C_{N,BL}*\frac {Tb-Tgp}{Tgp} - C_{N,\rho}*\frac {qHS}{W*Cp*Tgp}-C_{N,TC}*\frac {\Delta TC}{g}$$
+	
+	where C<sub>N,BL</sub> is the coefficient of impact for boundary layer effects, C<sub>N,&rho;</sub> is the coefficient of impact for density effects, C<sub>N,TC</sub> 
+	is the coefficent of impact for tip clearance effects, and g is the staggered blade gap. The expression for the efficiency scaler modifier is conditional based on the 
+	varation of the tip clearance relative to the span of the blade, S. It consider both the actual tip clearance to span ratio and the nominal (nom) tip clearnce to span
+	ratio. When both TC/S and (TC/S)<sub>nom</sub> are both &le 0.036 the following expression is used where &Delta;TC = TC<sub>nom</sub> - TC.
+	
+	$$C_{c,\eta} = 1 + 1.6* \frac{\Delta TC}{S}$$
+	
+	When both TC/S and (TC/S)<sub>nom</sub> are both > 0.036 the following expression is used.
+	
+	$$C_{c,\eta} = 1 + 0.5* \frac{\Delta TC}{S}$$
+	
+	Otherwise the following expression is used.
+	
+	$$C_{c,\eta} = 1 + sign(\frac{\Delta TC}{S})*(0.5*(max(\frac{TC}{S},(\frac{TC}{S})_{nom})-0.036) + 1.6*(0.036 - min(\frac{TC}{S},(\frac{TC}{S})_{nom})))$$
+	
+	The stall pressure ratio is adjusted through the following equation
+	
+	$$SPR = m_{SL}*SPR_{0} + b_{SL}$$
+	
+	where SPR_{0} is the adiabatic stall pressure ratio and the stall line modifier scaler and bias are computed with:
+	
+	$$m_{SL} = 1 - C_{SPR,q}*\frac{q_{HS}/W}{ht_{in}-ht_{out,A}} + C_{SPR,TC}*\frac{\Delta TC}{g}$$
+	
+	$$b_{SL} = C_{SPR,q}*\frac{q_{HS}/W}{ht_{in}-ht_{out,A}} - C_{SPR,TC}*\frac{\Delta TC}{g}$$
+	
+	Note that C<sub>SPR,q</sub> and C<sub>SPR,TC</sub> are the coefficients of impact for heat transfer and tip clearance effects respectively and ht<sub>out,A</sub> 
+	is the exit enthalpy under adiabatic conditions. The performance and operability modifiers are fed back into compressor calculations that determine adiabatic performance.
+	The loop of calculations executes until convergence of the exit temperature is achieved. 
+</p>
+<p>
+	<b><i>Parameterizing the Model</i></b>
+</p>
+<p>
+	The updates to incorporate heat soak and tip clearance impacts introduces numerous parameters that must be defined. Among these parameters are material properties,
+	surface areas and component masses sufficient for a lumped mass heat transfer models, "design" flow rates and heat transfer coefficients for convective heat transfer
+	coefficient approximation, initial component/subcomponent temperatures and sizes (length/radius), nominal tip clearances, and impact coefficients for the performance
+	and operablity impact models. Some of the parameters are straight foward. For example, material properties can be defined from data specific to the materials of the
+	components/subcomponents. Other parameters can be prescribed with some engineering judgement and further tuned to achieve realistic behavior. For instance, there 
+	could be freedom in choice of the "design point" heat transfer coefficients to tailor the temperature response of the components/subcomponents. For some other parameters, 
+	more upfront work may be warranted to set their values. Specifically, initial conditions fall into this category and they should be determined within the setup scripts/functions 
+	for the model. The component/subcomponet temperatures should be able to be inferred from gas path initial conditions. The intial rotor, casing, and blade sizes for the tip 
+	clearance model can be initialized at a presrcibed condition and given time to reach equilibrium. Alternatively they can be calculated for an equilibrium state at the 
+	desired model starting point using MATLAB functions that mimic the calculations for determining the subcomponent deformations. The functions are in the 
+	"TMATS/TMATS_Library/MATLAB_Scripts/+TMATS" folder and are listed below:
+</p>
+<p>
+	<i>ThermalExpansion1D.m:</i> performs 1-D linear thermal expansion<br>
+	<u>Output:</u> <br>
+	L - length or radius after temperature change, ft <br>
+	<u>Inputs:</u> <br>
+	TalphaVec - Thermal expansion coefficient temperature data <br>
+	alphaVec - Thermal expansion coefficient data <br>
+	Lref - reference length <br>
+	Tref - reference temperature at known length Lref <br>
+	T - temperature of the component <br>
+</p>
+<p>
+	<i>RotorStrainExp.m:</i> performs expansion calculation on the rotor <br>
+	<u>Output:</u> <br>
+	RoRotor - outer rotor radius with strain produced by centrifugal forces, ft <br>
+	<u>Inputs:</u> <br>
+	rho - density, slug/ft^3<br>
+	TEVec - Young's Modulus temperature data vector, degR<br>
+	EVec - Young's Modulus data vector, lbf/sqft<br>
+	TvVec - Poisson's Ratio temperature data vector, degR<br>
+	vVec - Poisson's Ratio data vector<br>
+	T - blade temperature, degR<br>
+	N - rototional speed, rpm<br>
+	RoRotorBase - unstrained radius of the rotor, ft<br>
+</p>
+<p>
+	<i>BladeStrainExp.m:</i> performs expansion calculation on the blade <br>
+	<u>Output:</u> <br>
+	LBlade - blade length with strain produced by centrifugal forces, ft <br>
+	<u>Inputs:</u> <br>
+	rho - density, slug/ft^3<br>
+	TEVec - Young's Modulus temperature data vector, degR<br>
+	EVec - Young's Modulus data vector, lbf/sqft<br>
+	T - blade temperature, degR<br>
+	N - rototional speed, rpm<br>
+	RoRotor - outer radius of the rotor, ft<br>
+	LBladeBase - unstrained blade length, ft<br>
+</p>
+<p>
+	Using these functions and other known inputs, the initial subcomponent sizes can be determined. Here is and example of a procedure that
+	could be used to initialize the blade length and rotor and casing radii.<br>
+	- set a "cold and stationary" temperature and tip clearance for each subcomponent<br>
+	- set a "cold and stationary" radius/length for 2 of the 3 subcomponents and calculate the "cold and stationary" size of the other subcomponent using the prescribed tip clearance<br>
+	- compute the unstrained rotor radius by applying "ThermalExpansion1D.m"<br>
+	- compute the strained rotor radius by applying "RotorStrainExp.m"<br>
+	- compute the unstrained blade length by applying "ThermalExpansion1D.m"<br>
+	- compute the strained blade length by applying "BladeStrainExp.m"<br>
+	- compute the casing radius by applying "ThermalExpansion1D.m"<br>
+	Note that some adjustments may be required to maintain reasonble tip clearances. The "cold and stationary" tip clearance is a good
+	place to start with the adjustments. If the casing is cooled on the exterior with any significant strength, the casing temperture will
+	not simply be derived from the gaspath temperatures but should consider the temperature of the air and heat transfer coefficient on the 
+	outer casing surface. In this case a thermal resistance model can be used to determine the initial steady-state casing temperature. 
+</p>
+<p>
+	<b><i>Further Model Setup</i></b>
+</p>
+<p>
+	The heat soak and tip clearance models add new states to the model. This includes the temperatures associated with the heat soak model 
+	for the compressor as well as the blade and rotor subcomponents used in the tip clearance model. The rate of change in these states must 
+	be routed outside the engine models iterative solver loop, integrated, and routed back to the block for the next time-step. The compressor 
+	casing temperature must also be computed outside of the block and fed back to it. As mentioned prior, the recommended approach for this is to 
+	use a T-MATS 1-D thermal conduction block. 
+</p>
+<p>
+	The iDesign tool should still work with this block. However, it should be noted that if iDesign is used, the heat soak and tip clearance effects 
+	will not be applied and they will have no effect on the map scaling. One exception is that if a non-zero qext is input, then the it will impact 
+	the cycle and map scaling. It is recommended that iDesign be done at a operating point at which thermal equilibrium and nominal tip clearance are 
+	achieved. 
+</p>
+<p>
+	The heat soak and tip clearance effects can be turned off by setting the block parameters HSopt_M (for heat soak) and TCopt_M (for tip clearance) 
+	to zero. To enable them the values should be set to 1.
+</p> 
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input gas path flow, Rline, and Nmech values to the
+        corresponding places on the block. Do the same for additional inputs.
+        <li> Connect the outputs to the next block(s) in your simulation. Route state derivatives out of the iterative solver later, integrate them, and bring them back at inputs for the next time-step.
+        <li> Double click the block and...
+        <ol>
+            <li>Select which options you will use under each tab:
+            <ul style="list-style-type:circle">
+                <li>Under the C-Map tab:
+                <ul>
+                    <li>At the bottom of the page next to "Plot Map" button,
+                    check the "Include surge line" box to plot the surge
+                    line as defined in the Surge Margin tab. The surge line
+                    will not be plotted otherwise.
+                    <li>In the bottom-right corner of the page, select which
+                    (if any) scalars you will use for the plot. <br> Options include:
+                    <ol>
+                        <li>None: Plots the maps as defined.
+                        <li>User Defined: Plots the maps with Wc, PR, and Eff
+                        scaled using the scalars defined in the C-Map tab.
+                        <li>iDesign: Plots the maps with Wc, PR, and Eff scaled
+                        using the scalars calculated with iDesign, as defined
+                        in the iDesign tab.
+                    </ol>
+                </ul>
+                <li>Under the Surge Margin tab:
+                <ul>
+                    <li>Check the box to use the map default surge line.
+                    <li>Uncheck the box to specify your own values to determine
+                    the surge line.
+                </ul>
+                <li>Under the iDesign tab:
+                <ul>
+                    <li>Select the value of iDesign_M. <br>Options include:
+                    <ul style="list-style-type:disc">
+                        <li> 0: iDes will be enabled and the compressor map
+                        scalars will be based on design variables specified
+                        by the user in the iDesign tab.
+                        <li> 1: Compressor map scalars will be determined
+                        from a specified file (<i>FVar_M</i>) that is uploaded by
+                        the user and specified in the iDesign tab.
+                        <li> 2: Compressor map scalars will be determined
+                        by the scalars specified in the C-Map tab; no values
+                        from the iDesign tab will be used.
+                    </ul>
+                </ul>
+            </ul>
+            <li>Input the corresponding values for the parameters you have chosen. This includes the new tabs: "Heat Soak", "Tip Clearance", and "Performance Impacts"
+            to use.
+        </ol>
+    </ul>
+</p>
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Compressor HX Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
+    <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 vector consisting of:
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>Rline</td><td>R-line, position on compressor map.
+            <br>Determines pressure ratio, efficiency, and gas path flow.
+            <br>The value for this variable will need to be solved for by driving
+            flow error across the engine to zero.</td></tr>
+    <tr><td>Nmech</td><td>Shaft speed [rpm]</td></tr>
+	<tr><td>Tmet</td><td>Metal/structure temperature [degR]</td></tr>
+	<tr><td>Trotor</td><td>Rotor temperature [degR]</td></tr>
+	<tr><td>Tblade</td><td>Blade temperature [degR]</td></tr>
+	<tr><td>Tcase</td><td>Casing temperature [degR]</td></tr>
+	<tr><td>TcoolB</td><td>Temperature of the air cooling the blade (may not be applicable -> input gaspath temperature or set eta_Blade_M = 0) [degR]</td></tr>
+	<tr><td>TcoolC</td><td>Temperature of air cooling the outer surface of the casing [degR]</td></tr>
+	<tr><td>WcoolC</td><td>Flow rate of air cooling the outer surface of the casing (used to determine heat transfer coefficient) [degR]</td></tr>
+	<tr><td>q_ext</td><td>Casing temperature [Btu/s]</td></tr>
+	<tr><td>TCnom</td><td>Nominal tip clearance [mil]</td></tr>
+    <tr><td>HP_Mods</td><td>Health Parameter Modifiers, 3x1 vector consisting of:
+            <br>- WcMod - Wc gain [frac]
+            <br>- PRMod - PR gain [frac]
+            <br>- EffMod - Eff gain [frac]
+            <br> these modifiers are typically defined as negaive fractional numbers, i.e. -0.01 is a 1% loss.
+        <br> Note: this inport appears only if HP_M under Health Parameters in the mask is checked.</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Compressor HX Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+    <tr><td>CustBldsCharOut</td><td>Customer or flow based Bleeds Characteristics Output,
+            <br>[5 x 1] bus/vector for each customer bleed (total #cbleeds *5 x 1)
+            <br> consisting of the following repeating format:
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
+            <br>- Tt - Total temperature [degR]
+            <br>- Pt - Total pressure [psia]
+            <br>- FAR - Combusted fuel to air ratio [frac]
+            <br> This feature must be enabled, see Bleed tab variable (CBLDEN_M) definition.</td></tr>
+    <tr><td>FBldsCharOut</td><td>Fractional Bleeds Characteristics Output,
+            <br>[5 x 1] bus/vector for each fractional bleed (total #fbleeds *5 x 1)
+            <br> consisting of the following repeating format:
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
+            <br>- Tt - Total temperature [degR]
+            <br>- Pt - Total pressure [psia]
+            <br>- FAR - Combusted fuel to air ratio [frac]
+            <br> This feature must be enabled, see Bleed tab variable (FBLDEN_M) definition.<br></td></tr>
+    <tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr> <td>NErr</td><td>Normalized Error [frac].
+            <br>In a typical system, this will be driven to zero by an iterative solver. </td></tr>
+    <tr><td>TrqOut</td><td>Compressor Torque Output (lbf*ft).
+            <br>Negative value for a compressor.</td></tr>
+	<tr><td>Tmetdot</td><td>Rate of change in the bulk metal/structure temperature (degR/s).</td></tr>
+	<tr><td>Trdot</td><td>Rate of change in the rotor temperature (degR/s).</td></tr>
+	<tr><td>Tbdot</td><td>Rate of change in the blade temperature (degR/s).</td></tr>
+    <tr><td>C_Data</td><td>Compressor internal calculation data, 54x1 bus/vector including:
+            <br>- SMavail - Stall margin available [%]
+            <br>- s_C_Nc - Corrected shaft speed map scalar value
+            <br>- s_C_Wc - Corrected mass flow map scalar value
+            <br>- s_C_PR - Pressure ratio map scalar value
+            <br>- s_C_Eff - Efficiency ratio map scalar value
+            <br>- Wcin - Corrected input mass flow [pps]
+            <br>- Nc - Corrected shaft speed [rpm]
+            <br>- PR - Pressure ratio
+            <br>- NcMap - Corrected shaft speed from the compressor map
+            <br>- WcMap - Corrected mass flow from the compressor map
+            <br>- PRMap - Pressure ratio from the compressor map
+            <br>- SurgePR - Presssure ratio for surge at current corrected mass flow
+            <br>- Wbleeds - Mass flow being diverted to the bleeds [pps]
+            <br>- Pwrb4bleeds - Power required to run compressor if there were no bleeds [hp]
+            <br>- PwrBld - Bled off power [hp]
+            <br>- Pwrout - Total output power [hp]
+            <br>- SMMap - Stall margin based on map values [%]
+            <br>- SPRMap - Stall pressure ratio from the map
+            <br>- Test - Compressor internal calculation data
+            <br>- Nmech - Mechanical shaft speed, from input [rpm]
+            <br>- BlkNm - Block name as double. If required use char(BlkNm) to retrieve. 
+			<br>- WHPMod - Feedthrough of the health parameter flow modifier
+			<br>- PRHPMod - Feedthrough of the health parameter PR modifier
+			<br>- EffHPMod - Feedthrough of the health parameter efficiency modifier
+			<br>- qHS - Heat transfer due to heat soak (+ for cooling of the gaspath) [Btu/s]
+			<br>- q - Total heat transfer within the compressor (qHS + qext) [Btu/s]
+			<br>- Tmean - Average of the compressor inlet and exit flow [degR]
+			<br>- Tmet - Temperature of the metal/structure representing the bulk mass in the heat soak model [degR]
+			<br>- dTC - Difference between the nominal tip clearance and actual tip clearance (TCbase - TC) [mil]
+			<br>- TC - Actual tip clearance [mil]
+			<br>- TCbase - Nominal (baseline) tip clearance [mil]
+			<br>- TCSS - Steady state tip clearance [mil]
+			<br>- Tbref - Reference temperature to which the blade will approach at steady-state considering cooling effects [degR]
+			<br>- Tb - Blade temperature [degR]
+			<br>- Tr - Rotor temperatue [degR]
+			<br>- Tc - Casing temperature [degR]
+			<br>- L_Blade - Blade length [ft]
+			<br>- Ro_Rotor - Outer rotor radius [ft]
+			<br>- Ri_Case - Inner casing radius [ft]
+			<br>- L_Blade_SS - Steady-state blade length [ft]
+			<br>- Ro_Rotor_SS - Steady-state outer rotor radius [ft]
+			<br>- Ri_Case_SS - Steady-state inner casing radius [ft]
+			<br>- dNqN_BL - Component of s_C_N_modifier attributed to boundary layer effects
+			<br>- dNqN_den - Component of s_C_N_modifier attributed to density effects
+			<br>- dNqN_TC - Component of s_C_N_modifier attributed to tip clearance effects
+			<br>- PRm1qPRadm1_F - Component of the change in (SPR-1)/(SPR_ad-1) due to heat transfer effects <-- SPR_ad is the stall PR under adiabatic conditions
+			<br>- PRm1qPRadm1_TC - Component of the change in (SPR-1)/(SPR_ad-1) due to tip clearance effects <-- SPR_ad is the stall PR under adiabatic conditions
+			<br>- Texit_ad - Adiabatic exit temperature [deg R]
+			<br>- s_C_N_modifier - Multiplier applied to the corrected speed map scaler to shift the speed line
+			<br>- s_C_Eff_modifiier - Multiplier applied ot the efficiency map scaler to adjust the efficiency contours
+			<br>- mSL - Stall pressure ratio modifier scaler
+			<br>- bSL - Stall pressure ratio modifier bias
+			<br>- ToutErr - Returns the error between the current exit temperature value and prior internal solver iteration exit temperature value [degR]
+			<br>- Conv - Indicates convergence of the iterative solver (1 - converged, 0 - failed to converge)
+			</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Compressor HX Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>X_C_RlineVec_M</td><td>Compressor map Rline vector(nx1)</td></tr>
+    <tr><td>Y_C_Map_NcVec_M</td><td>Compressor map corrected speed vector(mx1)</td></tr>
+    <tr><td>T_C_Map_WcArray_M</td><td>Compressor map flow array (Wc = f(Nc, Rline))(mxn)</td></tr>
+    <tr><td>T_C_Map_PRArray_M</td><td>Compressor map pressure ratio array (PR = f(Nc, Rline))(mxn)</td></tr>
+    <tr><td>T_C_Map_EffArray_M</td><td>Compressor map efficiency array (Eff = f(Nc, Rline))(mxn)</td></tr>
+    <tr><td>s_C_Nc_M</td><td>Corrected speed scalar constant</td></tr>
+    <tr><td>s_C_Wc_M</td><td>Corrected flow scalar constant</td></tr>
+    <tr><td>s_C_PR_M</td><td>Pressure ratio scalar constant</td></tr>
+    <tr><td>s_C_Eff_M</td><td>Efficiency scalar constant</td></tr>
+    <tr><td>Plot Map</td><td>Plots the block defined map
+            <br>
+            <br> - Include surge line - plots the surge line as defined in the Surge Margin tab on the map
+            <br>
+            <br> - Scalars: none - plots maps as defined
+            <br>
+            <br> - Scalars: user defined - plots maps with Wc, PR, and Eff scaled using the scalars defined in the C-map tab
+            <br>
+            <br> - Scalars: iDesign - plots maps with Wc, PR, and Eff scaled using scalars calculated with iDesign and located within the file defined in the iDesign tab</td></tr>
+    <tr><td>C_CBD_M</td><td>Customer or flow based Bleed Demand[pps](cbx1)</td></tr>
+    <tr><td>C_CBFht_M</td><td>Customer or flow based Bleed Fractional enthalpy[frac](cbx1)</td></tr>
+    <tr><td>C_CBFPt_M</td><td>Customer or flow based Bleed Fractional Total Pressure[frac](cbx1)</td></tr>
+    <tr><td>FBLDEN_M</td><td>Fractional based Bleed Enable [check - enabled]</td></tr>
+    <tr><td>C_FBD_M</td><td>Fractional Bleed Demand[frac](bx1)</td></tr>
+    <tr><td>C_BFht_M</td><td>Engine Bleed Fractional enthalpy [frac](bx1)</td></tr>
+    <tr><td>C_BFPt_M</td><td>Engine Bleed Fractional Total Pressure [frac](bx1)</td></tr>
+    <tr><td>DefSMEn_M</td><td>Enable default surge margin
+            <br>
+            <br>Set - use SRline_M
+            <br>
+            <br>Un-set - define manually via X_C_Map_WcSurgeVec_M and T_C_Map_PRSurgeVec_M </td></tr>
+    <tr><td>SRline_M</td><td>Rline defined as the surge line (typically defined as 1)</td></tr>
+    <tr><td>X_C_Map_WcSurgeVec_M</td><td>Compensated flow surge vector (map value)(sx1)</td></tr>
+    <tr><td>T_C_Map_PRSurgeVec_M</td><td>Surge line pressure ratio vector (map value)(sx1)</td></tr>
+	<tr><td>HSopt_M</td><td>Option for enabling heat soak effects (1 - enabled, 0 - disabled)</td></tr>
+	<tr><td>BulkArea_M</td><td>Effective Surface Area [sqft]</td></tr>
+	<tr><td>BulkMass_M</td><td>Effective bulk mass [slug]</td></tr>
+	<tr><td>BulkCpVec_M</td><td>Effective specific heat data [Btu/(slug-degR)] (nx1)</td></tr>
+	<tr><td>TBulkCpVec_M</td><td>Temperature array for heat capacity data, [degR] (nx1)</td></tr>
+	<tr><td>Bulkhcoeff_M</td><td>Base Heat Transfer Coefficient for Scaling The Convective Heat Transfer Coefficient (h = hcoeff*(Win/Wdes)^0.8), [Btu/(s-sqft-degR)]</td></tr>
+	<tr><td>BulkWdes_M</td><td>Mass flow rate at the "design point" for the heat transfer coefficient [slug/s]</td></tr>
+	<tr><td>Tout_IC_M</td><td>Initial condition and guess for the compressor exit total temperautre [degR]</td></tr>
+	<tr><td>TCopt_M</td><td>Option for enabling tip clearance effects (1 - enabled, 0 - disabled)</td></tr>
+	<tr><td>L_Blade_M</td><td>Unstrained Initial length of blade [ft]</td></tr>
+	<tr><td>T0_Blade_M</td><td>Initial temperature of blade [degR]</td></tr>
+	<tr><td>rho_Blade_M</td><td>Density of the blade material [slug/cuft]</td></tr>
+	<tr><td>m_Blade_M</td><td>Mass of single blade [slug]</td></tr>
+	<tr><td>A_Blade_M</td><td>Surface area of single blade [sqft]</td></tr>
+	<tr><td>eta_Blade_M</td><td>Blade cooling efficiency coefficient</td></tr>
+	<tr><td>alpha_Blade_Data_M</td><td>Blade thermal expansion coefficient data [degR^-1] (ax1)</td></tr>
+	<tr><td>Talpha_Blade_Data_M</td><td>Temperature array for the blade thermal expansion data [degR] (ax1)</td></tr>
+	<tr><td>E_Blade_Data_M</td><td>Young's modulus data for the blade [lbf/sqft] (bx1)</td></tr>
+	<tr><td>TE_Blade_Data_M</td><td>Temperature array for the blade Young's modulus data [degR] (bx1)</td></tr>
+	<tr><td>Cp_Blade_Data_M</td><td>Heat capacity data for the blade [Btu/(slug-degR)] (cx1)</td></tr>
+	<tr><td>TCp_Blade_Data_M</td><td>Temperature array for the blade heat capacity data [degR] (cx1)</td></tr>
+	<tr><td>hcoeff_Blade_M</td><td>Blade heat transfer coefficient at the design mass flow rate [Btu/(s-sqft-degR)]</td></tr>
+	<tr><td>Wdes_Blade_M</td><td>Design mass flow rate for the blade heat transfer model [slug/s]</td></tr>
+	<tr><td>Ro_Rotor_M</td><td>Unstrained initial outer rotor radius [ft]</td></tr>
+	<tr><td>T0_Rotor_M</td><td>Initial lumped temperature of the rotor [degR]</td></tr>
+	<tr><td>rho_Rotor_M</td><td>Density of the rotor material [slug/cuft]</td></tr>
+	<tr><td>alpha_Rotor_Data_M</td><td>Rotor thermal expansion coefficient [degR^-1] (dx1)</td></tr>
+	<tr><td>Talpha_Rotor_Data_M</td><td>Temperature array for the rotor thermal expansion data [degR] (dx1)</td></tr>
+	<tr><td>E_Rotor_Data_M</td><td>Young's modulus data for the rotor [lbf/sqft] (ex1)</td></tr>
+	<tr><td>TE_Rotor_Data_M </td><td>Temperature data for the rotor Young's modulus data [degR] (ex1)</td></tr>
+	<tr><td>v_Rotor_Data_M</td><td>Poisson's ratio data for the rotor (fx1)</td></tr>
+	<tr><td>Tv_Rotor_Data_M</td><td>Temperature array for rotor Poisson's ratio data [degR] (fx1)</td></tr>
+	<tr><td>Ri_Case_M</td><td>Initial inner radius of the casing [ft]</td></tr>
+	<tr><td>T0_Case_M</td><td>Initial lumped temperature of the casing [degR]</td></tr>
+	<tr><td>W_Case_M</td><td>Width (thickness) of casing [ft]</td></tr>
+	<tr><td>alpha_Case_Data_M</td><td>Casing thermal expansion coefficient [degR^-1] (gx1)</td></tr>
+	<tr><td>Talpha_Case_Data_M</td><td>Temperature array for the casing thermal expansion data [degR] (gx1)</td></tr>
+	<tr><td>k_Case_Data_M</td><td>Thermal conductivity of the casing [Btu/(s-ft-degR)](hx1)</td></tr>
+	<tr><td>Tk_Case_Data_M</td><td>Temperature array for the casing thermal conductivity data [degR] (hx1)</td></tr>
+	<tr><td>hcoeff_Case_M</td><td>Casing heat transfer coefficient at the design mass flow rate [Btu/(s-sqft-degR)]</td></tr>
+	<tr><td>Wdes_Case_M</td><td>Design mass flow rate for the casing heat transfer model [slug/s]</td></tr>
+	<tr><td>hcoeff_CoolC_M</td><td>Casing cooling flowheat transfer coefficient at the design mass flow rate [Btu/(s-sqft-degR)]</td></tr>
+	<tr><td>Wdes_CoolC_M</td><td>Design mass flow rate for the casing cooling flow heat transfer model [slug/s]</td></tr>
+	<tr><td>EnThermBL_M</td><td>Enable/Disable thermal boundary layer effect (0 - disable, 1 - enable)</td></tr>
+	<tr><td>C_dN_BL_M</td><td>coefficient pertaining to the impact of the thermal boundary layer on the corrected speed line</td></tr>
+	<tr><td>C_dN_den_M</td><td>coefficient pertaining to the impact of the change in density due to heat soak on the corrected speed line</td></tr>
+	<tr><td>C_dN_TC_M</td><td>coefficient pertaining to the impact of tip clearance on the corrected speed line</td></tr>
+	<tr><td>C_dSPR_F_M</td><td>coefficient pertaining to the impact of heat soak on the stall pressure ratio</td></tr>
+	<tr><td>C_dSPR_TC_M</td><td>coefficient pertaining to the impact of tip clearance on the stall pressure ratio</td></tr>
+	<tr><td>g_M</td><td>staggered blade gap [mil]</td></tr>
+	
+    <tr><td>iDesign_M</td><td> Design fork (0, 1, 2)
+            <br>
+            <br>0 - iDes Enabled, Calculate compressor map scalars based on design variables.
+            <br>    When iDesign is set to 0, scalar constants from the Map tab will not be used.
+            <br>    Scalars calculated will be saved in the specified file (<i>FVar_M</i>).
+            <br>
+            <br>1 - Scalar variables will be overwritten (mask Initialization) with
+                    values from a specified file (<i>FVar_M</i>).
+            <br>    When iDesign is set to 1, scalar constants from the Map tab and the Design values
+                    from the iDesign tab will not be used.
+            <br>
+            <br>2 - Scalar variables from the map tab will be used as the map scalars.
+            <br>    When iDesign is set to 2, scalar constants from the Map tab will be used; Design values
+                    and file definitions from the iDesign tab will not be used. </td></tr>
+    <tr><td>NcDes_M</td><td>Map Design Corrected Shaft Speed [rpm], design point speed used in map</td></tr>
+    <tr><td>EffDes_M</td><td>Design Efficiency [frac], actual design point compressor efficiency</td></tr>
+    <tr><td>PRDes_M</td><td>Design Pressure Ratio [frac], actual design point compressor PR</td></tr>
+    <tr><td>RlineDes_M</td><td>Map Design Rline, design point Rline used in map</td></tr>
+    <tr><td>FVar_M</td><td>File name for iDes Variables</td></tr>
+    <tr><td>HP_M</td><td>Enable Health Parameter input (3x1 vector), checked enabled. </td></tr>
+</table>
+Notes: Vectors are the x and/or y axis to a table made of an array.
+Scalars are used to "scale" the compressor map for off design compressors.<br>
+cb = number of customer bleeds<br>
+b = number of fractional bleeds<br>
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>Error calculating:
+            <ul>
+                <li>WcMap
+                <li>PRMap
+                <li>EffMap
+            </ul></td><td>Error appears if the table size does not match the axis vector lengths.</td></tr>
+    <tr><td>Error calculating:
+            <ul>
+                <li>WcMap
+                <li>PRMap
+                <li>EffMap
+                <li>1D SMWcVec
+                <li>1D SMPRVec
+                <li>2D SPR
+                <li>SPR
+            </ul></td><td>Error appears if the vectors are not large enough
+            to interpolate. Vector definitions may need to be adjusted. This
+            means the values are running off the map.</td></tr>
+    <tr><td>Number of bleeds in compressor exceeds 100...</td><td>Error appears if
+                the iterations significantly exceeds the maximum number of
+                bleeds, indicating bad data.</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>
