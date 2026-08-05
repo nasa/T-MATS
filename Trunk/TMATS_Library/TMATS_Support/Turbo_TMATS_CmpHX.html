@@ -48,7 +48,7 @@ accounted for through performance map adjustments
 
 <p>
     This block models a compressor with the effects of heat soak and tip clearances.
-	It leverages a modified version of the standard T-MATS Compressor library block to compute the outputs of the
+	It leverages a modified version of the standard T-MATS Compressor VG library block (<a href="Turbo_TMATS_CmpVG.html">variable geometry compressor block documentation</a>) to compute the outputs of the
 	compressor under adiabatic conditions without tip clearance variations impacts. The modifications to the standard T-MATS compressor block enable the 
 	compressor performance map scalers and the location of the stall line to be adjusted based on computed performance
 	impacts relative to heat soak and tip clearance effects. The block utilizes the <i>Compressor_SLmod_TMATS.c</i> script to 
@@ -63,225 +63,14 @@ accounted for through performance map adjustments
 	Compressor library block creating an implicit mathematical problem. Thus, the T-MATS Newton-Raphson solver block
 	is used to iterate the solution until the output temperature of the compressor converges. 
 </p>
+
 <p>
 	<b><i>Adiabatic Compressor Performance Model</i></b>
 </p>
 <p>
-    To compute the input enthalpy and entropy, <i>Compressor_SLmod_TMATS.c</i> uses a table-lookup
-    method using the input temperature, pressure, and fuel to air ratio
-    as reference values.
-</p>
-<p>
-    A couple of values related to the fluid flow are then calculated using
-    the following equations:
+    See (<a href="Turbo_TMATS_CmpVG.html">variable geometry compressor block documentation</a>) which heavily leverages (<a href="Turbo_TMATS_Cmp.html">compressor block documentation</a>).
+</p>   
 
-    $$\delta = \frac{Pt_{In}}{\textit{C_PSTD}}$$
-    $$\Theta = \frac{Tt_{In}}{\textit{C_TSTD}}$$
-
-    In the equations above, <i>C_PSTD</i> and <i>C_TSTD</i> are standard day
-    conditions for pressure and temperature, respectively.
-    Using the calculated values from these equations, the corrected flow
-    can be determined by the following:
-
-    $$Wc_{In} = W_{In}*\frac{\sqrt{\Theta}}{\delta}$$
-
-    Likewise, the corrected shaft speed is determined by:
-
-    $$Nc = \frac{Nmech}{\sqrt{\Theta}}$$
-</p>
-
-<p>
-    General compressor performance is dictated by a compressor map that relates
-    corrected shaft speed and an arbitrarily defined monotonically increasing Rline
-    to corrected mass flow, pressure ratio, and efficiency. Values in this map may be scaled
-    (for example 100% shaft speed might correlate to 20,000 rpm), so in this discussion all values
-    taken from the map will be refered to as Map parameters. <br>
-    The compressor speed map is determined by using the corrected shaft speed
-    and the user-specified corrected speed scalar constant (<i>C_Nc</i>), as
-    seen in the following equation:
-
-    $$ NcMap = \frac{Nc}{\textit{C_Nc}} $$
-
-    The value of <i>C_Nc</i> is dependant upon which iDesign (iDes) option
-    is used.
-
-</p>
-<p>
-    The iDes option can be accessed by double clicking the block, navigating
-    to the iDesign tab, and entering 0, 1, or 2 for the option of <i>iDesign_M</i>.
-    <ul>
-        <li>If 0 is input, iDes will be enabled and the compressor map scalars (such as
-        <i>C_Nc</i>) will be based on design variables specified by the user in
-        the iDesign tab. These values are output to a specified file (<i>FVar_M</i>).
-        <li>If 1 is input, the scalars will be determined from a specified
-        file (<i>FVar_M</i>) that is uploaded by the user and specified in the iDesign tab.
-        <li>If 2 is input, the scalars will be determined by the scalars specified in
-        the C-Map tab (such as <i>s_C_Nc_M</i>); no values from the iDesign tab
-        will be used.
-    </ul>
-    For more information on how to enable iDes and the different
-    options for how to use it, see the Mask Variables table at the bottom of this page.
-
-</p>
-<p>
-    To compute the total flow input, the script utilizes the user-specified compressor map,
-    interpolates the results, and then scales the results using the user-specified
-    flow scalar constant according to the following equation:
-
-    $$ WcCalc_{In} = WcMap * \textit{C_Wc}$$
-
-    The value of the flow scalar constant <i>C_Wc</i> is dependant
-    upon which iDes option is used, as previously described and as detailed
-    in the Mask Variable table at the bottom of this page.
-
-</p>
-<p>
-    In order to determine the output total pressure, the pressure ratio that
-    the compressor is operating at must first be determined. The pressure ratio is
-    determined by the following equation:
-
-    $$ PR = \textit{C_PR} * (PRMap - 1) +1 $$
-
-    in which <i>PRMap</i> is determined by interpolating the compressor map
-    and <i>C_PR</i> is dependant upon which iDes option is used.
-
-    Once the pressure ratio is calculated, the total output pressure can be
-    calculated using the following equation:
-
-    $$Pt_{Out} = Pt_{In}*PR$$
-
-</p>
-<p>
-    The overall efficiency of the compressor can be determined by the following
-    equation:
-
-    $$Eff = EffMap * \textit{C_Eff} $$
-
-    in which <i>EffMap</i> is determined by interpolating the compressor map
-    and <i>C_Eff</i> is dependant upon which iDes option is used.
-
-</p>
-<p>
-    To compute the output total enthalpy, the script assumes that the compressor
-    is isentropic such that input entropy is equal to output entropy. This allows
-    for a table-lookup of the ideal total temperature using the entropy, pressure, and
-    fuel to air ratio. An additional table-lookup is then done to determine the
-    ideal total enthalpy using the ideal total temperature and fuel to air ratio.
-
-    The final total enthalpy output is then determined using the following:
-
-    $$ ht_{Out} = \frac{htIdeal_{Out} - ht_{In}}{Eff} +  ht_{In} $$
-
-    The actual temperature output is then determined via a table-lookup using
-    the actual total enthalpy and fuel to air ratio.
-
-</p>
-<p>
-    The output flow is determined by the following equation:
-
-    $$ W_{Out} = W_{In} - Wbleeds $$
-
-    In the above equation, <i>Wbleeds</i> is the amount of flow that has left
-    the system and can be determined in two ways. First,
-    <i>Wbleeds</i> can be calculated based on user-specified customer bleeds (constant bleed value)
-    and/or it can be calculated based on user-specified fractional bleeds.
-    Multipule or none of these bleed flows can be specified by enabling or disabling these options.
-</p>
-<p>
-    These two types of bleeds are determined by the following equations.
-    In the code, the customer bleeds are evaluated first and then the
-    fractional bleeds are evaluated and added to the customer bleed in order
-    to determine the total flow that is bled off.
-</p>
-<p>
-    Total bleed flow for the compressor is calculated by summing the specified flows:
-
-    $$Wbleeds = \sum Wfrac + \sum Wcust$$
-
-    In the above equation, <i>Wcust</i> are the values <i>C_CBD_M</i> (mask variable).
-    The <i>Wfrac</i> values are the values <i>C_FBD_M</i> (mask variable) multiplied by input flow, <i>Win</i>.
-</p>
-<p>
-    While computing the bleed, the script also calculates the total
-    enthalpy and pressure that is lost due to each bleed. These values are
-    determined by the following equations, respectively:
-
-    $$htcust_{Out} = ht_{In} + FracBldht*(ht_{Out} - ht_{In})$$
-    $$Ptcust_{Out} = Pt_{In} + FracBldPt*(Pt_{Out} -Pt_{In})$$
-
-    In the above equations, <i>FracBldht</i> and <i>FracBldPt</i> refer
-    to the fractional enthalpy and pressure gains by the flow before the bleed occurs.
-    Although imperfect, these factional values are meant to simulate bleed at an internal stage.
-    So, for example, if bleed occurs at stage 4 of an 8 stage compressor these fractional values might be 0.5.
-    In addition to calculating the total enthalpy and total pressure for the
-    bleed, the total temperature is determined by a table-lookup method using
-    the total enthalpy as the search criteria.
-</p>
-
-<p>
-    The output power is determined in a similar manner as the output flow.
-    Like the output flow, the output power depends on both the input power
-    and the amount of power bled off; the equation used to solve for the
-    output power is below.
-
-    $$Pwr_{Out} = Pwrb4bleed - PwrBld$$
-
-    The ideal power stored in the system (<i>Pwrb4bleed</i>) is given by:
-
-    $$ Pwrb4bleed = W_{In}*(ht_{in} - ht_{out})*\textit{C_BTU_PER_SECtoHP}$$
-
-    in which <i>C_BTU_PER_SECtoHP</i> is the constant to convert BTU/s to HP.
-</p>
-<p>
-    The power that bleeds from the system (<i>PwrBld</i>) is determined
-    by sumation of the power that is bled off.
-
-    $$PwrBld = \sum Wbld*(htbld_{Out}-ht_{Out})*\textit{C_BTU_PER_SECtoHP}$$
-where <i>bld</i> variables are fractional and/or customer bleed values.
-</p>
-<p>
-    The output torque to the shaft is determined by the output power and
-    the shaft speed, as seen in the following equation:
-
-    $$Torque_{Out} = \textit{C_HP_PER_RPMtoFT_LBF} * \frac{Pwr_{Out}}{Nmech}$$
-
-    in which <i>C_HP_PER_RPMtoFT_LBF</i> is a constant used to convert the units.
-
-</p>
-<p>
-    The computation of the normalized flow error depends on if iDes is enabled
-    or not. If iDes is enabled, <i>NErrorOut</i> is determined by the following:
-
-    $$NErrorOut = \frac{(Rline - RlineDes)}{Rline}$$
-
-    In the above equation, the <i>Rline</i> values are determined from the
-    user-specified compressor map. If iDes is disabled, <i>NErrorOut</i> is
-    determined by:
-
-    $$NErrorOut = \frac{(Wc_{In} - WcCalc_{In})}{Wc_{In}}$$
-
-    <em>Note:</em> Divide by zero protection is implmented on these equations and if <i>Rline</i> is equal
-    to zero, <i>NErrorOut</i> will be equal to 100. This will also occur if
-    <i>Wc<sub>In</sub></i> is equal to zero.
-</p>
-<p>
-    To determine the available stall margin, the following equation was used:
-
-    $$SMavail = \frac{SPR - PR}{PR} * 100 $$
-
-    in which
-
-    $$SPR = \textit{C_PR}*(SPRMap -1)+1$$
-
-    where <i>SPRMap</i> is determined by interpolating values on the compressor
-    map and <i>C_PR</i> is dependant upon which iDes option is used. The stall margin map is then determined using the following:
-
-    $$SMMap = \frac{SPRMap - PRMap}{PRMap} * 100$$
-</p>
-<p>
-    For information on which output values are contained within the block outputs,
-    see the Compressor Output table shown later in this file.
-</p>
 <p>
 	<b><i>Heat Soak Model</i></b>
 </p>
@@ -517,6 +306,7 @@ where <i>bld</i> variables are fractional and/or customer bleed values.
 </p> 
 
 <br>
+    
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <div class="instructions">
@@ -527,28 +317,18 @@ where <i>bld</i> variables are fractional and/or customer bleed values.
     To use this block:
     <ul>
         <li> Connect the input gas path flow, Rline, and Nmech values to the
-        corresponding places on the block. Do the same for additional inputs.
-        <li> Connect the outputs to the next block(s) in your simulation. Route state derivatives out of the iterative solver later, integrate them, and bring them back at inputs for the next time-step.
+        corresponding places on the block.
+        <li> Connect the outputs to the next block(s) in your simulation.
         <li> Double click the block and...
         <ol>
             <li>Select which options you will use under each tab:
             <ul style="list-style-type:circle">
-                <li>Under the C-Map tab:
+                <li>Under the Bleeds tab:
                 <ul>
-                    <li>At the bottom of the page next to "Plot Map" button,
-                    check the "Include surge line" box to plot the surge
-                    line as defined in the Surge Margin tab. The surge line
-                    will not be plotted otherwise.
-                    <li>In the bottom-right corner of the page, select which
-                    (if any) scalars you will use for the plot. <br> Options include:
-                    <ol>
-                        <li>None: Plots the maps as defined.
-                        <li>User Defined: Plots the maps with Wc, PR, and Eff
-                        scaled using the scalars defined in the C-Map tab.
-                        <li>iDesign: Plots the maps with Wc, PR, and Eff scaled
-                        using the scalars calculated with iDesign, as defined
-                        in the iDesign tab.
-                    </ol>
+                    <li>Check the first box to enable Customer Bleeds. These
+                    bleeds are based on the flow and the parameters you input.
+                    <li>Check the second box to enable Fractional Bleeds. These
+                    bleeds are based on fractional values that you input.
                 </ul>
                 <li>Under the Surge Margin tab:
                 <ul>
@@ -578,6 +358,7 @@ where <i>bld</i> variables are fractional and/or customer bleed values.
     </ul>
 </p>
 
+
 <br><hr><br>
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -595,10 +376,13 @@ where <i>bld</i> variables are fractional and/or customer bleed values.
             <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr><td>Rline</td><td>R-line, position on compressor map.
             <br>Determines pressure ratio, efficiency, and gas path flow.
-            <br>The value for this variable will need to be solved for by driving
+            <br>The value for this variable will need be solved for by driving
             flow error across the engine to zero.</td></tr>
+        <tr><td>Alpha</td><td>Alpha, position for dynamically alternate
+            compressor maps. Typically alpha is used to define alternate
+            variable geometry configurations.</td></tr>
     <tr><td>Nmech</td><td>Shaft speed [rpm]</td></tr>
-	<tr><td>Tmet</td><td>Metal/structure temperature [degR]</td></tr>
+    <tr><td>Tmet</td><td>Metal/structure temperature [degR]</td></tr>
 	<tr><td>Trotor</td><td>Rotor temperature [degR]</td></tr>
 	<tr><td>Tblade</td><td>Blade temperature [degR]</td></tr>
 	<tr><td>Tcase</td><td>Casing temperature [degR]</td></tr>
@@ -608,10 +392,10 @@ where <i>bld</i> variables are fractional and/or customer bleed values.
 	<tr><td>q_ext</td><td>Casing temperature [Btu/s]</td></tr>
 	<tr><td>TCnom</td><td>Nominal tip clearance [mil]</td></tr>
     <tr><td>HP_Mods</td><td>Health Parameter Modifiers, 3x1 vector consisting of:
-            <br>- WcMod - Wc gain [frac]
-            <br>- PRMod - PR gain [frac]
-            <br>- EffMod - Eff gain [frac]
-            <br> these modifiers are typically defined as negaive fractional numbers, i.e. -0.01 is a 1% loss.
+	            <br>- WcMod - Wc gain [frac]
+	            <br>- PRMod - PR gain [frac]
+	            <br>- EffMod - Eff gain [frac]
+	            <br> these modifiers are typically defined as negative fractional numbers, i.e. -0.01 is a 1% loss.
         <br> Note: this inport appears only if HP_M under Health Parameters in the mask is checked.</td></tr>
 </table>
 
@@ -634,7 +418,7 @@ where <i>bld</i> variables are fractional and/or customer bleed values.
             <br>- FAR - Combusted fuel to air ratio [frac]
             <br> This feature must be enabled, see Bleed tab variable (CBLDEN_M) definition.</td></tr>
     <tr><td>FBldsCharOut</td><td>Fractional Bleeds Characteristics Output,
-            <br>[5 x 1] bus/vector for each fractional bleed (total #fbleeds *5 x 1)
+            <br>[5 x 1] bus/vector for each customer bleed (total #fbleeds *5 x 1)
             <br> consisting of the following repeating format:
             <br>- W - Gas path flow [pps]
             <br>- ht - Enthalpy [BTU/lbm]
@@ -649,13 +433,10 @@ where <i>bld</i> variables are fractional and/or customer bleed values.
             <br>- Pt - Total Pressure [psia]
             <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
     <tr> <td>NErr</td><td>Normalized Error [frac].
-            <br>In a typical system, this will be driven to zero by an iterative solver. </td></tr>
+            <br> In a typical system, this will be driven to zero by an iterative solver. </td></tr>
     <tr><td>TrqOut</td><td>Compressor Torque Output (lbf*ft).
-            <br>Negative value for a compressor.</td></tr>
-	<tr><td>Tmetdot</td><td>Rate of change in the bulk metal/structure temperature (degR/s).</td></tr>
-	<tr><td>Trdot</td><td>Rate of change in the rotor temperature (degR/s).</td></tr>
-	<tr><td>Tbdot</td><td>Rate of change in the blade temperature (degR/s).</td></tr>
-    <tr><td>C_Data</td><td>Compressor internal calculation data, 54x1 bus/vector including:
+            <br> Negative value for a compressor.</td></tr>
+    <tr><td>C_Data</td><td>Compressor internal calculation Data, 18x1 bus/vector including:
             <br>- SMavail - Stall margin available [%]
             <br>- s_C_Nc - Corrected shaft speed map scalar value
             <br>- s_C_Wc - Corrected mass flow map scalar value
@@ -674,10 +455,10 @@ where <i>bld</i> variables are fractional and/or customer bleed values.
             <br>- Pwrout - Total output power [hp]
             <br>- SMMap - Stall margin based on map values [%]
             <br>- SPRMap - Stall pressure ratio from the map
-            <br>- Test - Compressor internal calculation data
+            <br>- Test - Compressor internal calculation Data
             <br>- Nmech - Mechanical shaft speed, from input [rpm]
-            <br>- BlkNm - Block name as double. If required use char(BlkNm) to retrieve. 
-			<br>- WHPMod - Feedthrough of the health parameter flow modifier
+            <br>- BlkNm - Block name as double. If required use char(BlkNm) to retrieve.
+            <br>- WHPMod - Feedthrough of the health parameter flow modifier
 			<br>- PRHPMod - Feedthrough of the health parameter PR modifier
 			<br>- EffHPMod - Feedthrough of the health parameter efficiency modifier
 			<br>- qHS - Heat transfer due to heat soak (+ for cooling of the gaspath) [Btu/s]
@@ -701,8 +482,8 @@ where <i>bld</i> variables are fractional and/or customer bleed values.
 			<br>- dNqN_BL - Component of s_C_N_modifier attributed to boundary layer effects
 			<br>- dNqN_den - Component of s_C_N_modifier attributed to density effects
 			<br>- dNqN_TC - Component of s_C_N_modifier attributed to tip clearance effects
-			<br>- PRm1qPRadm1_F - Component of the change in (SPR-1)/(SPR_ad-1) due to heat transfer effects <-- SPR_ad is the stall PR under adiabatic conditions
-			<br>- PRm1qPRadm1_TC - Component of the change in (SPR-1)/(SPR_ad-1) due to tip clearance effects <-- SPR_ad is the stall PR under adiabatic conditions
+			<br>- PRm1qPRadm1_F - Component of the change in (SPR-1)/(SPR_ad-1) due to heat transfer effects -- SPR_ad is the stall PR under adiabatic conditions
+			<br>- PRm1qPRadm1_TC - Component of the change in (SPR-1)/(SPR_ad-1) due to tip clearance effects -- SPR_ad is the stall PR under adiabatic conditions
 			<br>- Texit_ad - Adiabatic exit temperature [deg R]
 			<br>- s_C_N_modifier - Multiplier applied to the corrected speed map scaler to shift the speed line
 			<br>- s_C_Eff_modifiier - Multiplier applied ot the efficiency map scaler to adjust the efficiency contours
@@ -723,6 +504,7 @@ where <i>bld</i> variables are fractional and/or customer bleed values.
 <table>
     <tr><th> Mask Variable </th><th> Description </th></tr>
     <tr><td>X_C_RlineVec_M</td><td>Compressor map Rline vector(nx1)</td></tr>
+    <tr><td>Z_C_Map_AlphaVec_M<td><td>Compressor Alpha Vector (Z-axis)(rx1)</td></tr>
     <tr><td>Y_C_Map_NcVec_M</td><td>Compressor map corrected speed vector(mx1)</td></tr>
     <tr><td>T_C_Map_WcArray_M</td><td>Compressor map flow array (Wc = f(Nc, Rline))(mxn)</td></tr>
     <tr><td>T_C_Map_PRArray_M</td><td>Compressor map pressure ratio array (PR = f(Nc, Rline))(mxn)</td></tr>
@@ -752,6 +534,7 @@ where <i>bld</i> variables are fractional and/or customer bleed values.
             <br>Set - use SRline_M
             <br>
             <br>Un-set - define manually via X_C_Map_WcSurgeVec_M and T_C_Map_PRSurgeVec_M </td></tr>
+    <tr><td>SMNEn_M</td><td>Sets which definition of stall margin to use - 0 for SMW (constant Wc) and 1 for SMN (constant Nc)</td></tr>
     <tr><td>SRline_M</td><td>Rline defined as the surge line (typically defined as 1)</td></tr>
     <tr><td>X_C_Map_WcSurgeVec_M</td><td>Compensated flow surge vector (map value)(sx1)</td></tr>
     <tr><td>T_C_Map_PRSurgeVec_M</td><td>Surge line pressure ratio vector (map value)(sx1)</td></tr>
@@ -859,12 +642,12 @@ below lists the errors/warnings that you may see and the reason why it is being 
                 <li>2D SPR
                 <li>SPR
             </ul></td><td>Error appears if the vectors are not large enough
-            to interpolate. Vector definitions may need to be adjusted. This
-            means the values are running off the map.</td></tr>
+            to interpolate. Vector definitions may need to be adjusted.</td></tr>
     <tr><td>Number of bleeds in compressor exceeds 100...</td><td>Error appears if
                 the iterations significantly exceeds the maximum number of
                 bleeds, indicating bad data.</td></tr>
 </table>
+
 
 <br><br>
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
