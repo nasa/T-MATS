@@ -1,0 +1,578 @@
+<script type="text/javascript"
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<head>
+    <link rel="stylesheet" href="stylesheet_TMATS.css">
+</head>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<title>
+    T-MATS: Help for Turbine NPSS HX Library Block
+</title>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<body>
+    <h1>
+      T-MATS: Turbine NPSS Library HX Block
+    </h1>
+<hr>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="purpose">
+        Purpose
+</div>
+
+<p>
+    This block can be used to simulate the performance of a turbine using basic thermodynamic
+equations, properties, and table lookups. This block is a modified version of the standard T-MATS 
+Turbine NPSS library blcok that adds-in features for modeling the effects of heat soak and tip clearances. 
+Heat soak refers to the bulk heat transfer between the gaspath and surrounding structure of the turbine. 
+Tip clearance refers to the gap between the blade tips and outer containment structure/seal, which is impacted 
+by thermal expansion of the turbine parts. The tip clearance model approximates the impacts by modeling 
+the turbine as a single stage. Turbine performance is adjusted through modification of its efficiency.
+</p>
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="background">
+        Background
+</div>
+
+<p>
+    This block models a turbine with the effects of heat soak and tip clearances.
+	It leverages a modified version of the standard T-MATS Turbine NPSS library block to compute the outputs of the
+	turbine under adiabatic conditions without tip clearance variations impacts. The modifications to the standard T-MATS Turbine NPSS block enable the 
+	turbine performance map efficiency scalers to be adjusted based on computed performance impact relative to tip clearance effects. The block utilizes the 
+	<i>Turbine_TMATS.c</i> script to compute the adiabatic output gas characteristics and other variables.
+</p>
+<p>
+	The adiabatic outputs are modified through a heat soak model that updates the output enthalpy and temperature 
+	based on the computed heat transfer with the surrounding engine structure. In addition, the current engine operating 
+	conditions and thermal state is utilized to approximate the tip clearance. Outputs of the tip clearance model are used 
+	to predict performance impacts that are applied through modificaiton of the turbine map efficiency scaler. These scalers 
+	feed back into the standard T-MATS Turbine library block creating an implicit mathematical problem. Thus, the T-MATS Newton-Raphson 
+	solver blockis used to iterate the solution until the output temperature of the turbine converges. 
+</p>
+<p>
+	<b><i>Adiabatic Turbine Performance Model</i></b>
+</p>
+<p>
+    This block operates using the same general principles as the
+    <a href="Turbo_TMATS_Trb.html">turbine block</a>.
+    However, the updates to this block include removing the standard day
+    components from the <i>&Theta;</i> and <i>&delta;</i> calculations and updating the
+    normalized flow error to use input flow only, which translates to a
+    turbine map in which <i>Wc</i> is defined by the input flow only.
+    These changes are summarized in the following equations:
+        $$\delta = Pt_{In}$$
+    $$\Theta = Tt_{In}$$
+    And
+	$$NError_{Out} = \frac{Wc_{In}-WcCalc_{In}}{Wc_{In}}$$
+</p>
+<p>
+	<b><i>Heat Soak Model</i></b>
+</p>
+<p>
+	The heat transfer due to heat soak is calculated by:
+	
+	$$qHS = CH*A*(T_m - Tgp)$$
+	
+	where qHS is the heat, T<sub>m</sub> is the metal/structure temperature of the bulk component, Tgp is the average temperature of the gaspath 
+	(Tgb = 0.5*(Tin + Tout) where Tin and Tout are the turbine inlet and exit total temperatures respectively), A is the effective 
+	surface area associated with the bulk mass of the turbine structure, and CH is the convective heat transfer coefficient. CH is 
+	computed with the equation below:
+	
+	$$CH = CHdes*(W_{in}/Wdes)^{0.8}$$
+	
+	W<sub>in</sub> is the mass flow rate entering the turbine and Wdes is the inlet mass flow rate at the design point, which corresponds to
+	the design convective heat transfer coefficiencet CHdes. The bulk temperature of the component structure is dynamic and its rate of
+	change is calcuated with:
+	
+	$$\frac{dT_m}{dt} = \frac{qHS}{Mm*Cpm}$$
+	
+	where Mm is the mass of the bulk mass used to model the thermal inertia of the turbine, and Cpm is the specific heat at constant
+	pressure for the bulk mass. dT<sub>m</sub>/dt is integrated outside of this block to get T<sub>m</sub> (similar to how shaft acceleration is integrated to
+	get the shaft speed). The block allows for a generic heat injection/removal (qext) to be added to the heat related to heat soak. 
+	
+	$$q = qHS + qext$$
+	
+	The enthalpy is adjusted with 
+	
+	$$ht_{out} = ht_{out,ad} - q/W_{in}$$
+	
+	where ht<sub>out,ad</sub> is the adiabatic output enthalpy. The output temperature, Tt<sub>out</sub>, is computed with a T-MATS thermodynamic
+	subroutine. The enthalpy at the inlet after the addition of cooling air, ht<sub>in,c</sub>, must be updated along with the enthalpy of the exit flow prior to cooling
+	air injection, ht<sub>out,c</sub>.
+	
+	$$ht_{in,c} = (W_{in}*ht_{in} + \sum W_{cool,in}*ht_{cool,in})/(W_{in} + \sum W_{cool,in})$$
+	
+	$$ht_{out,c} = (W_{out}*ht_{out} - \sum W_{cool,out}*ht_{cool,out})/(W_{out} - \sum W_{cool,out})$$
+	
+	The shaft power is also updates with:
+	
+	$$Pwr_{Out} = (W_{in} + \sum W_{cool,in})*(ht_{in,c} - ht_{out,c})$$
+	
+	The shaft torque is updated utilizing the new shaft power value.
+	
+</p>
+<p>
+	<b><i>Tip Clearance Model</i></b>
+</p>
+<p>
+	The tip clearance model attempts to approximate axisymmetric tip clearance variations due to thermal expansion and centrifugal forces. The 
+	turbine is partitioned into 3 subcomponents: the blade (of which there are many), the rotor disk (to which the blades are attached), and 
+	the casing. A shroud is attached to the casing and offset from it by a prescribed distance. While it is the gap between the shroud and blade
+	tip that defines the tip clearance, it is assumed that the shroud moves with the casing which provides the structural integrity. A one-dimensional 
+	thermal expansion model is applied for each subcomponent. The change in subcomponent radius (for rotor and casing) or length (for the blades) 
+	was determined with:
+	
+	$$\Delta r = r_o*(1+\alpha *\Delta T)$$
+	
+	Note that r<sub>o</sub> is a reference radius or length, &Delta;T is the temperatue difference of the component relative to the reference temperature 
+	corresponding the the reference radius or length, and &alpha; is the linear thermal expansion coefficient. 
+</p>
+<p>
+	Since the thermal expansion utilized the temperature of the subcomponents, it is necessary for the model to capture their temperature variation. 
+	The blade temperature utilizes a lumped mass model similar to the heat soak model. The rate of change in blade temperature is computed with:
+	
+	$$\frac {dT_b}{dt} = \frac{CHb*Ab}{Cpb*Mb}(Tgp - T_b)$$
+	
+	where T<sub>b</sub> is the blade temperature, Ab is the surface area of the blade, Mb is the mass of the blade, Cpb is the specific heat of the blade, CHb is
+	the coeffiicent of convective heat transfer acting on the blade, Tgp is the average temperatue of the gaspath, and T<sub>ref</sub> is
+	
+	$$T_{ref} = Tgp + \varsigma * (Tgb - T_{cool,b})$$
+	
+	where T<sub>cool,b</sub> is the temperature of the cooling air, &varsigma; is the film cooling coeffient and has a value between 0 and 1. 
+	The coefficient of heat transfer is determined with an equation of the same form as was presented for the heat soak model. The rate of change in blade 
+	temperature should be integrated outside of this block to update the blade temperature each timestep.
+</p>
+<p>
+	The casing temperature must be computed outside of this block. It is suggested that a 1-D thermal conduction T-MATS block be used to compute the radial 
+	variation of the temperature though the casing thickness and to compute the average temperature to represent the subcomponent temperature. The casing is separated 
+	from the main gaspath by the shroud so it will be exposed to secondary air on both its inner and outer surfaces. The inner surface may be in contact with bleed 
+	air from the compressor utilized to cool the turbine while the outer surface may be exposed to the cowl cavity environment and if there is traditional clearance control
+	bleed air from the bypass or compression system might be blown on the outer casing surface. The user must specify the temperature of the air on both surfaces and associated 
+	mass flow rates that can be used to approximate a heat transfer coefficient. 
+</p>
+<p>
+	The rotor has the most thermal mass of the subcomponents and is expected to be well coordinated with the bulk component temperature. To maintain consistency
+	with the bulk temperature of the turbine from the heat soak model, the rate a change in rotor temperature is a scaled version of the bulk component temperature.
+	
+	$$\frac {dT_r}{dt} = \frac {dT_m}{dt} \frac{T_{cool,r}-T_r}{Tgp-T_m}$$
+	
+	Logic was added to prevent division by zero. The temperatue of the rotor cooling air T<sub>cool,r</sub> will come from outside the turbine and thus is an
+	input to the block.
+</p>
+<p>
+	The strain models are applied after thermal expansion. The equations used in the computations are given below.
+	
+	$$r_r = \rho *\frac{1-\nu}{4*E}*{(\frac{2*\pi}{60}N)}^2*r_{r,u}^2$$
+	
+	$$L_b = \rho *\frac{1}{E}{(\frac{2*\pi}{60}N)}^2*L_{b,u}^2(r_r+L_{b,u})$$
+	
+	Note that &rho; is the density of the subcomponent, E is Young's Modulus of Elasticity, &nu; is Poisson's ratio, N is the shaft speed in rpm, r<sub>r,u</sub>
+	is the unstrainted rotor radius, and L<sub>b,u</sub> is the unstrained blade length. The tip clearance, TC, is the gap between the rotating components 
+	and the inner radius of the stationary containment structure and is thus computed as
+	
+	$$TC = (r_{c} - d_{s}) - (r_{r} + L_{b})$$
+	
+	Note that d_{s} is the distance that the shround is offset from the casing. The performance modifications are based on differences in tip clearance as compared to nominal tip clearance for which the base performance map (scalers) are 
+	assumed to be consistent. The user must specify the nominal tip clearance, which should correspond to the nominal performance. The nominal tip clearance is 
+	an input to the block and could be prescribed a number of ways. For instance, for a notional engine system where such data is not provided, one can use steady-state data 
+	to guide the formulation of a look-up table that covers the range of operation.
+	
+</p>
+<p>
+	<b><i>Performance Impact Model</i></b>
+</p>
+<p>
+	The turbine perforamnce and operability is adjusted through scaling of the efficiency by introducing an efficiency scaler modifier C<sub>t,&eta;</sub>. Below 
+	is the expression for the efficiency scaler modifier where S is the span of the annulus and &Delta;TC = (TC/S)<sub>nom</sub> - TC/S and "nom" refers to the nominal 
+	clearance to span ratio for which the unmodified performance is achieved.
+	
+	$$C_{t,\eta} = 1 + K * \frac{\Delta TC}{S} * \frac{r_s}{0.5*(r_r + r_s)}$$
+	
+	K is a coefficient that scales how much the efficiency is impacted. The efficiency modifier is fed back into turbine calculations that determine adiabatic performance. 
+	The loop of calculations executes until convergence of the exit temperature is achieved. 
+</p>
+	<b><i>Parameterizing the Model</i></b>
+</p>
+<p>
+	The updates to incorporate heat soak and tip clearance impacts introduces numerous parameters that must be defined. Among these parameters are material properties,
+	surface areas and component masses sufficient for a lumped mass heat transfer models, "design" flow rates and heat transfer coefficients for convective heat transfer
+	coefficient approximation, initial component/subcomponent temperatures and sizes (length/radius), nominal tip clearances, and impact coefficients for the performance
+	and operablity impact models. Some of the parameters are straight foward. For example, material properties can be defined from data specific to the materials of the
+	components/subcomponents. Other parameters can be prescribed with some engineering judgement and further tuned to achieve realistic behavior. For instance, there 
+	could be freedom in choice of the "design point" heat transfer coefficients to tailor the temperature response of the components/subcomponents. For some other parameters, 
+	more upfront work may be warranted to set their values. Specifically, initial conditions fall into this category and they should be determined within the setup scripts/functions 
+	for the model. The component/subcomponet temperatures should be able to be inferred from gas path initial conditions. The intial rotor, casing, and blade sizes for the tip 
+	clearance model can be initialized at a presrcibed condition and given time to reach equilibrium. Alternatively, they can be calculated for an equilibrium state at the 
+	desired model starting point using MATLAB functions that mimic the calculations for determining the subcomponent deformations. The functions are in the 
+	"TMATS/TMATS_Library/MATLAB_Scripts/+TMATS" folder and are listed below:
+</p>
+<p>
+	<i>ThermalExpansion1D.m:</i> performs 1-D linear thermal expansion<br>
+	<u>Output:</u> <br>
+	L - length or radius after temperature change, ft <br>
+	<u>Inputs:</u> <br>
+	TalphaVec - Thermal expansion coefficient temperature data <br>
+	alphaVec - Thermal expansion coefficient data <br>
+	Lref - reference length <br>
+	Tref - reference temperature at known length Lref <br>
+	T - temperature of the component <br>
+</p>
+<p>
+	<i>RotorStrainExp.m:</i> performs expansion calculation on the rotor <br>
+	<u>Output:</u> <br>
+	RoRotor - outer rotor radius with strain produced by centrifugal forces, ft <br>
+	<u>Inputs:</u> <br>
+	rho - density, slug/ft^3<br>
+	TEVec - Young's Modulus temperature data vector, degR<br>
+	EVec - Young's Modulus data vector, lbf/sqft<br>
+	TvVec - Poisson's Ratio temperature data vector, degR<br>
+	vVec - Poisson's Ratio data vector<br>
+	T - blade temperature, degR<br>
+	N - rototional speed, rpm<br>
+	RoRotorBase - unstrained radius of the rotor, ft<br>
+</p>
+<p>
+	<i>BladeStrainExp.m:</i> performs expansion calculation on the blade <br>
+	<u>Output:</u> <br>
+	LBlade - blade length with strain produced by centrifugal forces, ft <br>
+	<u>Inputs:</u> <br>
+	rho - density, slug/ft^3<br>
+	TEVec - Young's Modulus temperature data vector, degR<br>
+	EVec - Young's Modulus data vector, lbf/sqft<br>
+	T - blade temperature, degR<br>
+	N - rototional speed, rpm<br>
+	RoRotor - outer radius of the rotor, ft<br>
+	LBladeBase - unstrained blade length, ft<br>
+</p>
+<p>
+	Using these functions and other known inputs, the initial subcomponent sizes can be determined. Here is and example of a procedure that
+	could be used to initialize the blade length and rotor and casing radii.<br>
+	- set a "cold and stationary" temperature and tip clearance for each subcomponent<br>
+	- set a "cold and stationary" radius/length for 2 of the 3 subcomponents and calculate the "cold and stationary" size of the other subcomponent using the prescribed tip clearance<br>
+	- compute the unstrained rotor radius by applying "ThermalExpansion1D.m"<br>
+	- compute the strained rotor radius by applying "RotorStrainExp.m"<br>
+	- compute the unstrained blade length by applying "ThermalExpansion1D.m"<br>
+	- compute the strained blade length by applying "BladeStrainExp.m"<br>
+	- compute the casing radius by applying "ThermalExpansion1D.m"<br>
+	Note that some adjustments may be required to maintain reasonble tip clearances. The "cold and stationary" tip clearance is a good
+	place to start with the adjustments. If the casing is cooled on the exterior with any significant strength, the casing temperture will
+	not simply be derived from the gaspath temperatures but should consider the temperature of the air and heat transfer coefficient on the 
+	outer casing surface. In this case a thermal resistance model can be used to determine the initial steady-state casing temperature. 
+</p>
+<p>
+	<b><i>Further Model Setup</i></b>
+</p>
+<p>
+	The heat soak and tip clearance models add new states to the model. This includes the temperatures associated with the heat soak model 
+	for the turbine as well as the blade and rotor subcomponents used in the tip clearance model. The rate of change in these states must 
+	be routed outside the engine models iterative solver loop, integrated, and routed back to the block for the next time-step. The turbine 
+	casing temperature must also be computed outside of the block and fed back to it. As mentioned prior, the recommended approach for this is to 
+	use a T-MATS 1-D thermal conduction block. 
+</p>
+<p>
+	The iDesign tool should still work with this block. However, it should be noted that if iDesign is used, the heat soak and tip clearance effects 
+	will not be applied and they will have no effect on the map scaling. It is recommended that iDesign be done at a operating point at which 
+	thermal equilibrium and nominal tip clearance are achieved. 
+</p>
+<p>
+	The heat soak and tip clearance effects can be turned off by setting the block parameters HSopt_M (for heat soak) and TCopt_M (for tip clearance) 
+	to zero. To enable them the values should be set to 1.
+</p> 
+
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="instructions">
+        Instructions
+</div>
+
+<p>
+    To use this block:
+    <ul>
+        <li> Connect the input gas path flow, cooling flow, pressure ratio,
+        and Nmech values to the corresponding places on the block.
+        <li> Connect the outputs to the next block(s) in your simulation.
+        <li> Double click the block and...
+        <ol>
+            <li>Select which options you will use under each tab:
+            <ul style="list-style-type:circle">
+                <li>Under the T-Map tab:
+                <ul>
+                    <li>In the bottom-right corner of the page, select which
+                    (if any) scalars you will use for the plot. <br> Options include:
+                    <ol>
+                        <li>None: Plots the maps as defined.
+                        <li>User Defined: Plots the maps with Wc, PR, and Eff
+                        scaled using the scalars defined in the T-Map tab.
+                        <li>iDesign: Plots the maps with Wc, PR, and Eff scaled
+                        using the scalars calculated with iDesign, as defined
+                        in the iDesign tab.
+                    </ol>
+                </ul>
+                <li>Under the iDesign tab:
+                <ul>
+                    <li>Select the value of iDesign_M. <br>Options include:
+                    <ul style="list-style-type:disc">
+                        <li> 0: iDes will be enabled and the turbine map
+                        scalars will be based on design variables specified
+                        by the user in the iDesign tab.
+                        <li> 1: Turbine map scalars will be determined
+                        from a specified file (<i>FVar_M</i>) that is uploaded by
+                        the user and specified in the iDesign tab.
+                        <li> 2: Turbine map scalars will be determined
+                        by the scalars specified in the T-Map tab; no values
+                        from the iDesign tab will be used.
+                    </ul>
+                </ul>
+            </ul>
+            <li>Input the corresponding values for the parameters you have chosen
+            to use including the new parameters under the "Heat Soak", "Tip Clearance", and "Performance Impact" tabs.
+        </ol>
+    </ul>
+</p>
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="inputs">
+        Turbine NPSS HX Inputs
+</div>
+
+<table>
+    <tr><th> Input </th><th>Description</th></tr>
+    <tr><td>CoolingFlwCharIn</td><td>Cooling flow Gas Characteristics Input,
+            <br> 5x1 bus/vector (for each cooling flow) consisting of:
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]
+            <br> This feature must be enabled, see Cooling Flow tab variable (CFlwEn_M) definition</td></tr>
+    <tr><td>GasPthCharIn</td><td>Gas Path Characteristics Input, 5x1 bus/vector consisting of:
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>PRmapIn</td><td>Map turbine Pressure Ratio, position on turbine map.
+            <br> Determines Pressure ratio, efficiency, and gas path flow.
+            <br> The value for this variable will need to be solved for by driving
+                 the flow error accross the engine to zero.</td></tr>
+    <tr><td>Nmech</td><td>Shaft speed [rpm]</td></tr>
+	<tr><td>Tmet</td><td>Metal/structure temperature [degR]</td></tr>
+	<tr><td>Trotor</td><td>Rotor temperature [degR]</td></tr>
+	<tr><td>Tblade</td><td>Blade temperature [degR]</td></tr>
+	<tr><td>Tcase</td><td>Casing temperature [degR]</td></tr>
+	<tr><td>TcoolR</td><td>Temperature of the air cooling the rotor [degR]</td></tr>
+	<tr><td>TcoolB</td><td>Temperature of the air cooling the blade [degR]</td></tr>
+	<tr><td>TinC</td><td>Temperature of the air on the inner surface of the casing [degR]</td></tr>
+	<tr><td>WinC</td><td>Mass flow rate of the air flow on the inner surface of the casing (used to determine heat transfer coefficient) [degR]</td></tr>
+	<tr><td>TcoolC</td><td>Temperature of air cooling the outer surface of the casing [degR]</td></tr>
+	<tr><td>WcoolC</td><td>Flow rate of air cooling the outer surface of the casing (used to determine heat transfer coefficient) [degR]</td></tr>
+	<tr><td>TCnom</td><td>Nominal tip clearance [mil]</td></tr>
+	<tr><td>HP_Mods</td><td>Health Parameter Modifiers, 2x1 vector consisting of:
+            <br>- WcMod - Wc gain [frac]
+            <br>- EffMod - Eff gain [frac]
+            <br> these modifiers are typically defined as negaive fractional numbers, i.e. -0.01 is a 1% loss.
+        <br> Note: this inport appears only if HP_M under Health Parameters in the mask is checked.</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="outputs">
+        Turbine NPSS HX Outputs
+</div>
+
+<table>
+    <tr><th> Output </th><th> Description </th></tr>
+<tr><td>GasPthCharOut</td><td>Gas Path Characteristics Output, 5x1 bus/vector consisting of:
+            <br>- W - Gas path flow [pps]
+            <br>- ht - Enthalpy [BTU/lbm]
+            <br>- Tt - Total Temperature [degR]
+            <br>- Pt - Total Pressure [psia]
+            <br>- FAR - Combusted Fuel to Air Ratio [frac]</td></tr>
+    <tr><td>NErr</td><td>Normalized Error [frac], in a typical system this will
+                        	be driven to zero by an iterative solver</td></tr>
+    <tr><td>TrqOut</td><td>Turbine Torque Output (lbf*ft), positive value for a turbine.</td></tr>
+	<tr><td>Tmetdot</td><td>Rate of change in the bulk metal/structure temperature (degR/s).</td></tr>
+	<tr><td>Trdot</td><td>Rate of change in the rotor temperature (degR/s).</td></tr>
+	<tr><td>Tbdot</td><td>Rate of change in the blade temperature (degR/s).</td></tr>
+    <tr><td>T_Data</td><td>Turbine internal calculation Data, 39x1 bus/vector including:
+            <br>- s_T_Nc - Corrected shaft speed map scalar value
+            <br>- s_T_Wc - Corrected mass flow map scalar value
+            <br>- s_T_PR - Pressure ratio map scalar value
+            <br>- s_T_Eff - Efficiency map scalar value
+            <br>- Wcin - Corrected mass flow input [pps]
+            <br>- Wcs1in - Corrected mass flow after station 1 (contains input bleed air) [pps]
+            <br>- Nc - Corrected shaft speed [rpm]
+            <br>- NcMap - Corrected shaft speed from the turbine map
+            <br>- WcMap - Corrected mass flow from the turbine map
+            <br>- PRMap - Pressure ratio from the turbine map
+            <br>- EffMap - Efficiency from the turbine map
+            <br>- Pwrout - Output power [hp]
+            <br>- Test - Turbine interal calculation Data
+            <br>- Nmech - Mechanical shaft speed, from input [rpm]
+            <br>- BlkNm - Block name as double, if required use char(BlkNm) to retrieve
+			<br>- WHPMod - Feedthrough of the health parameter flow modifier
+			<br>- EffHPMod - Feedthrough of the health parameter efficiency modifier
+			<br>- q - Heat transfer due to heat soak (+ for cooling of the gaspath) [Btu/s]
+			<br>- Tmean - Average of the compressor inlet and exit flow [degR]
+			<br>- Tmet - Temperature of the metal/structure representing the bulk mass in the heat soak model [degR]
+			<br>- dTC - Difference between the nominal tip clearance and actual tip clearance (TCbase - TC) [mil]
+			<br>- TC - Actual tip clearance [mil]
+			<br>- TCbase - Nominal (baseline) tip clearance [mil]
+			<br>- TCSS - Steady state tip clearance [mil]
+			<br>- Tbref - Reference temperature to which the blade will approach at steady-state considering cooling effects [degR]
+			<br>- Tb - Blade temperature [degR]
+			<br>- Tr - Rotor temperatue [degR]
+			<br>- Tc - Casing temperature [degR]
+			<br>- L_Blade - Blade length [ft]
+			<br>- Ro_Rotor - Outer rotor radius [ft]
+			<br>- Ri_Case - Inner casing radius [ft]
+			<br>- Ri_Shroud - Inner shroud radius [ft]
+			<br>- L_Blade_SS - Steady-state blade length [ft]
+			<br>- Ro_Rotor_SS - Steady-state outer rotor radius [ft]
+			<br>- Ri_Case_SS - Steady-state inner casing radius [ft]
+			<br>- Ri_Shroud_SS - Steady-state inner shroud radius [ft]
+			<br>- s_T_Eff_modifiier - Multiplier applied ot the efficiency map scaler to adjust the efficiency
+			<br>- ToutErr - Returns the error between the current exit temperature value and prior internal solver iteration exit temperature value [degR]
+			<br>- Conv - Indicates convergence of the iterative solver (1 - converged, 0 - failed to converge)
+		</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="maskvars">
+        Turbine NPSS HX Mask Variables
+</div>
+
+<table>
+    <tr><th> Mask Variable </th><th> Description </th></tr>
+    <tr><td>X_T_Map_PRVec_M</td><td>Turbine Map Pressure Ratio Vector (X-axis)(nx1)</td></tr>
+    <tr><td>Y_T_Map_NcVec_M</td><td>Turbine Map Corrected Speed Vector (Y-axis)(mx1)</td></tr>
+    <tr><td>T_T_Map_WcArray_M</td><td>Turbine Map Flow Array (Wc=f(Nc,PR))(mxn)</td></tr>
+    <tr><td>T_T_Map_EffArray_M</td><td>Turbine Map Efficiency Array (Eff = f(Nc,PR))(mxn)</td></tr>
+    <tr><td>s_T_Nc_M</td><td>Corrected Speed Scalar Constant (T_Nc)</td></tr>
+    <tr><td>s_T_PR_M</td><td>Pressure Ratio Scalar Constant (T_PR)</td></tr>
+    <tr><td>s_T_Wc_M</td><td>Flow Scalar Constant (T_Wc)</td></tr>
+    <tr><td>s_T_Eff_M</td><td>Efficiency Scalar Constant (T_Eff)</td></tr>
+    <tr><td>Plot Map</td><td>Plots the block defined map
+            <br>
+            <br> - Scalars: None - plots maps as defined
+            <br>
+            <br> - Scalars: User defined - plots maps with Wc, PR, and Eff scaled using the scalars defined in the T-map tab
+            <br>
+            <br> - Scalars: iDesign - plots maps with Wc, PR, and Eff scaled using scalars calculated with iDesign and located within the file defined in the iDesign tab</td></tr>
+    <tr><td>T_CoolFlwPos_M</td><td>Cooling Flow position [0 at inlet,  1 at exit](cx1)
+            <br> With Cooling Flow Enabled, the turbine will expect cooling flow input
+            vector length of Cx5. See CoolingFlwCharIn definition. If there is not a cooling flow input prescribed a 1x5 vector of zeros as the input to CoolingFlwCharIn</td></tr>
+	<tr><td>HSopt_M</td><td>Option for enabling heat soak effects (1 - enabled, 0 - disabled)</td></tr>
+	<tr><td>BulkArea_M</td><td>Effective Surface Area [sqft]</td></tr>
+	<tr><td>BulkMass_M</td><td>Effective bulk mass [slug]</td></tr>
+	<tr><td>BulkCpVec_M</td><td>Effective specific heat data [Btu/(slug-degR)] (nx1)</td></tr>
+	<tr><td>TBulkCpVec_M</td><td>Temperature array for heat capacity data, [degR] (nx1)</td></tr>
+	<tr><td>Bulkhcoeff_M</td><td>Base Heat Transfer Coefficient for Scaling The Convective Heat Transfer Coefficient (h = hcoeff*(Win/Wdes)^0.8), [Btu/(s-sqft-degR)]</td></tr>
+	<tr><td>BulkWdes_M</td><td>Mass flow rate at the "design point" for the heat transfer coefficient [slug/s]</td></tr>
+	<tr><td>Tout_IC_M</td><td>Initial condition and guess for the compressor exit total temperautre [degR]</td></tr>
+	<tr><td>TCopt_M</td><td>Option for enabling tip clearance effects (1 - enabled, 0 - disabled)</td></tr>
+	<tr><td>L_Blade_M</td><td>Unstrained Initial length of blade [ft]</td></tr>
+	<tr><td>T0_Blade_M</td><td>Initial temperature of blade [degR]</td></tr>
+	<tr><td>rho_Blade_M</td><td>Density of the blade material [slug/cuft]</td></tr>
+	<tr><td>m_Blade_M</td><td>Mass of single blade [slug]</td></tr>
+	<tr><td>A_Blade_M</td><td>Surface area of single blade [sqft]</td></tr>
+	<tr><td>eta_Blade_M</td><td>Blade cooling efficiency coefficient</td></tr>
+	<tr><td>alpha_Blade_Data_M</td><td>Blade thermal expansion coefficient data [degR^-1] (ax1)</td></tr>
+	<tr><td>Talpha_Blade_Data_M</td><td>Temperature array for the blade thermal expansion data [degR] (ax1)</td></tr>
+	<tr><td>E_Blade_Data_M</td><td>Young's modulus data for the blade [lbf/sqft] (bx1)</td></tr>
+	<tr><td>TE_Blade_Data_M</td><td>Temperature array for the blade Young's modulus data [degR] (bx1)</td></tr>
+	<tr><td>Cp_Blade_Data_M</td><td>Heat capacity data for the blade [Btu/(slug-degR)] (cx1)</td></tr>
+	<tr><td>TCp_Blade_Data_M</td><td>Temperature array for the blade heat capacity data [degR] (cx1)</td></tr>
+	<tr><td>hcoeff_Blade_M</td><td>Blade heat transfer coefficient at the design mass flow rate [Btu/(s-sqft-degR)]</td></tr>
+	<tr><td>Wdes_Blade_M</td><td>Design mass flow rate for the blade heat transfer model [slug/s]</td></tr>
+	<tr><td>Ro_Rotor_M</td><td>Unstrained initial outer rotor radius [ft]</td></tr>
+	<tr><td>T0_Rotor_M</td><td>Initial lumped temperature of the rotor [degR]</td></tr>
+	<tr><td>rho_Rotor_M</td><td>Density of the rotor material [slug/cuft]</td></tr>
+	<tr><td>alpha_Rotor_Data_M</td><td>Rotor thermal expansion coefficient [degR^-1] (dx1)</td></tr>
+	<tr><td>Talpha_Rotor_Data_M</td><td>Temperature array for the rotor thermal expansion data [degR] (dx1)</td></tr>
+	<tr><td>E_Rotor_Data_M</td><td>Young's modulus data for the rotor [lbf/sqft] (ex1)</td></tr>
+	<tr><td>TE_Rotor_Data_M </td><td>Temperature data for the rotor Young's modulus data [degR] (ex1)</td></tr>
+	<tr><td>v_Rotor_Data_M</td><td>Poisson's ratio data for the rotor (fx1)</td></tr>
+	<tr><td>Tv_Rotor_Data_M</td><td>Temperature array for rotor Poisson's ratio data [degR] (fx1)</td></tr>
+	<tr><td>Ri_Case_M</td><td>Initial inner radius of the casing [ft]</td></tr>
+	<tr><td>T0_Case_M</td><td>Initial lumped temperature of the casing [degR]</td></tr>
+	<tr><td>W_Case_M</td><td>Width (thickness) of casing [ft]</td></tr>
+	<tr><td>Lshroud_M</td><td>Length of the shroud (offset between the inner cases and gaspath via a shroud structure) [ft]</td></tr>
+	<tr><td>alpha_Case_Data_M</td><td>Casing thermal expansion coefficient [degR^-1] (gx1)</td></tr>
+	<tr><td>Talpha_Case_Data_M</td><td>Temperature array for the casing thermal expansion data [degR] (gx1)</td></tr>
+	<tr><td>k_Case_Data_M</td><td>Thermal conductivity of the casing [Btu/(s-ft-degR)](hx1)</td></tr>
+	<tr><td>Tk_Case_Data_M</td><td>Temperature array for the casing thermal conductivity data [degR] (hx1)</td></tr>
+	<tr><td>hcoeff_Case_M</td><td>Casing heat transfer coefficient at the design mass flow rate [Btu/(s-sqft-degR)]</td></tr>
+	<tr><td>Wdes_Case_M</td><td>Design mass flow rate for the casing heat transfer model [slug/s]</td></tr>
+	<tr><td>hcoeff_CoolC_M</td><td>Casing cooling flowheat transfer coefficient at the design mass flow rate [Btu/(s-sqft-degR)]</td></tr>
+	<tr><td>Wdes_CoolC_M</td><td>Design mass flow rate for the casing cooling flow heat transfer model [slug/s]</td></tr>
+	<tr><td>K_M</td><td>Tip clearance efficiency modifier coefficient</td></tr>
+    <tr><td>iDesign_M</td><td> Design fork (0, 1, 2)
+            <br>0 - iDes Enabled, Calculate turbine map scalars based on design variables
+            <br>    When iDesign is set to 0, scalar constants from the Map tab will not be used.
+            	    Scalars calculated will be saved in the specified file (FVar_M).
+            <br>1 - Scalar variables will be overwritten (mask Initialization) with
+            	    values from a specified file (FVar_M).
+            <br>    When iDesign is set to 1, scalar constants from the Map tab and the Design values
+            	    from the iDesign tab will not be used.
+            <br>2 - Scalar variables from the map tab will be used as the map scalars.
+            <br>    When iDesign is set to 2, scalar constants from the Map tab will be used; Design values
+                    and file definitions from the iDesign tab will not be used. </td></tr>
+    <tr><td>NcDes_M</td><td>Map Design Corrected Shaft Speed [rpm], design point corrected speed used in map</td></tr>
+    <tr><td>EffDes_M</td><td>Design Efficiency [frac], actual design point tubine efficiency </td></tr>
+    <tr><td>PRDes_M</td><td>Map Design Pressure Ratio [frac], design point PR used in map</td></tr>
+    <tr><td>NDes_M</td><td>Design Shaft Speed [rpm], actual design point speed</td></tr>
+    <tr><td>FVar_M</td><td>File name for iDes Variables</td></tr>
+</table>
+Note: Vectors are the x and/or y axis to a table made of an array.<br>
+Scalars are used to "scale" the turbine map for off design turbines.
+
+
+<br><hr><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class = "errors">
+    Potential Errors
+</div>
+<p>
+When using this block, you may receive one of the following errors/warnings. The table
+below lists the errors/warnings that you may see and the reason why it is being displayed.
+</p>
+<table>
+    <tr><th> Error/Warning </th><th>Description</th></tr>
+    <tr><td>One or more of the cooling flow input vector elements is missing.</td><td>
+                    Error appears if the input vector is not the correct size.
+                    Recall each flow needs to be a 5x1 vector consisting of W, ht, Tt, Pt, FAR.</td></tr>
+    <tr><td>Number of cooling flow inputs does not match the length of the cooling flow
+                position vector defined in the mask.</td><td>Error appears if the
+                cooling flow input vector is not the correct size (5x1).</td></tr>
+    <tr><td>Cooling flow position element needs to be defined as a 0 or 1.</td><td>
+                    Error appears if any of the elements of T_BldPos are not 0 or 1.</td></tr>
+    <tr><td>Error calculating WcMap.</td><td>Error appears if the table size
+                    does not match the axis vector lengths. One or more vectors
+                    is not the correct size.</td></tr>
+    <tr><td>Error calculating EffMap.</td><td>Error appears if the table size
+                    does not match the axis vector lengths. One or more vectors
+                    is not the correct size.</td></tr>
+</table>
+
+<br><br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+</body>
